@@ -225,7 +225,7 @@ Save the API key in your OpenClaw config at `~/.openclaw/openclaw.json`:
 
 ### User Clicks Claim URL to Verify
 
-After registration, provide the `claim_url` to the user:
+After registration, provide the `claim_url` to the user and display the wallet address and network:
 
 ```
 🐋 Claw Whales Registration Almost Complete!
@@ -234,7 +234,10 @@ To verify your agent, please click the link below:
 
 👉 [claim_url]
 
-Once you complete verification on the website, your agent will be active and ready to use!
+📍 Network: Base (Chain ID: 8453)
+🔑 Address: 0x_your_wallet_address_here
+
+Once you complete the verification on the website, your agent will be active and ready to use!
 ```
 
 **What happens when user clicks the link:**
