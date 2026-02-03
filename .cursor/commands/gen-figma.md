@@ -7,7 +7,7 @@ I have a **Figma design link**, and I want you to **generate a React component**
 ## 🧱 Development Requirements
 
 - **Styling:**
-  - Use **color of text,bg, border** as hex(e.g, `text-[#ffffff]`, `bg-[#fasdfa]`, `border-[#asdfas]`).
+  - Use **color variables** (`background`, `border`, `text`, etc.) defined in `tailwind.config.js`.
   - Use **font size classes** defined in `tailwind.config.js` (e.g., `text-display-lg`, `text-heading-md`, `text-body-sm`, etc.) for typography styling.
 - **UI Components:**
   - If the design includes **common UI patterns**, check the `src/components/ui` directory.

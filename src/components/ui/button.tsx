@@ -39,7 +39,7 @@ const buttonVariants = cva(
         variant: "primary",
         buttonType: "filled",
         className:
-          "bg-primary text-neutral-onColor shadow hover:after:bg-overlay-light-10 active:after:bg-overlay-dark-40 disabled:opacity-40 after:absolute after:inset-0 after:transition-colors after:duration-200",
+          "bg-primary shadow hover:after:bg-overlay-light-10 active:after:bg-overlay-dark-40 disabled:opacity-40 after:absolute after:inset-0 after:transition-colors after:duration-200",
       },
       // PRIMARY TONAL
       {
@@ -67,7 +67,7 @@ const buttonVariants = cva(
         variant: "secondary",
         buttonType: "filled",
         className:
-          "bg-secondary text-neutral-inverse shadow hover:after:bg-overlay-light-10 active:before:bg-overlay-light-10 active:after:bg-overlay-dark-40 disabled:opacity-40 after:absolute after:inset-0 after:transition-colors after:duration-200 before:absolute before:inset-0 before:transition-colors before:duration-200",
+          "bg-secondary shadow hover:after:bg-overlay-light-10 active:before:bg-overlay-light-10 active:after:bg-overlay-dark-40 disabled:opacity-40 after:absolute after:inset-0 after:transition-colors after:duration-200 before:absolute before:inset-0 before:transition-colors before:duration-200",
       },
       // SECONDARY TONAL
       {
