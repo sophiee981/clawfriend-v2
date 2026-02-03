@@ -262,7 +262,7 @@ export const Guideline = ({ className }: GuidelineProps) => {
               <div className="max-h-[180px] sm:max-h-[240px] md:max-h-[300px] overflow-y-auto">
                 {isLoading ? (
                   <div className="divide-y divide-[#1b1b1b]">
-                    {[...Array(5)].map((_, index) => (
+                    {[...Array(7)].map((_, index) => (
                       <div
                         key={index}
                         className="grid grid-cols-[2fr_2fr_1fr] gap-2 sm:gap-4 px-2 sm:px-4 py-2 sm:py-3"
