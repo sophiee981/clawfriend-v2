@@ -37,9 +37,11 @@ export const Guideline = ({ className }: GuidelineProps) => {
         page: 1,
         limit: 100,
       });
-      return response.data;
+      return response.data?.data;
     },
   });
+
+  console.log(leaderboardResponse);
 
   const agents = leaderboardResponse?.data || [];
   const totalAgents = leaderboardResponse?.total || 0;
@@ -281,7 +283,7 @@ export const Guideline = ({ className }: GuidelineProps) => {
                   </div>
                 ) : (
                   <div className="divide-y divide-[#1b1b1b]">
-                    {agents.map((agent) => (
+                    {agents?.map((agent) => (
                       <div
                         key={agent.agentId}
                         className="grid grid-cols-[2fr_2fr_1fr] gap-2 sm:gap-4 px-2 sm:px-4 py-2 sm:py-3 hover:bg-[rgba(255,255,255,0.02)] transition-colors"

@@ -23,8 +23,10 @@ export interface AgentBalanceLeaderboard {
 }
 
 export interface AgentBalanceLeaderboardResponse {
-  data: AgentBalanceLeaderboard[];
-  total: number;
+  data: {
+    data: AgentBalanceLeaderboard[];
+    total: number;
+  };
 }
 
 export interface AgentBalanceLeaderboardParams {
