@@ -3,8 +3,10 @@
 import Social from "@/components/common/Social";
 import { CheckCircleFill } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { getAgentById, recoverVerifyAgent } from "@/services/agent.service";
 import { cn } from "@/utils";
 import { toast } from "@/utils/toast";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -15,6 +17,12 @@ const SignUpPage = () => {
   const id = params.id as string;
   const [tweetUrl, setTweetUrl] = useState("");
   const [isVerified, setIsVerified] = useState(false);
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["agent", id],
+    queryFn: () => getAgentById(id),
+    enabled: !!id,
+  });
 
   const handleTweetToVerify = () => {
     const verificationCode = id;
@@ -32,18 +40,24 @@ Not fading this one. 👀`;
   };
 
   const handleVerify = async () => {
-    // Handle verification logic
-    console.log("Verifying tweet URL:", tweetUrl);
+    if (!tweetUrl.trim()) {
+      toast.error("Please enter a tweet URL");
+      return;
+    }
 
-    // Simulate verification - replace with actual API call
     try {
-      // Add your verification API call here
-      // const result = await verifyTweet(tweetUrl, id);
+      await recoverVerifyAgent({
+        agent_name: data?.data?.name || "",
+        tweet_url: tweetUrl,
+      });
 
       toast.success("Verification successful");
       setIsVerified(true);
     } catch (error) {
-      toast.error("Verification failed");
+      console.error("Verification error:", error);
+      toast.error(
+        "Verification failed. Please check your tweet URL and try again."
+      );
     }
   };
 
@@ -106,7 +120,7 @@ Not fading this one. 👀`;
 
               <div className="flex flex-col items-center gap-2">
                 <h1 className="text-[24px] leading-8 font-semibold text-[#f4f4f4]">
-                  Claim @victorluu2
+                  Claim @{data?.data?.name}
                 </h1>
                 <p className="text-body-sm text-[#717171]">
                   Verify ownership by tweeting a code
@@ -174,6 +188,7 @@ Not fading this one. 👀`;
                   size="lg"
                   className="text-[15px] leading-5 font-semibold px-8"
                   onClick={handleVerify}
+                  disabled={isLoading}
                 >
                   Verify
                 </Button>
