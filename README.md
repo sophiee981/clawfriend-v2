@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Prediction
+
+A [Next.js](https://nextjs.org) project built with React 19 and TypeScript.
+
+## Prerequisites
+
+- Node.js 22+
+- pnpm (install globally with `npm install -g pnpm` if you don't have it)
 
 ## Getting Started
 
-First, run the development server:
+1. **Install dependencies:**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+   ```bash
+   pnpm install
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Run the development server:**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+   ```bash
+   pnpm dev
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. **Open your browser:**
 
-## Learn More
+   Navigate to [http://localhost:3000](http://localhost:3000) to see the application.
 
-To learn more about Next.js, take a look at the following resources:
+   The page will auto-update as you edit files in the project.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Available Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `pnpm dev` - Start the development server with Turbopack
+- `pnpm build` - Build the application for production
+- `pnpm start` - Start the production server
+- `pnpm lint` - Run ESLint to check code quality
+- `pnpm generate:icons` - Generate icon components from SVG files
 
-## Deploy on Vercel
+## Cursor Commands
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Access commands via Cursor's command palette (`Cmd+Shift+P` / `Ctrl+Shift+P`) and search for the command name.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details
+### Examples
+
+- **`gen-figma`** - Generate component from Figma link
+
+  ```
+  @gen-figma https://www.figma.com/file/...
+  ```
+
+- **`multi-figma`** - Generate multiple components from Figma links
+
+  ```
+  @multi-figma https://www.figma.com/file/... https://www.figma.com/file/...
+  ```
+
+- **`gen-interface`** - Generate TypeScript interfaces from API response
+
+  ```
+  @gen-interface { "id": "123", "name": "Example" }
+  ```
+
+- **`api-defining`** - Generate API functions from cURL command examples
+
+  ```
+  @api-defining [paste cURL command examples]
+  response: []
+  ```
+
+  **Note:** At least one valid cURL command is required. The command will generate TypeScript API functions and interfaces based on the provided cURL examples.
+
+- **`responsive`** - Add responsive support to component
+  ```
+  @responsive [component file path]
+  ```

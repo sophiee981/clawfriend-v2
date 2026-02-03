@@ -1,39 +1,11 @@
+import { AlertFill, CheckCircle } from "@/components/icons";
+import MainLayout from "@/components/layout/MainLayout";
 import "@/styles/index.scss";
 import { Funnel_Sans } from "next/font/google";
+import { Toaster } from "sonner";
 import { Providers } from "../providers";
 
 const funnelSans = Funnel_Sans({ subsets: ["latin"] });
-
-function ThemeScript() {
-  const themeScript = `
-    (function() {
-      try {
-         const THEME_STORAGE_KEY = "app-theme";
-         let theme = 'dark'; // Default fallback
-        
-        const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
-        if (savedTheme === 'light' || savedTheme === 'dark') {
-           theme = savedTheme;
-        } else {
-           theme = 'dark';
-        }
-
-        document.documentElement.setAttribute('data-theme', theme);
-        
-        try {
-          localStorage.setItem(THEME_STORAGE_KEY, theme);
-        } catch (e) {
-          console.error('Error applying theme:', e);
-        }
-      } catch (e) {
-        console.error('Error applying theme:', e);
-        document.documentElement.setAttribute('data-theme', 'dark');
-      }
-    })();
-  `;
-
-  return <script dangerouslySetInnerHTML={{ __html: themeScript }} />;
-}
 
 export default function RootLayout({
   children,
@@ -41,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" data-theme="dark">
       <head>
         <title></title>
         <link rel="icon" href="/images/favicon.png" sizes="any" />
@@ -75,11 +47,39 @@ export default function RootLayout({
           content={`${process.env.NEXT_PUBLIC_BASE_URL}/thumbnail.png`}
         />
         <meta name="version" content={process.env.buildId || "unknown"} />
-
-        <ThemeScript />
       </head>
       <body className={funnelSans.className}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <MainLayout>{children}</MainLayout>
+        </Providers>
+
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            style: {
+              borderRadius: "16px",
+              border: "none",
+              backgroundColor: "#27272B",
+              color: "#F8F8F9",
+              backdropFilter: "blur(2px)",
+              padding: "16px",
+              fontSize: "16px",
+              fontWeight: "500",
+              boxShadow: "0px 0px 8px 0px rgba(0, 0, 0, 0.10)",
+              alignItems: "start",
+              gap: "8px",
+            },
+            descriptionClassName: "!text-text-neutral-secondary",
+            classNames: {
+              cancelButton:
+                "bg-transparent hover:!bg-bg-neutral-3 !text-text-neutral-tertiary !hover:text-text-neutral-tertiary p-1 rounded-md text-xl font-bold transition-colors min-w-0 w-auto h-auto flex items-center justify-center",
+            },
+          }}
+          icons={{
+            success: <CheckCircle className="text-xl mt-2" />,
+            error: <AlertFill className="text-danger mt-2" />,
+          }}
+        />
       </body>
     </html>
   );

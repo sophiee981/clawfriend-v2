@@ -87,51 +87,49 @@
   }
 }
 
-@layer components {
-  /* Toast Progress Bar Styles */
-  .toast-with-progress {
-    position: relative;
-    overflow: hidden;
-  }
+/* Toast Progress Bar Styles */
+.toast-with-progress {
+  position: relative;
+  overflow: hidden;
+}
 
-  .toast-with-progress::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 2px;
+.toast-with-progress::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--semantic-primary-500);
+  animation: toast-progress 3s linear forwards;
+  z-index: 1;
+}
+
+.toast-success::after {
+  background: var(--semantic-success-500);
+}
+
+.toast-error::after {
+  background: var(--semantic-danger-500);
+}
+
+.toast-warning::after {
+  background: var(--semantic-warning-500);
+}
+
+.toast-info::after {
+  background: var(--semantic-info-500);
+}
+
+.toast-loading::after {
+  background: var(--semantic-primary-500);
+}
+
+@keyframes toast-progress {
+  from {
     width: 0%;
-    background: var(--semantic-primary-500);
-    animation: toast-progress 3s linear forwards;
-    z-index: 1;
   }
-
-  .toast-success::after {
-    background: var(--semantic-success-500);
-  }
-
-  .toast-error::after {
-    background: var(--semantic-danger-500);
-  }
-
-  .toast-warning::after {
-    background: var(--semantic-warning-500);
-  }
-
-  .toast-info::after {
-    background: var(--semantic-info-500);
-  }
-
-  .toast-loading::after {
-    background: var(--semantic-primary-500);
-  }
-
-  @keyframes toast-progress {
-    from {
-      width: 0%;
-    }
-    to {
-      width: 100%;
-    }
+  to {
+    width: 100%;
   }
 }

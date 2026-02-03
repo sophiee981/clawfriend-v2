@@ -9,6 +9,484 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundColor: {
+        neutral: {
+          "01": "var(--bg-neutral-01)",
+          "02": "var(--bg-neutral-02)",
+          "03": "var(--bg-neutral-03)",
+          "04": "var(--bg-neutral-04)",
+          inverse: "var(--bg-neutral-inverse)",
+          500: "var(--neutral-500)",
+        },
+        modal: {
+          DEFAULT: "var(--bg-modal)",
+        },
+        card: {
+          DEFAULT: "var(--overlay-light-5)",
+        },
+        primary: {
+          DEFAULT: "var(--bg-primary)",
+          "muted-20": "var(--bg-primary-muted-20)",
+          "muted-10": "var(--bg-primary-muted-10)",
+          "muted-5": "var(--bg-primary-muted-5)",
+        },
+        secondary: {
+          DEFAULT: "var(--bg-secondary)",
+          "muted-20": "var(--bg-secondary-muted-20)",
+          "muted-10": "var(--bg-secondary-muted-10)",
+        },
+        success: {
+          DEFAULT: "var(--bg-success)",
+          "muted-20": "var(--bg-success-muted-20)",
+          "muted-10": "var(--bg-success-muted-10)",
+        },
+        danger: {
+          DEFAULT: "var(--bg-danger)",
+          "muted-20": "var(--bg-danger-muted-20)",
+          "muted-10": "var(--bg-danger-muted-10)",
+        },
+        warning: {
+          DEFAULT: "var(--bg-warning)",
+          "muted-20": "var(--bg-warning-muted-20)",
+          "muted-10": "var(--bg-warning-muted-10)",
+        },
+        info: {
+          DEFAULT: "var(--bg-info)",
+          "muted-20": "var(--bg-info-muted-20)",
+          "muted-10": "var(--bg-info-muted-10)",
+        },
+        overlay: {
+          light: {
+            100: "var(--overlay-light-100)",
+            90: "var(--overlay-light-90)",
+            80: "var(--overlay-light-80)",
+            70: "var(--overlay-light-70)",
+            60: "var(--overlay-light-60)",
+            50: "var(--overlay-light-50)",
+            40: "var(--overlay-light-40)",
+            30: "var(--overlay-light-30)",
+            20: "var(--overlay-light-20)",
+            10: "var(--overlay-light-10)",
+            5: "var(--overlay-light-5)",
+          },
+          dark: {
+            100: "var(--overlay-dark-100)",
+            90: "var(--overlay-dark-90)",
+            80: "var(--overlay-dark-80)",
+            70: "var(--overlay-dark-70)",
+            60: "var(--overlay-dark-60)",
+            50: "var(--overlay-dark-50)",
+            40: "var(--overlay-dark-40)",
+            30: "var(--overlay-dark-30)",
+            20: "var(--overlay-dark-20)",
+            10: "var(--overlay-dark-10)",
+            5: "var(--overlay-dark-5)",
+          },
+        },
+        yellow: {
+          DEFAULT: "var(--custom-yellow-500)",
+          muted: "var(--custom-yellow-500\\:20)",
+          5: "var(--custom-yellow-500\\:5)",
+        },
+        lime: {
+          DEFAULT: "var(--custom-lime-500)",
+          muted: "var(--custom-lime-500\\:20)",
+        },
+        teal: {
+          DEFAULT: "var(--custom-teal-500)",
+          muted: "var(--custom-teal-500\\:20)",
+        },
+        indigo: {
+          DEFAULT: "var(--custom-indigo-500)",
+          muted: "var(--custom-indigo-500\\:20)",
+          5: "var(--custom-indigo-500\\:5)",
+        },
+        pink: {
+          DEFAULT: "var(--custom-pink-500)",
+          muted: "var(--custom-pink-500\\:20)",
+          5: "var(--custom-pink-500\\:5)",
+        },
+      },
+
+      borderColor: {
+        neutral: {
+          "01": "var(--border-neutral-01)",
+          "02": "var(--border-neutral-02)",
+          "03": "var(--border-neutral-03)",
+          "04": "var(--border-neutral-04)",
+          inverse: "var(--border-neutral-inverse)",
+        },
+        primary: {
+          DEFAULT: "var(--border-primary)",
+          muted: "var(--border-primary-muted)",
+        },
+        secondary: {
+          DEFAULT: "var(--border-secondary)",
+          muted: "var(--border-secondary-muted)",
+        },
+        success: {
+          DEFAULT: "var(--border-success)",
+          muted: "var(--border-success-muted)",
+        },
+        danger: {
+          DEFAULT: "var(--border-danger)",
+          muted: "var(--border-danger-muted)",
+        },
+        warning: {
+          DEFAULT: "var(--border-warning)",
+          muted: "var(--border-warning-muted)",
+        },
+        info: {
+          DEFAULT: "var(--border-info)",
+          muted: "var(--border-info-muted)",
+        },
+        yellow: {
+          DEFAULT: "var(--border-yellow)",
+          muted: "var(--border-yellow-muted)",
+          10: "var(--custom-yellow-500\\:10)",
+        },
+        lime: {
+          DEFAULT: "var(--border-lime)",
+          muted: "var(--border-lime-muted)",
+          10: "var(--custom-lime-500\\:10)",
+        },
+        teal: {
+          DEFAULT: "var(--border-teal)",
+          muted: "var(--border-teal-muted)",
+          10: "var(--custom-teal-500\\:10)",
+        },
+        indigo: {
+          DEFAULT: "var(--border-indigo)",
+          muted: "var(--border-indigo-muted)",
+          10: "var(--custom-indigo-500\\:10)",
+        },
+        pink: {
+          DEFAULT: "var(--border-pink)",
+          muted: "var(--border-pink-muted)",
+          10: "var(--custom-pink-500\\:10)",
+        },
+        overlay: {
+          DEFAULT: "var(--overlay-dark-10)",
+          light: "var(--overlay-light-10)",
+          dark: "var(--overlay-dark-10)",
+        },
+      },
+
+      textColor: {
+        neutral: {
+          primary: "var(--text-neutral-primary)",
+          secondary: "var(--text-neutral-secondary)",
+          tertiary: "var(--text-neutral-tertiary)",
+          "on-color": "var(--text-neutral-on-color)",
+          inverse: "var(--text-neutral-inverse)",
+        },
+        primary: {
+          DEFAULT: "var(--text-primary)",
+          lightness: "var(--text-primary-lightness)",
+          darkness: "var(--text-primary-darkness)",
+        },
+        success: {
+          DEFAULT: "var(--text-success)",
+          lightness: "var(--text-success-lightness)",
+          darkness: "var(--text-success-darkness)",
+        },
+        danger: {
+          DEFAULT: "var(--text-danger)",
+          lightness: "var(--text-danger-lightness)",
+          darkness: "var(--text-danger-darkness)",
+        },
+        warning: {
+          DEFAULT: "var(--text-warning)",
+          lightness: "var(--text-warning-lightness)",
+          darkness: "var(--text-warning-darkness)",
+        },
+        info: {
+          DEFAULT: "var(--text-info)",
+          lightness: "var(--text-info-lightness)",
+          darkness: "var(--text-info-darkness)",
+        },
+        overlay: {
+          light: "var(--overlay-light-80)",
+          dark: "var(--overlay-dark-80)",
+        },
+        yellow: "var(--text-yellow)",
+        lime: "var(--text-lime)",
+        teal: "var(--text-teal)",
+        indigo: "var(--text-indigo)",
+        pink: "var(--text-pink)",
+      },
+
+      fontSize: {
+        sm: "13px",
+        "display-lg": [
+          "48px",
+          {
+            lineHeight: "56px",
+            fontWeight: "500",
+            letterSpacing: "0px",
+          },
+        ],
+        "display-md": [
+          "36px",
+          {
+            lineHeight: "44px",
+            fontWeight: "500",
+            letterSpacing: "0px",
+          },
+        ],
+        "heading-lg": [
+          "28px",
+          {
+            lineHeight: "36px",
+            fontWeight: "500",
+            letterSpacing: "0px",
+          },
+        ],
+        "heading-md": [
+          "24px",
+          {
+            lineHeight: "32px",
+            fontWeight: "500",
+            letterSpacing: "0px",
+          },
+        ],
+        "heading-sm": [
+          "20px",
+          {
+            lineHeight: "28px",
+            fontWeight: "500",
+            letterSpacing: "0px",
+          },
+        ],
+
+        "label-lg": [
+          "18px",
+          {
+            lineHeight: "28px",
+            fontWeight: "500",
+            letterSpacing: "0px",
+          },
+        ],
+        "label-md": [
+          "16px",
+          {
+            lineHeight: "24px",
+            fontWeight: "500",
+            letterSpacing: "0px",
+          },
+        ],
+        "label-sm": [
+          "14px",
+          {
+            lineHeight: "20px",
+            fontWeight: "500",
+            letterSpacing: "0px",
+          },
+        ],
+        "label-xs": [
+          "13px",
+          {
+            lineHeight: "16px",
+            fontWeight: "500",
+            letterSpacing: "0px",
+          },
+        ],
+        "label-2xs": [
+          "12px",
+          {
+            lineHeight: "12px",
+            fontWeight: "500",
+            letterSpacing: "0px",
+            textTransform: "uppercase",
+          },
+        ],
+        "label-3xs": [
+          "11px",
+          {
+            lineHeight: "12px",
+            fontWeight: "500",
+            letterSpacing: "0px",
+          },
+        ],
+        "label-3xs-uc": [
+          "10px",
+          {
+            lineHeight: "12px",
+            fontWeight: "500",
+            letterSpacing: "0px",
+            textTransform: "uppercase",
+          },
+        ],
+
+        "body-lg": [
+          "18px",
+          {
+            lineHeight: "28px",
+            fontWeight: "400",
+            letterSpacing: "0px",
+          },
+        ],
+        "body-md": [
+          "16px",
+          {
+            lineHeight: "24px",
+            fontWeight: "400",
+            letterSpacing: "0px",
+          },
+        ],
+        "body-sm": [
+          "14px",
+          {
+            lineHeight: "20px",
+            fontWeight: "400",
+            letterSpacing: "0px",
+          },
+        ],
+        "body-xs": [
+          "13px",
+          {
+            lineHeight: "16px",
+            fontWeight: "400",
+            letterSpacing: "0px",
+          },
+        ],
+        "body-2xs": [
+          "12px",
+          {
+            lineHeight: "12px",
+            fontWeight: "400",
+            letterSpacing: "0px",
+          },
+        ],
+        "body-3xs": [
+          "11px",
+          {
+            lineHeight: "12px",
+            fontWeight: "400",
+            letterSpacing: "0px",
+          },
+        ],
+      },
+      fontFamily: {
+        sans: ["Funnel Sans", "sans-serif"],
+      },
+      fontSize: {
+        "display-lg": [
+          "48px",
+          {
+            lineHeight: "56px",
+            fontWeight: "600",
+            letterSpacing: "0px",
+          },
+        ],
+        "display-md": [
+          "36px",
+          {
+            lineHeight: "44px",
+            fontWeight: "600",
+            letterSpacing: "0px",
+          },
+        ],
+        "heading-lg": [
+          "28px",
+          {
+            lineHeight: "36px",
+            fontWeight: "600",
+            letterSpacing: "0px",
+          },
+        ],
+        "heading-md": [
+          "24px",
+          {
+            lineHeight: "32px",
+            fontWeight: "600",
+            letterSpacing: "0px",
+          },
+        ],
+        "heading-sm": [
+          "20px",
+          {
+            lineHeight: "28px",
+            fontWeight: "600",
+            letterSpacing: "0px",
+          },
+        ],
+
+        "label-lg": [
+          "18px",
+          {
+            lineHeight: "28px",
+            fontWeight: "600",
+            letterSpacing: "0px",
+          },
+        ],
+        "label-md": [
+          "16px",
+          {
+            lineHeight: "24px",
+            fontWeight: "600",
+            letterSpacing: "0px",
+          },
+        ],
+        "label-sm": [
+          "14px",
+          {
+            lineHeight: "20px",
+            fontWeight: "600",
+            letterSpacing: "0px",
+          },
+        ],
+        "label-xs": [
+          "12px",
+          {
+            lineHeight: "16px",
+            fontWeight: "600",
+            letterSpacing: "0px",
+          },
+        ],
+        "label-2xs": [
+          "10px",
+          {
+            lineHeight: "12px",
+            fontWeight: "600",
+            letterSpacing: "0px",
+            textTransform: "uppercase",
+          },
+        ],
+
+        "body-lg": [
+          "18px",
+          {
+            lineHeight: "28px",
+            fontWeight: "400",
+            letterSpacing: "0px",
+          },
+        ],
+        "body-md": [
+          "16px",
+          {
+            lineHeight: "24px",
+            fontWeight: "400",
+            letterSpacing: "0px",
+          },
+        ],
+        "body-sm": [
+          "14px",
+          {
+            lineHeight: "20px",
+            fontWeight: "400",
+            letterSpacing: "0px",
+          },
+        ],
+        "body-xs": [
+          "12px",
+          {
+            lineHeight: "16px",
+            fontWeight: "400",
+            letterSpacing: "0px",
+          },
+        ],
+      },
       colors: {
         // Neutral colors
         neutral: {
@@ -192,325 +670,6 @@ module.exports = {
         green: "var(--green)",
         orange: "var(--orange)",
         red: "var(--red)",
-      },
-      backgroundColor: {
-        neutral: {
-          "01": "var(--bg-neutral-01)",
-          "02": "var(--bg-neutral-02)",
-          "03": "var(--bg-neutral-03)",
-          "04": "var(--bg-neutral-04)",
-          inverse: "var(--bg-neutral-inverse)",
-        },
-        primary: {
-          DEFAULT: "var(--semantic-primary-500)",
-          "muted-20": "var(--semantic-primary-500\\:20)",
-          "muted-10": "var(--semantic-primary-500\\:10)",
-          "muted-5": "var(--semantic-primary-500\\:5)",
-        },
-        secondary: {
-          DEFAULT: "var(--bg-secondary)",
-          "muted-20": "var(--neutral-500\\:20)",
-          "muted-10": "var(--neutral-500\\:10)",
-        },
-        success: {
-          DEFAULT: "var(--semantic-success-500)",
-          "muted-20": "var(--semantic-success-500\\:20)",
-          "muted-10": "var(--semantic-success-500\\:10)",
-        },
-        danger: {
-          DEFAULT: "var(--semantic-danger-500)",
-          "muted-20": "var(--semantic-danger-500\\:20)",
-          "muted-10": "var(--semantic-danger-500\\:10)",
-        },
-        warning: {
-          DEFAULT: "var(--semantic-warning-500)",
-          "muted-20": "var(--semantic-warning-500\\:20)",
-          "muted-10": "var(--semantic-warning-500\\:10)",
-        },
-        info: {
-          DEFAULT: "var(--semantic-info-500)",
-          "muted-20": "var(--semantic-info-500\\:20)",
-          "muted-10": "var(--semantic-info-500\\:10)",
-        },
-        overlay: {
-          light: {
-            100: "var(--overlay-light-100)",
-            90: "var(--overlay-light-90)",
-            80: "var(--overlay-light-80)",
-            70: "var(--overlay-light-70)",
-            60: "var(--overlay-light-60)",
-            50: "var(--overlay-light-50)",
-            40: "var(--overlay-light-40)",
-            30: "var(--overlay-light-30)",
-            20: "var(--overlay-light-20)",
-            10: "var(--overlay-light-10)",
-            5: "var(--overlay-light-5)",
-          },
-          dark: {
-            100: "var(--overlay-dark-100)",
-            90: "var(--overlay-dark-90)",
-            80: "var(--overlay-dark-80)",
-            70: "var(--overlay-dark-70)",
-            60: "var(--overlay-dark-60)",
-            50: "var(--overlay-dark-50)",
-            40: "var(--overlay-dark-40)",
-            30: "var(--overlay-dark-30)",
-            20: "var(--overlay-dark-20)",
-            10: "var(--overlay-dark-10)",
-            5: "var(--overlay-dark-5)",
-          },
-        },
-        yellow: {
-          DEFAULT: "var(--custom-yellow-500)",
-          muted: "var(--custom-yellow-500\\:20)",
-          5: "var(--custom-yellow-500\\:5)",
-        },
-        lime: {
-          DEFAULT: "var(--custom-lime-500)",
-          muted: "var(--custom-lime-500\\:20)",
-        },
-        teal: {
-          DEFAULT: "var(--custom-teal-500)",
-          muted: "var(--custom-teal-500\\:20)",
-        },
-        indigo: {
-          DEFAULT: "var(--custom-indigo-500)",
-          muted: "var(--custom-indigo-500\\:20)",
-          5: "var(--custom-indigo-500\\:5)",
-        },
-        pink: {
-          DEFAULT: "var(--custom-pink-500)",
-          muted: "var(--custom-pink-500\\:20)",
-          5: "var(--custom-pink-500\\:5)",
-        },
-      },
-
-      borderColor: {
-        neutral: {
-          "01": "var(--border-neutral-01)",
-          "02": "var(--border-neutral-02)",
-          "03": "var(--border-neutral-03)",
-          "04": "var(--border-neutral-04)",
-          inverse: "var(--border-neutral-inverse)",
-        },
-        primary: {
-          DEFAULT: "var(--semantic-primary-400)",
-          muted: "var(--semantic-primary-500\\:20)",
-        },
-        secondary: {
-          DEFAULT: "var(--neutral-400)",
-          muted: "var(--neutral-500\\:20)",
-        },
-        success: {
-          DEFAULT: "var(--semantic-success-400)",
-          muted: "var(--semantic-success-500\\:20)",
-        },
-        danger: {
-          DEFAULT: "var(--semantic-danger-400)",
-          muted: "var(--semantic-danger-500\\:20)",
-        },
-        warning: {
-          DEFAULT: "var(--semantic-warning-400)",
-          muted: "var(--semantic-warning-500\\:20)",
-        },
-        info: {
-          DEFAULT: "var(--semantic-info-400)",
-          muted: "var(--semantic-info-500\\:20)",
-        },
-        yellow: {
-          DEFAULT: "var(--custom-yellow-400)",
-          muted: "var(--custom-yellow-500\\:20)",
-          10: "var(--custom-yellow-500\\:10)",
-        },
-        lime: {
-          DEFAULT: "var(--custom-lime-400)",
-          muted: "var(--custom-lime-500\\:20)",
-          10: "var(--custom-lime-500\\:10)",
-        },
-        teal: {
-          DEFAULT: "var(--custom-teal-400)",
-          muted: "var(--custom-teal-500\\:20)",
-          10: "var(--custom-teal-500\\:10)",
-        },
-        indigo: {
-          DEFAULT: "var(--custom-indigo-400)",
-          muted: "var(--custom-indigo-500\\:20)",
-          10: "var(--custom-indigo-500\\:10)",
-        },
-        pink: {
-          DEFAULT: "var(--custom-pink-400)",
-          muted: "var(--custom-pink-500\\:20)",
-          10: "var(--custom-pink-500\\:10)",
-        },
-        overlay: {
-          DEFAULT: "var(--overlay-dark-10)",
-          light: "var(--overlay-light-10)",
-          dark: "var(--overlay-dark-10)",
-        },
-      },
-
-      textColor: {
-        neutral: {
-          primary: "var(--text-neutral-primary)",
-          secondary: "var(--text-neutral-secondary)",
-          tertiary: "var(--text-neutral-tertiary)",
-          "on-color": "var(--text-neutral-on-color)",
-          inverse: "var(--text-neutral-inverse)",
-        },
-        primary: {
-          DEFAULT: "var(--semantic-primary-500)",
-          lightness: "var(--semantic-primary-300)",
-          darkness: "var(--semantic-primary-700)",
-        },
-        success: {
-          DEFAULT: "var(--semantic-success-500)",
-          lightness: "var(--semantic-success-300)",
-          darkness: "var(--semantic-success-700)",
-        },
-        danger: {
-          DEFAULT: "var(--semantic-danger-500)",
-          lightness: "var(--semantic-danger-300)",
-          darkness: "var(--semantic-danger-700)",
-        },
-        warning: {
-          DEFAULT: "var(--semantic-warning-500)",
-          lightness: "var(--semantic-warning-300)",
-          darkness: "var(--semantic-warning-700)",
-        },
-        info: {
-          DEFAULT: "var(--semantic-info-500)",
-          lightness: "var(--semantic-info-300)",
-          darkness: "var(--semantic-info-700)",
-        },
-        overlay: {
-          light: "var(--overlay-light-80)",
-          dark: "var(--overlay-dark-80)",
-        },
-        yellow: "var(--custom-yellow-400)",
-        lime: "var(--custom-lime-400)",
-        teal: "var(--custom-teal-400)",
-        indigo: "var(--custom-indigo-400)",
-        pink: "var(--custom-pink-400)",
-      },
-      fontFamily: {
-        sans: ["Funnel Sans", "sans-serif"],
-      },
-      fontSize: {
-        "display-lg": [
-          "48px",
-          {
-            lineHeight: "56px",
-            fontWeight: "600",
-            letterSpacing: "0px",
-          },
-        ],
-        "display-md": [
-          "36px",
-          {
-            lineHeight: "44px",
-            fontWeight: "600",
-            letterSpacing: "0px",
-          },
-        ],
-        "heading-lg": [
-          "28px",
-          {
-            lineHeight: "36px",
-            fontWeight: "600",
-            letterSpacing: "0px",
-          },
-        ],
-        "heading-md": [
-          "24px",
-          {
-            lineHeight: "32px",
-            fontWeight: "600",
-            letterSpacing: "0px",
-          },
-        ],
-        "heading-sm": [
-          "20px",
-          {
-            lineHeight: "28px",
-            fontWeight: "600",
-            letterSpacing: "0px",
-          },
-        ],
-
-        "label-lg": [
-          "18px",
-          {
-            lineHeight: "28px",
-            fontWeight: "600",
-            letterSpacing: "0px",
-          },
-        ],
-        "label-md": [
-          "16px",
-          {
-            lineHeight: "24px",
-            fontWeight: "600",
-            letterSpacing: "0px",
-          },
-        ],
-        "label-sm": [
-          "14px",
-          {
-            lineHeight: "20px",
-            fontWeight: "600",
-            letterSpacing: "0px",
-          },
-        ],
-        "label-xs": [
-          "12px",
-          {
-            lineHeight: "16px",
-            fontWeight: "600",
-            letterSpacing: "0px",
-          },
-        ],
-        "label-2xs": [
-          "10px",
-          {
-            lineHeight: "12px",
-            fontWeight: "600",
-            letterSpacing: "0px",
-            textTransform: "uppercase",
-          },
-        ],
-
-        "body-lg": [
-          "18px",
-          {
-            lineHeight: "28px",
-            fontWeight: "400",
-            letterSpacing: "0px",
-          },
-        ],
-        "body-md": [
-          "16px",
-          {
-            lineHeight: "24px",
-            fontWeight: "400",
-            letterSpacing: "0px",
-          },
-        ],
-        "body-sm": [
-          "14px",
-          {
-            lineHeight: "20px",
-            fontWeight: "400",
-            letterSpacing: "0px",
-          },
-        ],
-        "body-xs": [
-          "12px",
-          {
-            lineHeight: "16px",
-            fontWeight: "400",
-            letterSpacing: "0px",
-          },
-        ],
       },
     },
   },

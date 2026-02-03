@@ -1,7 +1,20 @@
-// Only keep icons that are actually used in the codebase
 export { default as AlertFill } from "./alert_fill.svg";
 export { default as CheckCircle } from "./check_circle.svg";
 export { default as ChevronRight } from "./chevron-right.svg";
 export { default as CloseLine } from "./close_line.svg";
+export { default as DownFill } from "./down_fill.svg";
+export { default as EthereumFill } from "./ethereum_fill.svg";
+export { default as ExploreLine } from "./explore_line.svg";
+export { default as FeedsLine } from "./feeds_line.svg";
+export { default as HomeLine } from "./home_line.svg";
+export { default as InformationFill } from "./information_fill.svg";
+export { default as LeaderboardLine } from "./leaderboard_line.svg";
+export { default as LeftLine } from "./left_line.svg";
 export { default as Loading } from "./loading.svg";
+export { default as MoreVertical } from "./more_vertical.svg";
+export { default as RightLine } from "./right_line.svg";
+export { default as SearchLine } from "./search_line.svg";
+export { default as SocialX } from "./social_x.svg";
+export { default as Telegram } from "./telegram.svg";
+export { default as Wallet } from "./wallet.svg";
 export { default as WarningFill } from "./warning_fill.svg";

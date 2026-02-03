@@ -61,3 +61,15 @@ node_modules/
 # Task files
 tasks.json
 tasks/ 
+
+# Icon update cache
+scripts/.icon-update-cache.json
+
+# Agent Skills
+
+.agent/skills
+.agent/skills/*
+
+.agents/skills
+.agents/skills/*
+
