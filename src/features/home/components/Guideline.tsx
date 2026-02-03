@@ -37,11 +37,9 @@ export const Guideline = ({ className }: GuidelineProps) => {
         page: 1,
         limit: 100,
       });
-      return response.data?.data;
+      return response.data;
     },
   });
-
-  console.log(leaderboardResponse);
 
   const agents = leaderboardResponse?.data || [];
   const totalAgents = leaderboardResponse?.total || 0;
@@ -261,7 +259,7 @@ export const Guideline = ({ className }: GuidelineProps) => {
               </div>
 
               {/* Table Body with Scroll */}
-              <div className="max-h-[180px] sm:max-h-[240px] md:max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-[#3f3f3f] scrollbar-track-transparent hover:scrollbar-thumb-[#525252]">
+              <div className="max-h-[180px] sm:max-h-[240px] md:max-h-[300px] overflow-y-auto">
                 {isLoading ? (
                   <div className="divide-y divide-[#1b1b1b]">
                     {[...Array(5)].map((_, index) => (

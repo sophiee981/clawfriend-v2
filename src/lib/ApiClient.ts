@@ -58,7 +58,7 @@ class ApiClient {
 
     api.interceptors.response.use(
       (response: AxiosResponse) => {
-        return response;
+        return response.data;
       },
       async (error: AxiosError) => {
         const resError = error.response;

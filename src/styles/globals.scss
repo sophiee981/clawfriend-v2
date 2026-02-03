@@ -45,46 +45,45 @@
   .animate-reverse {
     animation-direction: reverse;
   }
+}
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
 
-  /* Custom scrollbar styles */
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
+::-webkit-scrollbar-track {
+  background: transparent;
+}
 
-  ::-webkit-scrollbar-track {
-    background: var(--neutral-50);
-  }
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: transparent;
+}
 
-  [data-theme="dark"] ::-webkit-scrollbar-track {
-    background: var(--neutral-50);
-  }
+::-webkit-scrollbar-thumb {
+  background: var(--neutral-300);
+  border-radius: 10px;
+}
 
-  ::-webkit-scrollbar-thumb {
-    background: var(--neutral-300);
-    border-radius: 10px;
-  }
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #3f3f3f;
+  border-radius: 10px;
+}
 
-  [data-theme="dark"] ::-webkit-scrollbar-thumb {
-    background: var(--neutral-600);
-    border-radius: 10px;
-  }
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neutral-400);
+}
 
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--neutral-400);
-  }
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: #525252;
+}
 
-  [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
-    background: var(--neutral-500);
-  }
+* {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: var(--neutral-300) transparent; /* Firefox */
+}
 
-  * {
-    scrollbar-width: thin; /* Firefox */
-    scrollbar-color: var(--neutral-300) var(--neutral-50); /* Firefox */
-  }
-
-  [data-theme="dark"] * {
-    scrollbar-color: var(--neutral-600) var(--neutral-50); /* Firefox */
-  }
+[data-theme="dark"] * {
+  scrollbar-color: #3f3f3f transparent; /* Firefox */
 }
 
 /* Toast Progress Bar Styles */

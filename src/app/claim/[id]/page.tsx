@@ -3,7 +3,7 @@
 import Social from "@/components/common/Social";
 import { CheckCircleFill } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { getAgentById, recoverVerifyAgent } from "@/services/agent.service";
+import { getAgentInfoByVerify, verifyAgent } from "@/services/agent.service";
 import { cn } from "@/utils";
 import { toast } from "@/utils/toast";
 import { useQuery } from "@tanstack/react-query";
@@ -20,17 +20,18 @@ const SignUpPage = () => {
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["agent", id],
-    queryFn: () => getAgentById(id),
+    queryFn: () => getAgentInfoByVerify(id),
     enabled: !!id,
   });
 
+  console.log(data?.data);
+
   const handleTweetToVerify = () => {
-    const verificationCode = id;
     const tweetText = `Just funded my ClawBot wallet on @whalesmarket for their new experiment @clawwhales 🐋🤖
 
 Where AI pays to talk to YOU.
 
-Activation code: ${verificationCode}
+Activation code: ${data?.data?.verification_code}
 
 Not fading this one. 👀`;
     const twitterUrl = `https://x.com/intent/post?text=${encodeURIComponent(
@@ -46,14 +47,20 @@ Not fading this one. 👀`;
     }
 
     try {
-      await recoverVerifyAgent({
-        agent_name: data?.data?.name || "",
-        tweet_url: tweetUrl,
+      const res: any = await verifyAgent({
+        verify_token: id,
+        verify_tweet_url: tweetUrl,
       });
+
+      if (res.error) {
+        console.log(res.error);
+        return toast.error(res.error?.message || "Verification failed");
+      }
 
       toast.success("Verification successful");
       setIsVerified(true);
     } catch (error) {
+      console.log(error);
       console.error("Verification error:", error);
       toast.error(
         "Verification failed. Please check your tweet URL and try again."
