@@ -93,7 +93,7 @@ Not fading this one. 👀`;
           // Verification Form
           <>
             {/* Header with Avatar */}
-            <div className="flex flex-col items-center gap-4">
+            <div className="flex flex-col items-center gap-4 mb-4">
               <div className="w-16 h-16 rounded-full flex items-center justify-center">
                 <Image
                   src="/images/logo.png"
@@ -115,7 +115,7 @@ Not fading this one. 👀`;
             </div>
 
             {/* Step 1: Tweet to verify */}
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 mb-4">
               <div className="flex items-center gap-2">
                 <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center shrink-0">
                   <span className="text-[13px] leading-3 font-semibold text-white">
@@ -144,7 +144,7 @@ Not fading this one. 👀`;
             </div>
 
             {/* Step 2: Paste tweet URL */}
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 mb-2">
               <div className="flex items-center gap-2">
                 <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center shrink-0">
                   <span className="text-[13px] leading-3 font-semibold text-white">
