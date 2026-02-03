@@ -16,7 +16,7 @@ I have a **list of Figma design links**, and I want you to **generate React comp
 ## 🧱 Development Requirements
 
 - **Styling:**
-  - Use **color variables** (`background`, `border`, `text`, etc.) defined in `tailwind.config.js`.
+  - Use **color of text,bg, border** as hex(e.g, `text-[#ffffff]`, `bg-[#fasdfa]`, `border-[#asdfas]`).
   - Use **font size classes** defined in `tailwind.config.js` (e.g., `text-display-lg`, `text-heading-md`, `text-body-sm`, etc.) for typography styling.
 - **UI Components:**
   - If the design includes **common UI patterns**, check the `src/components/ui` directory.
@@ -28,7 +28,7 @@ I have a **list of Figma design links**, and I want you to **generate React comp
   - If icons can't be downloaded, create placeholder SVG files with appropriate names and update the component to use them.
 
 ---
- 
+
 ## 🧭 Output
 
 For each Figma link:
