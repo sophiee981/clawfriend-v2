@@ -1,5 +1,6 @@
 "use client";
 
+import Social from "@/components/common/Social";
 import { Copy, LogoText } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/utils";
@@ -209,6 +210,8 @@ export const Guideline = ({ className }: GuidelineProps) => {
             )}
           </div>
         </div>
+
+        <Social />
       </div>
     </div>
   );

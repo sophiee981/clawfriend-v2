@@ -7,13 +7,13 @@ const Social = () => {
 
   return (
     <div className="flex items-center justify-center gap-1 text-[#717171]">
-      Contact us on:
+      <span className="text-[13px] leading-4 font-medium">Contact us on:</span>
       <button
         onClick={handleXClick}
-        className="flex items-center justify-center w-7 h-7 rounded-full bg-neutral-02 hover:bg-primary-muted-20 transition-all duration-200 cursor-pointer group"
+        className="flex items-center justify-center w-5 h-5 rounded-full bg-neutral-02 hover:bg-primary-muted-20 transition-all duration-200 cursor-pointer group"
         aria-label="Visit our X profile"
       >
-        <SocialX className="w-5 h-5 text-primary group-hover:scale-110 transition-transform duration-200" />
+        <SocialX className="text-sm text-primary group-hover:scale-110 transition-transform duration-200" />
       </button>
     </div>
   );
