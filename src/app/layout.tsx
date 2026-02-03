@@ -1,4 +1,4 @@
-import { AlertFill, CheckCircle } from "@/components/icons";
+import { AlertFill, CheckCircleFill } from "@/components/icons";
 import MainLayout from "@/components/layout/MainLayout";
 import "@/styles/index.scss";
 import { Funnel_Sans } from "next/font/google";
@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="dark">
       <head>
-        <title></title>
+        <title>ClawWhales</title>
         <link rel="icon" href="/images/logo.png" sizes="any" />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -54,29 +54,30 @@ export default function RootLayout({
         </Providers>
 
         <Toaster
-          position="top-center"
+          position="bottom-left"
+          className="pointer-events-auto"
           toastOptions={{
             style: {
-              borderRadius: "16px",
+              borderRadius: "8px",
+              backgroundColor: "#1B1B1B",
               border: "none",
-              backgroundColor: "#27272B",
-              color: "#F8F8F9",
+              color: "#FAFAFA",
               backdropFilter: "blur(2px)",
-              padding: "16px",
-              fontSize: "16px",
+              padding: "12px",
+              fontSize: "14px",
               fontWeight: "500",
               boxShadow: "0px 0px 8px 0px rgba(0, 0, 0, 0.10)",
               alignItems: "start",
               gap: "8px",
             },
-            descriptionClassName: "!text-text-neutral-secondary",
+            descriptionClassName: "!text-neutral-secondary text-body-xs",
             classNames: {
               cancelButton:
-                "bg-transparent hover:!bg-bg-neutral-3 !text-text-neutral-tertiary !hover:text-text-neutral-tertiary p-1 rounded-md text-xl font-bold transition-colors min-w-0 w-auto h-auto flex items-center justify-center",
+                "bg-transparent hover:!bg-neutral-03 !text-neutral-tertiary !hover:text-neutral-tertiary p-1 rounded-md text-xl font-bold transition-colors min-w-0 w-auto h-auto flex items-center justify-center",
             },
           }}
           icons={{
-            success: <CheckCircle className="text-xl mt-2" />,
+            success: <CheckCircleFill className="text-xl mt-2 text-success" />,
             error: <AlertFill className="text-danger mt-2" />,
           }}
         />

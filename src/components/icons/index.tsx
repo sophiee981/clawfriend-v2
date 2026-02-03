@@ -1,6 +1,8 @@
 export { default as AlertFill } from "./alert_fill.svg";
 export { default as BarsArrowDown } from "./bars-arrow-down.svg";
 export { default as CheckCircle } from "./check_circle.svg";
+export { default as CheckCircleFill } from "./check_circle_fill.svg";
+export { default as CheckLine } from "./check_line.svg";
 export { default as ChevronRight } from "./chevron-right.svg";
 export { default as Clock } from "./clock.svg";
 export { default as CloseLine } from "./close_line.svg";

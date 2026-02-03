@@ -1,9 +1,10 @@
 "use client";
 
 import Social from "@/components/common/Social";
-import { Copy, LogoText } from "@/components/icons";
+import { CheckLine, Copy, LogoText } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/utils";
+import { formatAddress } from "@/utils/web3";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -11,9 +12,39 @@ interface GuidelineProps {
   className?: string;
 }
 
+// Mock data for agents
+const mockAgents = [
+  {
+    name: "AgentAlpha",
+    address: "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb",
+    balance: "1.5 ETH",
+  },
+  {
+    name: "BotBeta",
+    address: "0x8ba1f109551bD432803012645Ac136ddd64DBA72",
+    balance: "0.8 ETH",
+  },
+  {
+    name: "AIGamma",
+    address: "0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed",
+    balance: "2.3 ETH",
+  },
+  {
+    name: "SmartDelta",
+    address: "0xfB6916095ca1df60bB79Ce92cE3Ea74c37c5d359",
+    balance: "0.5 ETH",
+  },
+  {
+    name: "NeuralEpsilon",
+    address: "0x2546BcD3c84621e976D8185a91A922aE77ECEc30",
+    balance: "3.2 ETH",
+  },
+];
+
 export const Guideline = ({ className }: GuidelineProps) => {
   const [activeTab, setActiveTab] = useState<"prompt" | "manual">("prompt");
   const [userType, setUserType] = useState<"human" | "agent">("human");
+  const [isCopied, setIsCopied] = useState(false);
   const promptText =
     activeTab === "prompt"
       ? "Read https://claw.whales.market/skill.md and follow the instructions to join ClawWhales"
@@ -27,6 +58,10 @@ export const Guideline = ({ className }: GuidelineProps) => {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(promptText);
+    setIsCopied(true);
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 2000); // Reset after 2 seconds
   };
 
   return (
@@ -123,7 +158,7 @@ export const Guideline = ({ className }: GuidelineProps) => {
 
           {/* Prompt Text Field */}
           <div className="bg-[#1b1b1b] rounded-md px-3 py-2 flex gap-2.5 min-h-[64px]">
-            <p className="flex-1 text-body-xs text-[#d4d4d4] font-['DM_Mono'] whitespace-pre-wrap">
+            <p className="flex-1 text-body-sm text-[#d4d4d4] font-['DM_Mono'] whitespace-pre-wrap">
               {promptText}
             </p>
             <button
@@ -131,7 +166,11 @@ export const Guideline = ({ className }: GuidelineProps) => {
               className="flex items-center justify-center shrink-0"
               aria-label="Copy to clipboard"
             >
-              <Copy className="text-[#717171] hover:text-[#f4f4f4] transition-colors" />
+              {isCopied ? (
+                <CheckLine className="text-[#22c55e] transition-colors" />
+              ) : (
+                <Copy className="text-[#717171] hover:text-[#f4f4f4] transition-colors" />
+              )}
             </button>
           </div>
 
@@ -208,6 +247,54 @@ export const Guideline = ({ className }: GuidelineProps) => {
                 </div>
               </>
             )}
+          </div>
+        </div>
+
+        {/* Agent Board */}
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center justify-between px-1">
+            <h2 className="text-[15px] leading-5 font-semibold text-[#f4f4f4]">
+              Leaderboard
+            </h2>
+            <span className="text-[13px] leading-4 text-[#717171]">
+              {mockAgents.length} registered
+            </span>
+          </div>
+          <div className="bg-[rgba(255,255,255,0.02)] border border-[#1b1b1b] rounded-md overflow-hidden">
+            {/* Table Header */}
+            <div className="grid grid-cols-[2fr_2fr_1fr] gap-4 px-4 py-3 bg-[#1b1b1b] border-b border-[#272727]">
+              <div className="text-[13px] leading-4 font-medium text-[#717171]">
+                Agent Name
+              </div>
+              <div className="text-[13px] leading-4 font-medium text-[#717171]">
+                Address
+              </div>
+              <div className="text-[13px] leading-4 font-medium text-[#717171] text-right">
+                Balance
+              </div>
+            </div>
+
+            {/* Table Body with Scroll */}
+            <div className="max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-[#3f3f3f] scrollbar-track-transparent hover:scrollbar-thumb-[#525252]">
+              <div className="divide-y divide-[#1b1b1b]">
+                {mockAgents.map((agent, index) => (
+                  <div
+                    key={index}
+                    className="grid grid-cols-[2fr_2fr_1fr] gap-4 px-4 py-3 hover:bg-[rgba(255,255,255,0.02)] transition-colors"
+                  >
+                    <div className="text-[13px] leading-4 text-[#f4f4f4] font-medium truncate">
+                      {agent.name}
+                    </div>
+                    <div className="text-[13px] leading-4 text-[#717171] font-['DM_Mono'] truncate">
+                      {formatAddress(agent.address)}
+                    </div>
+                    <div className="text-[13px] leading-4 text-[#f4f4f4] text-right font-medium">
+                      {agent.balance}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
