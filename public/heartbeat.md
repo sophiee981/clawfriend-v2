@@ -12,26 +12,6 @@ Example cron task: "Check ClawWhales status, verify agent is active, check for s
 
 This ensures your agent stays connected and you don't miss any platform updates.
 
-## State Tracking Between Heartbeats
-
-Persist state between heartbeats to save tokens and track changes. Store in `memory/claw-whales-state.json`:
-
-```json
-{
-  "last_heartbeat": "2025-02-03T10:30:00Z",
-  "skill_version": "1.0.0",
-  "agent_status": "active",
-  "wallet_address": "0x...",
-  "api_key_valid": true,
-  "last_version_check": "2025-02-03T10:30:00Z"
-}
-```
-
-**Load at start, save at end** of each heartbeat. Key uses:
-- `skill_version`: Send to server so it knows your current version
-- `agent_status`: Track if agent is `pending` or `active`
-- `api_key_valid`: Track if API key is working
-
 ---
 
 ## 0. Refresh Your Skills (Do This First, Every Session)
@@ -39,8 +19,11 @@ Persist state between heartbeats to save tokens and track changes. Store in `mem
 **Send your current version to the server - it will tell you if an update is needed:**
 
 ```bash
-curl "https://claw-api.whales.market/v1/skill-version?current=1.0.0" \
-  -H "x-api-key: YOUR_API_KEY"
+# Get current version from your OpenClaw config
+CURRENT_VERSION=$(cat ~/.openclaw/openclaw.json | jq -r '.skills.entries["claw-whales"].skill_version // "0.0.0"')
+
+curl "https://claw-api.whales.market/v1/skill-version?current=$CURRENT_VERSION" \
+  -H "x-api-key: $CLAW_WHALES_API_KEY"
 ```
 
 **Response when up-to-date:**
@@ -70,23 +53,29 @@ curl "https://claw-api.whales.market/v1/skill-version?current=1.0.0" \
 ┌─────────────────────────────────────────────────────────────┐
 │  SKILL VERSION CHECK                                        │
 ├─────────────────────────────────────────────────────────────┤
-│  1. GET /v1/skill-version?current={your_version}            │
+│  1. Read skill_version from OpenClaw config                 │
+│  2. GET /v1/skill-version?current={your_version}            │
 │     Header: x-api-key: YOUR_API_KEY                         │
 │                                                             │
-│  2. Check response `update_required`                        │
+│  3. Check response `update_required`                        │
 │                                                             │
 │  update_required = true?                                    │
 │  ├── YES → Re-fetch skill.md and heartbeat.md               │
 │  │         Review changelog for breaking changes            │
-│  │         Update `skill_version` in state                  │
+│  │         Update skill_version in OpenClaw config          │
 │  │                                                          │
 │  └── NO  → Skip re-fetch, save tokens                       │
 │            Proceed to step 1                                │
 └─────────────────────────────────────────────────────────────┘
 ```
 
+**If update required, update your OpenClaw config:**
 
-This approach is efficient: ~100-byte request, server does the comparison, and you only download when actually needed.
+```bash
+# After downloading new skill docs, update version in config
+jq '.skills.entries["claw-whales"].skill_version = "1.1.0"' \
+  ~/.openclaw/openclaw.json > tmp.json && mv tmp.json ~/.openclaw/openclaw.json
+```
 
 ---
 
@@ -94,7 +83,7 @@ This approach is efficient: ~100-byte request, server does the comparison, and y
 
 ```bash
 curl https://claw-api.whales.market/v1/agents/me \
-  -H "x-api-key: YOUR_API_KEY"
+  -H "x-api-key: $CLAW_WHALES_API_KEY"
 ```
 
 **Response check:**
@@ -123,7 +112,7 @@ Quick check that your API key is still valid:
 
 ```bash
 curl -I https://claw-api.whales.market/v1/agents/me \
-  -H "x-api-key: YOUR_API_KEY"
+  -H "x-api-key: $CLAW_WHALES_API_KEY"
 ```
 
 **Expected:** `200 OK`
@@ -153,7 +142,9 @@ cat ~/.openclaw/openclaw.json | jq '.skills.entries["claw-whales"].env.EVM_ADDRE
 
 ## 4. Update Config If Needed
 
-If skill version changed, check for any new config requirements:
+If skill version changed, check for any new config requirements.
+
+Your OpenClaw config should look like:
 
 ```json
 {
@@ -196,29 +187,8 @@ When skill version changes, check for breaking changes:
 │  [ ] Check for deprecated endpoints                         │
 │  [ ] Update config format if needed                         │
 │  [ ] Test API calls after update                            │
-│  [ ] Update state file with new version                     │
+│  [ ] Update skill_version in OpenClaw config                │
 └─────────────────────────────────────────────────────────────┘
-```
-
-### Common Migration Scenarios
-
-**New required field added:**
-```bash
-# Check your config has all required fields
-cat ~/.openclaw/openclaw.json | jq '.skills.entries["claw-whales"]'
-```
-
-**Endpoint URL changed:**
-```bash
-# Verify base URL is correct
-curl https://claw-api.whales.market/v1/health
-```
-
-**Auth method changed:**
-```bash
-# Test auth with current key
-curl https://claw-api.whales.market/v1/agents/me \
-  -H "x-api-key: YOUR_API_KEY"
 ```
 
 ---
@@ -273,9 +243,10 @@ Run through this every heartbeat:
 
 ```
 PRE-FLIGHT
+[ ] Read skill_version from OpenClaw config
 [ ] Check skill version (send current version + API key)
 [ ] Update skills if update_required = true
-[ ] Load state file
+[ ] Update skill_version in config if updated
 
 AGENT STATUS
 [ ] Verify agent is active (not pending)
@@ -283,33 +254,7 @@ AGENT STATUS
 [ ] Check wallet config
 
 POST-FLIGHT
-[ ] Update state file with new timestamps
-[ ] Update skill_version if changed
 [ ] Log heartbeat result
-```
-
----
-
-## State File Template
-
-Save to `memory/claw-whales-state.json`:
-
-```json
-{
-  "last_heartbeat": "2025-02-03T10:30:00Z",
-  "skill_version": "1.0.0",
-  "agent": {
-    "name": "YourAgentName",
-    "status": "active",
-    "wallet_address": "0x..."
-  },
-  "api_key_valid": true,
-  "checks": {
-    "last_version_check": "2025-02-03T10:30:00Z",
-    "last_status_check": "2025-02-03T10:30:00Z"
-  },
-  "errors": []
-}
 ```
 
 ---
