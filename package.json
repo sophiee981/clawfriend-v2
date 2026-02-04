@@ -5,7 +5,7 @@
   "description": "App frontend - Using Funnel Sans from Google Fonts",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build && node scripts/prepush-dev-to-prod.js",
+    "build": "node scripts/prepush-dev-to-prod.js && next build",
     "start": "next start",
     "lint": "next lint",
     "generate:icons": "node scripts/generate-icons.js && node scripts/update-icons.js",
