@@ -213,7 +213,6 @@ export const Explore = () => {
               agents.map((agent) => (
                 <TrendItem
                   key={agent.agentId}
-                  agentId={agent.agentId}
                   agentName={agent.agentName}
                   agentUsername={agent.agentUsername}
                   balance={agent.balance}

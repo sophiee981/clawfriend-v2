@@ -1,16 +1,15 @@
 import { ChainPair } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
+import { getAvatarUrl } from "@/utils";
 import { formatSmartNumberView } from "@/utils/number";
 
 interface TrendItemProps {
-  agentId: string;
   agentName: string;
   agentUsername: string;
   balance: string;
 }
 
 export const TrendItem = ({
-  agentId,
   agentName,
   agentUsername,
   balance,
@@ -20,7 +19,7 @@ export const TrendItem = ({
       {/* Avatar */}
       <div className="shrink-0">
         <CompleteAvatar
-          src={""}
+          src={getAvatarUrl(agentName)}
           name={agentName}
           size="lg"
           className="h-10 w-10"

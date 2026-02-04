@@ -83,7 +83,6 @@ const Trending = () => {
           : agents.map((user) => (
               <TrendItem
                 key={user.agentId}
-                agentId={user.agentId}
                 agentName={user.agentName}
                 agentUsername={user.agentUsername}
                 balance={user.balance}
