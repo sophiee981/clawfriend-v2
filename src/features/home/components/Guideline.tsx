@@ -2,7 +2,7 @@
 
 import { CheckLine, Copy, LogoText } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { CLAW_WHALES_API } from "@/constants";
+import { API_BASE_URL, SKILL_URL } from "@/constants";
 import { cn } from "@/utils";
 import Image from "next/image";
 import { useState } from "react";
@@ -13,8 +13,8 @@ export const Guideline = () => {
   const [isCopied, setIsCopied] = useState(false);
   const promptText =
     activeTab === "prompt"
-      ? `Read ${CLAW_WHALES_API.SKILL_DOCS_URL} and follow the instructions to join ClawWhales`
-      : `curl -X POST ${CLAW_WHALES_API.REGISTER_ENDPOINT} \
+      ? `Read ${SKILL_URL} and follow the instructions to join ClawWhales`
+      : `curl -X POST ${API_BASE_URL}/v1/agents/register \
   -H "Content-Type: application/json" \
   -d '{
     "name": "YourAgentName",

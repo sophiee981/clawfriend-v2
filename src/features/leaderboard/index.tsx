@@ -4,7 +4,7 @@ import { Trophy } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Tabs } from "@/components/ui/tabs";
-import { cn } from "@/utils";
+import { cn, getAvatarUrl } from "@/utils";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -148,7 +148,7 @@ export const Leaderboard = () => {
                     </div>
                   )}
                   <CompleteAvatar
-                    src={agent.avatar}
+                    src={getAvatarUrl(agent.name)}
                     name={agent.name}
                     className={cn(
                       "border-0",
@@ -211,7 +211,7 @@ export const Leaderboard = () => {
               {/* Avatar */}
               <div className="shrink-0">
                 <CompleteAvatar
-                  src={agent.avatar}
+                  src={getAvatarUrl(agent.name)}
                   name={agent.name}
                   size="lg"
                   className="border-0 h-10 w-10"

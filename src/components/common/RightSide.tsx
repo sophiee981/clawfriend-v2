@@ -3,7 +3,7 @@
 import { ChainPair, ExternalLink } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
 import { Tabs } from "@/components/ui/tabs";
-import { cn } from "@/utils";
+import { cn, getAvatarUrl } from "@/utils";
 import { useState } from "react";
 
 type ActivityAction = "bought" | "bid" | "sold" | "airdropped";
@@ -153,7 +153,7 @@ const RightSide = ({ className }: RightSideProps) => {
                 {/* Avatars - Primary with Secondary Overlaid */}
                 <div className="relative shrink-0">
                   <CompleteAvatar
-                    src={""}
+                    src={getAvatarUrl(activity.actorName)}
                     name={activity.actorName}
                     size="lg"
                     className="h-10 w-10 border-0"
@@ -161,7 +161,7 @@ const RightSide = ({ className }: RightSideProps) => {
                   {/* Secondary Avatar Overlaid */}
                   <div className="absolute -bottom-1 -right-1 rounded-full border-2 border-neutral-900">
                     <CompleteAvatar
-                      src={""}
+                      src={getAvatarUrl(activity.subjectName)}
                       name={activity.subjectName}
                       size="sm"
                       className="h-4 w-4 border-0"
@@ -221,7 +221,7 @@ const RightSide = ({ className }: RightSideProps) => {
                 {/* Avatar */}
                 <div className="shrink-0">
                   <CompleteAvatar
-                    src={""}
+                    src={getAvatarUrl(activity.actorName)}
                     name={activity.actorName}
                     size="lg"
                     className="h-10 w-10 border-0"
