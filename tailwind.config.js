@@ -368,14 +368,15 @@ module.exports = {
         ],
       },
       fontFamily: {
-        sans: ["Funnel Sans", "sans-serif"],
+        geist: ["var(--font-geist)", "sans-serif"],
+        spaceMono: ["var(--font-space-mono)", "monospace"],
       },
       fontSize: {
         "display-lg": [
           "48px",
           {
             lineHeight: "56px",
-            fontWeight: "600",
+            fontWeight: "500",
             letterSpacing: "0px",
           },
         ],
@@ -383,7 +384,7 @@ module.exports = {
           "36px",
           {
             lineHeight: "44px",
-            fontWeight: "600",
+            fontWeight: "500",
             letterSpacing: "0px",
           },
         ],
@@ -391,7 +392,7 @@ module.exports = {
           "28px",
           {
             lineHeight: "36px",
-            fontWeight: "600",
+            fontWeight: "500",
             letterSpacing: "0px",
           },
         ],
@@ -399,7 +400,7 @@ module.exports = {
           "24px",
           {
             lineHeight: "32px",
-            fontWeight: "600",
+            fontWeight: "500",
             letterSpacing: "0px",
           },
         ],
@@ -407,32 +408,32 @@ module.exports = {
           "20px",
           {
             lineHeight: "28px",
-            fontWeight: "600",
+            fontWeight: "500",
             letterSpacing: "0px",
           },
         ],
 
         "label-lg": [
-          "18px",
+          "16px",
           {
             lineHeight: "28px",
-            fontWeight: "600",
+            fontWeight: "500",
             letterSpacing: "0px",
           },
         ],
         "label-md": [
-          "16px",
+          "14px",
           {
             lineHeight: "24px",
-            fontWeight: "600",
+            fontWeight: "500",
             letterSpacing: "0px",
           },
         ],
         "label-sm": [
-          "14px",
+          "13px",
           {
             lineHeight: "20px",
-            fontWeight: "600",
+            fontWeight: "500",
             letterSpacing: "0px",
           },
         ],
@@ -440,7 +441,7 @@ module.exports = {
           "12px",
           {
             lineHeight: "16px",
-            fontWeight: "600",
+            fontWeight: "500",
             letterSpacing: "0px",
           },
         ],
@@ -448,14 +449,14 @@ module.exports = {
           "10px",
           {
             lineHeight: "12px",
-            fontWeight: "600",
+            fontWeight: "500",
             letterSpacing: "0px",
             textTransform: "uppercase",
           },
         ],
 
         "body-lg": [
-          "18px",
+          "16px",
           {
             lineHeight: "28px",
             fontWeight: "400",
@@ -463,7 +464,7 @@ module.exports = {
           },
         ],
         "body-md": [
-          "16px",
+          "14px",
           {
             lineHeight: "24px",
             fontWeight: "400",
@@ -471,7 +472,7 @@ module.exports = {
           },
         ],
         "body-sm": [
-          "14px",
+          "13px",
           {
             lineHeight: "20px",
             fontWeight: "400",
@@ -670,6 +671,32 @@ module.exports = {
         green: "var(--green)",
         orange: "var(--orange)",
         red: "var(--red)",
+      },
+      keyframes: {
+        slideUp: {
+          "0%": {
+            transform: "translateY(100%)",
+            opacity: "0",
+          },
+          "100%": {
+            transform: "translateY(0)",
+            opacity: "1",
+          },
+        },
+        slideHorizontal: {
+          "0%": {
+            transform: "translateX(-100%)",
+            opacity: "0",
+          },
+          "100%": {
+            transform: "translateX(0)",
+            opacity: "1",
+          },
+        },
+      },
+      animation: {
+        slideUp: "slideUp 0.2s ease-out",
+        slideHorizontal: "slideHorizontal 0.2s ease-out",
       },
     },
   },

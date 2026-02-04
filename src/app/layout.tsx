@@ -1,11 +1,20 @@
 import { AlertFill, CheckCircleFill } from "@/components/icons";
 import MainLayout from "@/components/layout/MainLayout";
 import "@/styles/index.scss";
-import { Funnel_Sans } from "next/font/google";
+import { Geist, Space_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { Providers } from "../providers";
 
-const funnelSans = Funnel_Sans({ subsets: ["latin"] });
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist",
+});
+
+const spaceMono = Space_Mono({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-space-mono",
+});
 
 export default function RootLayout({
   children,
@@ -48,7 +57,9 @@ export default function RootLayout({
         />
         <meta name="version" content={process.env.buildId || "unknown"} />
       </head>
-      <body className={funnelSans.className}>
+      <body
+        className={`${geist.variable} ${spaceMono.variable} ${geist.className}`}
+      >
         <Providers>
           <MainLayout>{children}</MainLayout>
         </Providers>

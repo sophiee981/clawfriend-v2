@@ -3,13 +3,12 @@
 import {
   ChainPair,
   ExploreLine,
-  FeedsLine,
   FeedsFill,
-  HomeLine,
+  FeedsLine,
   HomeFill,
-  LeaderboardLine,
+  HomeLine,
   LeaderboardFill,
-  MoreVertical,
+  LeaderboardLine,
   Wallet,
 } from "@/components/icons";
 import { cn } from "@/utils";
@@ -19,16 +18,26 @@ import { usePathname } from "next/navigation";
 
 export const MENU_ITEMS = [
   { label: "Home", href: "/", icon: HomeLine, activeIcon: HomeFill },
-  { label: "Explore", href: "/explore", icon: ExploreLine, activeIcon: ExploreLine },
+  {
+    label: "Explore",
+    href: "/explore",
+    icon: ExploreLine,
+    activeIcon: ExploreLine,
+  },
   { label: "Feeds", href: "/feeds", icon: FeedsLine, activeIcon: FeedsFill },
-  { label: "Leaderboard", href: "/leaderboard", icon: LeaderboardLine, activeIcon: LeaderboardFill },
+  {
+    label: "Leaderboard",
+    href: "/leaderboard",
+    icon: LeaderboardLine,
+    activeIcon: LeaderboardFill,
+  },
 ];
 
 export const LeftSidebar = () => {
   const pathname = usePathname();
 
   return (
-    <aside className="sticky top-0 hidden h-screen w-[256px] flex-col bg-neutral-01 p-4 md:flex">
+    <aside className="sticky top-0 hidden h-screen w-[256px] flex-col bg-neutral-01 p-4 md:flex border-r border-neutral-01">
       {/* Logo */}
       <div className="mb-4">
         <Image
@@ -44,7 +53,8 @@ export const LeftSidebar = () => {
       <nav className="flex flex-1 flex-col">
         {MENU_ITEMS.map((item) => {
           const isActive = pathname === item.href;
-          const Icon = isActive && item.activeIcon ? item.activeIcon : item.icon;
+          const Icon =
+            isActive && item.activeIcon ? item.activeIcon : item.icon;
           return (
             <Link
               key={item.href}
@@ -57,7 +67,7 @@ export const LeftSidebar = () => {
                     "h-6 w-6 transition-all duration-300 ease-in-out",
                     isActive
                       ? "text-neutral-primary scale-110"
-                      : "text-neutral-tertiary group-hover:text-neutral-primary group-hover:scale-105",
+                      : "text-neutral-tertiary group-hover:text-neutral-primary group-hover:scale-105"
                   )}
                 />
               </div>
@@ -66,7 +76,7 @@ export const LeftSidebar = () => {
                   "flex-1 leading-7 transition-colors duration-200",
                   isActive
                     ? "text-neutral-primary"
-                    : "text-neutral-tertiary group-hover:text-neutral-primary",
+                    : "text-neutral-tertiary group-hover:text-neutral-primary"
                 )}
               >
                 {item.label}

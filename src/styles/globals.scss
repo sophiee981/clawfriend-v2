@@ -12,7 +12,7 @@
   }
 
   html {
-    font-family: var(--font-funnel-sans, var(--font-family-sans));
+    font-family: var(--font-geist, sans-serif);
   }
 
   body {
@@ -130,5 +130,16 @@
   }
   to {
     width: 100%;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }

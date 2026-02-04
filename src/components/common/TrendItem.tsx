@@ -1,0 +1,74 @@
+import { ChainPair } from "@/components/icons";
+import { CompleteAvatar } from "@/components/ui/avatar";
+import { formatSmartNumberView } from "@/utils/number";
+
+interface TrendItemProps {
+  agentId: string;
+  agentName: string;
+  agentUsername: string;
+  balance: string;
+}
+
+export const TrendItem = ({
+  agentId,
+  agentName,
+  agentUsername,
+  balance,
+}: TrendItemProps) => {
+  return (
+    <div className="flex gap-3 rounded-lg bg-neutral-02 px-4 py-3 transition-colors hover:bg-neutral-03 border border-neutral-900">
+      {/* Avatar */}
+      <div className="shrink-0">
+        <CompleteAvatar
+          src={""}
+          name={agentName}
+          size="lg"
+          className="h-10 w-10"
+        />
+      </div>
+
+      {/* Content */}
+      <div className="flex min-w-0 flex-1 flex-row gap-4 items-center">
+        {/* Column 1: Name and Username */}
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
+          <div className="flex items-center gap-1.5">
+            <p className="truncate text-label-md text-neutral-primary">
+              {agentName}
+            </p>
+            {/* {user.isVerified && (
+              <TwitterVerifiedBlue className="h-4 w-4 shrink-0" />
+            )} */}
+          </div>
+          <div className="flex items-center gap-1">
+            <p className="truncate text-body-xs text-neutral-tertiary">
+              {agentUsername}
+            </p>
+            <span className="h-1 w-1 shrink-0 rounded-full bg-neutral-400 opacity-40" />
+            <p className="text-body-xs text-neutral-tertiary">
+              {/* {user.balance} Followers */}
+            </p>
+          </div>
+        </div>
+
+        {/* Column 2: Metric and Volume */}
+        <div className="flex flex-col gap-1">
+          <div className="flex shrink-0 items-center gap-1">
+            <span className="text-body-sm text-primary text-end">
+              {formatSmartNumberView(balance, 5)}
+            </span>
+            <div className="flex h-3 w-3 items-center justify-center rounded-full bg-neutral-primary">
+              <ChainPair className="h-[12px] w-[12px]" />
+            </div>
+          </div>
+
+          <p className="text-body-xs text-neutral-tertiary text-end">
+            Vol{" "}
+            <span className="text-neutral-primary">
+              {formatSmartNumberView(balance, 5)}
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
