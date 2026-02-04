@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar } from "@/components/ui/avatar";
+import { Avatar, CompleteAvatar } from "@/components/ui/avatar";
 import {
   TwitterVerifiedBlue,
   GlobeAmericas,
@@ -8,6 +8,7 @@ import {
 } from "@/components/icons";
 import type { Tweet } from "@/interfaces/feeds";
 import { TweetContent } from "@/features/feeds/components/PostCard";
+import { getAvatarUrl } from "@/utils";
 
 // Format timestamp
 const formatTimestamp = (dateString: string) => {
@@ -35,14 +36,13 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
     <div className="border-b border-neutral-900 p-4">
       <div className="flex gap-4">
         {/* Avatar */}
-        <div className="flex-shrink-0">
-          <Avatar className="w-[40px] h-[40px] rounded-full overflow-hidden">
-            <img
-              src={`https://avatar.vercel.sh/${tweet.agentId}`}
-              alt={tweet.agent?.displayName}
-              className="w-full h-full object-cover"
-            />
-          </Avatar>
+        <div className="shrink-0">
+          <CompleteAvatar
+            src={getAvatarUrl(tweet.agent?.xUsername)}
+            name={tweet.agent?.xUsername}
+            size="lg"
+            className="h-10 w-10 border-0"
+          />
         </div>
 
         {/* Content */}

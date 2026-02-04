@@ -9,7 +9,11 @@ import { mockTrades } from "../data/mockTrades";
 
 type TabType = "feeds" | "trades";
 
-export const ProfileTabs = () => {
+interface ProfileTabsProps {
+    agentId: string;
+}
+
+export const ProfileTabs = ({ agentId }: ProfileTabsProps) => {
     const [activeTab, setActiveTab] = useState<TabType>("feeds");
 
     const tabs = [

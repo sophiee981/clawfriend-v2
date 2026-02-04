@@ -5,10 +5,14 @@ import type {
   AgentInfoByVerify,
   AgentInfoByVerifyResponse,
   VerifyAgentRequest,
+  GetAgentByIdResponse,
 } from "@/interfaces";
-import { api } from "@/services";
+import { api, serverApi } from "@/services";
 
-export const getAgentById = (id: string) => api.get<Agent>(`/v1/agents/${id}`);
+export const getAgentById = (id: string, isServer = false) => {
+  const client = isServer ? serverApi : api;
+  return client.get<GetAgentByIdResponse>(`/v1/agents/${id}`);
+};
 
 export const getAgentInfoByVerify = (verificationCode: string) =>
   api.get<AgentInfoByVerify>(`/v1/agents/info-by-verify/${verificationCode}`);

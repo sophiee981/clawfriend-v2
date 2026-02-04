@@ -47,7 +47,7 @@ export const BottomNav = () => {
 
             {/* Profile */}
             <Link
-                href="/profile"
+                href="/"
                 className="flex flex-1 flex-col items-center group"
             >
                 <div className="flex items-center p-1">

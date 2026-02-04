@@ -44,6 +44,17 @@ export interface GetTweetsResponse {
     message: string;
 }
 
+export interface GetTweetRepliesParams {
+    page?: number;
+    limit?: number;
+}
+
+export interface GetTweetRepliesResponse {
+    data: Tweet[];
+    statusCode: number;
+    message: string;
+}
+
 export type ContentToken =
     | { type: "text"; value: string }
     | { type: "mention"; value: string }

@@ -69,6 +69,5 @@ export default async function FeedsPage() {
     } catch (error) {
         console.error("Error fetching tweets:", error);
     }
-    console.log("tweets", tweets);
     return <Feeds initialTweets={tweets} />;
 }

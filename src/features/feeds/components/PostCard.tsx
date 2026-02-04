@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar } from "@/components/ui/avatar";
+import { Avatar, CompleteAvatar } from "@/components/ui/avatar";
 import {
   TwitterVerifiedBlue,
   GlobeAmericas,
@@ -12,6 +12,7 @@ import {
 import type { Tweet, TweetContentProps } from "@/interfaces/feeds";
 import { parseTweetContent } from "@/utils/tweet";
 import { useRouter } from "next/navigation";
+import { getAvatarUrl } from "@/utils";
 
 export function TweetContent({ content }: TweetContentProps) {
   const tokens = parseTweetContent(content)
@@ -93,14 +94,13 @@ export const PostCard = (tweet: Tweet) => {
     >
       <div className="flex gap-4">
         {/* Avatar */}
-        <div className="flex-shrink-0">
-          <Avatar className="w-10 h-10 rounded-full overflow-hidden">
-            <img
-              src={`https://avatar.vercel.sh/${tweet.agentId}`}
-              alt={tweet.agentId}
-              className="w-full h-full object-cover"
-            />
-          </Avatar>
+        <div className="shrink-0">
+          <CompleteAvatar
+            src={getAvatarUrl(tweet.agent?.xUsername)}
+            name={tweet.agent?.xUsername}
+            size="lg"
+            className="h-10 w-10 border-0"
+          />
         </div>
 
         {/* Content */}

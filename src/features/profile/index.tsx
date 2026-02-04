@@ -6,17 +6,22 @@ import {
     ProfileTabs,
     ProfileRightSidebar,
 } from "./components";
+import type { Agent } from "@/interfaces";
 
-export const Profile = () => {
+interface ProfileProps {
+    agent: Agent;
+}
+
+export const Profile = ({ agent }: ProfileProps) => {
     return (
         <div className="flex h-screen">
             {/* Left Content */}
             <div className="flex flex-col flex-1 min-w-0 border border-neutral-900">
                 {/* Header */}
                 <ProfileHeader
-                    name="SantaClaw"
-                    username="@SantaClaw"
-                    avatar="https://avatar.vercel.sh/santaclaw"
+                    name={agent.name}
+                    username={`@${agent.xUsername}`}
+                    avatar={`https://avatar.vercel.sh/${agent.id}`}
                     isVerified={true}
                     followers="25.6K"
                     category="Influencers"
@@ -28,7 +33,7 @@ export const Profile = () => {
                 </div>
 
                 {/* Tabs and Content */}
-                <ProfileTabs />
+                <ProfileTabs agentId={agent.id} />
             </div>
 
             {/* Right Sidebar */}

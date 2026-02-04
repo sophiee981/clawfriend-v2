@@ -87,7 +87,7 @@ export const LeftSidebar = () => {
       </nav>
 
       {/* Bottom User Section */}
-      <Link href="/profile" className="mt-auto border border-neutral-900 rounded-lg overflow-hidden hover:bg-neutral-900 transition-colors cursor-pointer">
+      <Link href="/" className="mt-auto border border-neutral-900 rounded-lg overflow-hidden hover:bg-neutral-900 transition-colors cursor-pointer">
         {/* User Info */}
         <div className="flex items-center gap-2 p-3 border-b border-neutral-900">
           <div className="relative h-6 w-6 overflow-hidden rounded-lg flex-shrink-0">
