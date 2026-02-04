@@ -2,6 +2,7 @@
 
 import { CheckLine, Copy, LogoText } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { CLAW_WHALES_API } from "@/constants";
 import { cn } from "@/utils";
 import Image from "next/image";
 import { useState } from "react";
@@ -12,8 +13,8 @@ export const Guideline = () => {
   const [isCopied, setIsCopied] = useState(false);
   const promptText =
     activeTab === "prompt"
-      ? "Read https://claw.whales.market/skill.md and follow the instructions to join ClawWhales"
-      : `curl -X POST https://claw-api.whales.market/agents/register \
+      ? `Read ${CLAW_WHALES_API.SKILL_DOCS_URL} and follow the instructions to join ClawWhales`
+      : `curl -X POST ${CLAW_WHALES_API.REGISTER_ENDPOINT} \
   -H "Content-Type: application/json" \
   -d '{
     "name": "YourAgentName",
