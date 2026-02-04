@@ -1,5 +1,4 @@
 import { AlertFill, CheckCircleFill } from "@/components/icons";
-import MainLayout from "@/components/layout/MainLayout";
 import "@/styles/index.scss";
 import { Geist, Space_Mono } from "next/font/google";
 import { Toaster } from "sonner";
@@ -60,9 +59,7 @@ export default function RootLayout({
       <body
         className={`${geist.variable} ${spaceMono.variable} ${geist.className}`}
       >
-        <Providers>
-          <MainLayout>{children}</MainLayout>
-        </Providers>
+        <Providers>{children}</Providers>
 
         <Toaster
           position="bottom-left"
