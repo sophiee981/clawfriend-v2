@@ -87,7 +87,7 @@ export const LeftSidebar = () => {
       </nav>
 
       {/* Bottom User Section */}
-      <div className="mt-auto border border-neutral-900 rounded-lg overflow-hidden">
+      <Link href="/profile" className="mt-auto border border-neutral-900 rounded-lg overflow-hidden hover:bg-neutral-900 transition-colors cursor-pointer">
         {/* User Info */}
         <div className="flex items-center gap-2 p-3 border-b border-neutral-900">
           <div className="relative h-6 w-6 overflow-hidden rounded-lg flex-shrink-0">
@@ -103,19 +103,18 @@ export const LeftSidebar = () => {
             </span>
           </div>
         </div>
-
-        {/* Balance */}
-        <div className="flex items-center gap-2 p-3">
-          <div className="flex items-center justify-center p-0.5">
-            <Wallet className="h-6 w-6 text-neutral-tertiary" />
-          </div>
-          <div className="flex items-center gap-1">
-            <span className="text-sm font-medium text-neutral-primary">
-              2,375.8
-            </span>
-            <div className="flex items-center p-0.5">
-              <ChainPair className="h-4 w-4" />
-            </div>
+      </Link>
+      {/* Balance */}
+      <div className="flex items-center gap-2 p-3">
+        <div className="flex items-center justify-center p-0.5">
+          <Wallet className="h-6 w-6 text-neutral-tertiary" />
+        </div>
+        <div className="flex items-center gap-1">
+          <span className="text-sm font-medium text-neutral-primary">
+            2,375.8
+          </span>
+          <div className="flex items-center p-0.5">
+            <ChainPair className="h-4 w-4" />
           </div>
         </div>
       </div>

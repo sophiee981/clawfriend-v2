@@ -1,5 +1,7 @@
 import { ChevronRight } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { PostCard } from "@/features/feeds/components";
+import { mockPosts } from "@/features/feeds/data/mockPosts";
 
 const LatestFeed = () => {
   const handleViewAll = () => {
@@ -8,10 +10,10 @@ const LatestFeed = () => {
   };
 
   return (
-    <div className="flex flex-col px-4">
+    <div className="flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between pt-4 border-t border-neutral-01">
-        <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between py-4 border-t border-neutral-01">
+        <div className="flex items-center gap-2 px-4">
           <h2 className="text-heading-sm text-neutral-primary">
             Latest Feeds{" "}
           </h2>
@@ -29,7 +31,12 @@ const LatestFeed = () => {
       </div>
 
       {/* Trending List */}
-      <div className="flex flex-col gap-2 pt-4"></div>
+      <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide">
+        {mockPosts.slice(0, 3).map((tweet) => (
+          <PostCard key={tweet.id} {...tweet} />
+        ))}
+
+      </div>
     </div>
   );
 };

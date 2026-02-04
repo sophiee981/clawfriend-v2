@@ -39,3 +39,4 @@ export { default as TwitterVerifiedBlue } from "./twitter_verified_blue.svg";
 export { default as Wallet } from "./wallet.svg";
 export { default as WarningFill } from "./warning_fill.svg";
 export { default as XMark } from "./x-mark.svg";
+export { default as ArrowLeft } from "./arrow_left.svg";
