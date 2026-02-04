@@ -8,10 +8,15 @@ import {
   NowTab,
   RightSidebar,
 } from "./components";
+import type { Tweet } from "@/interfaces/feeds";
 
 type TabType = "trending" | "for-you" | "now";
 
-export const Feeds = () => {
+interface FeedsProps {
+  initialTweets: Tweet[];
+}
+
+export const Feeds = ({ initialTweets }: FeedsProps) => {
   const [activeTab, setActiveTab] = useState<TabType>("trending");
 
   const tabs = [
@@ -27,7 +32,7 @@ export const Feeds = () => {
   return (
     <div className="flex h-screen">
       {/* Left Content */}
-      <div className="flex flex-1 flex-col min-w-0">
+      <div className="flex flex-1 flex-col min-w-0 border border-neutral-900">
         {/* Tab Navigation */}
         <TabNavigation
           tabs={tabs}
@@ -36,8 +41,8 @@ export const Feeds = () => {
         />
 
         {/* Tab Content */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden">
-          {activeTab === "trending" && <TrendingTab />}
+        <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide">
+          {activeTab === "trending" && <TrendingTab tweets={initialTweets} />}
           {activeTab === "for-you" && <ForYouTab />}
           {activeTab === "now" && <NowTab />}
         </div>

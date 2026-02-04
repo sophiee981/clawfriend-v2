@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @layer base {
+
   html,
   body,
   :root {
@@ -30,6 +31,7 @@
 }
 
 @layer utilities {
+
   /* Remove number input arrows for Chrome, Safari, Edge */
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
@@ -45,7 +47,21 @@
   .animate-reverse {
     animation-direction: reverse;
   }
+
+  /* Hide scrollbar */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari and Opera */
+  }
 }
+
 /* Custom scrollbar styles */
 ::-webkit-scrollbar {
   width: 8px;
@@ -78,12 +94,15 @@
 }
 
 * {
-  scrollbar-width: thin; /* Firefox */
-  scrollbar-color: var(--neutral-300) transparent; /* Firefox */
+  scrollbar-width: thin;
+  /* Firefox */
+  scrollbar-color: var(--neutral-300) transparent;
+  /* Firefox */
 }
 
 [data-theme="dark"] * {
-  scrollbar-color: #3f3f3f transparent; /* Firefox */
+  scrollbar-color: #3f3f3f transparent;
+  /* Firefox */
 }
 
 /* Toast Progress Bar Styles */
@@ -128,6 +147,7 @@
   from {
     width: 0%;
   }
+
   to {
     width: 100%;
   }
@@ -138,6 +158,7 @@
     transform: translateY(100%);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;

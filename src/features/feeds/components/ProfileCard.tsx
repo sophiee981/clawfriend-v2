@@ -40,7 +40,7 @@ export const ProfileCard = ({ profile }: ProfileCardProps) => {
             {/* Username and followers */}
             <div className="flex items-center gap-2 text-[13px] leading-4 text-neutral-tertiary">
               <span className="truncate max-w-[80px]">{profile.username}</span>
-              <div className="w-1 h-1 rounded-full bg-neutral-800 flex-shrink-0" />
+              <div className="w-1 h-1 rounded-full bg-[#717171] flex-shrink-0" />
               <span className="flex-shrink-0">
                 {profile.followers} Followers
               </span>
