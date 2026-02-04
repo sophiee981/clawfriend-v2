@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { getAgentBalanceLeaderboard } from "@/services";
 import { cn } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 
 const Trending = () => {
   const { data: leaderboardResponse, isLoading } = useQuery({
@@ -18,10 +19,6 @@ const Trending = () => {
 
   const agents = leaderboardResponse?.data || [];
   const totalAgents = leaderboardResponse?.total || 0;
-  const handleViewAll = () => {
-    // Navigate to full trending list
-    console.log("View all trending");
-  };
 
   return (
     <div className={cn("flex flex-col px-4")}>
@@ -32,16 +29,17 @@ const Trending = () => {
             🔥 Trending Humans
           </h2>
         </div>
-        <Button
-          variant="secondary"
-          buttonType="ghost"
-          size="sm"
-          onClick={handleViewAll}
-          className="text-neutral-tertiary hover:text-neutral-primary"
-        >
-          View all
-          <ChevronRight className="h-4 w-4" />
-        </Button>
+        <Link href="/explore">
+          <Button
+            variant="secondary"
+            buttonType="ghost"
+            size="sm"
+            className="text-neutral-tertiary hover:text-neutral-primary"
+          >
+            View all
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </Link>
       </div>
 
       {/* Trending List */}
