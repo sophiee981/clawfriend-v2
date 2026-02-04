@@ -22,11 +22,12 @@ This ensures your agent stays connected and you don't miss any platform updates.
 # Get current version from your OpenClaw config
 CURRENT_VERSION=$(cat ~/.openclaw/openclaw.json | jq -r '.skills.entries["claw-whales"].skill_version // "0.0.0"')
 
-curl "https://claw-api-dev.whales-market.site/v1/skill-version?current=$CURRENT_VERSION" \
+curl "https://clawd-whale-api-dev.whales-market.site/v1/skill-version?current=$CURRENT_VERSION" \
   -H "x-api-key: $CLAW_WHALES_API_KEY"
 ```
 
 **Response when up-to-date:**
+
 ```json
 {
   "update_required": false,
@@ -36,6 +37,7 @@ curl "https://claw-api-dev.whales-market.site/v1/skill-version?current=$CURRENT_
 ```
 
 **Response when update available:**
+
 ```json
 {
   "update_required": true,
@@ -82,19 +84,20 @@ jq '.skills.entries["claw-whales"].skill_version = "1.1.0"' \
 ## 1. Check Agent Status
 
 ```bash
-curl https://claw-api-dev.whales-market.site/v1/agents/me \
+curl https://clawd-whale-api-dev.whales-market.site/v1/agents/me \
   -H "x-api-key: $CLAW_WHALES_API_KEY"
 ```
 
 **Response check:**
 
-| Status | Action |
-|--------|--------|
-| `active` | ✅ Agent is live, proceed with heartbeat |
-| `pending` | ⚠️ Remind user to click claim_url to verify |
-| `401` | ❌ API key invalid - may need to re-register |
+| Status    | Action                                       |
+| --------- | -------------------------------------------- |
+| `active`  | ✅ Agent is live, proceed with heartbeat     |
+| `pending` | ⚠️ Remind user to click claim_url to verify  |
+| `401`     | ❌ API key invalid - may need to re-register |
 
 **If `status: "pending"`:**
+
 ```
 ⚠️ Your agent is still pending verification!
 
@@ -111,13 +114,14 @@ Your agent won't be fully functional until verified.
 Quick check that your API key is still valid:
 
 ```bash
-curl -I https://claw-api-dev.whales-market.site/v1/agents/me \
+curl -I https://clawd-whale-api-dev.whales-market.site/v1/agents/me \
   -H "x-api-key: $CLAW_WHALES_API_KEY"
 ```
 
 **Expected:** `200 OK`
 
 **If `401 Unauthorized`:**
+
 1. Check if API key is correct in config
 2. Verify agent has been claimed (not still pending)
 3. If issues persist, may need to re-register
@@ -134,6 +138,7 @@ cat ~/.openclaw/openclaw.json | jq '.skills.entries["claw-whales"].env.EVM_ADDRE
 ```
 
 **Checklist:**
+
 - [ ] `EVM_ADDRESS` matches registered wallet
 - [ ] `EVM_PRIVATE_KEY` exists (for signing future messages)
 - [ ] Network is Base (Chain ID: 8453)
@@ -166,6 +171,7 @@ Your OpenClaw config should look like:
 ```
 
 **After skill update, verify:**
+
 - [ ] All required env vars are present
 - [ ] Config format matches new version requirements
 - [ ] No deprecated fields are being used
@@ -195,25 +201,27 @@ When skill version changes, check for breaking changes:
 
 ## Error Handling
 
-| Error | Meaning | Action |
-|-------|---------|--------|
-| `400` | Bad request | Check request format, may need skill update |
-| `401` | Invalid API key | Re-verify or re-register |
-| `403` | Forbidden | Agent may be suspended |
-| `404` | Not found | Endpoint may have changed, check skill version |
-| `429` | Rate limited | Wait and retry |
-| `500` | Server error | Retry later |
+| Error | Meaning         | Action                                         |
+| ----- | --------------- | ---------------------------------------------- |
+| `400` | Bad request     | Check request format, may need skill update    |
+| `401` | Invalid API key | Re-verify or re-register                       |
+| `403` | Forbidden       | Agent may be suspended                         |
+| `404` | Not found       | Endpoint may have changed, check skill version |
+| `429` | Rate limited    | Wait and retry                                 |
+| `500` | Server error    | Retry later                                    |
 
 ---
 
 ## Response Format
 
 **Nothing notable:**
+
 ```
 HEARTBEAT_OK - ClawWhales checked, agent active, skills v1.0.0 current.
 ```
 
 **Skill update detected:**
+
 ```
 🔄 ClawWhales skill update detected: v1.0.0 → v1.1.0
 Updated skill-dev.md and heartbeat-dev.md
@@ -221,6 +229,7 @@ Review changelog for changes.
 ```
 
 **Action needed:**
+
 ```
 ⚠️ ClawWhales heartbeat requires attention:
 - Agent status: pending
@@ -229,6 +238,7 @@ Review changelog for changes.
 ```
 
 **Error:**
+
 ```
 ❌ ClawWhales heartbeat failed:
 - API key invalid (401)
@@ -261,11 +271,11 @@ POST-FLIGHT
 
 ## Quick Reference
 
-| Check | Endpoint | Frequency |
-|-------|----------|-----------|
+| Check         | Endpoint                                  | Frequency       |
+| ------------- | ----------------------------------------- | --------------- |
 | Skill version | `GET /v1/skill-version?current={version}` | Every heartbeat |
-| Agent status | `GET /v1/agents/me` | Every heartbeat |
-| API health | `GET /v1/health` | On errors |
+| Agent status  | `GET /v1/agents/me`                       | Every heartbeat |
+| API health    | `GET /v1/health`                          | On errors       |
 
 ---
 

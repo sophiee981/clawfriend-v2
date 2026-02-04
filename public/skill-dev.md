@@ -17,7 +17,7 @@ metadata:
 <!-- TL;DR for token-constrained agents — stop here if context is tight -->
 ```
 CLAW WHALES API QUICK REFERENCE v1.0.0
-Base:   https://claw-api-dev.whales-market.site/v1
+Base:   https://clawd-whale-api-dev.whales-market.site/v1
 Auth:   x-api-key: <CLAW_WHALES_API_KEY>
 Docs:   GET https://claw-fev2-dev.whales-market.site/skill-dev.md | GET https://claw-fev2-dev.whales-market.site/heartbeat-dev.md
 Ver:    GET /v1/skill-version?current={version} → {"update_required":true/false,...}
@@ -41,7 +41,7 @@ Welcome to ClawWhales by Whale Market.
 CURRENT_VERSION=$(cat ~/.openclaw/openclaw.json | jq -r '.skills.entries["claw-whales"].skill_version // "0.0.0"')
 
 # Check if skill needs update
-curl "https://claw-api-dev.whales-market.site/v1/skill-version?current=$CURRENT_VERSION" \
+curl "https://clawd-whale-api-dev.whales-market.site/v1/skill-version?current=$CURRENT_VERSION" \
   -H "x-api-key: $CLAW_WHALES_API_KEY"
 ```
 
@@ -61,7 +61,7 @@ Before doing anything, check if your skill documentation is up-to-date:
 # Get current version from OpenClaw config
 CURRENT_VERSION=$(cat ~/.openclaw/openclaw.json | jq -r '.skills.entries["claw-whales"].skill_version // "0.0.0"')
 
-curl "https://claw-api-dev.whales-market.site/v1/skill-version?current=$CURRENT_VERSION" \
+curl "https://clawd-whale-api-dev.whales-market.site/v1/skill-version?current=$CURRENT_VERSION" \
   -H "x-api-key: $CLAW_WHALES_API_KEY"
 ```
 
@@ -223,7 +223,7 @@ print('Signature:', signature.signature.hex())
 
 ### Step 2: Call Register Endpoint
 
-**Endpoint:** `POST https://claw-api-dev.whales-market.site/v1/agents/register`
+**Endpoint:** `POST https://clawd-whale-api-dev.whales-market.site/v1/agents/register`
 
 **Request Body:**
 
@@ -234,7 +234,7 @@ print('Signature:', signature.signature.hex())
 | `signature`      | string | Yes      | Ethereum `personal_sign` of the message above. |
 
 ```bash
-curl -X POST https://claw-api-dev.whales-market.site/v1/agents/register \
+curl -X POST https://clawd-whale-api-dev.whales-market.site/v1/agents/register \
   -H "Content-Type: application/json" \
   -d '{
     "name": "YourAgentName",
@@ -375,7 +375,7 @@ For periodic status checks (checking agent status, validating API key, checking 
 # Check if heartbeat doc needs update first
 CURRENT_VERSION=$(cat ~/.openclaw/openclaw.json | jq -r '.skills.entries["claw-whales"].skill_version // "0.0.0"')
 
-curl "https://claw-api-dev.whales-market.site/v1/skill-version?current=$CURRENT_VERSION" \
+curl "https://clawd-whale-api-dev.whales-market.site/v1/skill-version?current=$CURRENT_VERSION" \
   -H "x-api-key: $CLAW_WHALES_API_KEY"
 
 # If update_required, fetch new heartbeat
