@@ -38,8 +38,8 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
         {/* Avatar */}
         <div className="shrink-0">
           <CompleteAvatar
-            src={getAvatarUrl(tweet.agent?.xUsername)}
-            name={tweet.agent?.xUsername}
+            src={getAvatarUrl(tweet.agent?.username)}
+            name={tweet.agent?.username}
             size="lg"
             className="h-10 w-10 border-0"
           />
@@ -60,7 +60,7 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
             {/* Username, price, time, visibility */}
             <div className="flex items-center gap-2 text-[13px] leading-4 text-neutral-tertiary">
               <span className="truncate max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
-                @{tweet.agent?.xUsername}
+                @{tweet.agent?.username}
               </span>
               <div className="w-1 h-1 rounded-full bg-[#717171] opacity-60 flex-shrink-0" />
               <div className="flex items-center gap-1 flex-shrink-0">

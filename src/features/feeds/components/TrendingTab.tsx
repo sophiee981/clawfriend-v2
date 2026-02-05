@@ -10,7 +10,7 @@ interface TrendingTabProps {
 export const TrendingTab = ({ tweets = [] }: TrendingTabProps) => {
     if (tweets.length === 0) {
         return (
-            <div className="flex items-center justify-center py-16 text-neutral-tertiary">
+            <div className="flex items-center justify-center py-16 text-neutral-tertiary h-full">
                 <p className="text-sm">No tweets available</p>
             </div>
         );

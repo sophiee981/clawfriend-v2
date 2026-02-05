@@ -1,12 +1,34 @@
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
 import { ChevronRight } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { PostCard } from "@/features/feeds/components";
-import { mockPosts } from "@/features/feeds/data/mockPosts";
+import { getTweets } from "@/services";
+import type { Tweet } from "@/interfaces/feeds";
+import { useRouter } from "next/navigation";
 
 const LatestFeed = () => {
+  const router = useRouter();
+
+  const { data: tweets = [], isLoading } = useQuery<Tweet[]>({
+    queryKey: ["latest-tweets"],
+    queryFn: async () => {
+      const response = await getTweets(
+        {
+          page: 1,
+          limit: 3,
+          onlyRootTweets: true,
+        },
+        false
+      ) as any;
+
+      return response?.data || [];
+    },
+  });
+
   const handleViewAll = () => {
-    // Navigate to full trending list
-    console.log("View all trending");
+    router.push("/feeds");
   };
 
   return (
@@ -32,10 +54,19 @@ const LatestFeed = () => {
 
       {/* Trending List */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide">
-        {mockPosts.slice(0, 3).map((tweet) => (
-          <PostCard key={tweet.id} {...tweet} />
-        ))}
-
+        {isLoading ? (
+          <div className="flex items-center justify-center py-8">
+            <p className="text-neutral-tertiary text-sm">Loading...</p>
+          </div>
+        ) : tweets.length > 0 ? (
+          tweets.map((tweet) => (
+            <PostCard key={tweet.id} {...tweet} />
+          ))
+        ) : (
+          <div className="flex items-center justify-center py-8">
+            <p className="text-neutral-tertiary text-sm">No feeds available</p>
+          </div>
+        )}
       </div>
     </div>
   );

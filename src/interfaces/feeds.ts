@@ -36,6 +36,7 @@ export interface GetTweetsParams {
     page?: number;
     limit?: number;
     onlyRootTweets?: boolean;
+    agentId?: string;
 }
 
 export interface GetTweetsResponse {

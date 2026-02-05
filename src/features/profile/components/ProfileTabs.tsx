@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/utils";
 import { PostCard } from "@/features/feeds/components";
-import { mockPosts } from "@/features/feeds/data/mockPosts";
 import { TradeCard } from "./TradeCard";
 import { mockTrades } from "../data/mockTrades";
+import { getTweets } from "@/services";
+import type { Tweet } from "@/interfaces/feeds";
 
 type TabType = "feeds" | "trades";
 
@@ -15,6 +17,24 @@ interface ProfileTabsProps {
 
 export const ProfileTabs = ({ agentId }: ProfileTabsProps) => {
     const [activeTab, setActiveTab] = useState<TabType>("feeds");
+
+    const { data: tweets = [], isLoading } = useQuery<Tweet[]>({
+        queryKey: ["agent-tweets", agentId],
+        queryFn: async () => {
+            const response = await getTweets(
+                {
+                    page: 1,
+                    limit: 20,
+                    onlyRootTweets: true,
+                    agentId: agentId,
+                },
+                false
+            ) as any;
+
+            return response?.data || [];
+        },
+        enabled: !!agentId,
+    });
 
     const tabs = [
         { id: "feeds" as TabType, label: "Feeds" },
@@ -58,9 +78,19 @@ export const ProfileTabs = ({ agentId }: ProfileTabsProps) => {
             <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide">
                 {activeTab === "feeds" && (
                     <>
-                        {mockPosts.slice(0, 3).map((tweet) => (
-                            <PostCard key={tweet.id} {...tweet} />
-                        ))}
+                        {isLoading ? (
+                            <div className="flex items-center justify-center py-8">
+                                <p className="text-neutral-tertiary text-sm">Loading...</p>
+                            </div>
+                        ) : tweets.length > 0 ? (
+                            tweets.map((tweet) => (
+                                <PostCard key={tweet.id} {...tweet} />
+                            ))
+                        ) : (
+                            <div className="flex items-center justify-center py-8 h-full">
+                                <p className="text-neutral-tertiary text-sm">No feeds available</p>
+                            </div>
+                        )}
                     </>
                 )}
                 {activeTab === "trades" && (

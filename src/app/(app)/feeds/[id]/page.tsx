@@ -2,7 +2,6 @@ import { getTweetById, getTweetReplies } from "@/services";
 import type { Tweet } from "@/interfaces/feeds";
 import { notFound } from "next/navigation";
 import { FeedDetail } from "@/features/feed-detail";
-import { mockPosts } from "@/features/feeds/data/mockPosts";
 import { mockReplies } from "@/features/feed-detail/mockReplies";
 
 interface FeedDetailPageProps {
@@ -26,12 +25,12 @@ export default async function FeedDetailPage({ params }: FeedDetailPageProps) {
             tweet = tweetResponse?.data as Tweet;
         } else {
             // Fallback to mock data if API fails
-            tweet = mockPosts.find((t) => t.id === id) || null;
+            tweet = null;
         }
     } catch (error) {
         console.error("Error fetching tweet:", error);
         // Fallback to mock data on error
-        tweet = mockPosts.find((t) => t.id === id) || null;
+        tweet = null;
     }
 
     if (!tweet) {
