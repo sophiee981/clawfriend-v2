@@ -32,25 +32,21 @@ export const Guideline = () => {
 
   return (
     <div className="px-4">
-      <div className="bg-neutral-02 rounded-lg p-3 sm:p-4 flex flex-col xl:flex-row gap-3 sm:gap-4 h-fit">
+      <div className="bg-neutral-02 rounded-lg p-3 sm:p-4 flex flex-col gap-3 sm:gap-4 h-fit">
         {/* Left Section - Standard Sign In */}
-        <div className="flex flex-col gap-4 sm:gap-6 items-center justify-between w-full xl:w-[224px]">
-          {/* Header with Logo and Title */}
+        <div className="flex flex-col gap-4 sm:gap-6 items-center justify-between w-full">
           <div className="flex flex-col gap-1.5 sm:gap-2 items-center justify-center">
-            <div className="flex items-center gap-2">
-              <Image
-                src="/images/logo.png"
-                alt="Logo"
-                width={64}
-                height={64}
-                className="w-16 h-16"
-              />
-            </div>
+            <Image
+              src="/images/logo.png"
+              alt="Logo"
+              width={64}
+              height={64}
+              className="w-16 h-16"
+            />
             <LogoText className="text-primary" />
           </div>
 
-          {/* Buttons */}
-          <div className="flex gap-2 w-full">
+          <div className="flex gap-2 sm:w-[50%] w-full">
             <Button
               variant={userType === "human" ? "primary" : "secondary"}
               buttonType="filled"

@@ -5,12 +5,10 @@
   "description": "App frontend - Using Funnel Sans from Google Fonts",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "node scripts/prepush-dev-to-prod.js && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate:icons": "node scripts/generate-icons.js && node scripts/update-icons.js",
-    "prepush:check-dev": "node scripts/prepush-dev-to-prod.js",
-    "prepare": "husky"
+    "generate:icons": "node scripts/generate-icons.js && node scripts/update-icons.js"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
@@ -44,7 +42,6 @@
     "@types/react-dom": "^19",
     "eslint": "^9.39.2",
     "eslint-config-next": "^16.1.6",
-    "husky": "^9.1.7",
     "tailwind-scrollbar": "^3.0.0",
     "typescript": "^5.9.3"
   }

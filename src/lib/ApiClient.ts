@@ -49,6 +49,16 @@ class ApiClient {
           config.headers["Authorization"] = `Bearer ${token}`;
         }
 
+        // Extract apiKey from window.location.href query parameters and add to headers
+        if (typeof window !== "undefined" && config.headers) {
+          const urlParams = new URLSearchParams(window.location.search);
+          const apiKey = urlParams.get("apiKey");
+          
+          if (apiKey) {
+            config.headers["x-api-key"] = apiKey;
+          }
+        }
+
         return config;
       },
       (error) => {

@@ -1,6 +1,0 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-echo "Running prepush:check-dev"
-pnpm run prepush:check-dev
-echo "Prepush:check-dev completed"

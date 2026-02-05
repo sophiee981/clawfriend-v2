@@ -368,7 +368,7 @@ module.exports = {
         ],
       },
       fontFamily: {
-        geist: ["var(--font-geist)", "sans-serif"],
+        outfit: ["var(--font-outfit)", "sans-serif"],
         spaceMono: ["var(--font-space-mono)", "monospace"],
       },
       fontSize: {

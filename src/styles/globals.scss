@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-
   html,
   body,
   :root {
@@ -13,7 +12,7 @@
   }
 
   html {
-    font-family: var(--font-geist, sans-serif);
+    font-family: var(--font-outfit, sans-serif);
   }
 
   body {
@@ -31,7 +30,6 @@
 }
 
 @layer utilities {
-
   /* Remove number input arrows for Chrome, Safari, Edge */
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
@@ -81,7 +79,7 @@
 }
 
 [data-theme="dark"] ::-webkit-scrollbar-thumb {
-  background: #3f3f3f;
+  background: #272727;
   border-radius: 10px;
 }
 
@@ -101,8 +99,56 @@
 }
 
 [data-theme="dark"] * {
-  scrollbar-color: #3f3f3f transparent;
+  scrollbar-color: #272727 transparent;
   /* Firefox */
+}
+
+/* Hide scrollbar by default, show on hover */
+.scrollbar-hover-hide {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  /* Firefox - transparent by default */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+}
+
+.scrollbar-hover-hide::-webkit-scrollbar {
+  width: 8px;
+  /* Chrome, Safari and Opera */
+}
+
+.scrollbar-hover-hide::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+.scrollbar-hover-hide::-webkit-scrollbar-thumb {
+  background: transparent !important;
+  border-radius: 10px;
+  transition: background 0.2s ease;
+}
+
+.scrollbar-hover-hide:hover {
+  scrollbar-color: var(--neutral-300) transparent;
+}
+
+[data-theme="dark"] .scrollbar-hover-hide:hover {
+  scrollbar-color: #272727 transparent;
+}
+
+.scrollbar-hover-hide:hover::-webkit-scrollbar-thumb {
+  background: var(--neutral-300) !important;
+}
+
+[data-theme="dark"] .scrollbar-hover-hide:hover::-webkit-scrollbar-thumb {
+  background: #272727 !important;
+}
+
+.scrollbar-hover-hide:hover::-webkit-scrollbar-thumb:hover {
+  background: var(--neutral-400) !important;
+}
+
+[data-theme="dark"] .scrollbar-hover-hide:hover::-webkit-scrollbar-thumb:hover {
+  background: #525252 !important;
 }
 
 /* Toast Progress Bar Styles */

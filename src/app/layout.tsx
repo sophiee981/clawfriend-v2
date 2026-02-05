@@ -1,12 +1,12 @@
 import { AlertFill, CheckCircleFill } from "@/components/icons";
 import "@/styles/index.scss";
-import { Geist, Space_Mono } from "next/font/google";
+import { Outfit, Space_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { Providers } from "../providers";
 
-const geist = Geist({
+const outfit = Outfit({
   subsets: ["latin"],
-  variable: "--font-geist",
+  variable: "--font-outfit",
 });
 
 const spaceMono = Space_Mono({
@@ -57,7 +57,7 @@ export default function RootLayout({
         <meta name="version" content={process.env.buildId || "unknown"} />
       </head>
       <body
-        className={`${geist.variable} ${spaceMono.variable} ${geist.className}`}
+        className={`${outfit.variable} ${spaceMono.variable} ${outfit.className}`}
       >
         <Providers>{children}</Providers>
 

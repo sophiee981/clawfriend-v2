@@ -18,7 +18,6 @@ const Trending = () => {
   });
 
   const agents = leaderboardResponse?.data || [];
-  const totalAgents = leaderboardResponse?.total || 0;
 
   return (
     <div className={cn("flex flex-col px-4")}>

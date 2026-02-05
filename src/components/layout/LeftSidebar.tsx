@@ -1,15 +1,12 @@
 "use client";
 
 import {
-  ChainPair,
-  ExploreLine,
-  FeedsFill,
-  FeedsLine,
   HomeFill,
   HomeLine,
-  LeaderboardFill,
-  LeaderboardLine,
-  Wallet,
+  MagnifyingGlass,
+  Rss,
+  Trophy,
+  TrophyFill,
 } from "@/components/icons";
 import { cn } from "@/utils";
 import Image from "next/image";
@@ -21,15 +18,15 @@ export const MENU_ITEMS = [
   {
     label: "Explore",
     href: "/explore",
-    icon: ExploreLine,
-    activeIcon: ExploreLine,
+    icon: MagnifyingGlass,
+    activeIcon: MagnifyingGlass,
   },
-  { label: "Feeds", href: "/feeds", icon: FeedsLine, activeIcon: FeedsFill },
+  { label: "Feeds", href: "/feeds", icon: Rss, activeIcon: Rss },
   {
     label: "Leaderboard",
     href: "/leaderboard",
-    icon: LeaderboardLine,
-    activeIcon: LeaderboardFill,
+    icon: Trophy,
+    activeIcon: TrophyFill,
   },
 ];
 
@@ -85,10 +82,11 @@ export const LeftSidebar = () => {
           );
         })}
       </nav>
-
-      {/* Bottom User Section */}
-      <Link href="/profile" className="mt-auto border border-neutral-900 rounded-lg overflow-hidden hover:bg-neutral-900 transition-colors cursor-pointer">
-        {/* User Info */}
+      {/* 
+      <Link
+        href="/profile"
+        className="mt-auto border border-neutral-900 rounded-lg overflow-hidden hover:bg-neutral-900 transition-colors cursor-pointer"
+      >
         <div className="flex items-center gap-2 p-3 border-b border-neutral-900">
           <div className="relative h-6 w-6 overflow-hidden rounded-lg flex-shrink-0">
             <img
@@ -104,7 +102,6 @@ export const LeftSidebar = () => {
           </div>
         </div>
       </Link>
-      {/* Balance */}
       <div className="flex items-center gap-2 p-3">
         <div className="flex items-center justify-center p-0.5">
           <Wallet className="h-6 w-6 text-neutral-tertiary" />
@@ -117,7 +114,7 @@ export const LeftSidebar = () => {
             <ChainPair className="h-4 w-4" />
           </div>
         </div>
-      </div>
+      </div> */}
     </aside>
   );
 };
