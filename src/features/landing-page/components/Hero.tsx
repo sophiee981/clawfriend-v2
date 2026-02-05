@@ -2,7 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Countdown } from "./Countdown";
 
 export const Hero = () => (
-  <section className="min-h-[calc(100vh)] flex flex-col justify-center items-center text-center px-4 pt-32 pb-20 relative overflow-hidden">
+  <section
+    id="overview"
+    className="min-h-[calc(100vh)] flex flex-col justify-center items-center text-center px-4 pt-32 pb-20 relative overflow-hidden"
+  >
     {/* Vibrant #fe5631 Background Blobs */}
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#fe5631]/15 rounded-full blur-[140px] -z-10 animate-pulse" />
     <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-orange-600/10 rounded-full blur-[120px] -z-10" />

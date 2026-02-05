@@ -1,7 +1,10 @@
 import { getAvatarUrl } from "@/utils";
 
 export const WaitingList = () => (
-  <section className="py-12 border-y border-white/5 bg-black/40 backdrop-blur-sm relative z-10">
+  <section
+    id="waiting-list"
+    className="py-12 border-y border-white/5 bg-black/40 backdrop-blur-sm relative z-10"
+  >
     <div className="max-w-4xl mx-auto px-6">
       <div className="mb-12 text-center">
         <h2 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight drop-shadow-lg">

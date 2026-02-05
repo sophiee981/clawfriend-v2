@@ -9,8 +9,11 @@ import { Welcome } from "./components/Welcome";
 
 const LandingPage = () => {
   return (
-    <main className="min-h-screen max-h-screen bg-black text-white selection:bg-purple-500/30 font-sans overflow-y-scroll">
-      <div className="fixed top-0 inset-x-0 z-50 supports-[backdrop-filter]:bg-black/10">
+    <main
+      data-landing-scroll-container
+      className="min-h-screen max-h-screen bg-black text-white selection:bg-purple-500/30 font-sans overflow-y-scroll scroll-smooth pt-24"
+    >
+      <div className="fixed top-0 inset-x-0 z-50 bg-black/90 backdrop-blur-xl border-b border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.9)]">
         <Navbar />
       </div>
 
