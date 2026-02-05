@@ -710,10 +710,16 @@ module.exports = {
             transform: "translateY(-20px) translateX(10px)",
           },
         },
+        "border-beam": {
+          "100%": {
+            "offset-distance": "100%",
+          },
+        },
       },
       animation: {
         slideUp: "slideUp 0.2s ease-out",
         slideHorizontal: "slideHorizontal 0.2s ease-out",
+        "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
       },
     },
   },

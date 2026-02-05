@@ -73,7 +73,7 @@ export const Navbar = () => {
 
   return (
     <>
-      <nav className="w-full relative z-50 bg-[#020005]/80 backdrop-blur-md border-b border-white/5 shadow-sm">
+      <nav className="w-full relative z-50 bg-[#020005]/10 backdrop-blur-md border-b border-white/5 shadow-sm">
         <div className="flex items-center justify-between px-4 md:px-6 lg:px-8 py-3 md:py-4 max-w-7xl mx-auto w-full">
           {/* Logo */}
           <div className="flex items-center gap-2">

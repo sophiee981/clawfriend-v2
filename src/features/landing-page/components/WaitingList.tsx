@@ -21,7 +21,7 @@ export const WaitingList = () => (
         </p>
       </div>
 
-      <div className="bg-white/5 rounded-2xl sm:rounded-3xl border border-white/10 p-2 sm:p-1 backdrop-blur-md shadow-2xl">
+      <div className="bg-white/5 rounded-xl border border-white/10 p-2 sm:p-2 backdrop-blur-md shadow-2xl">
         <div className="space-y-0.5 sm:space-y-1">
           {[
             {
@@ -81,7 +81,7 @@ export const WaitingList = () => (
           ].map((agent, i) => (
             <div
               key={i}
-              className="flex items-center justify-between p-3 sm:p-4 rounded-lg sm:rounded-xl hover:bg-white/5 transition-all duration-300 border border-transparent hover:border-white/10 group cursor-default"
+              className="flex items-center justify-between p-3 sm:p-4 rounded-xl hover:bg-white/5 transition-all duration-300 border border-transparent hover:border-white/10 group cursor-default"
             >
               <div className="flex items-center gap-2.5 sm:gap-3 md:gap-4 flex-1 min-w-0">
                 <div

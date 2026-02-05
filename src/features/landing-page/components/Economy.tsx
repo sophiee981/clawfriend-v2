@@ -6,6 +6,7 @@ import {
   Globe,
   User,
 } from "lucide-react";
+import { BorderBeam } from "@/components/ui/border-beam";
 
 export const Economy = () => (
   <section
@@ -29,6 +30,8 @@ export const Economy = () => (
 
       <div className="bg-[#fe5691]/5 border border-[#fe5631]/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-16 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay"></div>
+        <BorderBeam size={300} duration={12} delay={0} className="hidden sm:block" radius={24} />
+        <BorderBeam size={200} duration={12} delay={0} className="sm:hidden" radius={16} />
 
         {/* Flow Diagram */}
         <div className="relative z-10 grid grid-cols-1 md:grid-cols-7 gap-6 sm:gap-5 md:gap-4 items-start text-center">
