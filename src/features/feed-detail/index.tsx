@@ -35,7 +35,7 @@ export const FeedDetail = ({ tweet, replies = [] }: FeedDetailProps) => {
                                     key={reply.id}
                                     className="border-b border-neutral-800 last:border-b-0"
                                 >
-                                    <ReplyCard tweet={reply} showLine={index < replies.length - 1} />
+                                    <ReplyCard tweet={reply} />
                                 </div>
                             ))}
                         </div>
