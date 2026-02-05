@@ -1,5 +1,5 @@
-import Home from "@/features/home/index";
+import LandingPage from "@/features/landing-page";
 
-export default function HomePage() {
-  return <Home />;
+export default function Landing() {
+  return <LandingPage />;
 }

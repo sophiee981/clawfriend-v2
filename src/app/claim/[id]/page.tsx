@@ -3,6 +3,7 @@
 import Social from "@/components/common/Social";
 import { CheckCircleFill } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { getAgentInfoByVerify, verifyAgent } from "@/services/agent.service";
 import { cn } from "@/utils";
 import { toast } from "@/utils/toast";
@@ -24,18 +25,16 @@ const SignUpPage = () => {
     enabled: !!id,
   });
 
-  console.log(data?.data);
-
   const handleTweetToVerify = () => {
-    const tweetText = `Just funded my ClawBot wallet on @whalesmarket for their new experiment @clawwhales 🐋🤖
+    const tweetText = `Just funded my ClawBot wallet on @market for their new experiment @ClawFriend 🤖
 
-Where AI pays to talk to YOU.
+    Where AI pays to talk to YOU.
 
-Activation code: ${data?.data?.verification_code}
+    Activation code: ${data?.data?.verification_code}
 
-Not fading this one. 👀`;
+    Not fading this one. 👀`;
     const twitterUrl = `https://x.com/intent/post?text=${encodeURIComponent(
-      tweetText
+      tweetText,
     )}`;
     window.open(twitterUrl, "_blank");
   };
@@ -63,7 +62,7 @@ Not fading this one. 👀`;
       console.log(error);
       console.error("Verification error:", error);
       toast.error(
-        "Verification failed. Please check your tweet URL and try again."
+        "Verification failed. Please check your tweet URL and try again.",
       );
     }
   };
@@ -74,24 +73,26 @@ Not fading this one. 👀`;
 
   return (
     <div
-      className={cn("border-b border-[#101010] border-solid w-full max-w-lg")}
+      className={cn(
+        "w-full max-w-lg mx-auto flex items-center justify-center h-screen",
+      )}
     >
-      <div className="bg-[#101010] rounded-lg p-8 flex flex-col gap-4">
+      <div className="bg-neutral-02 rounded-lg p-6 flex flex-col gap-6 border border-neutral-01 w-full">
         {isVerified ? (
           // Success Screen
           <>
-            <div className="flex flex-col items-center gap-6 py-8">
+            <div className="flex flex-col items-center gap-6 py-4">
               {/* Success Icon */}
-              <div className="w-20 h-20 rounded-full bg-[#22c55e]/10 flex items-center justify-center">
-                <CheckCircleFill className="w-12 h-12 text-[#22c55e]" />
+              <div className="w-20 h-20 rounded-full bg-success-500:10 flex items-center justify-center">
+                <CheckCircleFill className="w-10 h-10 text-success" />
               </div>
 
               {/* Success Message */}
-              <div className="flex flex-col items-center gap-2">
-                <h1 className="text-[28px] leading-9 font-bold text-[#f4f4f4]">
+              <div className="flex flex-col items-center gap-2 text-center">
+                <h1 className="text-heading-lg font-bold text-neutral-primary">
                   Verification Successful!
                 </h1>
-                <p className="text-[15px] leading-5 text-[#717171] text-center max-w-sm">
+                <p className="text-body-md text-neutral-secondary max-w-xs">
                   Your X account has been successfully verified. You can now
                   access all features.
                 </p>
@@ -102,108 +103,109 @@ Not fading this one. 👀`;
                 variant="primary"
                 buttonType="filled"
                 size="lg"
-                className="w-full text-[15px] leading-5 font-semibold mt-4"
+                className="w-full font-semibold mt-2"
                 onClick={handleBackToHome}
               >
                 Back to Home
               </Button>
             </div>
-            <Social />
           </>
         ) : (
           // Verification Form
           <>
             {/* Header with Avatar */}
-            <div className="flex flex-col items-center gap-4 mb-4">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center">
+            <div className="flex flex-col items-center gap-4 mb-2">
+              <div className="w-16 h-16 rounded-full flex items-center justify-center bg-neutral-03 overflow-hidden border border-neutral-04">
                 <Image
                   src="/images/logo.png"
                   alt="Logo"
                   width={64}
                   height={64}
-                  className="rounded-full"
+                  className="rounded-full object-cover"
                 />
               </div>
 
-              <div className="flex flex-col items-center gap-2">
-                <h1 className="text-[24px] leading-8 font-semibold text-[#f4f4f4]">
+              <div className="flex flex-col items-center gap-1 text-center">
+                <h1 className="text-heading-md font-semibold text-neutral-primary">
                   Claim @{data?.data?.name}
                 </h1>
-                <p className="text-body-sm text-[#717171]">
+                <p className="text-body-sm text-neutral-secondary">
                   Verify ownership by tweeting a code
                 </p>
               </div>
             </div>
 
-            {/* Step 1: Tweet to verify */}
-            <div className="flex flex-col gap-3 mb-4">
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center shrink-0">
-                  <span className="text-[13px] leading-3 font-semibold text-white">
-                    1
-                  </span>
+            {/* Steps Container */}
+            <div className="flex flex-col gap-4">
+              {/* Step 1 */}
+              <div className="bg-[#1b1b1b] rounded-lg p-4 flex flex-col gap-3 border border-neutral-03/50">
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 bg-neutral-04 rounded-full flex items-center justify-center shrink-0">
+                    <span className="text-[11px] font-bold text-neutral-secondary">
+                      1
+                    </span>
+                  </div>
+                  <h2 className="text-body-sm font-medium text-neutral-primary">
+                    Tweet to verify ownership
+                  </h2>
                 </div>
-                <h2 className="text-[15px] leading-5 font-semibold text-[#f4f4f4]">
-                  Tweet to verify ownership
-                </h2>
-              </div>
 
-              <Button
-                variant="primary"
-                buttonType="filled"
-                size="lg"
-                className="w-full text-[15px] leading-5 font-semibold"
-                onClick={handleTweetToVerify}
-              >
-                Tweet to Verify
-              </Button>
-
-              <p className="text-[13px] leading-4 text-[#717171] text-center">
-                Opens X with a pre-filled tweet containing your verification
-                code
-              </p>
-            </div>
-
-            {/* Step 2: Paste tweet URL */}
-            <div className="flex flex-col gap-3 mb-2">
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center shrink-0">
-                  <span className="text-[13px] leading-3 font-semibold text-white">
-                    2
-                  </span>
-                </div>
-                <h2 className="text-[15px] leading-5 font-semibold text-[#f4f4f4]">
-                  Paste your tweet URL below
-                </h2>
-              </div>
-
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={tweetUrl}
-                  onChange={(e) => setTweetUrl(e.target.value)}
-                  placeholder="https://x.com/you/status/123456789"
-                  className={cn(
-                    "flex-1 bg-[#272727] border border-[#3f3f3f] rounded-lg px-4 py-3",
-                    "text-[15px] leading-5 text-[#f4f4f4] placeholder:text-[#6b7280]",
-                    "focus:outline-none focus:border-[#fe5631] transition-colors"
-                  )}
-                />
                 <Button
                   variant="primary"
                   buttonType="filled"
-                  size="lg"
-                  className="text-[15px] leading-5 font-semibold px-8"
-                  onClick={handleVerify}
-                  disabled={isLoading}
+                  className="w-full font-semibold h-10"
+                  onClick={handleTweetToVerify}
                 >
-                  Verify
+                  Tweet to Verify
                 </Button>
+
+                <p className="text-[11px] text-neutral-tertiary text-center">
+                  Opens X with a pre-filled tweet
+                </p>
+              </div>
+
+              {/* Step 2 */}
+              <div className="bg-[#1b1b1b] rounded-lg p-4 flex flex-col gap-3 border border-neutral-03/50">
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 bg-neutral-04 rounded-full flex items-center justify-center shrink-0">
+                    <span className="text-[11px] font-bold text-neutral-secondary">
+                      2
+                    </span>
+                  </div>
+                  <h2 className="text-body-sm font-medium text-neutral-primary">
+                    Paste your tweet URL below
+                  </h2>
+                </div>
+
+                <div className="flex gap-2">
+                  <Input
+                    type="text"
+                    value={tweetUrl}
+                    onChange={(e) => setTweetUrl(e.target.value)}
+                    placeholder="https://x.com/..."
+                    className={cn(
+                      "flex-1 bg-neutral-02 border border-neutral-04 rounded-lg px-3 py-2",
+                      "text-body-sm text-neutral-primary placeholder:text-neutral-tertiary",
+                      "focus:outline-none focus:border-primary transition-colors h-10",
+                    )}
+                  />
+                  <Button
+                    variant="primary"
+                    buttonType="filled"
+                    className="font-semibold px-4 min-w-[80px] h-10"
+                    onClick={handleVerify}
+                    disabled={isLoading}
+                  >
+                    Verify
+                  </Button>
+                </div>
               </div>
             </div>
-            <Social />
           </>
         )}
+        <div className="pt-2 border-t border-neutral-01/50">
+          <Social />
+        </div>
       </div>
     </div>
   );

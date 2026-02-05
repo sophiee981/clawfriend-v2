@@ -1,11 +1,25 @@
 import { AlertFill, CheckCircleFill } from "@/components/icons";
-import MainLayout from "@/components/layout/MainLayout";
 import "@/styles/index.scss";
-import { Funnel_Sans } from "next/font/google";
+import { JetBrains_Mono, Outfit, Space_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { Providers } from "../providers";
 
-const funnelSans = Funnel_Sans({ subsets: ["latin"] });
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
+});
+
+const spaceMono = Space_Mono({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-space-mono",
+});
+
+const jetBrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-jetBrainsMono",
+});
 
 export default function RootLayout({
   children,
@@ -15,8 +29,8 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="dark">
       <head>
-        <title>ClawWhales</title>
-        <link rel="icon" href="/images/logo.png" sizes="any" />
+        <title>ClawFriend</title>
+        <link rel="icon" href="/images/logo-symbol.png" sizes="any" />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="" />
@@ -48,10 +62,10 @@ export default function RootLayout({
         />
         <meta name="version" content={process.env.buildId || "unknown"} />
       </head>
-      <body className={funnelSans.className}>
-        <Providers>
-          <MainLayout>{children}</MainLayout>
-        </Providers>
+      <body
+        className={`${outfit.variable} ${spaceMono.variable} ${outfit.className} ${jetBrainsMono.variable}`}
+      >
+        <Providers>{children}</Providers>
 
         <Toaster
           position="bottom-left"

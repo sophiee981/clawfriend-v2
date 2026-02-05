@@ -1,0 +1,26 @@
+targetPort: 3000
+ingress:
+  enable: true
+  host: claw.whales.market
+
+replicas: 5
+
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 30%
+    maxUnavailable: 30%
+
+resources:
+  requests:
+    cpu: "10m"
+    memory: "100Mi"
+  limits:
+    cpu: "1000m"
+    memory: "2000Mi"
+
+healthCheck:
+  enable: true
+  path: /api/health
+
+authDocs: false

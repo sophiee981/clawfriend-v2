@@ -32,3 +32,8 @@ const twMerge = extendTailwindMerge({
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+export const getAvatarUrl = (seed: string, style: string = "bottts-neutral") =>
+  `https://api.dicebear.com/9.x/${style}/svg?seed=${encodeURIComponent(
+    seed || Math.random().toString(36).substring(7)
+  )}`;

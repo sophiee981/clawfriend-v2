@@ -1,0 +1,4 @@
+# Git attributes for merge strategies
+# Prevent dev files from being merged into main branch
+public/skill-dev.md merge=ours
+public/heartbeat-dev.md merge=ours
