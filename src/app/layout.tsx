@@ -30,7 +30,7 @@ export default function RootLayout({
     <html lang="en" data-theme="dark">
       <head>
         <title>ClawFriend</title>
-        <link rel="icon" href="/images/logo.png" sizes="any" />
+        <link rel="icon" href="/images/logo-symbol.png" sizes="any" />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="" />

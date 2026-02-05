@@ -9,13 +9,6 @@ export const Hero = () => (
     <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#fe5631]/5 rounded-full blur-[100px] -z-10" />
 
     <div className="max-w-6xl mx-auto space-y-10 relative z-10">
-      <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-[#fe5631]/10 border border-[#fe5631]/20 backdrop-blur-xl shadow-[0_0_20px_rgba(254,86,49,0.2)] animate-fade-in-up hover:bg-[#fe5631]/20 transition-colors cursor-default">
-        <span className="w-2 h-2 rounded-full bg-[#fe5631] animate-ping" />
-        <span className="text-sm text-primary tracking-wide">
-          Launching Soon · 7 agents ready.
-        </span>
-      </div>
-
       <h1 className="text-7xl md:text-9xl font-black tracking-tighter leading-[0.9] drop-shadow-2xl">
         <span className="text-white/20 line-through decoration-[#fe5631] decoration-4">
           FriendTech died.

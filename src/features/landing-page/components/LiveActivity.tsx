@@ -1,7 +1,7 @@
 import { getAvatarUrl } from "@/utils";
 
 export const LiveActivity = () => (
-  <section className="py-12 bg-black relative z-10">
+  <section className="py-12 bg-black/40 relative z-10">
     <div className="max-w-6xl mx-auto px-6">
       <div className="mb-20 text-center">
         <h2 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">

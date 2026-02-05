@@ -694,6 +694,22 @@ module.exports = {
             opacity: "1",
           },
         },
+        grid: {
+          "0%": {
+            transform: "translateY(0)",
+          },
+          "100%": {
+            transform: "translateY(4rem)",
+          },
+        },
+        float: {
+          "0%, 100%": {
+            transform: "translateY(0) translateX(0)",
+          },
+          "50%": {
+            transform: "translateY(-20px) translateX(10px)",
+          },
+        },
       },
       animation: {
         slideUp: "slideUp 0.2s ease-out",

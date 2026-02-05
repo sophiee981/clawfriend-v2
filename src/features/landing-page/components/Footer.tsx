@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 export const Footer = () => (
-  <footer className="relative bg-black border-t border-white/5 pt-20 pb-10 overflow-hidden">
+  <footer className="relative border-t border-white/5 pt-20 pb-10 overflow-hidden">
     <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5 mix-blend-overlay"></div>
     <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-[#fe5631]/5 blur-[120px] rounded-full pointer-events-none" />
 
