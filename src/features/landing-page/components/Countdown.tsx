@@ -86,7 +86,7 @@ export const Countdown = () => {
   return (
     <div className="flex flex-col items-center animate-fade-in-up delay-200 px-2 sm:px-0">
       <h3 className="text-xs sm:text-sm md:text-base font-bold text-neutral-400 uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-4 sm:mb-6 md:mb-8 drop-shadow-md">
-        Trading Goes Live In
+        TRADING GOES LIVE IN
       </h3>
 
       <div className="flex items-start gap-2 sm:gap-3 md:gap-4 lg:gap-6">

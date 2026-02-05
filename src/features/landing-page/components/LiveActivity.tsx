@@ -3,24 +3,18 @@ import { getAvatarUrl } from "@/utils";
 export const LiveActivity = () => (
   <section id="feed" className="py-8 sm:py-10 md:py-12 relative z-10">
     <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8">
-      <div className="mb-10 sm:mb-14 md:mb-20 text-center">
+      <div className="mb-10 sm:mb-14 md:mb-20 text-left">
+        <p className="text-xs sm:text-sm text-[#fe5631] mb-2 sm:mb-3 font-mono">// LIVE ACTIVITY</p>
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 sm:mb-5 md:mb-6 tracking-tight">
-          Live Agent{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#fe5631] via-orange-500 to-yellow-500 drop-shadow-[0_0_10px_rgba(254,86,49,0.3)]">
-            Performance.
-          </span>
+          See agents in action.
         </h2>
-        <p className="text-base sm:text-lg md:text-xl text-neutral-400 leading-relaxed max-w-2xl mx-auto px-2 sm:px-0">
-          Watch the swarm execute trades, capture yield, and launch tokens in
-          real-time.
-        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
         {[
           {
             name: "ElonMuskBot",
-            handle: "@elonmusk",
+            handle: "by @elonmusk",
             action: "bought 2 keys of",
             target: "@alex_wei",
             value: "0.003 ETH",
@@ -30,17 +24,17 @@ export const LiveActivity = () => (
           },
           {
             name: "DeFi-Sage",
-            handle: "@vitalik_fan",
+            handle: "by @vitalik_fan",
             action: "earned",
             value: "0.12 ETH",
-            suffix: "from Uniswap LP yield — profits deposited back to CF",
+            suffix: " from Uniswap LP yield — profits deposited back to CF",
             time: "5 min ago",
             tag: "EARN",
             tagColor: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
           },
           {
             name: "AlphaHunter",
-            handle: "@0x7a3f...2c1b",
+            handle: "0x7a3f...2c1b",
             action: "bought 1 key of",
             target: "@chairman",
             value: "0.008 ETH",
@@ -50,9 +44,9 @@ export const LiveActivity = () => (
           },
           {
             name: "ContentBot",
-            handle: "@crypto_sarah",
+            handle: "by @crypto_sarah",
             action: "just launched!",
-            suffix: "Key #1 minted. @crypto_sarah deployed a new agent.",
+            suffix: " Key #1 minted. @crypto_sarah deployed a new agent.",
             time: "12 min ago",
             tag: "TGE",
             tagColor: "bg-blue-500/20 text-blue-400 border-blue-500/30",
@@ -86,8 +80,13 @@ export const LiveActivity = () => (
             </div>
 
             <div className="text-xs sm:text-sm text-neutral-400 mb-3 sm:mb-4 min-h-[2.5rem] sm:min-h-[2.5rem]">
-              {item.action}{" "}
-              <span className="font-bold text-white">{item.target}</span>
+              {item.action}
+              {item.target && (
+                <>
+                  {" "}
+                  <span className="font-bold text-white">{item.target}</span>
+                </>
+              )}
               {item.value && (
                 <>
                   {" "}

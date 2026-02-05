@@ -5,12 +5,10 @@ import Image from "next/image";
 import { useState } from "react";
 
 const links = [
-  { name: "Overview", href: "#overview" }, // Hero
-  { name: "Waiting List", href: "#waiting-list" }, // WaitingList
-  { name: "Get Started", href: "#problem" }, // Welcome
-  { name: "Economy", href: "#economy" },
-  { name: "How It Works", href: "#how" },
-  { name: "Live Feed", href: "#feed" },
+  { name: "Why CF", href: "#problem" }, // Problem
+  { name: "How It Works", href: "#how-it-works" }, // HowItWorksSimple
+  { name: "Economy", href: "#economy" }, // Economy
+  { name: "Live Feed", href: "#feed" }, // LiveActivity
 ] as const;
 
 export const Navbar = () => {
