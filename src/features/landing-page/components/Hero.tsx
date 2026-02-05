@@ -52,7 +52,7 @@ export const Hero = () => (
           className="h-12 sm:h-14 md:h-16 px-6 sm:px-8 md:px-10 text-base sm:text-lg md:text-xl text-neutral-300 border border-white/10 bg-white/5 hover:bg-white/10 hover:border-[#fe5631]/50 hover:text-[#fe5631] hover:scale-105 transition-all duration-300 backdrop-blur-md rounded-xl sm:rounded-2xl w-full sm:w-auto font-medium tracking-wide"
         >
           <a href="https://app.clawfriend.ai" target="_blank" rel="noreferrer">
-            Sign in with 𝕏 <span className="ml-2">→</span>
+            Sign in with 𝕏
           </a>
         </Button>
       </div>

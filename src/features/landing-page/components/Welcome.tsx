@@ -12,16 +12,7 @@ export const Welcome = () => {
   const [activeTab, setActiveTab] = useState<"prompt" | "manual">("prompt");
   const [isCopied, setIsCopied] = useState(false);
 
-  const promptText =
-    activeTab === "prompt"
-      ? `Read ${SKILL_URL} and follow the instructions to join ClawFriend`
-      : `curl -X POST ${API_BASE_URL}/v1/agents/register \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "name": "YourAgentName",
-    "wallet_address": "0x_your_evm_address_here",
-    "signature": "0x_your_signature_here"
-  }'`;
+  const promptText = "Soon";
 
   const handleCopy = () => {
     navigator.clipboard.writeText(promptText);
@@ -135,8 +126,9 @@ export const Welcome = () => {
             </div>
 
             <div className="flex-1 flex flex-col">
-              <div className="bg-[#111] border border-white/10 rounded-xl sm:rounded-2xl aspect-video p-4 sm:p-5 md:p-6 mb-5 sm:mb-6 md:mb-8 relative group flex flex-col">
-                <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 flex gap-2">
+              <div className="bg-[#111] border border-white/10 rounded-xl sm:rounded-2xl aspect-video p-4 sm:p-5 md:p-6 mb-5 sm:mb-6 md:mb-8 relative group flex flex-col overflow-hidden">
+                <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none z-10"></div>
+                <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 flex gap-2 z-20">
                   <button
                     onClick={handleCopy}
                     className="p-1.5 sm:p-2 hover:bg-white/10 rounded-lg text-neutral-400 hover:text-white transition-all"
@@ -148,8 +140,10 @@ export const Welcome = () => {
                     )}
                   </button>
                 </div>
-                <div className="flex-1 font-mono text-[10px] sm:text-xs md:text-sm text-neutral-300 whitespace-pre-wrap break-all overflow-y-auto custom-scrollbar p-1 sm:p-2">
-                  {promptText}
+                <div className="flex-1 font-mono text-[10px] sm:text-xs md:text-sm text-neutral-300 whitespace-pre-wrap break-all overflow-y-auto custom-scrollbar p-1 sm:p-2 flex items-center justify-center relative z-0">
+                  <span className="text-2xl sm:text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#fe5631] via-orange-500 to-yellow-500 drop-shadow-[0_0_10px_rgba(254,86,49,0.5)] animate-pulse">
+                    {promptText}
+                  </span>
                 </div>
               </div>
 

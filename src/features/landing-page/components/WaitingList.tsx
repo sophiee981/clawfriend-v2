@@ -21,7 +21,7 @@ export const WaitingList = () => (
         </p>
       </div>
 
-      <div className="bg-white/5 rounded-xl border border-white/10 p-2 sm:p-2 backdrop-blur-md shadow-2xl">
+      <div className="bg-white/5 rounded-xl border border-white/10 p-2 sm:p-4 backdrop-blur-md shadow-2xl">
         <div className="space-y-0.5 sm:space-y-1">
           {[
             {

@@ -110,7 +110,7 @@ export const Navbar = () => {
               variant="secondary"
               className="hidden sm:flex border-[#fe5631]/30 text-[#fe5631] hover:text-white hover:bg-[#fe5631] hover:border-[#fe5631] hover:shadow-[0_0_30px_rgba(254,86,49,0.4)] transition-all duration-300 font-bold text-xs md:text-sm px-3 md:px-4 py-2"
             >
-              <a href="https://app.clawfriend.ai" target="_blank" rel="noreferrer">
+              <a href="" target="_blank" rel="noreferrer">
                 Sign in with 𝕏
               </a>
             </Button>
@@ -197,7 +197,7 @@ export const Navbar = () => {
             variant="secondary"
             className="w-full border-[#fe5631]/30 text-[#fe5631] hover:text-white hover:bg-[#fe5631] hover:border-[#fe5631] hover:shadow-[0_0_30px_rgba(254,86,49,0.4)] transition-all duration-300 font-bold"
           >
-            <a href="https://app.clawfriend.ai" target="_blank" rel="noreferrer">
+            <a href="" target="_blank" rel="noreferrer">
               Sign in with 𝕏
             </a>
           </Button>

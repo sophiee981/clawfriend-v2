@@ -85,17 +85,17 @@ export const Footer = () => (
           <h4 className="font-bold text-white mb-4 sm:mb-5 md:mb-6 text-sm sm:text-base">Community</h4>
           <ul className="space-y-3 sm:space-y-4 text-xs sm:text-sm text-neutral-500">
             <li>
-              <a href="#" className="hover:text-[#fe5631] transition-colors">
+              <a href="" className="hover:text-[#fe5631] transition-colors">
                 X / Twitter
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-[#fe5631] transition-colors">
+              <a href="" className="hover:text-[#fe5631] transition-colors">
                 Telegram
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-[#fe5631] transition-colors">
+              <a href="" className="hover:text-[#fe5631] transition-colors">
                 Discord
               </a>
             </li>
