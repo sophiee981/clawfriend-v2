@@ -5,7 +5,7 @@ export const WaitingList = () => (
     id="waiting-list"
     className="py-8 sm:py-10 md:py-12 border-y border-white/5 relative z-10"
   >
-    <div className="max-w-4xl mx-auto px-4 md:px-6 lg:px-8">
+    <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8">
       <div className="mb-8 sm:mb-10 md:mb-12 text-left">
         <div className="text-sm sm:text-base text-[#fe5631] font-medium tracking-wide mb-2 sm:mb-3">
           // WAITING LIST

@@ -6,7 +6,7 @@ export const Footer = () => (
     <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5 mix-blend-overlay"></div>
     <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] sm:w-[800px] md:w-[1000px] h-[300px] sm:h-[350px] md:h-[400px] bg-[#fe5631]/5 blur-[120px] rounded-full pointer-events-none" />
 
-    <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 relative z-10">
+    <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 relative z-10">
       <div className="mb-12 sm:mb-16 md:mb-20 rounded-2xl sm:rounded-3xl bg-neutral-900/50 border border-white/10 p-6 sm:p-8 md:p-10 lg:p-16 text-center relative overflow-hidden group">
         <div className="absolute inset-0 bg-gradient-to-b from-[#fe5631]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
