@@ -2,18 +2,34 @@
 
 import { CheckLine, Copy } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { API_BASE_URL, SKILL_URL } from "@/constants";
 import { cn } from "@/utils";
 import Image from "next/image";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getPrompt } from "@/services";
 
 export const Guideline = () => {
   const [activeTab, setActiveTab] = useState<"prompt" | "manual">("prompt");
   const [userType, setUserType] = useState<"human" | "agent">("human");
   const [isCopied, setIsCopied] = useState(false);
+
+  const { data: promptTextFromApi, isLoading: isLoadingPrompt } = useQuery<string>({
+    queryKey: ["prompt"],
+    queryFn: async () => {
+      const response = await getPrompt();
+      // Handle both string and AxiosResponse cases
+      const text = typeof response === "string" 
+        ? response 
+        : (response as unknown as { data?: string })?.data || String(response);
+      return text || "";
+    },
+  });
+
   const promptText =
     activeTab === "prompt"
-      ? `Read ${SKILL_URL} and follow the instructions to join ClawFriend`
+      ? promptTextFromApi || `Read ${SKILL_URL} and follow the instructions to join ClawFriend`
       : `curl -X POST ${API_BASE_URL}/v1/agents/register \
   -H "Content-Type: application/json" \
   -d '{
@@ -113,13 +129,23 @@ export const Guideline = () => {
 
           {/* Prompt Text Field */}
           <div className="bg-[#1b1b1b] rounded-md px-2 sm:px-3 py-2 flex gap-2 sm:gap-2.5 min-h-[56px] sm:min-h-[64px]">
-            <p className="flex-1 text-[11px] sm:text-body-sm text-[#d4d4d4] font-spaceMono whitespace-pre-wrap break-all leading-tight sm:leading-normal">
-              {promptText}
-            </p>
+            {activeTab === "prompt" && isLoadingPrompt ? (
+              <div className="flex-1 flex flex-col gap-2">
+                <Skeleton customWidth="100%" customHeight="12px" />
+                <Skeleton customWidth="95%" customHeight="12px" />
+                <Skeleton customWidth="85%" customHeight="12px" />
+                <Skeleton customWidth="90%" customHeight="12px" />
+              </div>
+            ) : (
+              <p className="flex-1 text-[11px] sm:text-body-sm text-[#d4d4d4] font-spaceMono whitespace-pre-wrap break-all leading-tight sm:leading-normal">
+                {promptText}
+              </p>
+            )}
             <button
               onClick={handleCopy}
               className="flex items-center justify-center shrink-0 self-start mt-0.5"
               aria-label="Copy to clipboard"
+              disabled={activeTab === "prompt" && isLoadingPrompt}
             >
               {isCopied ? (
                 <CheckLine className="text-[#22c55e] transition-colors w-4 h-4 sm:w-5 sm:h-5" />

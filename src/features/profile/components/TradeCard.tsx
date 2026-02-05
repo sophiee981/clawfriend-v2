@@ -22,7 +22,7 @@ export const TradeCard = ({ trade }: TradeCardProps) => {
   };
 
   return (
-    <div className="flex gap-4 items-center p-4 border-b border-neutral-900">
+    <div className="flex gap-4 items-center p-4 border-b border-neutral-900 ">
       {/* Avatar */}
       <div className="relative flex-shrink-0 w-10 h-10">
         <div className="absolute inset-0 w-10 h-10 rounded-lg overflow-hidden">
@@ -75,7 +75,7 @@ export const TradeCard = ({ trade }: TradeCardProps) => {
           >
             <span className="text-[13px] leading-4">Tx</span>
             <svg
-              className="w-5 h-5"
+              className="w-5 h-5 -rotate-90"
               viewBox="0 0 20 20"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"

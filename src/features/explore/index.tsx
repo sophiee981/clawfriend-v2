@@ -2,7 +2,6 @@
 
 import RightSide from "@/components/common/RightSide";
 import { getAgentBalanceLeaderboard } from "@/services";
-import { useIsMobile } from "@/hooks/useViewSize";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import {
@@ -18,7 +17,6 @@ export const Explore = ({isSearchPage = false}: {isSearchPage?: boolean}) => {
   const [activeSearch, setActiveSearch] = useState("");
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const isMobile = useIsMobile();
 
   const { data: leaderboardResponse, isLoading } = useQuery({
     queryKey: ["agentBalanceLeaderboard"],
@@ -105,10 +103,9 @@ export const Explore = ({isSearchPage = false}: {isSearchPage?: boolean}) => {
     setSearchQuery(suggestion);
     handleSearch(suggestion);
   };
-
   return (
     <div className="flex h-full overflow-hidden">
-     { isSearchPage || !isMobile && <div className="flex h-full flex-col flex-1">
+      <div className={`flex h-full flex-col flex-1 ${!isSearchPage ? "max-sm:hidden" : "w-full"}`}>
         <SearchInput
           value={searchQuery}
           onChange={setSearchQuery}
@@ -127,9 +124,13 @@ export const Explore = ({isSearchPage = false}: {isSearchPage?: boolean}) => {
         <TrendsHeader />
 
         <TrendsList agents={agents} isLoading={isLoading} />
-      </div>}
-      {!isMobile && <RightSide />}
-      {!isSearchPage && isMobile && <ExploreMobile agents={agents} isLoading={isLoading} />}
+      </div>
+      <div className="hidden sm:block">
+        <RightSide />
+      </div>
+      <div className={`block sm:hidden w-full ${isSearchPage ? "hidden" : "w-full"}`}>
+        <ExploreMobile agents={agents} isLoading={isLoading} />
+      </div>
     </div>
   );
 };

@@ -30,7 +30,7 @@ interface MainPostCardProps {
 }
 
 export const MainPostCard = ({ tweet }: MainPostCardProps) => {
-  const imageMedia = tweet.medias?.find((m) => m.type === "image");
+  const images = tweet.medias?.filter((m) => m.type === "image") || [];
 
   return (
     <div className="border-b border-neutral-900 p-4">
@@ -54,7 +54,7 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
               <span className="text-[15px] font-medium leading-5 text-neutral-primary">
                 {tweet.agent?.displayName}
               </span>
-              <TwitterVerifiedBlue className="w-4 h-4 flex-shrink-0" />
+              <TwitterVerifiedBlue className="w-4 h-4 flex-shrink-0 text-[#1D9BF0]" />
             </div>
 
             {/* Username, price, time, visibility */}
@@ -81,14 +81,26 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
             <TweetContent content={tweet.content} />
           </div>
 
-          {/* Image */}
-          {imageMedia && (
-            <div className="mb-4 rounded-lg overflow-hidden">
-              <img
-                src={imageMedia.url}
-                alt="Post image"
-                className="w-full h-auto object-cover"
-              />
+          {/* Images */}
+          {images.length > 0 && (
+            <div className={`mb-4 gap-2 ${images.length === 1 ? 'grid grid-cols-1' :
+              images.length === 2 ? 'grid grid-cols-2' :
+                images.length === 3 ? 'grid grid-cols-2' :
+                  'grid grid-cols-2'
+              }`}>
+              {images.map((media, index) => (
+                <div
+                  key={index}
+                  className={`rounded-lg overflow-hidden ${images.length === 3 && index === 0 ? 'col-span-2' : ''
+                    }`}
+                >
+                  <img
+                    src={media.url}
+                    alt={`Post image ${index + 1}`}
+                    className="w-full h-auto object-cover"
+                  />
+                </div>
+              ))}
             </div>
           )}
 
