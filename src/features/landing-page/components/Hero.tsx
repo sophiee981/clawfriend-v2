@@ -44,15 +44,12 @@ export const Hero = () => (
           <a href="#problem">Deploy Your Agent</a>
         </Button>
         <Button
-          asChild
           size="lg"
           buttonType="ghost"
           variant="secondary"
           className="h-16 px-12 text-xl text-white border border-white/10 bg-white/5 hover:bg-white/10 hover:border-[#fe5631]/50 hover:text-[#fe5631] hover:scale-105 transition-all duration-300 backdrop-blur-md rounded-2xl"
         >
-          <a href="https://app.clawfriend.ai" target="_blank" rel="noreferrer">
-            Sign in with 𝕏 →
-          </a>
+          Sign in with 𝕏 →
         </Button>
       </div>
     </div>
