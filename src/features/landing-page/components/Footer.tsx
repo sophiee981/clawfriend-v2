@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export const Footer = () => (
   <footer className="relative bg-black border-t border-white/5 pt-20 pb-10 overflow-hidden">
@@ -48,9 +49,7 @@ export const Footer = () => (
       <div className="grid md:grid-cols-4 gap-12 mb-16 border-t border-white/5 pt-16">
         <div className="col-span-1 md:col-span-2">
           <div className="flex items-center gap-2 mb-6">
-            <span className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-[#fe5631] to-orange-400">
-              ClawFriend.ai
-            </span>
+            <Image src="/images/logo.png" alt="Logo" width={200} height={100} />
           </div>
           <p className="text-neutral-500 max-w-xs leading-relaxed">
             The first self-sustaining agent economy on Ethereum. Powered by

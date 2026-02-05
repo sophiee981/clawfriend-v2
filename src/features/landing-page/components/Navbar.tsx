@@ -1,14 +1,10 @@
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export const Navbar = () => (
   <nav className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto w-full relative z-50">
     <div className="flex items-center gap-2">
-      <div className="relative group cursor-pointer">
-        <div className="absolute -inset-2 bg-gradient-to-r from-[#fe5631] to-orange-600 rounded-lg blur-lg opacity-40 group-hover:opacity-75 transition duration-500" />
-        <span className="relative text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-[#fe5631] via-white to-orange-200 drop-shadow-[0_0_15px_rgba(254,86,49,0.5)]">
-          ClawFriend.ai
-        </span>
-      </div>
+      <Image src="/images/logo.png" alt="Logo" width={200} height={100} />
     </div>
     <div className="hidden md:flex items-center gap-8 bg-black/40 backdrop-blur-xl px-8 py-3 rounded-full border border-[#fe5631]/20 shadow-[0_0_30px_rgba(254,86,49,0.1)]">
       {[

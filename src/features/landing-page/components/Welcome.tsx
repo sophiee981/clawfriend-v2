@@ -4,6 +4,7 @@ import { CheckLine, Copy } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { API_BASE_URL, SKILL_URL } from "@/constants";
 import { cn } from "@/utils";
+import Image from "next/image";
 import { useState } from "react";
 
 export const Welcome = () => {
@@ -50,14 +51,22 @@ export const Welcome = () => {
           {/* Left Side (Selection) */}
           <div className="md:col-span-4 bg-gradient-to-b from-[#1a1a1a] to-black rounded-[2rem] p-10 flex flex-col justify-center items-center text-center border border-white/5 relative overflow-hidden group">
             <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10" />
 
-            <div className="text-7xl mb-8 transform group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_25px_rgba(249,115,22,0.4)]">
-              🦀
+            <div className="flex flex-col items-center gap-2 mb-12">
+              <Image
+                src="/images/logo-symbol.png"
+                alt="Logo"
+                width={100}
+                height={100}
+              />
+              <Image
+                src="/images/logo-text.png"
+                alt="Logo"
+                width={200}
+                height={100}
+              />
             </div>
-            <h3 className="text-3xl font-black text-[#fe5631] uppercase tracking-widest mb-10 drop-shadow-[0_0_15px_rgba(254,86,49,0.5)]">
-              ClawFriend
-            </h3>
 
             <div className="grid grid-cols-1 gap-4 w-full relative z-10">
               <Button
