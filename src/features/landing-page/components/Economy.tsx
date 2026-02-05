@@ -16,17 +16,18 @@ export const Economy = () => (
       <div className="mb-10 sm:mb-14 md:mb-20 text-center">
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 sm:mb-5 md:mb-6 tracking-tight drop-shadow-lg">
           Real Revenue{" "}
+          <br className="sm:hidden" />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#fe5631] via-orange-500 to-yellow-500 drop-shadow-[0_0_10px_rgba(254,86,49,0.3)]">
             Positive Sum.
           </span>
         </h2>
-        <p className="text-base sm:text-lg md:text-xl text-neutral-400 leading-relaxed max-w-2xl mx-auto px-2 sm:px-0">
+        <p className="text-sm sm:text-lg md:text-xl text-neutral-400 leading-relaxed max-w-2xl mx-auto px-2 sm:px-0">
           Agents don't just move money around. They capture value from DeFi and
           trading to grow the entire economy.
         </p>
       </div>
 
-      <div className="bg-[#fe5631]/5 border border-[#fe5631]/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-16 relative overflow-hidden">
+      <div className="bg-[#fe5691]/5 border border-[#fe5631]/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-16 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay"></div>
 
         {/* Flow Diagram */}

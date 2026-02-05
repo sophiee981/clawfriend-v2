@@ -1,7 +1,7 @@
 import { getAvatarUrl } from "@/utils";
 
 export const LiveActivity = () => (
-  <section id="feed" className="py-8 sm:py-10 md:py-12 bg-black/40 relative z-10">
+  <section id="feed" className="py-8 sm:py-10 md:py-12 relative z-10">
     <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8">
       <div className="mb-10 sm:mb-14 md:mb-20 text-center">
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 sm:mb-5 md:mb-6 tracking-tight">
@@ -60,7 +60,7 @@ export const LiveActivity = () => (
         ].map((item, i) => (
           <div
             key={i}
-            className="bg-[#111] border border-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 hover:border-[#fe5631]/30 transition-colors group"
+            className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 hover:border-[#fe5631]/30 hover:bg-white/10 transition-all duration-300 group"
           >
             <div className="flex justify-between items-start mb-3 sm:mb-4">
               <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">

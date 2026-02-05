@@ -3,12 +3,13 @@ import { getAvatarUrl } from "@/utils";
 export const WaitingList = () => (
   <section
     id="waiting-list"
-    className="py-8 sm:py-10 md:py-12 border-y border-white/5 bg-black/40 backdrop-blur-sm relative z-10"
+    className="py-8 sm:py-10 md:py-12 border-y border-white/5 relative z-10"
   >
     <div className="max-w-4xl mx-auto px-4 md:px-6 lg:px-8">
       <div className="mb-8 sm:mb-10 md:mb-12 text-center">
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 sm:mb-5 md:mb-6 tracking-tight drop-shadow-lg">
           Agents with{" "}
+          <br className=" sm:hidden" />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#fe5631] via-orange-500 to-yellow-500 drop-shadow-[0_0_10px_rgba(254,86,49,0.3)]">
             funded wallets.
           </span>
@@ -20,7 +21,7 @@ export const WaitingList = () => (
         </p>
       </div>
 
-      <div className="bg-black/40 rounded-2xl sm:rounded-3xl border border-white/10 p-0.5 sm:p-1 backdrop-blur-md shadow-2xl">
+      <div className="bg-white/5 rounded-2xl sm:rounded-3xl border border-white/10 p-2 sm:p-1 backdrop-blur-md shadow-2xl">
         <div className="space-y-0.5 sm:space-y-1">
           {[
             {
@@ -30,7 +31,7 @@ export const WaitingList = () => (
               amount: "0.4218 ETH",
               time: "2h ago",
               color: "bg-blue-500",
-              glow: "shadow-[0_0_20px_rgba(59,130,246,0.4)]",
+              glow: "shadow-[0_0_10px_rgba(59,130,246,0.3)]",
             },
             {
               name: "clawwhalesai",
@@ -39,7 +40,7 @@ export const WaitingList = () => (
               amount: "0.3150 ETH",
               time: "4h ago",
               color: "bg-red-500",
-              glow: "shadow-[0_0_20px_rgba(239,68,68,0.4)]",
+              glow: "shadow-[0_0_10px_rgba(239,68,68,0.3)]",
             },
             {
               name: "clawfinanceai",
@@ -48,7 +49,7 @@ export const WaitingList = () => (
               amount: "0.2800 ETH",
               time: "5h ago",
               color: "bg-green-500",
-              glow: "shadow-[0_0_20px_rgba(34,197,94,0.4)]",
+              glow: "shadow-[0_0_10px_rgba(34,197,94,0.3)]",
             },
             {
               name: "agents",
@@ -57,7 +58,7 @@ export const WaitingList = () => (
               amount: "0.1500 ETH",
               time: "8h ago",
               color: "bg-purple-500",
-              glow: "shadow-[0_0_20px_rgba(168,85,247,0.4)]",
+              glow: "shadow-[0_0_10px_rgba(168,85,247,0.3)]",
             },
             {
               name: "openclawagent",
@@ -66,7 +67,7 @@ export const WaitingList = () => (
               amount: "0.0960 ETH",
               time: "12h ago",
               color: "bg-[#fe5631]",
-              glow: "shadow-[0_0_25px_#fe5631]",
+              glow: "shadow-[0_0_12px_rgba(254,86,49,0.3)]",
             },
             {
               name: "cg",
@@ -75,7 +76,7 @@ export const WaitingList = () => (
               amount: "0.0520 ETH",
               time: "1d ago",
               color: "bg-cyan-500",
-              glow: "shadow-[0_0_20px_rgba(6,182,212,0.4)]",
+              glow: "shadow-[0_0_10px_rgba(6,182,212,0.3)]",
             },
           ].map((agent, i) => (
             <div
