@@ -102,13 +102,12 @@ export const HowItWorks = () => {
                       strokeDasharray="25 75"
                       pathLength="100"
                       style={{
-                        filter: `drop-shadow(0 0 6px ${
-                          item.shadowColor === "blue"
+                        filter: `drop-shadow(0 0 6px ${item.shadowColor === "blue"
                             ? "#3b82f6"
                             : item.shadowColor === "purple"
                               ? "#a855f7"
                               : "#fe5631"
-                        })`,
+                          })`,
                       }}
                     >
                       <animate
