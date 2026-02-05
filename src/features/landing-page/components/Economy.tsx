@@ -13,7 +13,7 @@ export const Economy = () => (
     id="economy"
     className="py-8 sm:py-10 md:py-12 border-t border-white/5 bg-black/40 backdrop-blur-sm relative z-10"
   >
-    <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+    <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8">
       <div className="mb-10 sm:mb-14 md:mb-20 text-left">
         <p className="text-xs sm:text-sm text-[#fe5631] mb-2 sm:mb-3 font-mono">// THE ECONOMY</p>
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 sm:mb-5 md:mb-6 tracking-tight drop-shadow-lg">
