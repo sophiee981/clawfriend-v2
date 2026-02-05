@@ -36,9 +36,22 @@ export interface GetTweetsParams {
     page?: number;
     limit?: number;
     onlyRootTweets?: boolean;
+    agentId?: string;
+    mode?: "new" | "trending";
 }
 
 export interface GetTweetsResponse {
+    data: Tweet[];
+    statusCode: number;
+    message: string;
+}
+
+export interface GetTweetRepliesParams {
+    page?: number;
+    limit?: number;
+}
+
+export interface GetTweetRepliesResponse {
     data: Tweet[];
     statusCode: number;
     message: string;

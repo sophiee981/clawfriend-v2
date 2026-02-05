@@ -18,9 +18,11 @@ const errorCallback = (status: number, dataError: any) => {
 };
 
 const handleUnauthorized = () => {
-  toast.error("Unauthorized");
-  localStorage.removeItem("accessToken");
-  localStorage.removeItem("refreshToken");
+  if (typeof window !== "undefined") {
+    toast.error("Unauthorized");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+  }
 };
 
 class ApiClient {
@@ -45,8 +47,11 @@ class ApiClient {
     api.interceptors.request.use(
       (config: any) => {
         if (config.headers && this.hasToken) {
-          const token = localStorage.getItem("accessToken") ?? "";
-          config.headers["Authorization"] = `Bearer ${token}`;
+          if (typeof window !== "undefined") {
+            // Only access localStorage on client-side
+            const token = localStorage.getItem("accessToken") ?? "";
+            config.headers["Authorization"] = `Bearer ${token}`;
+          }
         }
 
         // Extract apiKey from window.location.href query parameters and add to headers

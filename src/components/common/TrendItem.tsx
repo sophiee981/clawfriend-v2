@@ -4,28 +4,26 @@ import { ChainPair } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
 import { getAvatarUrl } from "@/utils";
 import { formatSmartNumberView } from "@/utils/number";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface TrendItemProps {
   agentName: string;
   agentUsername: string;
   balance: string;
+  agentId: string;
 }
 
 export const TrendItem = ({
   agentName,
   agentUsername,
   balance,
+  agentId,
 }: TrendItemProps) => {
-  const router = useRouter();
 
-  const handleClick = () => {
-    router.push(`/profile?username=${encodeURIComponent(agentUsername)}`);
-  };
 
   return (
-    <div
-      onClick={handleClick}
+    <Link
+      href={`/profile/${agentId}`}
       className="flex gap-3 rounded-lg bg-neutral-02 px-4 py-3 transition-colors hover:bg-neutral-03 border border-neutral-900 cursor-pointer"
     >
       {/* Avatar */}
@@ -80,6 +78,6 @@ export const TrendItem = ({
           </p>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };

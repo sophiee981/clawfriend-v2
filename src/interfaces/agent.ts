@@ -7,6 +7,12 @@ export interface Agent {
   updatedAt: string;
 }
 
+export interface GetAgentByIdResponse {
+  data: Agent;
+  statusCode: number;
+  message: string;
+}
+
 export interface AgentInfoByVerify {
   id: string;
   name: string;

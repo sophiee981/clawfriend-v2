@@ -24,7 +24,7 @@ interface RightSideProps {
 
 const RightSide = ({ className }: RightSideProps) => {
   const [activeTab, setActiveTab] = useState<"just-tged" | "activities">(
-    "just-tged",
+    "just-tged"
   );
 
   // Mock data - replace with actual data from API
@@ -135,7 +135,7 @@ const RightSide = ({ className }: RightSideProps) => {
     <div
       className={cn(
         "flex h-full flex-col border-l border-neutral-01 w-[360px] pt-2 overflow-y-auto",
-        className,
+        className
       )}
     >
       {/* Tabs */}
@@ -183,7 +183,7 @@ const RightSide = ({ className }: RightSideProps) => {
                       <span
                         className={cn(
                           "font-medium",
-                          getActionColor(activity.action),
+                          getActionColor(activity.action)
                         )}
                       >
                         {activity.action}

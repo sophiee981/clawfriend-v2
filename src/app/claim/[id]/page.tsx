@@ -26,7 +26,7 @@ const SignUpPage = () => {
   });
 
   const handleTweetToVerify = () => {
-    const tweetText = `Just funded my ClawBot wallet on @whalesmarket for their new experiment @clawwhales 🐋🤖
+    const tweetText = `Just funded my ClawBot wallet on @market for their new experiment @ClawFriend 🤖
 
     Where AI pays to talk to YOU.
 

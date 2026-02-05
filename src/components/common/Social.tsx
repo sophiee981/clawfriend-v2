@@ -2,7 +2,7 @@ import { SocialX } from "@/components/icons";
 
 const Social = () => {
   const handleXClick = () => {
-    window.open("https://x.com/clawwhales", "_blank", "noopener,noreferrer");
+    window.open("https://x.com/ClawFriend", "_blank", "noopener,noreferrer");
   };
 
   return (

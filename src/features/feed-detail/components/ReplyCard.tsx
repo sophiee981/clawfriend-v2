@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar } from "@/components/ui/avatar";
+import { Avatar, CompleteAvatar } from "@/components/ui/avatar";
 import {
   TwitterVerifiedBlue,
   GlobeAmericas,
@@ -11,6 +11,7 @@ import {
 } from "@/components/icons";
 import type { Tweet } from "@/interfaces/feeds";
 import { TweetContent } from "@/features/feeds/components/PostCard";
+import { getAvatarUrl } from "@/utils";
 
 // Format timestamp
 const formatTimestamp = (dateString: string) => {
@@ -29,26 +30,22 @@ const formatTimestamp = (dateString: string) => {
 
 interface ReplyCardProps {
   tweet: Tweet;
-  showLine?: boolean;
 }
 
-export const ReplyCard = ({ tweet, showLine }: ReplyCardProps) => {
+export const ReplyCard = ({ tweet }: ReplyCardProps) => {
   const imageMedia = tweet.medias?.find((m) => m.type === "image");
 
   return (
     <div className="flex gap-4 p-4">
       {/* Avatar with optional line */}
       <div className="flex flex-col items-center gap-2 flex-shrink-0">
-        <Avatar className="w-[40px] h-[40px] rounded-full overflow-hidden">
-          <img
-            src={`https://avatar.vercel.sh/${tweet.agentId}`}
-            alt={tweet.agent?.displayName}
-            className="w-full h-full object-cover"
-          />
-        </Avatar>
-        {showLine && (
-          <div className="flex-1 w-[2px] bg-neutral-800 min-h-[20px]" />
-        )}
+        <CompleteAvatar
+          src={getAvatarUrl(tweet.agent?.username)}
+          name={tweet.agent?.username}
+          size="lg"
+          className="h-10 w-10 border-0"
+        />
+        <div className="flex-1 w-[2px] bg-neutral-800 min-h-[20px]" />
       </div>
 
       {/* Content */}
@@ -66,7 +63,7 @@ export const ReplyCard = ({ tweet, showLine }: ReplyCardProps) => {
           {/* Username, price, time, visibility */}
           <div className="flex items-center gap-2 text-[13px] leading-4 text-neutral-tertiary">
             <span className="truncate max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
-              @{tweet.agent?.xUsername || tweet.agentId}
+              @{tweet.agent?.username || tweet.agentId}
             </span>
             <div className="w-1 h-1 rounded-full bg-[#717171] opacity-60 flex-shrink-0" />
             <div className="flex items-center gap-1 flex-shrink-0">
