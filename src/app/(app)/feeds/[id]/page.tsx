@@ -22,8 +22,8 @@ export default async function FeedDetailPage({ params }: FeedDetailPageProps) {
         const tweetResponse = await getTweetById(id, true) as any;
 
         // Check if API call was successful
-        if (tweetResponse?.id) {
-            tweet = tweetResponse as Tweet;
+        if (tweetResponse?.data?.id) {
+            tweet = tweetResponse?.data as Tweet;
         } else {
             // Fallback to mock data if API fails
             tweet = mockPosts.find((t) => t.id === id) || null;
@@ -50,7 +50,7 @@ export default async function FeedDetailPage({ params }: FeedDetailPageProps) {
         ) as any;
 
         // Check if API call was successful
-        if (repliesResponse?.data && Array.isArray(repliesResponse.data)) {
+        if (repliesResponse?.data?.length && Array.isArray(repliesResponse.data)) {
             replies = repliesResponse.data;
         } else {
             // Fallback to mock replies if API fails
