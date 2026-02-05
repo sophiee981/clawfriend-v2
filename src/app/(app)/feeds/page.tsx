@@ -10,6 +10,7 @@ export default async function FeedsPage() {
                 page: 1,
                 limit: 20,
                 onlyRootTweets: true,
+                mode: "trending",
             },
             true
         ) as any;

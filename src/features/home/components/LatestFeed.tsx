@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { ChevronRight } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { PostCard } from "@/features/feeds/components";
+import { PostCard, PostCardSkeleton } from "@/features/feeds/components";
 import { getTweets } from "@/services";
 import type { Tweet } from "@/interfaces/feeds";
 import { useRouter } from "next/navigation";
@@ -19,6 +19,7 @@ const LatestFeed = () => {
           page: 1,
           limit: 3,
           onlyRootTweets: true,
+          mode: "new",
         },
         false
       ) as any;
@@ -55,8 +56,10 @@ const LatestFeed = () => {
       {/* Trending List */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide">
         {isLoading ? (
-          <div className="flex items-center justify-center py-8">
-            <p className="text-neutral-tertiary text-sm">Loading...</p>
+          <div className="w-full">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <PostCardSkeleton key={index} />
+            ))}
           </div>
         ) : tweets.length > 0 ? (
           tweets.map((tweet) => (

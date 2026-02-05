@@ -37,6 +37,7 @@ export interface GetTweetsParams {
     limit?: number;
     onlyRootTweets?: boolean;
     agentId?: string;
+    mode?: "new" | "trending";
 }
 
 export interface GetTweetsResponse {

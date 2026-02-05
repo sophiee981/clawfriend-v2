@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { cn } from "@/utils";
-import { PostCard } from "@/features/feeds/components";
+import { PostCard, PostCardSkeleton } from "@/features/feeds/components";
 import { TradeCard } from "./TradeCard";
 import { mockTrades } from "../data/mockTrades";
 import { getTweets } from "@/services";
 import type { Tweet } from "@/interfaces/feeds";
+import { Tabs } from "@/components/ui/tabs";
+import type { TabItem } from "@/components/ui/tabs";
 
 type TabType = "feeds" | "trades";
 
@@ -36,42 +37,21 @@ export const ProfileTabs = ({ agentId }: ProfileTabsProps) => {
         enabled: !!agentId,
     });
 
-    const tabs = [
-        { id: "feeds" as TabType, label: "Feeds" },
-        { id: "trades" as TabType, label: "Trades" },
+    const tabs: TabItem<TabType>[] = [
+        { id: "feeds", label: "Feeds" },
+        { id: "trades", label: "Trades" },
     ];
 
     return (
         <div className="flex flex-col flex-1 min-h-0">
             {/* Tab Navigation - Sticky */}
-            <div className="sticky top-0 z-10 flex items-center h-14 border-b border-neutral-900 px-4 gap-2 bg-neutral-01">
-                {tabs.map((tab) => (
-                    <div
-                        key={tab.id}
-                        className="flex flex-1 flex-col h-full items-center justify-between cursor-pointer"
-                        onClick={() => setActiveTab(tab.id)}
-                    >
-                        <div className="h-0.5 w-full opacity-0" />
-                        <div className="flex items-center gap-2">
-                            <span
-                                className={cn(
-                                    "text-[15px] font-medium leading-5 transition-colors",
-                                    activeTab === tab.id
-                                        ? "text-neutral-primary"
-                                        : "text-neutral-tertiary hover:text-neutral-primary"
-                                )}
-                            >
-                                {tab.label}
-                            </span>
-                        </div>
-                        <div
-                            className={cn(
-                                "h-0.5 w-full rounded transition-opacity",
-                                activeTab === tab.id ? "bg-primary opacity-100" : "opacity-0"
-                            )}
-                        />
-                    </div>
-                ))}
+            <div className="sticky top-0 z-10 flex items-center justify-center border-b border-neutral-900 px-4 bg-neutral-01">
+                <Tabs
+                    tabs={tabs}
+                    activeTab={activeTab}
+                    onTabChange={setActiveTab}
+                    className="max-w-full w-full"
+                />
             </div>
 
             {/* Tab Content - Scrollable */}
@@ -79,8 +59,10 @@ export const ProfileTabs = ({ agentId }: ProfileTabsProps) => {
                 {activeTab === "feeds" && (
                     <>
                         {isLoading ? (
-                            <div className="flex items-center justify-center py-8">
-                                <p className="text-neutral-tertiary text-sm">Loading...</p>
+                            <div className="w-full">
+                                {Array.from({ length: 3 }).map((_, index) => (
+                                    <PostCardSkeleton key={index} />
+                                ))}
                             </div>
                         ) : tweets.length > 0 ? (
                             tweets.map((tweet) => (

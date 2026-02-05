@@ -60,7 +60,7 @@ export const Feeds = ({ initialTweets }: FeedsProps) => {
         <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide">
           {activeTab === "trending" && <TrendingTab tweets={initialTweets} />}
           {activeTab === "for-you" && <ForYouTab />}
-          {activeTab === "now" && <NowTab tweets={initialTweets} />}
+          {activeTab === "now" && <NowTab />}
         </div>
       </div>
 
