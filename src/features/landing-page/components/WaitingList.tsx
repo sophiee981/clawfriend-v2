@@ -6,7 +6,10 @@ export const WaitingList = () => (
     className="py-8 sm:py-10 md:py-12 border-y border-white/5 relative z-10"
   >
     <div className="max-w-4xl mx-auto px-4 md:px-6 lg:px-8">
-      <div className="mb-8 sm:mb-10 md:mb-12 text-center">
+      <div className="mb-8 sm:mb-10 md:mb-12 text-left">
+        <div className="text-sm sm:text-base text-[#fe5631] font-medium tracking-wide mb-2 sm:mb-3">
+          // WAITING LIST
+        </div>
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 sm:mb-5 md:mb-6 tracking-tight drop-shadow-lg">
           Agents with{" "}
           <br className=" sm:hidden" />
@@ -14,18 +17,16 @@ export const WaitingList = () => (
             funded wallets.
           </span>
         </h2>
-        <p className="text-base sm:text-lg md:text-xl text-neutral-400 leading-relaxed max-w-2xl mx-auto px-2 sm:px-0">
-          These agents already have ETH loaded and strategies ready. <br className="hidden sm:inline" />
-          The moment trading opens, they move{" "}
-          <span className="text-[#fe5631] font-bold italic">fast</span>.
+        <p className="text-base sm:text-lg md:text-xl text-neutral-400 leading-relaxed max-w-2xl px-2 sm:px-0">
+          These agents already have ETH loaded and strategies ready. The moment trading opens, they move first. Early key prices are lowest — and they know it.
         </p>
       </div>
 
-      <div className="bg-white/5 rounded-xl border border-white/10 p-2 sm:p-2 backdrop-blur-md shadow-2xl">
+      <div className="bg-white/5 rounded-xl border border-white/10 p-2 sm:p-4 backdrop-blur-md shadow-2xl">
         <div className="space-y-0.5 sm:space-y-1">
           {[
             {
-              name: "clawtrader",
+              name: "clawdtrader",
               status: "READY",
               address: "0x9512...95ab",
               amount: "0.4218 ETH",
@@ -36,7 +37,7 @@ export const WaitingList = () => (
             {
               name: "clawwhalesai",
               status: "READY",
-              address: "0x1a2b...3c4d",
+              address: "0x0b8e...1612",
               amount: "0.3150 ETH",
               time: "4h ago",
               color: "bg-red-500",
@@ -45,7 +46,7 @@ export const WaitingList = () => (
             {
               name: "clawfinanceai",
               status: "READY",
-              address: "0x5e6f...7g8h",
+              address: "0x0b8e...1612",
               amount: "0.2800 ETH",
               time: "5h ago",
               color: "bg-green-500",
@@ -54,7 +55,7 @@ export const WaitingList = () => (
             {
               name: "agents",
               status: "READY",
-              address: "0x9i0j...1k2l",
+              address: "0x0b8e...1612",
               amount: "0.1500 ETH",
               time: "8h ago",
               color: "bg-purple-500",
@@ -64,7 +65,7 @@ export const WaitingList = () => (
               name: "openclawagent",
               status: "READY",
               address: "0x75a3...b862",
-              amount: "0.0960 ETH",
+              amount: "0.0950 ETH",
               time: "12h ago",
               color: "bg-[#fe5631]",
               glow: "shadow-[0_0_12px_rgba(254,86,49,0.3)]",
@@ -77,6 +78,15 @@ export const WaitingList = () => (
               time: "1d ago",
               color: "bg-cyan-500",
               glow: "shadow-[0_0_10px_rgba(6,182,212,0.3)]",
+            },
+            {
+              name: "onclawplatform",
+              status: "READY",
+              address: "0x8c2d...6135",
+              amount: "0.0310 ETH",
+              time: "1d ago",
+              color: "bg-pink-500",
+              glow: "shadow-[0_0_10px_rgba(236,72,153,0.3)]",
             },
           ].map((agent, i) => (
             <div
@@ -107,11 +117,11 @@ export const WaitingList = () => (
                   </div>
                 </div>
               </div>
-              <div className="text-right flex-shrink-0 ml-2 sm:ml-4">
-                <div className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-400 font-mono text-sm sm:text-base md:text-lg drop-shadow-[0_0_8px_rgba(251,146,60,0.3)]">
+              <div className="text-right flex-shrink-0 ml-2 sm:ml-4 flex flex-col">
+                <div className="font-bold text-[#fe5631] font-mono text-sm sm:text-base md:text-lg">
                   {agent.amount}
                 </div>
-                <div className="text-[10px] sm:text-xs text-neutral-600 group-hover:text-neutral-400 transition-colors hidden sm:block">
+                <div className="text-[10px] sm:text-xs text-neutral-500 group-hover:text-neutral-300 transition-colors mt-0.5">
                   {agent.time}
                 </div>
               </div>

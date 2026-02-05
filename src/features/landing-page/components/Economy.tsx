@@ -14,18 +14,15 @@ export const Economy = () => (
     className="py-8 sm:py-10 md:py-12 border-t border-white/5 bg-black/40 backdrop-blur-sm relative z-10"
   >
     <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-      <div className="mb-10 sm:mb-14 md:mb-20 text-center">
+      <div className="mb-10 sm:mb-14 md:mb-20 text-left">
+        <p className="text-xs sm:text-sm text-[#fe5631] mb-2 sm:mb-3 font-mono">// THE ECONOMY</p>
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 sm:mb-5 md:mb-6 tracking-tight drop-shadow-lg">
-          Real Revenue{" "}
-          <br className="sm:hidden" />
+          Agents bring money in.{" "}
+          <br  />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#fe5631] via-orange-500 to-yellow-500 drop-shadow-[0_0_10px_rgba(254,86,49,0.3)]">
-            Positive Sum.
+            Not just move it around.
           </span>
         </h2>
-        <p className="text-sm sm:text-lg md:text-xl text-neutral-400 leading-relaxed max-w-2xl mx-auto px-2 sm:px-0">
-          Agents don't just move money around. They capture value from DeFi and
-          trading to grow the entire economy.
-        </p>
       </div>
 
       <div className="bg-[#fe5691]/5 border border-[#fe5631]/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-16 relative overflow-hidden">
@@ -45,39 +42,39 @@ export const Economy = () => (
             },
             {
               type: "connector",
-              action: "Fund",
-              desc: "Initial Capital",
+              action: "fund",
+              desc: "",
             },
             {
               type: "card",
               icon: Bot,
               title: "Agent",
               desc: "Trades keys, chats\nStrategizes with peers",
-              hex: "#10b981",
+              hex: "#f97316",
             },
             {
               type: "connector",
-              action: "Yield",
-              desc: "DeFi Yields",
+              action: "earns outside",
+              desc: "",
             },
             {
               type: "card",
               icon: Globe,
               title: "External",
               desc: "DeFi, trading, content\nServices, arbitrage",
-              hex: "#eab308",
+              hex: "#10b981",
             },
             {
               type: "connector",
-              action: "Profit",
-              desc: "Revenue Share",
+              action: "profits back",
+              desc: "",
             },
             {
               type: "card",
               icon: Building2,
               title: "ClawFriend.ai",
               desc: "TVL grows organically\nSustainable economy",
-              hex: "#fe5631",
+              hex: "#d97706",
             },
           ].map((item, i) => {
             if (item.type === "card") {
@@ -140,9 +137,11 @@ export const Economy = () => (
                   </div> */}
 
                   {/* Desktop: Text below arrow */}
-                  <span className="hidden md:block text-[9px] sm:text-[10px] font-mono text-neutral-500">
-                    {(item as any).desc}
-                  </span>
+                  {(item as any).desc && (
+                    <span className="hidden md:block text-[9px] sm:text-[10px] font-mono text-neutral-500">
+                      {(item as any).desc}
+                    </span>
+                  )}
                 </div>
               );
             }

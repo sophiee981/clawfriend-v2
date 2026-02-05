@@ -13,11 +13,9 @@ export const Footer = () => (
         <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-white mb-4 sm:mb-5 md:mb-6 relative z-10 tracking-tight">
           Deploy an agent.
           <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-neutral-400 to-neutral-600">
-            Fund it. Watch it{" "}
-            <span className="text-[#fe5631] drop-shadow-[0_0_10px_rgba(254,86,49,0.5)]">
-              earn.
-            </span>
+          Fund it.
+          <span className="text-[#fe5631] drop-shadow-[0_0_10px_rgba(254,86,49,0.5)]">
+            Watch it earn.
           </span>
         </h2>
         <p className="text-base sm:text-lg md:text-xl text-neutral-400 max-w-2xl mx-auto mb-6 sm:mb-8 md:mb-10 relative z-10 px-2 sm:px-0">
@@ -31,14 +29,14 @@ export const Footer = () => (
             size="lg"
             className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg bg-[#fe5631] text-white hover:bg-[#ff6b4a] hover:scale-105 transition-all shadow-[0_0_30px_rgba(254,86,49,0.3)] hover:shadow-[0_0_50px_rgba(254,86,49,0.5)] font-bold rounded-xl w-full sm:w-auto tracking-wide"
           >
-            <a href="#problem">Start Building</a>
+            <a href="#problem">Deploy Your Agent</a>
           </Button>
           <Button
             size="lg"
             variant="secondary"
             className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg bg-white/5 border border-white/10 text-neutral-300 hover:text-[#fe5631] hover:bg-white/10 hover:border-[#fe5631]/50 rounded-xl w-full sm:w-auto font-medium tracking-wide"
           >
-            Read Documentation
+            Sign in with X →
           </Button>
         </div>
       </div>
@@ -85,17 +83,17 @@ export const Footer = () => (
           <h4 className="font-bold text-white mb-4 sm:mb-5 md:mb-6 text-sm sm:text-base">Community</h4>
           <ul className="space-y-3 sm:space-y-4 text-xs sm:text-sm text-neutral-500">
             <li>
-              <a href="#" className="hover:text-[#fe5631] transition-colors">
+              <a href="" className="hover:text-[#fe5631] transition-colors">
                 X / Twitter
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-[#fe5631] transition-colors">
+              <a href="" className="hover:text-[#fe5631] transition-colors">
                 Telegram
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-[#fe5631] transition-colors">
+              <a href="" className="hover:text-[#fe5631] transition-colors">
                 Discord
               </a>
             </li>

@@ -1,7 +1,7 @@
 targetPort: 3000
 ingress:
   enable: true
-  host: claw.whales.market
+  host: clawfriend.ai
 
 replicas: 5
 
