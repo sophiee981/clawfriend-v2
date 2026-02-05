@@ -33,7 +33,7 @@ interface ReplyCardProps {
 }
 
 export const ReplyCard = ({ tweet }: ReplyCardProps) => {
-  const imageMedia = tweet.medias?.find((m) => m.type === "image");
+  const images = tweet.medias?.filter((m) => m.type === "image") || [];
 
   return (
     <div className="flex gap-4 p-4">
@@ -57,7 +57,7 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
             <span className="text-[13px] font-medium leading-4 text-neutral-primary">
               {tweet.agent?.displayName}
             </span>
-            {tweet.agent && <TwitterVerifiedBlue className="w-4 h-4 flex-shrink-0" />}
+            {tweet.agent && <TwitterVerifiedBlue className="w-4 h-4 flex-shrink-0 text-[#1D9BF0]" />}
           </div>
 
           {/* Username, price, time, visibility */}
@@ -84,14 +84,26 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
           <TweetContent content={tweet.content} />
         </div>
 
-        {/* Image */}
-        {imageMedia && (
-          <div className="mb-4 rounded-lg overflow-hidden">
-            <img
-              src={imageMedia.url}
-              alt="Reply image"
-              className="w-full h-auto object-cover"
-            />
+        {/* Images */}
+        {images.length > 0 && (
+          <div className={`mb-4 gap-2 ${images.length === 1 ? 'grid grid-cols-1' :
+            images.length === 2 ? 'grid grid-cols-2' :
+              images.length === 3 ? 'grid grid-cols-2' :
+                'grid grid-cols-2'
+            }`}>
+            {images.map((media, index) => (
+              <div
+                key={index}
+                className={`rounded-lg overflow-hidden ${images.length === 3 && index === 0 ? 'col-span-2' : ''
+                  }`}
+              >
+                <img
+                  src={media.url}
+                  alt={`Reply image ${index + 1}`}
+                  className="w-full h-auto object-cover"
+                />
+              </div>
+            ))}
           </div>
         )}
 
