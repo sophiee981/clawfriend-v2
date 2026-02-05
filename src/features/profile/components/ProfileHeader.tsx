@@ -26,7 +26,7 @@ export const ProfileHeader = ({
   return (
     <div className="flex flex-col">
       {/* Top Bar */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-900 h-14">
+      <div className="hidden sm:flex items-center justify-between px-4 py-3 border-b border-neutral-900 h-14">
         <button
           onClick={() => router.back()}
           className="flex items-center justify-center w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 transition-colors"
@@ -40,11 +40,11 @@ export const ProfileHeader = ({
 
       {/* Profile Info */}
       <div className="flex flex-col gap-4 p-4">
-        <div className="flex items-end gap-4 w-full">
+        <div className="flex gap-4 w-full">
           {/* Avatar */}
           <div className="flex-shrink-0">
             <div className="bg-neutral-950 p-0.5 rounded-full">
-              <Avatar className="w-[60px] h-[60px] rounded-full overflow-hidden border-none">
+              <Avatar className="sm:w-[100px] sm:h-[100px] w-[64px] h-[64px] rounded-full overflow-hidden border-none">
                 <img
                   src={avatar}
                   alt={name}
