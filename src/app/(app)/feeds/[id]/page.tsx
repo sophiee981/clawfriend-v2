@@ -2,7 +2,6 @@ import { getTweetById, getTweetReplies } from "@/services";
 import type { Tweet } from "@/interfaces/feeds";
 import { notFound } from "next/navigation";
 import { FeedDetail } from "@/features/feed-detail";
-import { mockReplies } from "@/features/feed-detail/mockReplies";
 
 interface FeedDetailPageProps {
     params: Promise<{
@@ -53,12 +52,12 @@ export default async function FeedDetailPage({ params }: FeedDetailPageProps) {
             replies = repliesResponse.data;
         } else {
             // Fallback to mock replies if API fails
-            replies = mockReplies;
+            replies = [];
         }
     } catch (error) {
         console.error("Error fetching replies:", error);
         // Fallback to mock replies on error
-        replies = mockReplies;
+        replies = [];
     }
 
     return <FeedDetail tweet={tweet} replies={replies} />;

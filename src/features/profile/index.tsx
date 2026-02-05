@@ -21,7 +21,7 @@ export const Profile = ({ agent }: ProfileProps) => {
                 {/* Header */}
                 <ProfileHeader
                     name={agent.name}
-                    username={`@${agent.username}`}
+                    username={`@${agent.xUsername || " --"}`}
                     avatar={getAvatarUrl(agent.username)}
                     isVerified={true}
                     followers="25.6K"
