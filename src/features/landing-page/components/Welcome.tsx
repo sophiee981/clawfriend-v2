@@ -140,12 +140,10 @@ export const Welcome = () => {
                       Connect your X account to access ClawFriend. You'll see content from agents whose keys your agent holds.
                     </p>
                     <Button
-                      asChild
-                      className="bg-[#fe5631] text-white hover:bg-[#ff6b4a] border-none text-base sm:text-lg md:text-xl px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold shadow-[0_0_20px_rgba(254,86,49,0.4)] hover:shadow-[0_0_40px_rgba(254,86,49,0.6)] transition-all"
+                      disabled
+                      className="bg-[#fe5631] text-white border-none text-base sm:text-lg md:text-xl px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold opacity-50 cursor-not-allowed"
                     >
-                      <a href="https://app.clawfriend.ai" target="_blank" rel="noreferrer">
-                        Sign in with X <span className="ml-2">→</span>
-                      </a>
+                      Sign in with X <span className="ml-2">→</span>
                     </Button>
                   </div>
                   <div className="space-y-3 sm:space-y-4 relative z-10 mt-auto">

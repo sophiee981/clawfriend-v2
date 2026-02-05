@@ -1,7 +1,62 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
-export const Footer = () => (
+export const Footer = () => {
+  const handleScroll = (href: string) => {
+    const isSmallScreen = typeof window !== "undefined" && window.innerWidth < 768;
+    const smallScreenOffset = 30; // px
+
+    const id = href.replace("#", "");
+    const target = document.getElementById(id);
+
+    if (!target) return;
+
+    // Tìm container cuộn chính (main landing page) nếu có
+    const scrollContainer =
+      (document.querySelector<HTMLElement>("[data-landing-scroll-container]") ??
+        document.querySelector<HTMLElement>("main")) ||
+      undefined;
+
+    if (scrollContainer) {
+      const targetRect = target.getBoundingClientRect();
+      const containerRect = scrollContainer.getBoundingClientRect();
+
+      let nextTop: number;
+
+      if (isSmallScreen) {
+        // Đưa phần tử lên gần đỉnh container với offset
+        const targetTopRelativeToContainer = targetRect.top - containerRect.top;
+        nextTop = scrollContainer.scrollTop + targetTopRelativeToContainer - smallScreenOffset;
+      } else {
+        // Mặc định: canh giữa theo chiều dọc
+        const targetCenterOffset =
+          targetRect.top - containerRect.top - containerRect.height / 2 + targetRect.height / 2;
+        nextTop = scrollContainer.scrollTop + targetCenterOffset;
+      }
+
+      scrollContainer.scrollTo({
+        top: nextTop,
+        behavior: "smooth",
+      });
+    } else {
+      // Fallback: cuộn theo window
+      const targetRect = target.getBoundingClientRect();
+
+      if (isSmallScreen) {
+        // Đưa phần tử lên gần đỉnh viewport với offset
+        window.scrollTo({
+          top: window.scrollY + targetRect.top - smallScreenOffset,
+          behavior: "smooth",
+        });
+      } else {
+        target.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  };
+
+  return (
   <footer className="relative border-t border-white/5 pt-12 sm:pt-16 md:pt-20 pb-8 sm:pb-10 overflow-hidden">
     <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5 mix-blend-overlay"></div>
     <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] sm:w-[800px] md:w-[1000px] h-[300px] sm:h-[350px] md:h-[400px] bg-[#fe5631]/5 blur-[120px] rounded-full pointer-events-none" />
@@ -25,16 +80,17 @@ export const Footer = () => (
 
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 relative z-10 px-2 sm:px-0">
           <Button
-            asChild
             size="lg"
+            onClick={() => handleScroll("#welcome")}
             className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg bg-[#fe5631] text-white hover:bg-[#ff6b4a] hover:scale-105 transition-all shadow-[0_0_30px_rgba(254,86,49,0.3)] hover:shadow-[0_0_50px_rgba(254,86,49,0.5)] font-bold rounded-xl w-full sm:w-auto tracking-wide"
           >
-            <a href="#problem">Deploy Your Agent</a>
+            Deploy Your Agent
           </Button>
           <Button
             size="lg"
             variant="secondary"
-            className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg bg-white/5 border border-white/10 text-neutral-300 hover:text-[#fe5631] hover:bg-white/10 hover:border-[#fe5631]/50 rounded-xl w-full sm:w-auto font-medium tracking-wide"
+            disabled
+            className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg bg-white/5 border border-white/10 text-neutral-300 opacity-50 cursor-not-allowed rounded-xl w-full sm:w-auto font-medium tracking-wide"
           >
             Sign in with X →
           </Button>
@@ -114,4 +170,5 @@ export const Footer = () => (
       </div>
     </div>
   </footer>
-);
+  );
+};

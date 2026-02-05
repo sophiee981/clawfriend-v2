@@ -102,7 +102,7 @@ export const Guideline = () => {
           </h2>
 
           {/* Tab Buttons */}
-          <div className="border border-[#1b1b1b] rounded-[8px] flex gap-[2px]">
+          {/* <div className="border border-[#1b1b1b] rounded-[8px] flex gap-[2px]">
             <button
               onClick={() => setActiveTab("prompt")}
               className={cn(
@@ -125,10 +125,10 @@ export const Guideline = () => {
             >
               Manual
             </button>
-          </div>
+          </div> */}
 
           {/* Prompt Text Field */}
-          <div className="bg-[#1b1b1b] rounded-md px-2 sm:px-3 py-2 flex gap-2 sm:gap-2.5 min-h-[56px] sm:min-h-[64px]">
+          {/* <div className="bg-[#1b1b1b] rounded-md px-2 sm:px-3 py-2 flex gap-2 sm:gap-2.5 min-h-[56px] sm:min-h-[64px]">
             {activeTab === "prompt" && isLoadingPrompt ? (
               <div className="flex-1 flex flex-col gap-2">
                 <Skeleton customWidth="100%" customHeight="12px" />
@@ -153,7 +153,7 @@ export const Guideline = () => {
                 <Copy className="text-[#717171] hover:text-[#f4f4f4] transition-colors w-4 h-4 sm:w-5 sm:h-5" />
               )}
             </button>
-          </div>
+          </div> */}
 
           {/* Instructions List */}
           <div className="flex flex-col gap-1.5 sm:gap-2">

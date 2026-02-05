@@ -1,8 +1,63 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Countdown } from "./Countdown";
 
-export const Hero = () => (
-  <section
+export const Hero = () => {
+  const handleScroll = (href: string) => {
+    const isSmallScreen = typeof window !== "undefined" && window.innerWidth < 768;
+    const smallScreenOffset = 30; // px
+
+    const id = href.replace("#", "");
+    const target = document.getElementById(id);
+
+    if (!target) return;
+
+    // Tìm container cuộn chính (main landing page) nếu có
+    const scrollContainer =
+      (document.querySelector<HTMLElement>("[data-landing-scroll-container]") ??
+        document.querySelector<HTMLElement>("main")) ||
+      undefined;
+
+    if (scrollContainer) {
+      const targetRect = target.getBoundingClientRect();
+      const containerRect = scrollContainer.getBoundingClientRect();
+
+      let nextTop: number;
+
+      if (isSmallScreen) {
+        // Đưa phần tử lên gần đỉnh container với offset
+        const targetTopRelativeToContainer = targetRect.top - containerRect.top;
+        nextTop = scrollContainer.scrollTop + targetTopRelativeToContainer - smallScreenOffset;
+      } else {
+        // Mặc định: canh giữa theo chiều dọc
+        const targetCenterOffset =
+          targetRect.top - containerRect.top - containerRect.height / 2 + targetRect.height / 2;
+        nextTop = scrollContainer.scrollTop + targetCenterOffset;
+      }
+
+      scrollContainer.scrollTo({
+        top: nextTop,
+        behavior: "smooth",
+      });
+    } else {
+      // Fallback: cuộn theo window
+      const targetRect = target.getBoundingClientRect();
+
+      if (isSmallScreen) {
+        // Đưa phần tử lên gần đỉnh viewport với offset
+        window.scrollTo({
+          top: window.scrollY + targetRect.top - smallScreenOffset,
+          behavior: "smooth",
+        });
+      } else {
+        target.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  };
+
+  return (
+    <section
     id="overview"
     className="min-h-[calc(100vh)] flex flex-col justify-center items-center text-center px-4 md:px-6 lg:px-8 py-12 md:py-16 lg:py-20 relative overflow-hidden"
   >
@@ -48,22 +103,22 @@ export const Hero = () => (
       {/* Responsive Buttons */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 sm:gap-6 md:gap-8 pt-4 sm:pt-6 md:pt-8 w-full sm:w-auto px-4 sm:px-0">
         <Button
-          asChild
           size="lg"
+          onClick={() => handleScroll("#welcome")}
           className="h-12 sm:h-14 md:h-16 px-6 sm:px-8 md:px-10 text-sm sm:text-base md:text-lg bg-[#fe5631] text-white hover:bg-[#ff6b4a] hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(254,86,49,0.4)] hover:shadow-[0_0_40px_rgba(254,86,49,0.6)] border-none font-bold rounded-xl sm:rounded-2xl w-full sm:w-auto tracking-wide"
         >
-          <a href="#problem">Deploy Your Agent</a>
+          Deploy Your Agent
         </Button>
         <Button
           size="lg"
           buttonType="transparent"
-          className="h-12 sm:h-14 md:h-16 px-6 sm:px-8 md:px-10 text-sm sm:text-base md:text-lg text-neutral-300 border border-white/10 bg-white/5 hover:bg-white/10 hover:border-[#fe5631]/50 hover:text-[#fe5631] hover:scale-105 transition-all duration-300 backdrop-blur-md rounded-xl sm:rounded-2xl w-full sm:w-auto font-medium tracking-wide"
+          disabled
+          className="h-12 sm:h-14 md:h-16 px-6 sm:px-8 md:px-10 text-sm sm:text-base md:text-lg text-neutral-300 border border-white/10 bg-white/5 opacity-50 cursor-not-allowed backdrop-blur-md rounded-xl sm:rounded-2xl w-full sm:w-auto font-medium tracking-wide"
         >
-          <a href="https://app.clawfriend.ai" target="_blank" rel="noreferrer">
-            Sign in with 𝕏 <span className="ml-2">→</span>
-          </a>
+          Sign in with 𝕏 <span className="ml-2">→</span>
         </Button>
       </div>
     </div>
-  </section>
-);
+    </section>
+  );
+};

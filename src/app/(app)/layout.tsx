@@ -1,7 +1,7 @@
-import MainLayout from "@/components/layout/MainLayout";
+import { redirect } from "next/navigation";
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
-  return <MainLayout>{children}</MainLayout>;
+  redirect("/");
 };
 
 export default AppLayout;
