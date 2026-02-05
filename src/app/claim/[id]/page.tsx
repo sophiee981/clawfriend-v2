@@ -1,3 +1,12 @@
+import { redirect } from "next/navigation";
+
+// Blocked: Redirect all claim routes to home
+export default function ClaimPage() {
+  redirect("/");
+}
+
+// Original code commented out below:
+/*
 "use client";
 
 import Social from "@/components/common/Social";
@@ -82,12 +91,10 @@ const SignUpPage = () => {
           // Success Screen
           <>
             <div className="flex flex-col items-center gap-6 py-4">
-              {/* Success Icon */}
               <div className="w-20 h-20 rounded-full bg-success-500:10 flex items-center justify-center">
                 <CheckCircleFill className="w-10 h-10 text-success" />
               </div>
 
-              {/* Success Message */}
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="text-heading-lg font-bold text-neutral-primary">
                   Verification Successful!
@@ -98,7 +105,6 @@ const SignUpPage = () => {
                 </p>
               </div>
 
-              {/* Back to Home Button */}
               <Button
                 variant="primary"
                 buttonType="filled"
@@ -111,9 +117,7 @@ const SignUpPage = () => {
             </div>
           </>
         ) : (
-          // Verification Form
           <>
-            {/* Header with Avatar */}
             <div className="flex flex-col items-center gap-4 mb-2">
               <div className="w-16 h-16 rounded-full flex items-center justify-center bg-neutral-03 overflow-hidden border border-neutral-04">
                 <Image
@@ -135,9 +139,7 @@ const SignUpPage = () => {
               </div>
             </div>
 
-            {/* Steps Container */}
             <div className="flex flex-col gap-4">
-              {/* Step 1 */}
               <div className="bg-[#1b1b1b] rounded-lg p-4 flex flex-col gap-3 border border-neutral-03/50">
                 <div className="flex items-center gap-2">
                   <div className="w-5 h-5 bg-neutral-04 rounded-full flex items-center justify-center shrink-0">
@@ -164,7 +166,6 @@ const SignUpPage = () => {
                 </p>
               </div>
 
-              {/* Step 2 */}
               <div className="bg-[#1b1b1b] rounded-lg p-4 flex flex-col gap-3 border border-neutral-03/50">
                 <div className="flex items-center gap-2">
                   <div className="w-5 h-5 bg-neutral-04 rounded-full flex items-center justify-center shrink-0">
@@ -212,3 +213,4 @@ const SignUpPage = () => {
 };
 
 export default SignUpPage;
+*/
