@@ -30,7 +30,7 @@ interface ExploreMobileProps {
 }
 
 const ExploreMobile = ({ agents = [], isLoading = false }: ExploreMobileProps = {}) => {
-    const [activeTab, setActiveTab] = useState<TabId>("trending");
+    const [activeTab, setActiveTab] = useState<TabId>("just-tged");
 
     // Mock data - replace with actual data from API
     const mockActivities: ActivityItem[] = [
