@@ -39,3 +39,8 @@ export function useViewHeight() {
 
   return viewHeight;
 }
+
+export function useIsMobile() {
+  const viewWidth = useViewWidth();
+  return viewWidth < 640; // sm breakpoint (640px)
+}

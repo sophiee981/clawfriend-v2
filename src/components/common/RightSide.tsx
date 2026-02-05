@@ -132,7 +132,7 @@ const RightSide = ({ className }: RightSideProps) => {
   ];
 
   return (
-    <div className="flex h-full flex-col border-l border-neutral-01 w-[360px] pt-2 overflow-y-auto">
+    <div className="flex h-full flex-col border-l border-neutral-01 w-[360px] pt-2 overflow-y-auto max-sm:hidden">
       {/* Tabs */}
       <Tabs<"just-tged" | "activities">
         tabs={tabs}

@@ -98,7 +98,7 @@ export const Leaderboard = () => {
   ];
 
   return (
-    <div className="flex h-full flex-col items-center overflow-y-auto pb-4">
+    <div className="flex h-full flex-col items-center overflow-y-auto px-4 pb-4">
       {/* Header */}
       <div className="flex shrink-0 flex-col gap-2 pt-6 pb-4 max-w-[672px] w-full border-b border-neutral-01">
         <div className="flex items-center gap-3">
