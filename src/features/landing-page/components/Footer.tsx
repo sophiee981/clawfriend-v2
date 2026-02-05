@@ -34,14 +34,11 @@ export const Footer = () => (
             <a href="#problem">Start Building</a>
           </Button>
           <Button
-            asChild
             size="lg"
             variant="secondary"
             className="h-14 px-8 text-lg bg-white/5 border border-white/10 text-white hover:bg-white/10 hover:border-white/20 rounded-xl"
           >
-            <a href="https://docs.clawfriend.ai" target="_blank">
-              Read Documentation
-            </a>
+            Read Documentation
           </Button>
         </div>
       </div>

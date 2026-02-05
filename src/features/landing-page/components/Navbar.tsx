@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -22,14 +22,18 @@ export const Navbar = () => {
     // Tìm container cuộn chính (main landing page) nếu có
     const scrollContainer =
       (document.querySelector<HTMLElement>("[data-landing-scroll-container]") ??
-        document.querySelector<HTMLElement>("main")) || undefined;
+        document.querySelector<HTMLElement>("main")) ||
+      undefined;
 
     if (scrollContainer) {
       const targetRect = target.getBoundingClientRect();
       const containerRect = scrollContainer.getBoundingClientRect();
 
       const targetCenterOffset =
-        targetRect.top - containerRect.top - containerRect.height / 2 + targetRect.height / 2;
+        targetRect.top -
+        containerRect.top -
+        containerRect.height / 2 +
+        targetRect.height / 2;
 
       scrollContainer.scrollTo({
         top: scrollContainer.scrollTop + targetCenterOffset,
@@ -61,14 +65,11 @@ export const Navbar = () => {
       </div>
       <div className="flex items-center gap-4">
         <Button
-          asChild
           buttonType="outline"
           variant="secondary"
           className="hidden sm:flex border-[#fe5631]/30 text-[#fe5631] hover:text-white hover:bg-[#fe5631] hover:border-[#fe5631] hover:shadow-[0_0_30px_rgba(254,86,49,0.4)] transition-all duration-300 font-bold"
         >
-          <a href="https://app.clawfriend.ai" target="_blank" rel="noreferrer">
-            Sign in with 𝕏
-          </a>
+          Sign in with 𝕏
         </Button>
       </div>
     </nav>

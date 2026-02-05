@@ -21,10 +21,10 @@ const LandingPage = () => {
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f1a_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f1a_1px,transparent_1px)] bg-[size:4rem_4rem] animate-[grid_20s_linear_infinite]" />
         </div>
 
-        {/* Multi-color Gradient Overlays - Balanced */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(254,86,49,0.18),rgba(255,255,255,0))]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_80%_20%,rgba(168,85,247,0.15),rgba(255,255,255,0))]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_70%_at_20%_60%,rgba(59,130,246,0.12),rgba(255,255,255,0))]" />
+        {/* Multi-color Gradient Overlays - Balanced and softer */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(254,86,49,0.12),rgba(255,255,255,0))]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_80%_20%,rgba(168,85,247,0.08),rgba(255,255,255,0))]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_70%_at_20%_60%,rgba(59,130,246,0.06),rgba(255,255,255,0))]" />
 
         {/* Floating Geometric Shapes */}
         <div className="absolute top-20 left-10 w-72 h-72 bg-[#a855f714] rounded-full blur-3xl animate-[float_15s_ease-in-out_infinite]" />
