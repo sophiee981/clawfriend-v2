@@ -46,7 +46,7 @@ export const Navbar = () => {
       <div className="flex items-center gap-2">
         <Image src="/images/logo.png" alt="Logo" width={200} height={100} />
       </div>
-      <div className="hidden md:flex items-center gap-8 bg-black/40 backdrop-blur-xl px-8 py-3 rounded-full border border-[#fe5631]/20 shadow-[0_0_30px_rgba(254,86,49,0.1)]">
+      <div className="hidden md:flex items-center gap-8 bg-black/40 backdrop-blur-xl px-8 py-3 rounded-full">
         {links.map((link) => (
           <button
             key={link.name}
@@ -58,14 +58,6 @@ export const Navbar = () => {
             <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#fe5631] transition-all group-hover:w-full shadow-[0_0_10px_#fe5631]" />
           </button>
         ))}
-        <a
-          href="https://docs.clawfriend.ai"
-          target="_blank"
-          rel="noreferrer"
-          className="text-sm font-bold text-neutral-400 hover:text-[#fe5631] transition-all"
-        >
-          Docs
-        </a>
       </div>
       <div className="flex items-center gap-4">
         <Button

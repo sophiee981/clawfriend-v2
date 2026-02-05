@@ -4,7 +4,7 @@ import { Countdown } from "./Countdown";
 export const Hero = () => (
   <section
     id="overview"
-    className="min-h-[calc(100vh)] flex flex-col justify-center items-center text-center px-4 pt-32 pb-20 relative overflow-hidden"
+    className="min-h-[calc(100vh)] flex flex-col justify-center items-center text-center px-4 relative overflow-hidden"
   >
     {/* Vibrant #fe5631 Background Blobs */}
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#fe5631]/15 rounded-full blur-[140px] -z-10 animate-pulse" />
