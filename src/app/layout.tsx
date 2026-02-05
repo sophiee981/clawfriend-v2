@@ -1,6 +1,6 @@
 import { AlertFill, CheckCircleFill } from "@/components/icons";
 import "@/styles/index.scss";
-import { Outfit, Space_Mono } from "next/font/google";
+import { JetBrains_Mono, Outfit, Space_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { Providers } from "../providers";
 
@@ -13,6 +13,12 @@ const spaceMono = Space_Mono({
   subsets: ["latin"],
   weight: ["400", "700"],
   variable: "--font-space-mono",
+});
+
+const jetBrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-jetBrainsMono",
 });
 
 export default function RootLayout({
@@ -57,7 +63,7 @@ export default function RootLayout({
         <meta name="version" content={process.env.buildId || "unknown"} />
       </head>
       <body
-        className={`${outfit.variable} ${spaceMono.variable} ${outfit.className}`}
+        className={`${outfit.variable} ${spaceMono.variable} ${outfit.className} ${jetBrainsMono.variable}`}
       >
         <Providers>{children}</Providers>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckLine, Copy, LogoText } from "@/components/icons";
+import { CheckLine, Copy } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { API_BASE_URL, SKILL_URL } from "@/constants";
 import { cn } from "@/utils";
@@ -43,7 +43,10 @@ export const Guideline = () => {
               height={64}
               className="w-16 h-16"
             />
-            <LogoText className="text-primary" />
+
+            <span className="text-primary font-jetBrainsMono text-heading-md">
+              ClawFriend
+            </span>
           </div>
 
           <div className="flex gap-2 sm:w-[50%] w-full">

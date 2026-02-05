@@ -370,6 +370,7 @@ module.exports = {
       fontFamily: {
         outfit: ["var(--font-outfit)", "sans-serif"],
         spaceMono: ["var(--font-space-mono)", "monospace"],
+        jetBrainsMono: ["var(--font-jetBrainsMono)", "monospace"],
       },
       fontSize: {
         "display-lg": [
