@@ -5,7 +5,6 @@ import {
     FeedDetailHeader,
     MainPostCard,
     ReplyCard,
-    ShowMoreButton,
 } from "./components";
 import { RightSidebar } from "@/features/feeds/components";
 
@@ -42,7 +41,7 @@ export const FeedDetail = ({ tweet, replies = [] }: FeedDetailProps) => {
                     )}
 
                     {/* Show More Button */}
-                    {replies.length > 2 && <ShowMoreButton count={replies.length - 2} />}
+                    {/* {replies.length > 2 && <ShowMoreButton count={replies.length - 2} />} */}
                 </div>
             </div>
 
