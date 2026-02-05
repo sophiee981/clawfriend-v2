@@ -44,31 +44,31 @@ export const HowItWorks = () => {
   return (
     <section
       id="how"
-      className="py-16 border-t border-white/5 relative overflow-hidden"
+      className="py-10 sm:py-12 md:py-16 border-t border-white/5 relative overflow-hidden"
     >
       {/* Background glow for this section */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-blue-900/5 blur-[100px] -z-10" />
 
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="mb-20 text-center">
-          <h2 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+        <div className="mb-10 sm:mb-14 md:mb-20 text-center">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 sm:mb-5 md:mb-6 tracking-tight">
             Three Steps to{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#fe5631] via-orange-500 to-yellow-500 drop-shadow-[0_0_10px_rgba(254,86,49,0.3)]">
               Autonomy.
             </span>
           </h2>
-          <p className="text-lg md:text-xl text-neutral-400 leading-relaxed max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-neutral-400 leading-relaxed max-w-2xl mx-auto px-2 sm:px-0">
             Deploying a wealth-generating agent is simpler than you think.
             Verify, fund, and earn.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 relative z-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 sm:gap-6 md:gap-8 relative z-10">
           {steps.map((item, i) => (
             <div
               key={i}
               className={cn(
-                "relative p-8 rounded-3xl border backdrop-blur-xl group hover:-translate-y-2 transition-all duration-500",
+                "relative p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border backdrop-blur-xl group hover:-translate-y-2 transition-all duration-500",
                 activeStep === i
                   ? "bg-neutral-900/80 border-white/20 shadow-[0_0_30px_rgba(255,255,255,0.05)]"
                   : "bg-neutral-900/50 border-white/10",
@@ -77,7 +77,7 @@ export const HowItWorks = () => {
               {/* Animated Border Effect for Active Step */}
               {/* Electric Border Effect for Active Step */}
               {activeStep === i && (
-                <div className="absolute inset-0 rounded-3xl overflow-visible pointer-events-none">
+                <div className="absolute inset-0 rounded-2xl sm:rounded-3xl overflow-visible pointer-events-none">
                   <svg
                     className="w-full h-full overflow-visible"
                     xmlns="http://www.w3.org/2000/svg"
@@ -87,8 +87,9 @@ export const HowItWorks = () => {
                       y="0"
                       width="100%"
                       height="100%"
-                      rx="24"
-                      ry="24"
+                      rx="16"
+                      ry="16"
+                      className="sm:rx-[24] sm:ry-[24]"
                       fill="none"
                       stroke={
                         item.shadowColor === "blue"
@@ -103,10 +104,10 @@ export const HowItWorks = () => {
                       pathLength="100"
                       style={{
                         filter: `drop-shadow(0 0 6px ${item.shadowColor === "blue"
-                            ? "#3b82f6"
-                            : item.shadowColor === "purple"
-                              ? "#a855f7"
-                              : "#fe5631"
+                          ? "#3b82f6"
+                          : item.shadowColor === "purple"
+                            ? "#a855f7"
+                            : "#fe5631"
                           })`,
                       }}
                     >
@@ -124,22 +125,22 @@ export const HowItWorks = () => {
               )}
 
               {/* Glowing orb for number */}
-              <div className="relative mb-8 mx-auto md:mx-0">
+              <div className="relative mb-5 sm:mb-6 md:mb-8 flex justify-center sm:justify-start">
                 <div
                   className={cn(
-                    "w-16 h-16 rounded-2xl p-0.5 shadow-lg relative z-10 transition-all duration-500",
+                    "w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl p-0.5 shadow-lg relative z-10 transition-all duration-500",
                     activeStep === i ? "scale-110" : "scale-100 opacity-80",
                   )}
                   style={{
                     background: item.gradient,
                   }}
                 >
-                  <div className="w-full h-full bg-black rounded-2xl flex items-center justify-center relative overflow-hidden">
+                  <div className="w-full h-full bg-black rounded-xl sm:rounded-2xl flex items-center justify-center relative overflow-hidden">
                     <div
                       className="absolute inset-0 opacity-20"
                       style={{ background: item.gradient }}
                     />
-                    <span className="text-2xl font-black text-white relative z-10">
+                    <span className="text-lg sm:text-xl md:text-2xl font-black text-white relative z-10">
                       {item.step}
                     </span>
                   </div>
@@ -148,14 +149,14 @@ export const HowItWorks = () => {
 
               <h3
                 className={cn(
-                  "text-2xl font-bold mb-4 mt-2 transition-colors duration-300",
+                  "text-xl sm:text-2xl font-bold mb-3 sm:mb-4 mt-2 transition-colors duration-300 text-center sm:text-left",
                   activeStep === i ? "text-white" : "text-neutral-300",
                   "group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-neutral-400",
                 )}
               >
                 {item.title}
               </h3>
-              <p className="text-neutral-400 leading-relaxed text-lg transition-colors group-hover:text-neutral-300">
+              <p className="text-neutral-400 leading-relaxed text-sm sm:text-base md:text-lg transition-colors group-hover:text-neutral-300 text-center sm:text-left">
                 {item.desc}
               </p>
             </div>

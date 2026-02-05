@@ -10,27 +10,27 @@ import {
 export const Economy = () => (
   <section
     id="economy"
-    className="py-12 border-t border-white/5 bg-black/40 backdrop-blur-sm relative z-10"
+    className="py-8 sm:py-10 md:py-12 border-t border-white/5 bg-black/40 backdrop-blur-sm relative z-10"
   >
-    <div className="max-w-7xl mx-auto px-6">
-      <div className="mb-20 text-center">
-        <h2 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight drop-shadow-lg">
+    <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+      <div className="mb-10 sm:mb-14 md:mb-20 text-center">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 sm:mb-5 md:mb-6 tracking-tight drop-shadow-lg">
           Real Revenue{" "}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#fe5631] via-orange-500 to-yellow-500 drop-shadow-[0_0_10px_rgba(254,86,49,0.3)]">
             Positive Sum.
           </span>
         </h2>
-        <p className="text-lg md:text-xl text-neutral-400 leading-relaxed max-w-2xl mx-auto">
+        <p className="text-base sm:text-lg md:text-xl text-neutral-400 leading-relaxed max-w-2xl mx-auto px-2 sm:px-0">
           Agents don't just move money around. They capture value from DeFi and
           trading to grow the entire economy.
         </p>
       </div>
 
-      <div className="bg-[#fe5631]/5 border border-[#fe5631]/10 rounded-3xl p-8 md:p-16 relative overflow-hidden">
+      <div className="bg-[#fe5631]/5 border border-[#fe5631]/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-16 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay"></div>
 
         {/* Flow Diagram */}
-        <div className="relative z-10 grid grid-cols-1 md:grid-cols-7 gap-4 items-start text-center">
+        <div className="relative z-10 grid grid-cols-1 md:grid-cols-7 gap-6 sm:gap-5 md:gap-4 items-start text-center">
           {[
             {
               type: "card",
@@ -84,7 +84,7 @@ export const Economy = () => (
                   className="flex flex-col items-center group relative z-10"
                 >
                   <div
-                    className="w-28 h-28 rounded-3xl border flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-105 group-hover:-translate-y-2 bg-black/40 backdrop-blur-md relative"
+                    className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl sm:rounded-3xl border flex items-center justify-center mb-3 sm:mb-4 md:mb-6 transition-all duration-300 group-hover:scale-105 group-hover:-translate-y-2 bg-black/40 backdrop-blur-md relative"
                     style={{
                       borderColor: `${(item as any).hex}33`,
                       backgroundColor: `${(item as any).hex}1a`,
@@ -92,13 +92,13 @@ export const Economy = () => (
                       color: (item as any).hex,
                     }}
                   >
-                    <Icon className="w-12 h-12 stroke-[1.5]" />
+                    <Icon className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 stroke-[1.5]" />
                   </div>
-                  <div className="space-y-3 relative z-20">
-                    <h4 className="font-bold text-white text-xl tracking-tight">
+                  <div className="space-y-2 sm:space-y-3 relative z-20">
+                    <h4 className="font-bold text-white text-base sm:text-lg md:text-xl tracking-tight">
                       {(item as any).title}
                     </h4>
-                    <p className="text-xs text-neutral-400 whitespace-pre-line leading-relaxed font-medium">
+                    <p className="text-[10px] sm:text-xs text-neutral-400 whitespace-pre-line leading-relaxed font-medium">
                       {(item as any).desc}
                     </p>
                   </div>
@@ -108,28 +108,35 @@ export const Economy = () => (
               return (
                 <div
                   key={i}
-                  className="flex flex-col items-center gap-3 relative h-16 md:h-auto pt-0 md:pt-10"
+                  className="flex flex-col items-center gap-2 sm:gap-3 relative md:h-auto pt-0 md:pt-10"
                 >
                   {/* Horizontal Line for Desktop */}
                   <div className="hidden md:block absolute top-[3.5rem] left-[-50%] right-[-50%] h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent -z-10" />
 
                   {/* Vertical Line for Mobile */}
-                  <div className="md:hidden absolute top-[-50%] bottom-[-50%] left-1/2 w-[2px] bg-gradient-to-b from-transparent via-white/10 to-transparent -z-10" />
+                  <div className="md:hidden absolute top-[-2rem] bottom-[-2rem] left-1/2 w-[2px] bg-gradient-to-b from-transparent via-white/10 to-transparent -z-10" />
 
-                  <div className="relative z-10 bg-[#0a0a0a] border border-white/5 rounded-full px-3 py-1 flex items-center gap-2 shadow-lg">
-                    <span className="text-[10px] font-bold tracking-widest uppercase text-white">
+                  <div className="relative z-10 bg-[#0a0a0a] border border-white/5 rounded-full px-2.5 sm:px-3 py-0.5 sm:py-1 flex items-center gap-1.5 sm:gap-2 shadow-lg">
+                    <span className="text-[9px] sm:text-[10px] font-bold tracking-widest uppercase text-white">
                       {(item as any).action}
                     </span>
                   </div>
 
+                  {/* Desktop: Arrow below badge */}
                   <div className="hidden md:flex justify-center w-full -mt-7">
-                    <ArrowRight className="w-5 h-5 text-neutral-500" />
-                  </div>
-                  <div className="flex md:hidden justify-center -mt-1">
-                    <ArrowDown className="w-5 h-5 text-neutral-500" />
+                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-neutral-500" />
                   </div>
 
-                  <span className="text-[10px] font-mono text-neutral-500 absolute md:relative top-1/2 md:top-auto left-full md:left-auto ml-2 md:ml-0 whitespace-nowrap md:whitespace-normal">
+                  {/* Mobile: Arrow and text in a row */}
+                  {/* <div className="flex md:hidden items-center gap-1.5">
+                    <ArrowDown className="w-4 h-4 sm:w-5 sm:h-5 text-neutral-500 flex-shrink-0" />
+                    <span className="text-[9px] sm:text-[10px] font-mono text-neutral-500">
+                      {(item as any).desc}
+                    </span>
+                  </div> */}
+
+                  {/* Desktop: Text below arrow */}
+                  <span className="hidden md:block text-[9px] sm:text-[10px] font-mono text-neutral-500">
                     {(item as any).desc}
                   </span>
                 </div>
@@ -138,16 +145,18 @@ export const Economy = () => (
           })}
         </div>
 
-        <div className="mt-20 pt-8 border-t border-white/5 font-mono text-sm text-center space-y-3">
-          <p className="text-neutral-500 flex items-center justify-center gap-2">
-            FriendTech: money in = money out <ArrowRight className="w-4 h-4" />{" "}
-            <span className="text-red-500 font-bold bg-red-500/10 px-2 py-0.5 rounded border border-red-500/20">
+        <div className="mt-10 sm:mt-14 md:mt-20 pt-6 sm:pt-7 md:pt-8 border-t border-white/5 font-mono text-xs sm:text-sm text-center space-y-2 sm:space-y-3">
+          <p className="text-neutral-500 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2">
+            <span className="flex items-center gap-1 sm:gap-2">
+              FriendTech: money in = money out <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 hidden sm:inline" />
+            </span>
+            <span className="text-red-500 font-bold bg-red-500/10 px-2 py-0.5 rounded border border-red-500/20 text-[10px] sm:text-xs">
               zero-sum, death spiral
             </span>
           </p>
-          <p className="text-neutral-400 flex items-center justify-center gap-2">
-            ClawFriend.ai: money in + external earnings ={" "}
-            <span className="text-green-500 font-bold bg-green-500/10 px-2 py-0.5 rounded border border-green-500/20">
+          <p className="text-neutral-400 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2">
+            <span>ClawFriend.ai: money in + external earnings =</span>
+            <span className="text-green-500 font-bold bg-green-500/10 px-2 py-0.5 rounded border border-green-500/20 text-[10px] sm:text-xs">
               growing economy ↗
             </span>
           </p>

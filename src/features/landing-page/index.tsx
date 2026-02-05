@@ -9,7 +9,10 @@ import { Welcome } from "./components/Welcome";
 
 const LandingPage = () => {
   return (
-    <main className="min-h-screen max-h-screen text-white selection:bg-purple-500/30 font-sans overflow-y-scroll">
+    <main
+      className="min-h-screen max-h-screen text-white selection:bg-purple-500/30 font-sans overflow-y-scroll"
+      data-landing-scroll-container
+    >
       <div className="fixed top-0 inset-x-0 z-50 supports-[backdrop-filter]:bg-black/10">
         <Navbar />
       </div>

@@ -40,22 +40,22 @@ const calculateTimeLeft = (): TimeLeft => {
 
 const TimeUnit = ({ value, label }: { value: number; label: string }) => (
   <div className="flex flex-col items-center">
-    <div className="w-20 h-20 md:w-24 md:h-24 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center backdrop-blur-sm shadow-xl relative overflow-hidden group">
+    <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl flex items-center justify-center backdrop-blur-sm shadow-xl relative overflow-hidden group">
       <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      <span className="text-4xl md:text-5xl font-black text-white font-mono relative z-10 tabular-nums tracking-tight drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
+      <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white font-mono relative z-10 tabular-nums tracking-tight drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
         {value.toString().padStart(2, "0")}
       </span>
     </div>
-    <span className="mt-3 text-[10px] md:text-xs font-bold text-neutral-500 uppercase tracking-[0.2em]">
+    <span className="mt-2 sm:mt-3 text-[9px] sm:text-[10px] md:text-xs font-bold text-neutral-500 uppercase tracking-[0.15em] sm:tracking-[0.2em]">
       {label}
     </span>
   </div>
 );
 
 const Separator = () => (
-  <div className="flex flex-col gap-2 pt-6 md:pt-8 opacity-30">
-    <div className="w-1.5 h-1.5 rounded-full bg-white" />
-    <div className="w-1.5 h-1.5 rounded-full bg-white" />
+  <div className="flex flex-col gap-1.5 sm:gap-2 pt-4 sm:pt-6 md:pt-8 lg:pt-10 opacity-30">
+    <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-white" />
+    <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-white" />
   </div>
 );
 
@@ -84,12 +84,12 @@ export const Countdown = () => {
   if (!mounted) return null;
 
   return (
-    <div className="flex flex-col items-center animate-fade-in-up delay-200">
-      <h3 className="text-sm md:text-base font-bold text-neutral-400 uppercase tracking-[0.2em] mb-8 drop-shadow-md">
+    <div className="flex flex-col items-center animate-fade-in-up delay-200 px-2 sm:px-0">
+      <h3 className="text-xs sm:text-sm md:text-base font-bold text-neutral-400 uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-4 sm:mb-6 md:mb-8 drop-shadow-md">
         Trading Goes Live In
       </h3>
 
-      <div className="flex items-start gap-3 md:gap-6">
+      <div className="flex items-start gap-2 sm:gap-3 md:gap-4 lg:gap-6">
         <TimeUnit value={timeLeft.days} label="Days" />
         <Separator />
         <TimeUnit value={timeLeft.hours} label="Hours" />
