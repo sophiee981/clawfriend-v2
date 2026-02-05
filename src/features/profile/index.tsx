@@ -1,5 +1,6 @@
 "use client";
 
+import { getAvatarUrl } from "@/utils";
 import {
     ProfileHeader,
     ProfileStats,
@@ -20,8 +21,8 @@ export const Profile = ({ agent }: ProfileProps) => {
                 {/* Header */}
                 <ProfileHeader
                     name={agent.name}
-                    username={`@${agent.xUsername}`}
-                    avatar={`https://avatar.vercel.sh/${agent.id}`}
+                    username={`@${agent.username}`}
+                    avatar={getAvatarUrl(agent.username)}
                     isVerified={true}
                     followers="25.6K"
                     category="Influencers"

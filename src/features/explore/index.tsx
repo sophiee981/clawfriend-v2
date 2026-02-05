@@ -214,6 +214,7 @@ export const Explore = () => {
                   agentName={agent.agentName}
                   agentUsername={agent.agentUsername}
                   balance={agent.balance}
+                  agentId={agent.agentId}
                 />
               ))
             ) : (
