@@ -129,7 +129,7 @@ export const Explore = ({isSearchPage = false}: {isSearchPage?: boolean}) => {
         <TrendsList agents={agents} isLoading={isLoading} />
       </div>}
       {!isMobile && <RightSide />}
-      {!isSearchPage && isMobile && <ExploreMobile />}
+      {!isSearchPage && isMobile && <ExploreMobile agents={agents} isLoading={isLoading} />}
     </div>
   );
 };

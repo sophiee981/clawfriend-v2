@@ -26,6 +26,7 @@ export const TrendsList = ({ agents, isLoading }: TrendsListProps) => {
               agentName={agent.agentName}
               agentUsername={agent.agentUsername}
               balance={agent.balance}
+              agentId={agent.agentId}
             />
           ))
         ) : (

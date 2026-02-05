@@ -4,6 +4,8 @@ import { ChainPair, ExternalLink } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
 import { Tabs } from "@/components/ui/tabs";
 import { TrendItem } from "@/components/common/TrendItem";
+import { Empty } from "@/components/common/Empty";
+import { AgentBalanceLeaderboard } from "@/interfaces/agent";
 import { cn, getAvatarUrl } from "@/utils";
 import { useState } from "react";
 
@@ -19,19 +21,14 @@ interface ActivityItem {
     transactionLink?: string;
 }
 
-interface TrendingItem {
-    id: string;
-    name: string;
-    username: string;
-    followers: string;
-    price: string;
-    volume: string;
-    isVerified?: boolean;
-}
-
 type TabId = "just-tged" | "activities" | "trending";
 
-const ExploreMobile = () => {
+interface ExploreMobileProps {
+    agents?: AgentBalanceLeaderboard[];
+    isLoading?: boolean;
+}
+
+const ExploreMobile = ({ agents = [], isLoading = false }: ExploreMobileProps = {}) => {
     const [activeTab, setActiveTab] = useState<TabId>("trending");
 
     // Mock data - replace with actual data from API
@@ -133,54 +130,6 @@ const ExploreMobile = () => {
         }
     };
 
-    // Mock data for trending - replace with actual data from API
-    const mockTrending: TrendingItem[] = [
-        {
-            id: "1",
-            name: "fan.tech",
-            username: "@joinfantech",
-            followers: "5.1K",
-            price: "0.0048",
-            volume: "431.9K",
-            isVerified: false,
-        },
-        {
-            id: "2",
-            name: "Defi_Maestro ✺",
-            username: "@Defi_Maestro",
-            followers: "46.8K",
-            price: "0.0048",
-            volume: "325.6K",
-            isVerified: true,
-        },
-        {
-            id: "3",
-            name: "Herro",
-            username: "@HerroCrypto",
-            followers: "84K",
-            price: "0.0048",
-            volume: "105.5K",
-            isVerified: false,
-        },
-        {
-            id: "4",
-            name: "🉐 Crypto Linn",
-            username: "@crypto_linn",
-            followers: "46.2K",
-            price: "0.0048",
-            volume: "71.2K",
-            isVerified: false,
-        },
-        {
-            id: "5",
-            name: "Jordi Alexander",
-            username: "@gametheorizing",
-            followers: "84.7K",
-            price: "0.0048",
-            volume: "57.3K",
-            isVerified: true,
-        },
-    ];
 
     const tabs: Array<{ id: TabId; label: string }> = [
         { id: "just-tged", label: "Just TGED" },
@@ -203,14 +152,25 @@ const ExploreMobile = () => {
                 {activeTab === "trending"
                     ? // Trending Tab
                     <div className="flex flex-col px-4 py-2 gap-2">
-                        {mockTrending.map((item) => (
-                            <TrendItem
-                                key={item.id}
-                                agentName={item.name}
-                                agentUsername={item.username.replace("@", "")}
-                                balance={item.price}
-                            />
-                        ))}
+                        {isLoading ? (
+                            <div className="flex items-center justify-center py-8">
+                                <span className="text-body-md text-neutral-tertiary">
+                                    Loading...
+                                </span>
+                            </div>
+                        ) : agents.length > 0 ? (
+                            agents.map((agent) => (
+                                <TrendItem
+                                    key={agent.agentId}
+                                    agentId={agent.agentId}
+                                    agentName={agent.agentName}
+                                    agentUsername={agent.agentUsername}
+                                    balance={agent.balance}
+                                />
+                            ))
+                        ) : (
+                            <Empty text="No trends found" />
+                        )}
                     </div>
                     : activeTab === "activities"
                     ? // Activities Tab
