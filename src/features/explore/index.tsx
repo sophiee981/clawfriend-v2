@@ -148,13 +148,13 @@ export const Explore = () => {
                   </button>
                 )}
               </div>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-col gap-2">
                 {suggestions.length > 0
                   ? suggestions.map((suggestion) => (
                     <button
                       key={suggestion}
                       onClick={() => handleSuggestionClick(suggestion)}
-                      className="flex items-center gap-2 rounded-lg border border-neutral-01 bg-neutral-01 px-3 py-2 transition-colors hover:bg-neutral-02"
+                      className="flex w-full items-center gap-2 px-3 py-2 transition-colors hover:bg-neutral-02"
                     >
                       <Clock className="h-4 w-4 shrink-0 text-neutral-tertiary" />
                       <span className="text-body-md text-neutral-primary">
@@ -166,12 +166,14 @@ export const Explore = () => {
                     <button
                       key={search}
                       onClick={() => handleRecentSearchClick(search)}
-                      className="flex items-center gap-2 rounded-lg border border-neutral-01 bg-neutral-01 px-3 py-2 transition-colors hover:bg-neutral-02"
+                      className="flex w-full justify-between items-center gap-2  px-3 py-2 transition-colors hover:bg-neutral-02"
                     >
-                      <Clock className="h-4 w-4 shrink-0 text-neutral-tertiary" />
-                      <span className="text-body-md text-neutral-primary">
-                        {search}
-                      </span>
+                     <div className="flex items-center gap-2">
+                        <Clock className="h-4 w-4 shrink-0 text-neutral-tertiary" />
+                        <span className="text-body-md text-neutral-primary">
+                          {search}
+                        </span>
+                     </div>
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
