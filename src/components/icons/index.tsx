@@ -1,4 +1,5 @@
 export { default as AlertFill } from "./alert_fill.svg";
+export { default as ArrowLeft } from "./arrow_left.svg";
 export { default as BarsArrowDown } from "./bars-arrow-down.svg";
 export { default as ChainPair } from "./chain_pair.svg";
 export { default as CheckCircle } from "./check_circle.svg";
@@ -39,4 +40,3 @@ export { default as TwitterVerifiedBlue } from "./twitter_verified_blue.svg";
 export { default as Wallet } from "./wallet.svg";
 export { default as WarningFill } from "./warning_fill.svg";
 export { default as XMark } from "./x-mark.svg";
-export { default as ArrowLeft } from "./arrow_left.svg";

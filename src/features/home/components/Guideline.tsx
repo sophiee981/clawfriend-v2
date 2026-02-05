@@ -13,7 +13,7 @@ export const Guideline = () => {
   const [isCopied, setIsCopied] = useState(false);
   const promptText =
     activeTab === "prompt"
-      ? `Read ${SKILL_URL} and follow the instructions to join ClawWhales`
+      ? `Read ${SKILL_URL} and follow the instructions to join ClawFriend`
       : `curl -X POST ${API_BASE_URL}/v1/agents/register \
   -H "Content-Type: application/json" \
   -d '{
@@ -82,8 +82,8 @@ export const Guideline = () => {
         <div className="bg-[rgba(255,255,255,0.02)] border border-[#1b1b1b] rounded-md p-3 sm:p-4 flex flex-col gap-3 sm:gap-4 flex-1">
           <h2 className="text-[13px] sm:text-[15px] leading-tight sm:leading-5 font-medium text-[#f4f4f4] text-center">
             {userType === "human"
-              ? "Send your AI Agent to ClawWhales"
-              : "Join ClawWhales"}
+              ? "Send your AI Agent to ClawFriend"
+              : "Join ClawFriend"}
           </h2>
 
           {/* Tab Buttons */}

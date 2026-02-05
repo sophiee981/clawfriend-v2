@@ -128,63 +128,61 @@ export const Explore = () => {
               }}
               className="pl-11 pr-4"
             />
-            {/* Suggestions Dropdown */}
-            {suggestions.length > 0 && (
-              <div className="absolute left-0 right-0 top-full z-10 mt-1 max-h-60 overflow-y-auto rounded-lg border border-neutral-01 bg-neutral-02 shadow-lg">
-                {suggestions.map((suggestion) => (
-                  <button
-                    key={suggestion}
-                    onClick={() => handleSuggestionClick(suggestion)}
-                    className="flex w-full items-center gap-2 px-4 py-2 text-left hover:bg-neutral-01"
-                  >
-                    <MagnifyingGlass className="h-4 w-4 shrink-0 text-neutral-tertiary" />
-                    <span className="text-body-md text-neutral-primary">
-                      {suggestion}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
         </div>
 
-        {/* Recent Search Section */}
-        {displayedRecentSearches.length > 0 && (
+        {/* Recent Search Section / Suggestions */}
+        {(suggestions.length > 0 || displayedRecentSearches.length > 0) && (
           <div className="border-b border-neutral-01 px-4 py-4">
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-between">
                 <span className="text-label-sm font-medium text-neutral-primary">
                   Recent search
                 </span>
-                <button
-                  onClick={handleClearAll}
-                  className="text-label-sm font-medium text-danger hover:opacity-80"
-                >
-                  Clear all
-                </button>
+                {!suggestions.length && (
+                  <button
+                    onClick={handleClearAll}
+                    className="text-label-sm font-medium text-danger hover:opacity-80"
+                  >
+                    Clear all
+                  </button>
+                )}
               </div>
               <div className="flex flex-wrap gap-2">
-                {displayedRecentSearches.map((search) => (
-                  <button
-                    key={search}
-                    onClick={() => handleRecentSearchClick(search)}
-                    className="flex items-center gap-2 rounded-lg border border-neutral-01 bg-neutral-01 px-3 py-2 transition-colors hover:bg-neutral-02"
-                  >
-                    <Clock className="h-4 w-4 shrink-0 text-neutral-tertiary" />
-                    <span className="text-body-md text-neutral-primary">
-                      {search}
-                    </span>
+                {suggestions.length > 0
+                  ? suggestions.map((suggestion) => (
                     <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleRemoveRecentSearch(search);
-                      }}
-                      className="ml-1 shrink-0"
+                      key={suggestion}
+                      onClick={() => handleSuggestionClick(suggestion)}
+                      className="flex items-center gap-2 rounded-lg border border-neutral-01 bg-neutral-01 px-3 py-2 transition-colors hover:bg-neutral-02"
                     >
-                      <XMark className="h-4 w-4 text-neutral-tertiary hover:text-neutral-primary" />
+                      <Clock className="h-4 w-4 shrink-0 text-neutral-tertiary" />
+                      <span className="text-body-md text-neutral-primary">
+                        {suggestion}
+                      </span>
                     </button>
-                  </button>
-                ))}
+                  ))
+                  : displayedRecentSearches.map((search) => (
+                    <button
+                      key={search}
+                      onClick={() => handleRecentSearchClick(search)}
+                      className="flex items-center gap-2 rounded-lg border border-neutral-01 bg-neutral-01 px-3 py-2 transition-colors hover:bg-neutral-02"
+                    >
+                      <Clock className="h-4 w-4 shrink-0 text-neutral-tertiary" />
+                      <span className="text-body-md text-neutral-primary">
+                        {search}
+                      </span>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleRemoveRecentSearch(search);
+                        }}
+                        className="ml-1 shrink-0"
+                      >
+                        <XMark className="h-4 w-4 text-neutral-tertiary hover:text-neutral-primary" />
+                      </button>
+                    </button>
+                  ))}
               </div>
             </div>
           </div>
