@@ -75,7 +75,7 @@ export const ActivityCard = ({ activity }: ActivityCardProps) => {
           >
             <span className="text-[13px] leading-4">Tx</span>
             <svg
-              className="w-5 h-5 -rotate-90"
+              className="w-4 h-4 -rotate-90"
               viewBox="0 0 20 20"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
