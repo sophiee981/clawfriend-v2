@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const links = [
@@ -13,6 +14,8 @@ const links = [
 
 export const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const isSignInPage = pathname?.toLowerCase().includes("sign");
 
   const handleScroll = (href: (typeof links)[number]["href"]) => {
     const isSmallScreen = typeof window !== "undefined" && window.innerWidth < 768;
@@ -97,6 +100,19 @@ export const Navbar = () => {
                 <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#fe5631] transition-all group-hover:w-full shadow-[0_0_10px_#fe5631]" />
               </button>
             ))}
+            <a
+              href="#"
+              className={`text-xs xl:text-sm font-bold transition-all relative group whitespace-nowrap ${
+                isSignInPage
+                  ? "text-neutral-600 cursor-not-allowed opacity-50"
+                  : "text-neutral-400 hover:text-[#fe5631]"
+              }`}
+            >
+              Doc
+              {!isSignInPage && (
+                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#fe5631] transition-all group-hover:w-full shadow-[0_0_10px_#fe5631]" />
+              )}
+            </a>
           </div>
 
           {/* Right Side Actions */}
@@ -108,7 +124,7 @@ export const Navbar = () => {
               variant="secondary"
               className="hidden sm:flex border-[#fe5631]/30 text-[#fe5631] hover:text-white hover:bg-[#fe5631] hover:border-[#fe5631] hover:shadow-[0_0_30px_rgba(254,86,49,0.4)] transition-all duration-300 font-bold text-xs md:text-sm px-3 md:px-4 py-2"
             >
-              <a href="" target="_blank" rel="noreferrer">
+              <a href="">
                 Sign in with 𝕏
               </a>
             </Button>
@@ -185,17 +201,30 @@ export const Navbar = () => {
               <span className="absolute bottom-2 left-4 w-0 h-[2px] bg-[#fe5631] transition-all group-hover:w-[calc(100%-2rem)] shadow-[0_0_10px_#fe5631]" />
             </button>
           ))}
+          <a
+            href="#"
+            className={`text-left text-lg font-bold transition-all py-3 px-4 rounded-lg relative group ${
+              isSignInPage
+                ? "text-neutral-600 cursor-not-allowed opacity-50"
+                : "text-neutral-400 hover:text-[#fe5631] hover:bg-white/5"
+            }`}
+          >
+            Doc
+            {!isSignInPage && (
+              <span className="absolute bottom-2 left-4 w-0 h-[2px] bg-[#fe5631] transition-all group-hover:w-[calc(100%-2rem)] shadow-[0_0_10px_#fe5631]" />
+            )}
+          </a>
         </div>
 
         {/* Mobile Sign In Button */}
-        <div className="px-4 md:px-6 mt-8">
+        <div className="px-4 md:px-6 mt-4">
           <Button
             asChild
             buttonType="outline"
             variant="secondary"
             className="w-full border-[#fe5631]/30 text-[#fe5631] hover:text-white hover:bg-[#fe5631] hover:border-[#fe5631] hover:shadow-[0_0_30px_rgba(254,86,49,0.4)] transition-all duration-300 font-bold"
           >
-            <a href="" target="_blank" rel="noreferrer">
+            <a href="">
               Sign in with 𝕏
             </a>
           </Button>
