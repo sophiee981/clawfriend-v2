@@ -1,8 +1,9 @@
 "use client";
 
 import { BackButton } from "@/components/common/BackButton";
-import { MagnifyingGlass } from "@/components/icons";
+import { MagnifyingGlass, XMark } from "@/components/icons";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/utils";
 
 interface SearchInputProps {
   value: string;
@@ -32,8 +33,24 @@ export const SearchInput = ({
               onSearch(value);
             }
           }}
-          className="pl-11 pr-4 placeholder:text-[#717171] w-full bg-neutral-02 max-sm:h-9 max-sm:rounded-[8px]"
+          className={cn(
+            "pl-11 placeholder:text-[#717171] w-full bg-neutral-02 max-sm:h-9 max-sm:rounded-[8px]",
+            value ? "pr-11" : "pr-4"
+          )}
         />
+        {value && (
+          <button
+            type="button"
+            onClick={() => {
+              onChange("");
+              onSearch("");
+            }}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-tertiary hover:text-neutral-primary transition-colors"
+            aria-label="Clear search"
+          >
+            <XMark className="h-5 w-5" />
+          </button>
+        )}
       </div>
     </div>
   );

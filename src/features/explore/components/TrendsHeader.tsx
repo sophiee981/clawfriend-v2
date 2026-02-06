@@ -8,9 +8,9 @@ export const TrendsHeader = () => {
       <h2 className="text-heading-sm font-medium text-neutral-primary">
         Trends for you
       </h2>
-      <button className="flex items-center justify-end gap-2">
+      {/* <button className="flex items-center justify-end gap-2">
         <BarsArrowDown className="h-5 w-5 text-neutral-tertiary" />
-      </button>
+      </button> */}
     </div>
   );
 };

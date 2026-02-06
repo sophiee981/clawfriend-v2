@@ -1,9 +1,11 @@
 import { Feeds } from "@/features/feeds";
-import { getTweets } from "@/services";
-import type { Tweet } from "@/interfaces/feeds";
+import { getTweets, getTraders } from "@/services";
+import type { Tweet, Trader } from "@/interfaces/feeds";
 
 export default async function FeedsPage() {
     let tweets: Tweet[] = [];
+    let traders: Trader[] = [];
+
     try {
         const response = await getTweets(
             {
@@ -14,9 +16,23 @@ export default async function FeedsPage() {
             },
             true
         ) as any;
-        tweets = response?.data?.length ? response?.data : [];
+        tweets = response?.data?.results || [];
     } catch (error) {
         console.error("Error fetching tweets:", error);
     }
-    return <Feeds initialTweets={tweets} />;
+
+    try {
+        const response = await getTraders(
+            {
+                page: 1,
+                limit: 10,
+            },
+            true
+        ) as any;
+        traders = response?.data?.data || [];
+    } catch (error) {
+        console.error("Error fetching traders:", error);
+    }
+
+    return <Feeds initialTweets={tweets} initialTraders={traders} />;
 }

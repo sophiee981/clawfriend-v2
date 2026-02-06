@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   TabNavigation,
   TrendingTab,
@@ -8,16 +8,21 @@ import {
   NowTab,
   RightSidebar,
 } from "./components";
-import type { Tweet } from "@/interfaces/feeds";
+import type { Tweet, Trader } from "@/interfaces/feeds";
+import { useExchangeRateStore } from "@/stores/exchange-rate.store";
 
 type TabType = "trending" | "for-you" | "now";
 
 interface FeedsProps {
   initialTweets: Tweet[];
+  initialTraders: Trader[];
 }
 
-export const Feeds = ({ initialTweets }: FeedsProps) => {
+export const Feeds = ({ initialTweets, initialTraders }: FeedsProps) => {
+  const { fetchExchangeRate } = useExchangeRateStore();
+
   const [activeTab, setActiveTab] = useState<TabType>("trending");
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const tabs = [
     { id: "trending" as TabType, label: "Trending" },
@@ -27,7 +32,15 @@ export const Feeds = ({ initialTweets }: FeedsProps) => {
 
   const handleTabChange = (tabId: string) => {
     setActiveTab(tabId as TabType);
+    // Scroll to top when tab changes
+    if (contentRef.current) {
+      contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
+
+  useEffect(() => {
+    fetchExchangeRate();
+  }, [fetchExchangeRate]);
 
   return (
     <div className="flex h-screen">
@@ -57,7 +70,10 @@ export const Feeds = ({ initialTweets }: FeedsProps) => {
         />
 
         {/* Tab Content */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide">
+        <div
+          ref={contentRef}
+          className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide"
+        >
           {activeTab === "trending" && <TrendingTab tweets={initialTweets} />}
           {activeTab === "for-you" && <ForYouTab />}
           {activeTab === "now" && <NowTab />}
@@ -65,7 +81,7 @@ export const Feeds = ({ initialTweets }: FeedsProps) => {
       </div>
 
       {/* Right Sidebar */}
-      <RightSidebar />
+      <RightSidebar traders={initialTraders} />
     </div>
   );
 };

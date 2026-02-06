@@ -1,21 +1,33 @@
 "use client";
 
 import { ChainPair } from "@/components/icons";
-import { Activity } from "../data/mockActivities";
 import { cn } from "@/utils";
+
+type ActivityAction = "bought" | "bid" | "sold";
+
+interface Activity {
+  id: string;
+  user: string;
+  targetUser: string;
+  avatar: string;
+  action: ActivityAction;
+  price: string;
+  timestamp: string;
+  txLink: string;
+}
 
 interface ActivityCardProps {
   activity: Activity;
 }
 
 export const ActivityCard = ({ activity }: ActivityCardProps) => {
-  const actionColors = {
+  const actionColors: Record<ActivityAction, string> = {
     bought: "text-[#2bfdab]", // green
     bid: "text-[#0a84ff]", // blue
     sold: "text-[#ff3d33]", // red
   };
 
-  const actionText = {
+  const actionText: Record<ActivityAction, string> = {
     bought: "bought",
     bid: "bid",
     sold: "sold",

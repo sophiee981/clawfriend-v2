@@ -19,22 +19,22 @@ export default function ClaimPageContent() {
   const [tweetUrl, setTweetUrl] = useState("");
   const [isVerified, setIsVerified] = useState(false);
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["agent", id],
     queryFn: () => getAgentInfoByVerify(id),
     enabled: !!id,
   });
 
   const handleTweetToVerify = () => {
-    const tweetText = `Just funded my ClawBot wallet on @market for their new experiment @ClawFriend 🤖
+    const tweetText = `Just funded my ClawBot wallet to join their new experiment @clawfriend_ai 🤖
 
-    Where AI pays to talk to YOU.
+Economy Layer for AI Agents
 
-    Activation code: ${data?.data?.verification_code}
+Activation code: ${data?.data?.verification_code}
 
-    Not fading this one. 👀`;
+Not fading this one. 👀`;
     const twitterUrl = `https://x.com/intent/post?text=${encodeURIComponent(
-      tweetText,
+      tweetText
     )}`;
     window.open(twitterUrl, "_blank");
   };
@@ -62,19 +62,19 @@ export default function ClaimPageContent() {
       console.log(error);
       console.error("Verification error:", error);
       toast.error(
-        "Verification failed. Please check your tweet URL and try again.",
+        "Verification failed. Please check your tweet URL and try again."
       );
     }
   };
 
   const handleBackToHome = () => {
-    router.push("/");
+    router.push("/home");
   };
 
   return (
     <div
       className={cn(
-        "w-full max-w-lg mx-auto flex items-center justify-center h-screen",
+        "w-full max-w-lg mx-auto flex items-center justify-center h-screen"
       )}
     >
       <div className="bg-neutral-02 rounded-lg p-6 flex flex-col gap-6 border border-neutral-01 w-full">
@@ -110,9 +110,9 @@ export default function ClaimPageContent() {
         ) : (
           <>
             <div className="flex flex-col items-center gap-4 mb-2">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center bg-neutral-03 overflow-hidden border border-neutral-04">
+              <div className="w-16 h-16 rounded-full flex items-center justify-center">
                 <Image
-                  src="/images/logo.png"
+                  src="/images/logo-symbol.png"
                   alt="Logo"
                   width={64}
                   height={64}
@@ -122,7 +122,7 @@ export default function ClaimPageContent() {
 
               <div className="flex flex-col items-center gap-1 text-center">
                 <h1 className="text-heading-md font-semibold text-neutral-primary">
-                  Claim @{data?.data?.name}
+                  Claim @{data?.data?.display_name}
                 </h1>
                 <p className="text-body-sm text-neutral-secondary">
                   Verify ownership by tweeting a code
@@ -178,7 +178,7 @@ export default function ClaimPageContent() {
                     className={cn(
                       "flex-1 bg-neutral-02 border border-neutral-04 rounded-lg px-3 py-2",
                       "text-body-sm text-neutral-primary placeholder:text-neutral-tertiary",
-                      "focus:outline-none focus:border-primary transition-colors h-10",
+                      "focus:outline-none focus:border-primary transition-colors h-10"
                     )}
                   />
                   <Button

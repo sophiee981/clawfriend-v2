@@ -5,6 +5,9 @@ export interface Agent {
   xUsername: string;
   createdAt: string;
   updatedAt: string;
+  followersCount: number;
+  followingCount: number;
+  displayName: string;
 }
 
 export interface GetAgentByIdResponse {
@@ -13,9 +16,28 @@ export interface GetAgentByIdResponse {
   message: string;
 }
 
+export interface GetAgentByUsernameResponse {
+  id: string;
+  displayName: string;
+  username: string;
+  xUsername: string | null;
+  xOwnerHandle: string | null;
+  xOwnerName: string | null;
+  lastPingAt: string | null;
+  followersCount: number;
+  followingCount: number;
+  createdAt: string;
+  updatedAt: string;
+  sharePriceBNB: string;
+  holdingValueBNB: string;
+  tradingVolBNB: string;
+  totalSupply: number;
+  totalHolder: number;
+  yourShare: number;
+}
+
 export interface AgentInfoByVerify {
   id: string;
-  name: string;
   display_name: string;
   description: string | null;
   status: "pending_claim" | "claimed" | "active" | "disabled";
@@ -65,12 +87,18 @@ export interface RecoverVerifyRequest {
 
 export interface AgentBalanceLeaderboard {
   agentId: string;
-  agentName: string;
+  agentDisplayName: string;
+  lastPingAt: string | null;
   agentUsername: string;
-  agentXUsername: string;
+  agentXUsername: string | null;
+  agentXOwnerHandle: string | null;
+  agentXOwnerName: string | null;
   balance: string;
   walletAddress: string;
+  volumeBnb: string;
+  currentPrice: string;
   rank: number;
+  followersCount?: number;
 }
 
 export interface AgentBalanceLeaderboardResponse {
@@ -81,4 +109,92 @@ export interface AgentBalanceLeaderboardResponse {
 export interface AgentBalanceLeaderboardParams {
   page: number;
   limit: number;
+}
+
+export interface AgentPositionValueLeaderboard {
+  agentId: string;
+  agentDisplayName: string;
+  agentUsername: string;
+  agentXUsername: string | null;
+  agentXOwnerHandle: string | null;
+  agentXOwnerName: string | null;
+  lastPingAt: string | null;
+  positionValueBNB: string;
+  walletAddress: string;
+  volumeBnb: string;
+  currentPrice: string;
+  rank: number;
+}
+
+export interface AgentPositionValueLeaderboardResponse {
+  data: {
+    data: AgentPositionValueLeaderboard[];
+  };
+  total?: number;
+}
+
+export interface AgentPositionValueLeaderboardParams {
+  page: number;
+  limit: number;
+}
+
+export interface AgentSummary {
+  id: string;
+  displayName: string;
+  username: string;
+  subject: string;
+  avatarUrl: string | null;
+  volumeBnb: string;
+  currentPrice: string;
+  tgeAt: string;
+  xOwnerHandle: string | null;
+  xOwnerName: string | null;
+  lastPingAt: string | null;
+  followersCount: number;
+  followingCount: number;
+}
+
+export interface AgentsSummaryResponse {
+  data: {
+    data: AgentSummary[];
+    total: number;
+  };
+  statusCode: number;
+  message: string;
+}
+
+export interface AgentsSummaryParams {
+  page: number;
+  limit: number;
+  search?: string;
+}
+
+export interface AgentTrendsParams {
+  page?: number;
+  limit?: number;
+}
+
+export interface AgentTrend {
+  id: string;
+  displayName: string;
+  username: string;
+  subject: string;
+  avatarUrl: string | null;
+  volumeBnb: string;
+  currentPrice: string;
+  tgeAt: string;
+  xOwnerHandle: string;
+  xOwnerName: string;
+  lastPingAt: string | null;
+  followersCount: number;
+  followingCount: number;
+}
+
+export interface AgentTrendsResponse {
+  data: {
+    data: AgentTrend[];
+    total: number;
+  };
+  statusCode: number;
+  message: string;
 }

@@ -3,6 +3,17 @@
 import { ChainPair } from "@/components/icons";
 import { useState } from "react";
 import { cn } from "@/utils";
+import { formatNumberShort } from "@/utils/number";
+
+interface ProfileStatsProps {
+  yourShare: number
+  sharePrice: string;
+  tradingVol: string;
+  holdingValue: string;
+  earnings: number;
+  totalSupply: number;
+  totalHolder: number;
+}
 
 interface StatItemProps {
   label: string;
@@ -27,7 +38,7 @@ const StatItem = ({ label, value, hasChainIcon, className }: StatItemProps) => (
   </div>
 );
 
-export const ProfileStats = () => {
+export const ProfileStats = ({ sharePrice, tradingVol, holdingValue, earnings, yourShare, totalSupply, totalHolder }: ProfileStatsProps) => {
   const [isExpanded, setIsExpanded] = useState(true);
 
   return (
@@ -35,19 +46,19 @@ export const ProfileStats = () => {
       {/* Top Row */}
       <div className="flex items-center border-b border-neutral-900">
         <div className="flex-1 border-r border-neutral-900">
-          <StatItem label="Share Price" value="0.0012" hasChainIcon />
+          <StatItem label="Share Price" value={formatNumberShort(sharePrice)} hasChainIcon />
         </div>
         <div className="flex-1 px-4 py-3">
           <div className="flex items-start gap-1 text-[15px] leading-5">
-            <span className="text-neutral-primary font-medium">48</span>
+            <span className="text-neutral-primary font-medium">{totalSupply}</span>
             <span className="text-neutral-tertiary">Shares</span>
             <span className="text-neutral-tertiary">/</span>
-            <span className="text-neutral-primary font-medium">26</span>
+            <span className="text-neutral-primary font-medium">{totalHolder}</span>
             <span className="text-neutral-tertiary">Holders</span>
           </div>
           <div className="flex items-center gap-1 text-[13px] leading-4 text-neutral-tertiary mt-1">
             <span>You own</span>
-            <span className="text-neutral-primary">1</span>
+            <span className="text-neutral-primary">{yourShare}</span>
             <span>Share</span>
           </div>
         </div>
@@ -84,28 +95,17 @@ export const ProfileStats = () => {
             {/* Row 2 */}
             <div className="flex items-stretch border-b border-neutral-900">
               <div className="flex-1 border-r border-neutral-900">
-                <StatItem label="Trading Vol" value="0.48" hasChainIcon />
+                <StatItem label="Trading Vol" value={formatNumberShort(tradingVol)} hasChainIcon />
               </div>
               <div className="flex-1 border-r border-neutral-900">
-                <StatItem label="Earnings" value="0.02" hasChainIcon />
+                <StatItem label="Earnings" value={formatNumberShort(earnings)} hasChainIcon />
               </div>
-              <div className="flex-1">
-                <StatItem label="Subscribers" value="46" />
+              <div className="flex-1 border-r border-neutral-900">
+                <StatItem label="Holding Value" value={formatNumberShort(holdingValue)} hasChainIcon />
               </div>
+
             </div>
 
-            {/* Row 3 */}
-            <div className="flex items-stretch">
-              <div className="flex-1 border-r border-neutral-900">
-                <StatItem label="Holders Value" value="0.76" hasChainIcon />
-              </div>
-              <div className="flex-1 border-r border-neutral-900">
-                <StatItem label="Holding Value" value="0.05" hasChainIcon />
-              </div>
-              <div className="flex-1">
-                <StatItem label="Subs Value" value="0.81" hasChainIcon />
-              </div>
-            </div>
           </div>
         </div>
       </div>

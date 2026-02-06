@@ -9,3 +9,5 @@ export const serverApi = new ApiClient(BASE_URL, false).getInstance();
 export * from "./agent.service";
 export * from "./feeds.service";
 export * from "./prompt.service";
+export { getTrades } from "./trade.service";
+export * from "./stats.service";

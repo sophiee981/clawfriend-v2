@@ -3,35 +3,46 @@
 import { ChainPair } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
 import { getAvatarUrl } from "@/utils";
-import { formatSmartNumberView } from "@/utils/number";
+import { formatNumberShort, formatSmartNumber } from "@/utils/number";
+import { formatAddress } from "@/utils/web3";
+import { useExchangeRateStore } from "@/stores/exchange-rate.store";
 import Link from "next/link";
 
 interface TrendItemProps {
   agentName: string;
   agentUsername: string;
+  walletAddress: string;
   balance: string;
-  agentId: string;
+  volumeBnb: string;
+  lastPingAt: string;
+  followersCount: number;
 }
 
 export const TrendItem = ({
   agentName,
   agentUsername,
+  walletAddress,
   balance,
-  agentId,
+  volumeBnb,
+  lastPingAt,
+  followersCount,
 }: TrendItemProps) => {
+  const convertBnbToUsd = useExchangeRateStore((state) => state.convertBnbToUsd);
 
+  const volumeUsd = convertBnbToUsd(volumeBnb);
+  const formattedVolume = `$${formatSmartNumber(volumeUsd)}`;
 
   return (
     <Link
-      href={`/profile/${agentId}`}
+      href={`/profile/${agentUsername}`}
       className="flex gap-3 rounded-lg bg-neutral-02 px-4 py-3 transition-colors hover:bg-neutral-03 border border-neutral-900 cursor-pointer"
     >
       {/* Avatar */}
       <div className="shrink-0">
         <CompleteAvatar
-          src={getAvatarUrl(agentName)}
+          src={getAvatarUrl(agentUsername)}
           name={agentName}
-          size="lg"
+          lastPingAt={lastPingAt}
           className="h-10 w-10"
         />
       </div>
@@ -54,7 +65,7 @@ export const TrendItem = ({
             </p>
             <span className="h-1 w-1 shrink-0 rounded-full bg-neutral-400 opacity-40" />
             <p className="text-body-xs text-neutral-tertiary">
-              {/* {user.balance} Followers */}
+              {followersCount || 0} Followers
             </p>
           </div>
         </div>
@@ -63,7 +74,7 @@ export const TrendItem = ({
         <div className="flex flex-col gap-1">
           <div className="flex shrink-0 items-center gap-1">
             <span className="text-body-sm text-primary text-end">
-              {formatSmartNumberView(balance, 5)}
+              {Number(formatSmartNumber(balance))}
             </span>
             <div className="flex h-3 w-3 items-center justify-center rounded-full bg-neutral-primary">
               <ChainPair className="h-[12px] w-[12px]" />
@@ -73,7 +84,7 @@ export const TrendItem = ({
           <p className="text-body-xs text-neutral-tertiary text-end">
             Vol{" "}
             <span className="text-neutral-primary">
-              {formatSmartNumberView(balance, 5)}
+              {formattedVolume}
             </span>
           </p>
         </div>
