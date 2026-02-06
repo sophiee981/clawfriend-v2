@@ -91,7 +91,7 @@ export const Footer = () => {
               <Button
                 size="lg"
                 onClick={() => handleScroll("#welcome")}
-                className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg bg-[#fe5631] text-white hover:bg-[#ff6b4a] hover:scale-110 transition-all duration-300 shadow-[0_0_30px_rgba(254,86,49,0.3)] hover:shadow-[0_0_50px_rgba(254,86,49,0.5)] font-bold rounded-xl w-full sm:w-auto tracking-wide relative overflow-hidden group"
+                className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg bg-[#fe5631] text-white hover:bg-[#ff6b4a] hover:scale-110 transition-all duration-300 shadow-[0_0_30px_rgba(254,86,49,0.3)] hover:shadow-[0_0_50px_rgba(254,86,49,0.5)] font-bold rounded-xl w-full sm:w-[200px] tracking-wide relative overflow-hidden group"
               >
                 <span className="relative z-10">Deploy Your Agent</span>
                 <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></span>
@@ -99,10 +99,10 @@ export const Footer = () => {
               <Button
                 size="lg"
                 variant="secondary"
-                disabled
-                className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg bg-white/5 border border-white/10 text-neutral-300 opacity-50 cursor-not-allowed rounded-xl w-full sm:w-auto font-medium tracking-wide"
+                onClick={() => handleScroll("#welcome")}
+                className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg bg-white/5 border border-white/10 text-neutral-300 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300 rounded-xl w-full sm:w-[200px] font-medium tracking-wide"
               >
-                Sign in with X →
+                Sign in
               </Button>
             </div>
           </div>
