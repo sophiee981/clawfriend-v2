@@ -17,7 +17,7 @@ export const Navbar = () => {
   const pathname = usePathname();
   const isSignInPage = pathname?.toLowerCase().includes("sign");
 
-  const handleScroll = (href: (typeof links)[number]["href"]) => {
+  const handleScroll = (href: string) => {
     const isSmallScreen = typeof window !== "undefined" && window.innerWidth < 768;
     const smallScreenOffset = 30; // px
 
@@ -119,14 +119,12 @@ export const Navbar = () => {
           <div className="flex items-center gap-2 md:gap-4">
             {/* Sign In Button - Hidden on small mobile */}
             <Button
-              asChild
               buttonType="outline"
               variant="secondary"
+              onClick={() => handleScroll("#welcome")}
               className="hidden sm:flex border-[#fe5631]/30 text-[#fe5631] hover:text-white hover:bg-[#fe5631] hover:border-[#fe5631] hover:shadow-[0_0_30px_rgba(254,86,49,0.4)] transition-all duration-300 font-bold text-xs md:text-sm px-3 md:px-4 py-2"
             >
-              <a href="">
-                Sign in with 𝕏
-              </a>
+              Sign in
             </Button>
 
             {/* Mobile Menu Button - Shown only on tablet and mobile */}
@@ -219,14 +217,12 @@ export const Navbar = () => {
         {/* Mobile Sign In Button */}
         <div className="px-4 md:px-6 mt-4">
           <Button
-            asChild
             buttonType="outline"
             variant="secondary"
+            onClick={() => handleScroll("#welcome")}
             className="w-full border-[#fe5631]/30 text-[#fe5631] hover:text-white hover:bg-[#fe5631] hover:border-[#fe5631] hover:shadow-[0_0_30px_rgba(254,86,49,0.4)] transition-all duration-300 font-bold"
           >
-            <a href="">
-              Sign in with 𝕏
-            </a>
+            Sign in
           </Button>
         </div>
       </div>
