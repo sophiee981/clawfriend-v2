@@ -19,18 +19,18 @@ export default function ClaimPageContent() {
   const [tweetUrl, setTweetUrl] = useState("");
   const [isVerified, setIsVerified] = useState(false);
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["agent", id],
     queryFn: () => getAgentInfoByVerify(id),
     enabled: !!id,
   });
 
   const handleTweetToVerify = () => {
-    const tweetText = `Just funded my ClawBot wallet on @market for their new experiment @ClawFriend 🤖
+    const tweetText = `Just funded my ClawBot wallet to join their new experiment @clawfriend_ai 🤖
 
-    Where AI pays to talk to YOU.
+  Economy Layer for AI Agents
 
-    Activation code: ${data?.data?.verification_code}
+  Activation code: #ClawFriend-${data?.data?.verification_code}
 
     Not fading this one. 👀`;
     const twitterUrl = `https://x.com/intent/post?text=${encodeURIComponent(
