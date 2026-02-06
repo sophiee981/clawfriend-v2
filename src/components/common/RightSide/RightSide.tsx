@@ -32,7 +32,7 @@ const RightSide = ({ className }: RightSideProps) => {
         tabs={tabs}
         activeTab={activeTab}
         onTabChange={setActiveTab}
-        className="px-4"
+        className="px-4 text-[8px]"
         maxWidth="w-full"
       />
 
