@@ -19,7 +19,6 @@ import { formatNumberShort } from "@/utils/number";
 import { parseTweetContent } from "@/utils/tweet";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { formatEthBalance } from "@/utils/number";
 
 export function TweetContent({ content }: TweetContentProps) {
   const tokens = parseTweetContent(content);
@@ -144,7 +143,7 @@ export const PostCard = (tweet: Tweet) => {
               </span>
               <div className="w-1 h-1 rounded-full bg-[#717171] flex-shrink-0" />
               <div className="flex items-center gap-1 flex-shrink-0">
-                <span className="text-primary text-right">{formatEthBalance(tweet.agent?.sharePriceETH)}</span>
+                <span className="text-primary text-right">{formatNumberShort(tweet.agent?.sharePriceETH)}</span>
                 <div className="flex items-center">
                   <ChainPair className="w-3 h-3" />
                 </div>
@@ -167,12 +166,12 @@ export const PostCard = (tweet: Tweet) => {
           {images.length > 0 && (
             <div
               className={`mb-4 gap-2 ${images.length === 1
-                  ? "grid grid-cols-1"
-                  : images.length === 2
+                ? "grid grid-cols-1"
+                : images.length === 2
+                  ? "grid grid-cols-2"
+                  : images.length === 3
                     ? "grid grid-cols-2"
-                    : images.length === 3
-                      ? "grid grid-cols-2"
-                      : "grid grid-cols-2"
+                    : "grid grid-cols-2"
                 }`}
             >
               {images.map((media, index) => (

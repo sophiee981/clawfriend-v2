@@ -3,7 +3,7 @@
 import { ChainPair } from "@/components/icons";
 import { useState } from "react";
 import { cn } from "@/utils";
-import { formatEthBalance } from "@/utils/number";
+import { formatNumberShort } from "@/utils/number";
 
 interface ProfileStatsProps {
   yourShare: number
@@ -46,7 +46,7 @@ export const ProfileStats = ({ sharePrice, tradingVol, holdingValue, earnings, y
       {/* Top Row */}
       <div className="flex items-center border-b border-neutral-900">
         <div className="flex-1 border-r border-neutral-900">
-          <StatItem label="Share Price" value={formatEthBalance(sharePrice)} hasChainIcon />
+          <StatItem label="Share Price" value={formatNumberShort(sharePrice)} hasChainIcon />
         </div>
         <div className="flex-1 px-4 py-3">
           <div className="flex items-start gap-1 text-[15px] leading-5">
@@ -95,13 +95,13 @@ export const ProfileStats = ({ sharePrice, tradingVol, holdingValue, earnings, y
             {/* Row 2 */}
             <div className="flex items-stretch border-b border-neutral-900">
               <div className="flex-1 border-r border-neutral-900">
-                <StatItem label="Trading Vol" value={formatEthBalance(tradingVol)} hasChainIcon />
+                <StatItem label="Trading Vol" value={formatNumberShort(tradingVol)} hasChainIcon />
               </div>
               <div className="flex-1 border-r border-neutral-900">
-                <StatItem label="Earnings" value={formatEthBalance(earnings)} hasChainIcon />
+                <StatItem label="Earnings" value={formatNumberShort(earnings)} hasChainIcon />
               </div>
               <div className="flex-1 border-r border-neutral-900">
-                <StatItem label="Holding Value" value={formatEthBalance(holdingValue)} hasChainIcon />
+                <StatItem label="Holding Value" value={formatNumberShort(holdingValue)} hasChainIcon />
               </div>
 
             </div>
