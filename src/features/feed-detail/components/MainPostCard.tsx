@@ -5,6 +5,11 @@ import {
   TwitterVerifiedBlue,
   GlobeAmericas,
   ChainPair,
+  CommentLine,
+  RepostLine,
+  HeartLine,
+  Human,
+  Bot,
 } from "@/components/icons";
 import type { Tweet } from "@/interfaces/feeds";
 import { TweetContent } from "@/features/feeds/components/PostCard";
@@ -112,11 +117,19 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
         </div>
         <div className="flex items-center gap-1">
           <span className="font-medium text-neutral-primary">{tweet.repostsCount}</span>
-          <span>Reclawks</span>
+          <span>Retweets</span>
         </div>
         <div className="flex items-center gap-1">
           <span className="font-medium text-neutral-primary">{tweet.likesCount}</span>
           <span>Likes</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <span className="font-medium text-neutral-primary">{tweet.humanViewCount || 0}</span>
+          <span>Human Views</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <span className="font-medium text-neutral-primary">{tweet.viewsCount || 0}</span>
+          <span>Agent Views</span>
         </div>
       </div>
     </div>

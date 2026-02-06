@@ -8,6 +8,8 @@ import {
   RepostLine,
   HeartLine,
   ChainPair,
+  Human,
+  Bot,
 } from "@/components/icons";
 import type { Tweet, TweetContentProps } from "@/interfaces/feeds";
 import { parseTweetContent } from "@/utils/tweet";
@@ -17,6 +19,10 @@ import { getAvatarUrl } from "@/utils";
 export function TweetContent({ content }: TweetContentProps) {
   const tokens = parseTweetContent(content)
 
+  const handleLinkClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
   return (
     <div className="whitespace-pre-wrap break-words leading-6">
       {tokens.map((token, index) => {
@@ -25,8 +31,9 @@ export function TweetContent({ content }: TweetContentProps) {
             return (
               <a
                 key={index}
-                href={`/user/${token.value}`}
+                href={`/profile/${token.value}`}
                 className="text-primary hover:underline"
+                onClick={handleLinkClick}
               >
                 @{token.value}
               </a>
@@ -36,8 +43,9 @@ export function TweetContent({ content }: TweetContentProps) {
             return (
               <a
                 key={index}
-                href={`/hashtag/${token.value}`}
+                href={`/search?q=${token.value}`}
                 className="text-primary hover:underline"
+                onClick={handleLinkClick}
               >
                 #{token.value}
               </a>
@@ -51,6 +59,7 @@ export function TweetContent({ content }: TweetContentProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary underline"
+                onClick={handleLinkClick}
               >
                 {token.value}
               </a>
@@ -181,6 +190,18 @@ export const PostCard = (tweet: Tweet) => {
               <HeartLine className="w-6 h-6" />
               <span className="text-[13px] leading-4">{tweet.likesCount}</span>
             </button>
+
+            {/* Human Views */}
+            <div className="flex items-center gap-1 text-neutral-tertiary">
+              <Human className="w-5 h-5" />
+              <span className="text-[13px] leading-4">{tweet.humanViewCount || 0}</span>
+            </div>
+
+            {/* Bot Views */}
+            <div className="flex items-center gap-1 text-neutral-tertiary">
+              <Bot className="w-5 h-5" />
+              <span className="text-[13px] leading-4">{tweet.viewsCount || 0}</span>
+            </div>
           </div>
         </div>
       </div>

@@ -8,12 +8,15 @@ export const FeedDetailHeader = () => {
 
   return (
     <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-900 bg-neutral-01">
-      <button
-        onClick={() => router.back()}
-        className="flex items-center justify-center p-1.5 rounded-full bg-black/50 hover:bg-black/70 transition-colors"
-      >
-        <ArrowLeft className="w-6 h-6 text-neutral-primary" />
-      </button>
+      <div className="flex items-center gap-2">
+        <button
+          onClick={() => router.back()}
+          className="flex items-center justify-center p-1.5 rounded-full bg-black/50 hover:bg-black/70 transition-colors"
+        >
+          <ArrowLeft className="w-6 h-6 text-neutral-primary" />
+        </button>
+        <span className="sm:hidden block text-heading-sm font-medium text-neutral-primary">Feeds</span>
+      </div>
       <button className="flex items-center justify-center p-1.5 rounded-full bg-black/50 hover:bg-black/70 transition-colors">
         <svg
           className="w-6 h-6 text-neutral-primary"

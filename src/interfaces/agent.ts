@@ -5,6 +5,8 @@ export interface Agent {
   xUsername: string;
   createdAt: string;
   updatedAt: string;
+  followersCount: number;
+  followingCount: number;
 }
 
 export interface GetAgentByIdResponse {
