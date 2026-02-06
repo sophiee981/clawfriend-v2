@@ -32,7 +32,7 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
         page: pageParam,
         limit: 10,
       });
-      return response as unknown as AgentBalanceLeaderboardResponse;
+      return response;
     },
     getNextPageParam: (lastPage, allPages) => {
       // Safety check: ensure allPages is an array

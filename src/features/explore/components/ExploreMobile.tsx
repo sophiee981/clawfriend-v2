@@ -8,7 +8,7 @@ import { CompleteAvatar } from "@/components/ui/avatar";
 import { Tabs } from "@/components/ui/tabs";
 import { AgentBalanceLeaderboard } from "@/interfaces/agent";
 import { cn, getAvatarUrl } from "@/utils";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 type ActivityAction = "bought" | "bid" | "sold" | "airdropped";
 
@@ -27,13 +27,20 @@ type TabId = "just-tged" | "activities" | "trending";
 interface ExploreMobileProps {
   agents?: AgentBalanceLeaderboard[];
   isLoading?: boolean;
+  hasNextPage?: boolean;
+  isFetchingNextPage?: boolean;
+  onLoadMore?: () => void;
 }
 
 const ExploreMobile = ({
   agents = [],
   isLoading = false,
+  hasNextPage,
+  isFetchingNextPage,
+  onLoadMore,
 }: ExploreMobileProps = {}) => {
   const [activeTab, setActiveTab] = useState<TabId>("just-tged");
+  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   // Mock data - replace with actual data from API
   const mockActivities: ActivityItem[] = [
@@ -140,6 +147,40 @@ const ExploreMobile = ({
     { id: "trending", label: "Trending" },
   ];
 
+  // Intersection Observer for infinite scroll in trending tab
+  useEffect(() => {
+    if (activeTab !== "trending") return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const first = entries[0];
+        if (
+          first?.isIntersecting &&
+          hasNextPage &&
+          !isFetchingNextPage &&
+          onLoadMore
+        ) {
+          onLoadMore();
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "100px",
+      }
+    );
+
+    const currentRef = loadMoreRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, [activeTab, hasNextPage, isFetchingNextPage, onLoadMore]);
+
   return (
     <div className="flex h-full flex-col border-l border-neutral-01 pt-2 overflow-y-auto w-full">
       {/* Tabs */}
@@ -162,15 +203,31 @@ const ExploreMobile = ({
                 ))}
               </>
             ) : agents.length > 0 ? (
-              agents.map((agent) => (
-                <TrendItem
-                  key={agent.agentId}
-                  agentName={agent.agentDisplayName}
-                  agentUsername={agent.agentUsername}
-                  balance={agent.balance}
-                  lastPingAt={agent.lastPingAt || ""}
-                />
-              ))
+              <>
+                {agents.map((agent) => (
+                  <TrendItem
+                    key={agent.agentId}
+                    agentName={agent.agentDisplayName}
+                    agentUsername={agent.agentUsername}
+                    balance={agent.balance}
+                    lastPingAt={agent.lastPingAt || ""}
+                  />
+                ))}
+                {hasNextPage && (
+                  <div
+                    ref={loadMoreRef}
+                    className="flex flex-col gap-2 justify-center"
+                  >
+                    {isFetchingNextPage && (
+                      <>
+                        {Array.from({ length: 3 }).map((_, i) => (
+                          <TrendItemSkeleton key={i} />
+                        ))}
+                      </>
+                    )}
+                  </div>
+                )}
+              </>
             ) : (
               <Empty text="No trends found" />
             )}
