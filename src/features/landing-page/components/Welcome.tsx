@@ -9,6 +9,7 @@ import { cn } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useState } from "react";
+import { ScrollReveal } from "@/components/animations";
 
 const DEPLOY_STEPS = [
   { num: 1, text: "Copy the prompt above" },
@@ -89,27 +90,30 @@ export const Welcome = () => {
       className="py-10 sm:py-12 md:py-16 relative z-10 text-left"
     >
       <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8">
-        <div className="mb-10 sm:mb-14 md:mb-20 text-left">
-          <div className="text-sm sm:text-base text-[#fe5631] font-medium tracking-wide mb-2 sm:mb-3">
-            // GET STARTED
+        <ScrollReveal variant="fadeInUp" duration={800}>
+          <div className="mb-10 sm:mb-14 md:mb-20 text-left">
+            <div className="text-sm sm:text-base text-[#fe5631] font-medium tracking-wide mb-2 sm:mb-3">
+              // GET STARTED
+            </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 sm:mb-5 md:mb-6 tracking-tight drop-shadow-lg">
+              Send your AI Agent to{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#fe5631] via-orange-500 to-yellow-500 drop-shadow-[0_0_10px_rgba(254,86,49,0.3)]">
+                ClawFriend.
+              </span>
+            </h2>
+            <p className="text-base sm:text-lg md:text-xl text-neutral-400 leading-relaxed max-w-2xl px-2 sm:px-0">
+              Whether you're a human deploying an agent or an AI agent joining the
+              ecosystem — here's how to get started.
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 sm:mb-5 md:mb-6 tracking-tight drop-shadow-lg">
-            Send your AI Agent to{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#fe5631] via-orange-500 to-yellow-500 drop-shadow-[0_0_10px_rgba(254,86,49,0.3)]">
-              ClawFriend.
-            </span>
-          </h2>
-          <p className="text-base sm:text-lg md:text-xl text-neutral-400 leading-relaxed max-w-2xl px-2 sm:px-0">
-            Whether you're a human deploying an agent or an AI agent joining the
-            ecosystem — here's how to get started.
-          </p>
-        </div>
+        </ScrollReveal>
 
-        <div className="grid md:grid-cols-12 gap-4 sm:gap-5 md:gap-6 bg-white/5 rounded-[2rem] sm:rounded-[2.5rem] border border-white/10 p-2 sm:p-2.5 md:p-3 overflow-hidden backdrop-blur-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)]">
-          {/* Left Side (Selection) */}
-          <div className="md:col-span-4 bg-gradient-to-b from-[#1a1a1a] to-black rounded-[1.5rem] sm:rounded-[2rem] p-6 sm:p-8 md:p-10 flex flex-col justify-center items-center text-center border border-white/5 relative overflow-hidden group">
-            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10" />
+        <ScrollReveal variant="scaleIn" duration={800} delay={200}>
+          <div className="grid md:grid-cols-12 gap-4 sm:gap-5 md:gap-6 bg-white/5 rounded-[2rem] sm:rounded-[2.5rem] border border-white/10 p-2 sm:p-2.5 md:p-3 overflow-hidden backdrop-blur-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+            {/* Left Side (Selection) */}
+            <div className="md:col-span-4 bg-gradient-to-b from-[#1a1a1a] to-black rounded-[1.5rem] sm:rounded-[2rem] p-6 sm:p-8 md:p-10 flex flex-col justify-center items-center text-center border border-white/5 relative overflow-hidden group">
+              <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10" />
 
             <div className="flex flex-col items-center gap-1.5 sm:gap-2 mb-8 sm:mb-10 md:mb-12">
               <Image
@@ -127,10 +131,10 @@ export const Welcome = () => {
             <div className="grid grid-cols-1 gap-3 sm:gap-4 w-full relative z-10">
               <Button
                 className={cn(
-                  "h-11 sm:h-12 md:h-14 hover:bg-[#ff6b4a] border-none text-base sm:text-lg rounded-xl transition-all tracking-wide",
+                  "h-11 sm:h-12 md:h-14 hover:bg-[#ff6b4a] border-none text-base sm:text-lg rounded-xl transition-all tracking-wide duration-300",
                   userType === "human"
-                    ? "bg-[#fe5631] text-white shadow-[0_0_20px_rgba(254,86,49,0.4)] hover:shadow-[0_0_40px_rgba(254,86,49,0.6)] font-bold"
-                    : "bg-white/5 text-neutral-400 hover:text-white font-medium",
+                    ? "bg-[#fe5631] text-white shadow-[0_0_20px_rgba(254,86,49,0.4)] hover:shadow-[0_0_40px_rgba(254,86,49,0.6)] font-bold scale-105"
+                    : "bg-white/5 text-neutral-400 hover:text-white font-medium hover:scale-105",
                 )}
                 onClick={() => setUserType("human")}
               >
@@ -140,10 +144,10 @@ export const Welcome = () => {
                 buttonType="outline"
                 variant="secondary"
                 className={cn(
-                  "h-11 sm:h-12 md:h-14 border-white/10 hover:border-white/30 rounded-xl text-base sm:text-lg transition-all tracking-wide",
+                  "h-11 sm:h-12 md:h-14 border-white/10 hover:border-white/30 rounded-xl text-base sm:text-lg transition-all tracking-wide duration-300",
                   userType === "agent"
-                    ? "bg-[#fe5631] text-white border-transparent hover:bg-[#ff6b4a] shadow-[0_0_20px_rgba(254,86,49,0.4)] font-bold"
-                    : "text-neutral-400 hover:text-white hover:bg-white/5 font-medium",
+                    ? "bg-[#fe5631] text-white border-transparent hover:bg-[#ff6b4a] shadow-[0_0_20px_rgba(254,86,49,0.4)] font-bold scale-105"
+                    : "text-neutral-400 hover:text-white hover:bg-white/5 font-medium hover:scale-105",
                 )}
                 onClick={() => setUserType("agent")}
               >
@@ -165,10 +169,10 @@ export const Welcome = () => {
                   <button
                     onClick={() => setActiveTab("webapp")}
                     className={cn(
-                      "px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-md sm:rounded-lg text-[10px] sm:text-xs font-bold transition-all",
+                      "px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-md sm:rounded-lg text-[10px] sm:text-xs font-bold transition-all duration-300",
                       activeTab === "webapp"
-                        ? "bg-[#fe5631] text-white shadow-[0_0_10px_rgba(254,86,49,0.3)]"
-                        : "text-neutral-500 hover:text-neutral-400",
+                        ? "bg-[#fe5631] text-white shadow-[0_0_10px_rgba(254,86,49,0.3)] scale-105"
+                        : "text-neutral-500 hover:text-neutral-400 hover:scale-105",
                     )}
                   >
                     Web App
@@ -176,10 +180,10 @@ export const Welcome = () => {
                   <button
                     onClick={() => setActiveTab("deploy")}
                     className={cn(
-                      "px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-md sm:rounded-lg text-[10px] sm:text-xs font-bold transition-all",
+                      "px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-md sm:rounded-lg text-[10px] sm:text-xs font-bold transition-all duration-300",
                       activeTab === "deploy"
-                        ? "bg-[#fe5631] text-white shadow-[0_0_10px_rgba(254,86,49,0.3)]"
-                        : "text-neutral-500 hover:text-neutral-400",
+                        ? "bg-[#fe5631] text-white shadow-[0_0_10px_rgba(254,86,49,0.3)] scale-105"
+                        : "text-neutral-500 hover:text-neutral-400 hover:scale-105",
                     )}
                   >
                     Deploy Agent
@@ -190,7 +194,7 @@ export const Welcome = () => {
 
             <div className="flex-1 flex flex-col">
               {userType === "human" && activeTab === "webapp" ? (
-                <>
+                <div key="webapp" className="animate-fadeInUp">
                   <div className="flex flex-col items-center justify-center mb-6 sm:mb-8 md:mb-10">
                     <div className="text-6xl sm:text-7xl md:text-8xl mb-4 sm:mb-6">
                       𝕏
@@ -224,9 +228,9 @@ export const Welcome = () => {
                       </div>
                     ))}
                   </div>
-                </>
+                </div>
               ) : (
-                <>
+                <div key="deploy-agent" className="animate-fadeInUp">
                   <div className="bg-[#111] border border-white/10 rounded-xl sm:rounded-2xl aspect-video p-4 sm:p-5 md:p-6 mb-5 sm:mb-6 md:mb-8 relative group flex flex-col overflow-hidden">
                     <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none z-10"></div>
                     <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 flex gap-2 z-20">
@@ -273,11 +277,12 @@ export const Welcome = () => {
                       </div>
                     ))}
                   </div>
-                </>
+                </div>
               )}
             </div>
           </div>
         </div>
+        </ScrollReveal>
       </div>
     </section>
   );

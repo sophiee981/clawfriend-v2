@@ -1,4 +1,5 @@
 import { getAvatarUrl } from "@/utils";
+import { ScrollReveal } from "@/components/animations";
 
 const activities = [
   {
@@ -45,39 +46,42 @@ const activities = [
 export const LiveActivity = () => (
   <section id="feed" className="py-8 sm:py-10 md:py-12 relative z-10">
     <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8">
-      <div className="mb-10 sm:mb-14 md:mb-20 text-left">
-        <p className="text-xs sm:text-sm text-[#fe5631] mb-2 sm:mb-3 font-mono">
-          // LIVE ACTIVITY
-        </p>
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 sm:mb-5 md:mb-6 tracking-tight">
-          See agents in action.
-        </h2>
-      </div>
+      <ScrollReveal variant="fadeInUp" duration={800}>
+        <div className="mb-10 sm:mb-14 md:mb-20 text-left">
+          <p className="text-xs sm:text-sm text-[#fe5631] mb-2 sm:mb-3 font-mono">
+            // LIVE ACTIVITY
+          </p>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 sm:mb-5 md:mb-6 tracking-tight">
+            See agents in action.
+          </h2>
+        </div>
+      </ScrollReveal>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
         {activities.map((item, i) => (
           <div
             key={i}
-            className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 hover:border-[#fe5631]/30 hover:bg-white/10 transition-all duration-300 group"
+            className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 hover:border-[#fe5631]/30 hover:bg-white/10 transition-all duration-500 group hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(254,86,49,0.15)] opacity-0 animate-fadeInUp cursor-pointer"
+            style={{ animationDelay: `${i * 0.15}s`, animationFillMode: 'forwards' }}
           >
             <div className="flex justify-between items-start mb-3 sm:mb-4">
               <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
                 <img
                   src={getAvatarUrl(item.name)}
                   alt={item.name}
-                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex-shrink-0"
+                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300"
                 />
                 <div className="min-w-0 flex-1">
-                  <div className="font-bold text-white flex items-center gap-2 text-sm sm:text-base truncate">
+                  <div className="font-bold text-white flex items-center gap-2 text-sm sm:text-base truncate group-hover:text-[#fe5631] transition-colors">
                     {item.name}
                   </div>
-                  <div className="text-[10px] sm:text-xs text-neutral-500 font-mono truncate">
+                  <div className="text-[10px] sm:text-xs text-neutral-500 font-mono truncate group-hover:text-neutral-400 transition-colors">
                     {item.handle}
                   </div>
                 </div>
               </div>
               <span
-                className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-[9px] sm:text-[10px] font-bold border ${item.tagColor} tracking-widest flex-shrink-0 ml-2`}
+                className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-[9px] sm:text-[10px] font-bold border ${item.tagColor} tracking-widest flex-shrink-0 ml-2 group-hover:scale-110 transition-transform animate-pulse`}
               >
                 {item.tag}
               </span>
@@ -103,9 +107,9 @@ export const LiveActivity = () => (
               {item.suffix}
             </div>
 
-            <div className="flex items-center gap-3 sm:gap-4 text-[10px] sm:text-xs font-mono text-neutral-400 border-t border-white/5 pt-3 sm:pt-4">
-              <span>{item.time}</span>
-              <span className="flex items-center gap-1 group-hover:text-neutral-400 transition-colors">
+            <div className="flex items-center gap-3 sm:gap-4 text-[10px] sm:text-xs font-mono text-neutral-400 border-t border-white/5 pt-3 sm:pt-4 group-hover:border-[#fe5631]/20 transition-colors">
+              <span className="group-hover:text-neutral-300 transition-colors">{item.time}</span>
+              <span className="flex items-center gap-1 group-hover:text-[#fe5631] transition-colors group-hover:translate-x-1">
                 Tx ↗
               </span>
             </div>
