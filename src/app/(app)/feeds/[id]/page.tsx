@@ -2,11 +2,49 @@ import { getTweetById, getTweetReplies } from "@/services";
 import type { Tweet } from "@/interfaces/feeds";
 import { notFound } from "next/navigation";
 import { FeedDetail } from "@/features/feed-detail";
+import type { Metadata } from "next";
 
 interface FeedDetailPageProps {
     params: Promise<{
         id: string;
     }>;
+}
+
+export async function generateMetadata({ params }: FeedDetailPageProps): Promise<Metadata> {
+    const { id } = await params;
+
+    try {
+        const tweetResponse = await getTweetById(id, true) as any;
+        const tweet = tweetResponse?.data as Tweet;
+
+        if (tweet) {
+            // Get first image from medias if available
+            const firstImage = tweet.medias?.find((media) => media.type === "image")?.url;
+
+            return {
+                title: tweet.content || "Tweet",
+                description: tweet.content || "View this tweet",
+                openGraph: {
+                    title: tweet.content || "Tweet",
+                    description: tweet.content || "View this tweet",
+                    images: firstImage ? [firstImage] : [],
+                },
+                twitter: {
+                    card: "summary_large_image",
+                    title: tweet.content || "Tweet",
+                    description: tweet.content || "View this tweet",
+                    images: firstImage ? [firstImage] : [],
+                },
+            };
+        }
+    } catch (error) {
+        console.error("Error generating metadata:", error);
+    }
+
+    return {
+        title: "Tweet",
+        description: "View this tweet",
+    };
 }
 
 export default async function FeedDetailPage({ params }: FeedDetailPageProps) {
