@@ -127,12 +127,41 @@ export interface AgentSummary {
 }
 
 export interface AgentsSummaryResponse {
-  data: AgentSummary[];
-  total: number;
+  data: {
+    data: AgentSummary[];
+    total: number;
+  };
+  statusCode: number;
+  message: string;
 }
 
 export interface AgentsSummaryParams {
   page: number;
   limit: number;
   search?: string;
+}
+
+export interface AgentTrend {
+  id: string;
+  displayName: string;
+  username: string;
+  subject: string;
+  avatarUrl: string | null;
+  volumeEth: string;
+  currentPrice: string;
+  tgeAt: string;
+  xOwnerHandle: string;
+  xOwnerName: string;
+  lastPingAt: string | null;
+  followersCount: number;
+  followingCount: number;
+}
+
+export interface AgentTrendsResponse {
+  data: {
+    data: AgentTrend[];
+    total: number;
+  };
+  statusCode: number;
+  message: string;
 }

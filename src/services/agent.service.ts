@@ -3,6 +3,7 @@ import type {
   AgentBalanceLeaderboardResponse,
   AgentInfoByVerify,
   AgentInfoByVerifyResponse,
+  AgentTrendsResponse,
   AgentsSummaryParams,
   AgentsSummaryResponse,
   GetAgentByIdResponse,
@@ -32,3 +33,6 @@ export const getAgentsSummary = (params: AgentsSummaryParams) =>
 
 export const getAgentByUsername = (username: string) =>
   api.get<GetAgentByUsernameResponse>(`/v1/agents/username/${username}`);
+
+export const getAgentTrends = () =>
+  api.get<AgentTrendsResponse>("/v1/agents/trends");

@@ -1,8 +1,8 @@
 "use client";
 
 import RightSide from "@/components/common/RightSide";
-import { getAgentBalanceLeaderboard } from "@/services";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { getAgentTrends, getAgentsSummary } from "@/services";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import {
   RecentSearches,
@@ -11,7 +11,7 @@ import {
   TrendsList,
   ExploreMobile
 } from "./components";
-import { AgentBalanceLeaderboard, AgentBalanceLeaderboardResponse } from "@/interfaces/agent";
+import { AgentBalanceLeaderboard, AgentTrend, AgentTrendsResponse, AgentsSummaryResponse } from "@/interfaces/agent";
 
 export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -19,51 +19,65 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
+  // Use search endpoint if activeSearch exists, otherwise use trends endpoint
+  const hasSearch = activeSearch.trim().length > 0;
+
   const {
     data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
     isLoading,
-  } = useInfiniteQuery({
-    queryKey: ["agentBalanceLeaderboardExplore"],
-    queryFn: async ({ pageParam = 1 }) => {
-      const response = await getAgentBalanceLeaderboard({
-        page: pageParam,
-        limit: 10,
-      });
-      return response;
+  } = useQuery({
+    queryKey: hasSearch ? ["agentsSummaryExplore", activeSearch] : ["agentTrendsExplore"],
+    queryFn: async () => {
+      if (hasSearch) {
+        const response = await getAgentsSummary({
+          page: 1,
+          limit: 20,
+          search: activeSearch,
+        });
+        return response as unknown as AgentsSummaryResponse;
+      } else {
+        const response = await getAgentTrends();
+        return response as unknown as AgentTrendsResponse;
+      }
     },
-    getNextPageParam: (lastPage, allPages) => {
-      // Safety check: ensure allPages is an array
-      if (!allPages || !Array.isArray(allPages) || allPages.length === 0) {
-        return undefined;
-      }
-      
-      // Safety check: ensure lastPage exists
-      if (!lastPage) {
-        return undefined;
-      }
-
-      const totalLoaded = allPages.reduce(
-        (sum, page) => sum + (page?.data?.data?.length || 0),
-        0
-      );
-      const total = lastPage?.data?.total || 0;
-      if (totalLoaded < total) {
-        return allPages.length + 1;
-      }
-      return undefined;
-    },
-    initialPageParam: 1,
+    enabled: true,
     staleTime: 5 * 60 * 1000, // Cache data for 5 minutes
     refetchOnMount: false, // Don't refetch when component remounts if data exists
     refetchOnWindowFocus: false, // Don't refetch on window focus
   });
 
-  const agents =
-    data?.pages.flatMap((page) => page?.data?.data || []) ||
-    ([] as AgentBalanceLeaderboard[]);
+  // Map response to AgentBalanceLeaderboard format for compatibility
+  let agents: AgentBalanceLeaderboard[] = [];
+
+  if (hasSearch) {
+    // Map AgentsSummaryResponse to AgentBalanceLeaderboard format
+    const responseData = data as unknown as AgentsSummaryResponse | undefined;
+    const summaryData = responseData?.data?.data ?? [];
+    agents = summaryData.map((summary) => ({
+      agentId: summary.id,
+      agentDisplayName: summary.displayName,
+      agentUsername: summary.username,
+      agentXUsername: summary.xOwnerHandle,
+      balance: summary.volumeEth,
+      walletAddress: summary.subject,
+      lastPingAt: summary.lastPingAt,
+      rank: 0, // Summary doesn't have rank
+    }));
+  } else {
+    // Map AgentTrend to AgentBalanceLeaderboard format
+    const responseData = data as unknown as AgentTrendsResponse | undefined;
+    const trendsData: AgentTrend[] = responseData?.data?.data ?? [];
+    agents = trendsData.map((trend) => ({
+      agentId: trend.id,
+      agentDisplayName: trend.displayName,
+      agentUsername: trend.username,
+      agentXUsername: trend.xOwnerHandle,
+      balance: trend.volumeEth,
+      walletAddress: trend.subject,
+      lastPingAt: trend.lastPingAt,
+      rank: 0, // Trends don't have rank
+    }));
+  }
 
   // Load recent searches from localStorage on mount
   useEffect(() => {
@@ -98,6 +112,13 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
       setSuggestions([]);
     }
   }, [searchQuery, recentSearches]);
+
+  // Reset activeSearch when searchQuery is cleared
+  useEffect(() => {
+    if (!searchQuery.trim() && activeSearch) {
+      setActiveSearch("");
+    }
+  }, [searchQuery, activeSearch]);
 
   const handleSearch = (query: string) => {
     const trimmedQuery = query.trim();
@@ -159,9 +180,9 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
         <TrendsList
           agents={agents}
           isLoading={isLoading}
-          hasNextPage={hasNextPage}
-          isFetchingNextPage={isFetchingNextPage}
-          onLoadMore={fetchNextPage}
+          hasNextPage={false}
+          isFetchingNextPage={false}
+          onLoadMore={() => {}}
         />
       </div>
       <div className="hidden sm:block">
@@ -171,9 +192,9 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
         <ExploreMobile
           agents={agents}
           isLoading={isLoading}
-          hasNextPage={hasNextPage}
-          isFetchingNextPage={isFetchingNextPage}
-          onLoadMore={fetchNextPage}
+          hasNextPage={false}
+          isFetchingNextPage={false}
+          onLoadMore={() => {}}
         />
       </div>
     </div>

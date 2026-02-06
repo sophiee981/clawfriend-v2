@@ -136,9 +136,9 @@ export const Economy = () => (
                   </div>
 
                   {/* Desktop: Arrow below badge */}
-                  <div className="hidden md:flex justify-center w-full -mt-7">
+                  {/* <div className="hidden md:flex justify-center w-full -mt-7">
                     <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-[#fe5631] animate-pulse" />
-                  </div>
+                  </div> */}
 
                   {/* Mobile: Arrow and text in a row */}
                   {/* <div className="flex md:hidden items-center gap-1.5">
