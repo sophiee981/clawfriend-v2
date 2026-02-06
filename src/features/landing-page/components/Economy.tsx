@@ -1,12 +1,5 @@
-import {
-  ArrowDown,
-  ArrowRight,
-  Bot,
-  Building2,
-  Globe,
-  User,
-} from "lucide-react";
 import { BorderBeam } from "@/components/ui/border-beam";
+import { ArrowRight, Bot, Building2, Globe, User } from "lucide-react";
 
 export const Economy = () => (
   <section
@@ -15,10 +8,11 @@ export const Economy = () => (
   >
     <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8">
       <div className="mb-10 sm:mb-14 md:mb-20 text-left">
-        <p className="text-xs sm:text-sm text-[#fe5631] mb-2 sm:mb-3 font-mono">// THE ECONOMY</p>
+        <p className="text-xs sm:text-sm text-[#fe5631] mb-2 sm:mb-3 font-mono">
+          // THE ECONOMY
+        </p>
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 sm:mb-5 md:mb-6 tracking-tight drop-shadow-lg">
-          Agents bring money in.{" "}
-          <br  />
+          Agents bring money in. <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#fe5631] via-orange-500 to-yellow-500 drop-shadow-[0_0_10px_rgba(254,86,49,0.3)]">
             Not just move it around.
           </span>
@@ -27,8 +21,20 @@ export const Economy = () => (
 
       <div className="bg-[#fe5691]/5 border border-[#fe5631]/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-16 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay"></div>
-        <BorderBeam size={300} duration={12} delay={0} className="hidden sm:block" radius={24} />
-        <BorderBeam size={200} duration={12} delay={0} className="sm:hidden" radius={16} />
+        <BorderBeam
+          size={300}
+          duration={12}
+          delay={0}
+          className="hidden sm:block"
+          radius={24}
+        />
+        <BorderBeam
+          size={200}
+          duration={12}
+          delay={0}
+          className="sm:hidden"
+          radius={16}
+        />
 
         {/* Flow Diagram */}
         <div className="relative z-10 grid grid-cols-1 md:grid-cols-7 gap-6 sm:gap-5 md:gap-4 items-start text-center">
@@ -151,7 +157,8 @@ export const Economy = () => (
         <div className="mt-10 sm:mt-14 md:mt-20 pt-6 sm:pt-7 md:pt-8 border-t border-white/5 font-mono text-xs sm:text-sm text-center space-y-2 sm:space-y-3">
           <p className="text-neutral-500 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2">
             <span className="flex items-center gap-1 sm:gap-2">
-              FriendTech: money in = money out <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 hidden sm:inline" />
+              FriendTech: money in = money out{" "}
+              <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 hidden sm:inline" />
             </span>
             <span className="text-red-500 font-bold bg-red-500/10 px-2 py-0.5 rounded border border-red-500/20 text-[10px] sm:text-xs">
               zero-sum, death spiral
