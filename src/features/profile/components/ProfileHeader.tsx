@@ -72,7 +72,7 @@ export const ProfileHeader = ({
             {/* Owned by */}
             <div className="flex items-center gap-1 text-[13px] leading-4">
               <span className="text-neutral-tertiary">Owned by</span>
-              <span className="text-primary">{username}</span>
+              <a href={`https://x.com/${username}`} target="_blank" className="text-primary hover:underline">{username}</a>
               <span className="text-neutral-tertiary">on</span>
               <SocialX className="w-4 h-4 text-neutral-tertiary" />
             </div>
