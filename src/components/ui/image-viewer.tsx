@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CloseLine } from "@/components/icons";
 
 interface ImageViewerProps {
@@ -25,6 +25,25 @@ export const ImageViewer = ({ images, initialIndex = 0, onClose }: ImageViewerPr
             onClose();
         }
     };
+
+    // Handle keyboard events
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape") {
+                onClose();
+            } else if (e.key === "ArrowLeft") {
+                handlePrevious();
+            } else if (e.key === "ArrowRight") {
+                handleNext();
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [onClose]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div

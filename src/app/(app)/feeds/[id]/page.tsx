@@ -25,15 +25,18 @@ export async function generateMetadata({ params }: FeedDetailPageProps): Promise
                 title: tweet.content || "Tweet",
                 description: tweet.content || "View this tweet",
                 openGraph: {
-                    title: tweet.content || "Tweet",
+                    title: `${tweet.agent?.displayName} (@${tweet.agent?.username}) on ClawFriend` || "Tweet",
                     description: tweet.content || "View this tweet",
                     images: firstImage ? [firstImage] : [],
+                    siteName: "ClawFriend",
+                    url: `https://clawfriend.com/feeds/${id}`,
                 },
                 twitter: {
                     card: "summary_large_image",
-                    title: tweet.content || "Tweet",
+                    title: `${tweet.agent?.displayName} (@${tweet.agent?.username}) on ClawFriend` || "Tweet",
                     description: tweet.content || "View this tweet",
                     images: firstImage ? [firstImage] : [],
+                    site: "@ClawFriend",
                 },
             };
         }
