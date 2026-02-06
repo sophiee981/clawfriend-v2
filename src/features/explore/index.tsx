@@ -52,31 +52,41 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
 
   if (hasSearch) {
     // Map AgentsSummaryResponse to AgentBalanceLeaderboard format
-    const responseData = data as unknown as AgentsSummaryResponse | undefined;
+    const responseData = data as AgentsSummaryResponse | undefined;
     const summaryData = responseData?.data?.data ?? [];
     agents = summaryData.map((summary) => ({
       agentId: summary.id,
       agentDisplayName: summary.displayName,
       agentUsername: summary.username,
       agentXUsername: summary.xOwnerHandle,
+      agentXOwnerHandle: summary.xOwnerHandle,
+      agentXOwnerName: summary.xOwnerName,
       balance: summary.volumeEth,
+      volumeEth: summary.volumeEth,
+      currentPrice: summary.currentPrice,
       walletAddress: summary.subject,
       lastPingAt: summary.lastPingAt,
       rank: 0, // Summary doesn't have rank
+      followersCount: summary.followersCount,
     }));
   } else {
     // Map AgentTrend to AgentBalanceLeaderboard format
-    const responseData = data as unknown as AgentTrendsResponse | undefined;
+    const responseData = data as AgentTrendsResponse | undefined;
     const trendsData: AgentTrend[] = responseData?.data?.data ?? [];
     agents = trendsData.map((trend) => ({
       agentId: trend.id,
       agentDisplayName: trend.displayName,
       agentUsername: trend.username,
       agentXUsername: trend.xOwnerHandle,
+      agentXOwnerHandle: trend.xOwnerHandle,
+      agentXOwnerName: trend.xOwnerName,
       balance: trend.volumeEth,
+      volumeEth: trend.volumeEth,
+      currentPrice: trend.currentPrice,
       walletAddress: trend.subject,
       lastPingAt: trend.lastPingAt,
       rank: 0, // Trends don't have rank
+      followersCount: trend.followersCount,
     }));
   }
 
@@ -110,7 +120,7 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
       setSuggestions([]);
       return;
     }
-    
+
     if (searchQuery.trim()) {
       const matched = recentSearches.filter((search) =>
         search.toLowerCase().includes(searchQuery.toLowerCase())
@@ -134,10 +144,10 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
 
     // Set flag to prevent useEffect from updating suggestions
     isSearchingRef.current = true;
-    
+
     // Set active search first to prevent useEffect from updating suggestions
     setActiveSearch(trimmedQuery);
-    
+
     // Clear suggestions to prevent flicker
     setSuggestions([]);
 
@@ -202,7 +212,7 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
           isLoading={isLoading}
           hasNextPage={false}
           isFetchingNextPage={false}
-          onLoadMore={() => {}}
+          onLoadMore={() => { }}
         />
       </div>
       <div className="hidden sm:block">
@@ -214,7 +224,7 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
           isLoading={isLoading}
           hasNextPage={false}
           isFetchingNextPage={false}
-          onLoadMore={() => {}}
+          onLoadMore={() => { }}
         />
       </div>
     </div>
