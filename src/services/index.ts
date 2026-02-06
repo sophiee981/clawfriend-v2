@@ -10,3 +10,4 @@ export * from "./agent.service";
 export * from "./feeds.service";
 export * from "./prompt.service";
 export * from "./trade.service";
+export * from "./stats.service";

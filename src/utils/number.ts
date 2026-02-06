@@ -1,78 +1,139 @@
-import { formatUnits, parseUnits } from "viem";
+import Decimal from "decimal.js";
 
-/**
- * Rounds a number to the specified number of decimal places
- * @param {number} amount - The number to round
- * @param {number} decimals - Number of decimal places
- * @returns {number} The rounded number
- * @example
- * roundAmount(1.23456, 2) // returns 1.23
- */
-export const roundAmount = (amount: number, decimals: number) => {
-  return Number(amount.toFixed(decimals));
+export type FormatOptions = {
+  /**
+   * separator symbol
+   * @default ','
+   */
+  groupSeparator?: string;
+  /**
+   * @default true
+   */
+  needSeperate?: boolean;
+  /**
+   * @default 3
+   */
+  groupSize?: number;
+  /**
+   * how many fraction number. (if there is noting, 0 will be added )
+   * @default 2
+   */
+  maxDecimalCount?: number;
+  /**
+   * @default 'trim'
+   */
+  decimalMode?: "fixed" | "trim";
+  /**
+   * if true, always use shorter expression
+   * if set this, only max 1 digit
+   */
+  useShorterExpression?: boolean;
 };
 
-/**
- * Converts UI display amount to BigInt amount with specified decimals
- * @param {number | string} uiAmount - The amount displayed in UI
- * @param {number} decimals - Number of decimal places for the token
- * @returns {bigint} The converted BigInt amount
- * @throws {Error} If decimals is not a non-negative integer
- * @throws {Error} If amount is invalid or negative
- * @example
- * uiAmountToBigIntAmount(1.5, 18) // returns 1500000000000000000n
- */
-export const uiAmountToBigIntAmount = (
-  uiAmount: number | string,
-  decimals: number
-) => {
-  if (decimals < 0 || !Number.isInteger(decimals)) {
-    throw new Error("Decimals must be a non-negative integer");
+const stringNumberRegex = /(-?)([\d,_]*)\.?(\d*)/;
+
+function toFixed(n: string, maxDecimalCount: number): string {
+  return Number(n).toFixed(maxDecimalCount);
+}
+
+function trimTailingZero(s: string): string {
+  if (!s.includes(".")) return s;
+  const match = s.match(stringNumberRegex);
+  if (!match) return s;
+  const [, sign = "", int = "", dec = ""] = match;
+  let cleanedDecimalPart = dec;
+  while (cleanedDecimalPart.endsWith("0")) {
+    cleanedDecimalPart = cleanedDecimalPart.slice(0, cleanedDecimalPart.length - 1);
   }
+  return cleanedDecimalPart
+    ? `${sign}${int}.${cleanedDecimalPart}`
+    : `${sign}${int}` || "0";
+}
 
-  const amount = typeof uiAmount === "number" ? uiAmount : parseFloat(uiAmount);
-  if (isNaN(amount) || !isFinite(amount)) {
-    throw new Error("Invalid amount value");
-  }
+function fall(n: any, actions: any[]) {
+  return actions.reduce((value, action) => action(value), n);
+}
 
-  if (amount < 0) {
-    throw new Error("Amount cannot be negative");
-  }
+function formatNumber(
+  n: number | string | Decimal | null | undefined,
+  {
+    groupSeparator = ",",
+    maxDecimalCount = 2,
+    groupSize = 3,
+    decimalMode = "fixed",
+    needSeperate = true,
+    useShorterExpression,
+  }: FormatOptions = {}
+): string {
+  if (n === undefined || n === null) return "0";
+  return fall(n, [
+    (n: any) => n?.toString() || "",
+    (n: string) => toFixed(n, maxDecimalCount),
+    (n: string) => (decimalMode === "fixed" ? n : trimTailingZero(n)),
+    (str: string) => {
+      if (useShorterExpression) {
+        const match = str.match(/(-?)(\d*)\.?(\d*)/);
+        const [, sign = "", int = "", dec = ""] = match ?? [];
+        if (int.length > 3 * 4) {
+          return `${sign}${trimTailingZero(
+            (Number(int.slice(0, -3 * 4 + 2)) / 100).toFixed(1)
+          )}T`;
+        } else if (int.length > 3 * 3) {
+          return `${sign}${trimTailingZero(
+            (Number(int.slice(0, -3 * 3 + 2)) / 100).toFixed(1)
+          )}B`;
+        } else if (int.length > 3 * 2) {
+          return `${sign}${trimTailingZero(
+            (Number(int.slice(0, -3 * 2 + 2)) / 100).toFixed(1)
+          )}M`;
+        } else if (int.length > 3 * 1) {
+          return `${sign}${trimTailingZero(
+            (Number(int.slice(0, -3 * 1 + 2)) / 100).toFixed(1)
+          )}K`;
+        } else {
+          return dec ? `${sign}${int}.${dec}` : `${sign}${int}`;
+        }
+      } else if (needSeperate) {
+        const match = str.match(/(-?)(\d*)\.?(\d*)/);
+        const [, sign = "", int = "", dec = ""] = match ?? [];
+        const newIntegerPart = [...(int || "")].reduceRight(
+          (acc, cur, idx, strN) => {
+            const indexFromRight = strN.length - 1 - idx;
+            const shouldAddSeparator =
+              indexFromRight !== 0 && indexFromRight % groupSize === 0;
+            return cur + (shouldAddSeparator ? groupSeparator : "") + acc;
+          },
+          ""
+        ) as string;
+        return dec
+          ? `${sign}${newIntegerPart}.${dec}`
+          : `${sign}${newIntegerPart}`;
+      } else {
+        return str;
+      }
+    },
+  ]);
+}
 
-  return parseUnits(amount.toString(), decimals);
-};
+export function formatNumberV2(
+  value: number | string,
+  options: Intl.NumberFormatOptions = {},
+  fractionDigits: number = 2
+): string {
+  if (typeof value === "string") value = Number(value);
+  if (typeof value !== "number" || isNaN(value)) return "";
+  return new Intl.NumberFormat("en", {
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
+    compactDisplay: "short",
+    ...options,
+  }).format(value);
+}
 
-/**
- * Converts BigInt amount to UI display amount
- * @param {bigint | string} rawAmount - The BigInt amount or numeric string
- * @param {number} decimals - Number of decimal places for the token
- * @returns {string} The formatted number for display
- * @example
- * bigIntAmountToUiAmount(1500000000000000000n, 18) // returns "1.5"
- */
-export const bigIntAmountToUiAmount = (
-  rawAmount: bigint | string,
-  decimals: number
-) => {
-  return formatUnits(BigInt(rawAmount), decimals);
-};
-
-/**
- * Formats very small numbers using subscript notation for leading zeros
- * @param {number} value - The number to format
- * @param {number} threshold - Minimum number of consecutive zeros to use subscript notation (default: 5)
- * @param {number} minimumSignificantDigits - Minimum significant digits to show (default: 2)
- * @param {number} fractionDigits - Number of fraction digits for standard formatting (default: 2)
- * @returns {string} The formatted number string
- * @example
- * formatSmallNumber(0.0000123) // returns "0.0₅123"
- * formatSmallNumber(0) // returns "0"
- */
-function formatSmallNumber(
+export function smNumber(
   value: number,
   threshold = 5,
-  minimumSignificantDigits = 2,
-  fractionDigits = 2
+  minimumSignificantDigits = 2
 ): string {
   if (value === 0) return "0";
   if (!value) return "-";
@@ -87,159 +148,119 @@ function formatSmallNumber(
       .replace(/0+$/, "")
       .substring(0, 4 + minimumSignificantDigits);
   }
-
-  if (typeof value === "string") value = Number(value);
-  if (typeof value !== "number" || isNaN(value)) return "";
-  return new Intl.NumberFormat("en", {
-    minimumFractionDigits: fractionDigits,
-    maximumFractionDigits: fractionDigits,
-    compactDisplay: "short",
-  }).format(value);
+  return formatNumberV2(value, {
+    minimumSignificantDigits,
+    maximumSignificantDigits: 3,
+  });
 }
 
-/**
- * Formats large numbers in compact notation (K, M, B)
- * @param {number} number - The number to format
- * @param {number} maxDecimalCount - Maximum number of decimal places (default: 1)
- * @returns {string} The formatted number with suffix (K/M/B) or original number
- * @example
- * formatCompactNumber(1500) // returns "1.5K"
- * formatCompactNumber(2500000) // returns "3M"
- * formatCompactNumber(1500000000) // returns "2B"
- * formatCompactNumber(500) // returns "500"
- */
-function formatCompactNumber(number: number, maxDecimalCount = 1): string {
-  if (typeof number !== "number" || isNaN(number)) {
-    return "0";
+export const formatSmartNumber = (
+  num: number | string,
+  toFixed: number = 2,
+  threshold: number = 5
+): string => {
+  if (!num) return "0";
+  if (typeof num === "string") {
+    num = Number(num);
   }
+  if (num === 0) return "0";
+  if (num >= 10000) {
+    return parseFloat(num.toFixed(0)).toString();
+  } else if (num >= 10) {
+    return parseFloat(num.toFixed(1)).toString();
+  } else if (num >= 1) {
+    return parseFloat(num.toFixed(toFixed)).toString();
+  } else {
+    const strNum = num.toFixed(20);
+    const parts = strNum.split(".");
+    if (parts.length < 2) return num.toString();
 
-  // Billions (B) - >= 1,000,000,000
-  if (number >= 1_000_000_000) {
-    const value = number / 1_000_000_000;
-    return parseFloat(value.toFixed(maxDecimalCount)) + "B";
-  }
-
-  // Millions (M) - >= 1,000,000
-  if (number >= 1_000_000) {
-    const value = number / 1_000_000;
-    return parseFloat(value.toFixed(maxDecimalCount)) + "M";
-  }
-
-  // Thousands (K) - >= 1,000
-  if (number >= 1_000) {
-    const value = number / 1_000;
-    return parseFloat(value.toFixed(maxDecimalCount)) + "K";
-  }
-
-  // Numbers less than 1,000 - keep as is
-  return parseFloat(number.toFixed(maxDecimalCount)).toString();
-}
-
-/**
- * Intelligently formats numbers based on their magnitude with appropriate precision
- * - Very small numbers (< 0.0001): Uses subscript notation for zeros
- * - Small numbers (0.0001 - 0.1): Shows dynamic decimal places based on leading zeros
- * - Medium numbers (0.1 - 10): Shows 2 decimal places
- * - Large numbers (10 - 1000): Shows 1 decimal place
- * - Very large numbers (>= 1000): Uses compact notation (K/M/B)
- * @param {number | string} number - The number to format
- * @param {number} maxDecimalCount - Maximum decimal places for certain ranges (default: 2)
- * @returns {string} The formatted number string, or "0" for invalid/too small values
- * @example
- * formatSmartNumberView(0.000012) // returns "0.0₅12"
- * formatSmartNumberView(0.05) // returns "0.05"
- * formatSmartNumberView(5.123) // returns "5.12"
- * formatSmartNumberView(50.123) // returns "50.1"
- * formatSmartNumberView(5000) // returns "5K"
- */
-export const formatSmartNumberView = (
-  number: number | string,
-  maxDecimalCount = 2,
-  isUseCompactNumber = true
-) => {
-  if (typeof number === "string") number = Number(number);
-
-  if (typeof number !== "number" || isNaN(number) || number < 0.00000000001) {
-    return "0";
-  }
-
-  const decimalPart = number.toString().split(".")[1] || "";
-
-  let zeroCount = 0;
-
-  for (let i = 0; i < decimalPart.length; i++) {
-    if (decimalPart[i] !== "0") {
-      zeroCount++;
-    } else {
-      break;
+    const decimalPart = parts[1];
+    let zeroCount = 0;
+    for (let i = 0; i < decimalPart.length; i++) {
+      if (decimalPart[i] === "0") {
+        zeroCount++;
+      } else {
+        break;
+      }
     }
-  }
 
-  if (number < 0.0001) return formatSmallNumber(number, 3);
-
-  if (number >= 0.0001 && number < 0.1) {
-    return parseFloat(number.toFixed(zeroCount + 2)).toString();
-  }
-
-  if (number >= 0.1 && number < 10) {
-    return parseFloat(number.toFixed(maxDecimalCount)).toString();
-  }
-
-  if (number >= 10 && number < 1000) {
-    return parseFloat(
-      number.toFixed(zeroCount === 0 ? zeroCount : 1)
-    ).toString();
-  }
-
-  if (number >= 1000) {
-    if (isUseCompactNumber) {
-      return formatCompactNumber(number, 1);
+    if (zeroCount >= threshold) {
+      const significantDigits = decimalPart.substring(zeroCount);
+      const formattedSignificantDigits = significantDigits.substring(0, 4);
+      const subs = ["₀", "₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉"];
+      const subStr = zeroCount
+        .toString()
+        .replace(/\d/g, (digit) => subs[+digit]);
+      return `0.0${subStr}${formattedSignificantDigits}`;
     } else {
-      return parseFloat(number.toFixed(0)).toLocaleString("en-US");
+      const significantDigits = decimalPart.substring(zeroCount);
+      const formattedSignificantDigits = significantDigits.substring(0, 4);
+
+      if (zeroCount > 0) {
+        return `0.${"0".repeat(zeroCount)}${formattedSignificantDigits}`;
+      } else {
+        return `0.${formattedSignificantDigits}`;
+      }
     }
   }
 };
 
-/**
- * Formats a number with sign (+/-) and returns className for color styling
- * @param {number} value - The number to format
- * @param {string} prefix - Prefix to add before the number (default: "$")
- * @param {number} decimals - Number of decimal places (default: 1)
- * @returns {object} Object containing formattedText and className
- * @example
- * formatSignedNumberWithColor(123.45) // returns { formattedText: "+$123.5", className: "text-success" }
- * formatSignedNumberWithColor(-50.2) // returns { formattedText: "-$50.2", className: "text-danger" }
- * formatSignedNumberWithColor(0) // returns { formattedText: "$0", className: "" }
- */
-export const formatSignedNumberWithColor = (
-  value: number,
-  prefix: string = "$",
-  decimals: number = 1
-): { formattedText: string; className: string } => {
-  if (typeof value !== "number" || isNaN(value)) {
-    return { formattedText: `${prefix}0`, className: "" };
+// default using formatNumberShort
+export const formatNumberShort = (
+  number: number | string | Decimal | null | undefined,
+  {
+    groupSeparator = ",",
+    maxDecimalCount = 2,
+    groupSize = 3,
+    decimalMode = "trim",
+    needSeperate = true,
+    useShorterExpression,
+  }: FormatOptions = {},
+  {
+    isShowFormatNumber = true,
+    isShowSmNumber = false,
+  }: {
+    isShowSmNumber?: boolean;
+    isShowFormatNumber?: boolean;
+  } = {}
+) => {
+  if (!number) return "0";
+
+  // Handle scientific notation strings
+  if (
+    typeof number === "string" &&
+    (number.includes("e") || number.includes("E"))
+  ) {
+    try {
+      // Convert to regular decimal notation
+      const numValue = Number(number);
+      if (isNaN(numValue)) {
+        return "0";
+      }
+
+      // Handle as a regular number
+      number = numValue;
+    } catch (error) {
+      console.error("Error converting scientific notation:", error);
+      return "0";
+    }
   }
 
-  const absValue = Math.abs(value);
-  const formattedValue = formatSmartNumberView(absValue.toFixed(decimals));
+  if (isShowSmNumber && Number(number) < 0.001)
+    return smNumber(Number(number), 3);
 
-  if (value > 0) {
-    return {
-      formattedText: `+${prefix}${formattedValue}`,
-      className: "text-success",
-    };
-  }
+  if (isShowFormatNumber && Number(number) < 0.1)
+    return formatSmartNumber(number.toString());
 
-  if (value < 0) {
-    return {
-      formattedText: `-${prefix}${formattedValue}`,
-      className: "text-danger",
-    };
-  }
+  if (number === 0) return "0";
 
-  // value === 0
-  return {
-    formattedText: `${prefix}${formattedValue}`,
-    className: "",
-  };
+  return formatNumber(formatSmartNumber(number.toString()), {
+    groupSeparator,
+    maxDecimalCount,
+    groupSize,
+    decimalMode,
+    needSeperate,
+    useShorterExpression,
+  });
 };

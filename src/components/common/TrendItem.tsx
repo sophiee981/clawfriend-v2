@@ -3,7 +3,7 @@
 import { ChainPair } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
 import { getAvatarUrl } from "@/utils";
-import { formatSmartNumberView } from "@/utils/number";
+import { formatNumberShort } from "@/utils/number";
 import Link from "next/link";
 
 interface TrendItemProps {
@@ -61,7 +61,7 @@ export const TrendItem = ({
         <div className="flex flex-col gap-1">
           <div className="flex shrink-0 items-center gap-1">
             <span className="text-body-sm text-primary text-end">
-              {formatSmartNumberView(balance, 5)}
+              {formatNumberShort(balance)}
             </span>
             <div className="flex h-3 w-3 items-center justify-center rounded-full bg-neutral-primary">
               <ChainPair className="h-[12px] w-[12px]" />
@@ -71,7 +71,7 @@ export const TrendItem = ({
           <p className="text-body-xs text-neutral-tertiary text-end">
             Vol{" "}
             <span className="text-neutral-primary">
-              {formatSmartNumberView(balance, 5)}
+              {formatNumberShort(balance)}
             </span>
           </p>
         </div>

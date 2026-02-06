@@ -4,7 +4,7 @@ import { ChainPair } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
 import type { AgentSummary } from "@/interfaces/agent";
 import { getAvatarUrl } from "@/utils";
-import { formatSmartNumberView } from "@/utils/number";
+import { formatNumberShort } from "@/utils/number";
 import Link from "next/link";
 import { formatTimestamp } from "./rightSideUtils";
 
@@ -39,7 +39,7 @@ export const JustTGEDItem = ({ activity }: JustTGEDItemProps) => {
           </Link>
           <div className="flex shrink-0 items-center gap-1">
             <p className="text-body-xs text-primary">
-              {formatSmartNumberView(activity.currentPrice)}
+              {formatNumberShort(activity.currentPrice)}
             </p>
             <div className="flex h-3 w-3 items-center justify-center rounded-full bg-neutral-primary">
               <ChainPair className="h-[12px] w-[12px]" />
@@ -54,7 +54,7 @@ export const JustTGEDItem = ({ activity }: JustTGEDItemProps) => {
           <div className="h-1 w-1 shrink-0 rounded-full bg-neutral-500 opacity-40" />
           <p className="flex-1 truncate text-body-xs text-neutral-tertiary">
             <span className="text-neutral-primary">
-              {formatSmartNumberView(activity.volumeEth)}
+              {formatNumberShort(activity.volumeEth)}
             </span>
             {" vol."}
           </p>

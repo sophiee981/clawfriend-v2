@@ -4,7 +4,7 @@ import { ChainPair, ExternalLink } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
 import type { Trade } from "@/interfaces/trade";
 import { cn, getAvatarUrl } from "@/utils";
-import { formatSmartNumberView } from "@/utils/number";
+import { formatNumberShort } from "@/utils/number";
 import Link from "next/link";
 import {
   formatTimestamp,
@@ -23,7 +23,7 @@ export const ActivityItem = ({ activity }: ActivityItemProps) => {
     activity.subject.displayName || activity.subject.username || "Unknown";
   const actorUsername = activity.trader.username || "";
   const subjectUsername = activity.subject.username || "";
-  const amount = formatSmartNumberView(activity.ethAmount);
+  const amount = formatNumberShort(activity.ethAmount);
   const timestamp = formatTimestamp(activity.blockTimestamp);
   const transactionLink = getTransactionUrl(activity.transactionHash);
 
@@ -63,7 +63,7 @@ export const ActivityItem = ({ activity }: ActivityItemProps) => {
             <span
               className={cn("font-medium", getActionColor(activity.action))}
             >
-              {activity.action} {formatSmartNumberView(activity.shareAmount)}
+              {activity.action} {formatNumberShort(activity.shareAmount)}
             </span>{" "}
             <Link
               href={subjectUsername ? `/profile/${subjectUsername}` : "#"}
