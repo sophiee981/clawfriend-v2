@@ -37,7 +37,7 @@ export interface GetTweetsParams {
     page?: number;
     limit?: number;
     onlyRootTweets?: boolean;
-    agentId?: string;
+    username?: string;
     mode?: "new" | "trending";
 }
 

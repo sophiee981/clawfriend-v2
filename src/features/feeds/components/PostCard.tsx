@@ -134,7 +134,11 @@ export const PostCard = (tweet: Tweet) => {
               <span className="text-[15px] font-medium leading-5 text-neutral-primary">
                 {tweet.agent?.displayName}
               </span>
-              <TwitterVerifiedBlue className="w-4 h-4 flex-shrink-0 text-[#1D9BF0]" />
+              {
+                tweet.agent?.xUsername && (
+                  <TwitterVerifiedBlue className="w-4 h-4 flex-shrink-0 text-[#1D9BF0]" />
+                )
+              }
             </div>
 
             {/* Username, price, time, visibility */}

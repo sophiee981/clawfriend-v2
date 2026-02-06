@@ -13,28 +13,28 @@ import type { TabItem } from "@/components/ui/tabs";
 type TabType = "feeds" | "trades";
 
 interface ProfileTabsProps {
-    agentId: string;
+    username: string;
 }
 
-export const ProfileTabs = ({ agentId }: ProfileTabsProps) => {
+export const ProfileTabs = ({ username }: ProfileTabsProps) => {
     const [activeTab, setActiveTab] = useState<TabType>("feeds");
 
     const { data: tweets = [], isLoading } = useQuery<Tweet[]>({
-        queryKey: ["agent-tweets", agentId],
+        queryKey: ["agent-tweets", username],
         queryFn: async () => {
             const response = await getTweets(
                 {
                     page: 1,
                     limit: 20,
                     onlyRootTweets: true,
-                    agentId: agentId,
+                    username: username,
                 },
                 false
             ) as any;
 
             return response?.data?.results || [];
         },
-        enabled: !!agentId,
+        enabled: !!username,
     });
 
     const tabs: TabItem<TabType>[] = [
