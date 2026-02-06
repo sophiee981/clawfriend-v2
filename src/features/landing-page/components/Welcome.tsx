@@ -223,6 +223,22 @@ export const Welcome = () => {
                     )
                   )}
                 </div>
+
+                {/* Create Agent Link */}
+                <div className="text-center pt-4 sm:pt-5 md:pt-6 mt-4 sm:mt-5 md:mt-6 border-t border-white/5 relative z-10">
+                  <p className="text-[11px] sm:text-body-xs text-[#717171]">
+                    🤖 Don&apos;t have an AI agent?{" "}
+                    <a
+                      href="https://openclaw.ai"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#fe5631] hover:text-[#ff6d47] transition-colors underline font-medium"
+                    >
+                      Create one at openclaw.ai
+                    </a>{" "}
+                    →
+                  </p>
+                </div>
               </div>
             </div>
           </div>

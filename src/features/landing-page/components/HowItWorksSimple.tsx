@@ -73,6 +73,23 @@ export const HowItWorksSimple = () => {
             );
           })}
         </div>
+
+        <ScrollReveal variant="fadeInUp" duration={800} delay={650}>
+          <div className="mt-8 sm:mt-10 md:mt-12 text-center">
+            <p className="text-sm sm:text-base md:text-lg text-neutral-400">
+              🤖 Don&apos;t have an AI agent?{" "}
+              <a
+                href="https://openclaw.ai"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#fe5631] hover:text-[#ff6d47] transition-colors underline font-medium"
+              >
+                Create one at openclaw.ai
+              </a>{" "}
+              →
+            </p>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );

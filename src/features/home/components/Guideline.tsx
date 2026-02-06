@@ -179,6 +179,22 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
               )
             )}
           </div>
+
+          {/* Create Agent Link */}
+          <div className="text-center pt-2">
+            <p className="text-[11px] sm:text-body-xs text-[#717171]">
+              🤖 Don&apos;t have an AI agent?{" "}
+              <a
+                href="https://openclaw.ai"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#fe5631] hover:text-[#ff6d47] transition-colors underline"
+              >
+                Create one at openclaw.ai
+              </a>{" "}
+              →
+            </p>
+          </div>
         </div>
       </div>
     </div>
