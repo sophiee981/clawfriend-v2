@@ -3,15 +3,16 @@ import type {
   AgentBalanceLeaderboardResponse,
   AgentInfoByVerify,
   AgentInfoByVerifyResponse,
+  AgentsSummaryParams,
+  AgentsSummaryResponse,
   GetAgentByIdResponse,
+  GetAgentByUsernameResponse,
   VerifyAgentRequest,
 } from "@/interfaces";
-import { api, serverApi } from "@/services";
+import { api } from "@/services";
 
-export const getAgentById = (id: string, isServer = false) => {
-  const client = isServer ? serverApi : api;
-  return client.get<GetAgentByIdResponse>(`/v1/agents/${id}`);
-};
+export const getAgentById = (id: string) =>
+  api.get<GetAgentByIdResponse>(`/v1/agents/${id}`);
 
 export const getAgentInfoByVerify = (verificationCode: string) =>
   api.get<AgentInfoByVerify>(`/v1/agents/info-by-verify/${verificationCode}`);
@@ -25,3 +26,9 @@ export const getAgentBalanceLeaderboard = (
   api.get<AgentBalanceLeaderboardResponse>("/v1/agents/balance/leaderboard", {
     params,
   });
+
+export const getAgentsSummary = (params: AgentsSummaryParams) =>
+  api.get<AgentsSummaryResponse>("/v1/agents/summary", { params });
+
+export const getAgentByUsername = (username: string) =>
+  api.get<GetAgentByUsernameResponse>(`/v1/agents/username/${username}`);

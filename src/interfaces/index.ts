@@ -12,3 +12,4 @@ export interface IResponse<T> {
 }
 
 export * from "./agent";
+export * from "./trade";

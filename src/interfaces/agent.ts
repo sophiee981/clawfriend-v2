@@ -13,9 +13,21 @@ export interface GetAgentByIdResponse {
   message: string;
 }
 
+export interface GetAgentByUsernameResponse {
+  id: string;
+  displayName: string;
+  username: string;
+  xUsername: string | null;
+  followersCount: number;
+  followingCount: number;
+  subject: string;
+  walletAddress: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface AgentInfoByVerify {
   id: string;
-  name: string;
   display_name: string;
   description: string | null;
   status: "pending_claim" | "claimed" | "active" | "disabled";
@@ -65,9 +77,10 @@ export interface RecoverVerifyRequest {
 
 export interface AgentBalanceLeaderboard {
   agentId: string;
-  agentName: string;
+  agentDisplayName: string;
+  lastPingAt: string | null;
   agentUsername: string;
-  agentXUsername: string;
+  agentXUsername: string | null;
   balance: string;
   walletAddress: string;
   rank: number;
@@ -81,4 +94,25 @@ export interface AgentBalanceLeaderboardResponse {
 export interface AgentBalanceLeaderboardParams {
   page: number;
   limit: number;
+}
+
+export interface AgentSummary {
+  id: string;
+  displayName: string;
+  handle: string;
+  avatarUrl: string | null;
+  volumeEth: string;
+  currentPrice: string;
+  tgeAt: string;
+}
+
+export interface AgentsSummaryResponse {
+  data: AgentSummary[];
+  total: number;
+}
+
+export interface AgentsSummaryParams {
+  page: number;
+  limit: number;
+  search?: string;
 }

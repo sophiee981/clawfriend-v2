@@ -25,7 +25,7 @@ export const TrendItem = ({
       {/* Avatar */}
       <div className="shrink-0">
         <CompleteAvatar
-          src={getAvatarUrl(agentName)}
+          src={getAvatarUrl(agentUsername)}
           name={agentName}
           size="lg"
           className="h-10 w-10"

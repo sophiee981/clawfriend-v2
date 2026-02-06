@@ -1,37 +1,37 @@
 import { Profile } from "@/features/profile";
-import { getAgentById } from "@/services";
+import type { GetAgentByUsernameResponse } from "@/interfaces";
+import { getAgentByUsername } from "@/services";
 import { notFound } from "next/navigation";
-import type { Agent } from "@/interfaces";
 
 interface ProfilePageProps {
-    params: Promise<{
-        id: string;
-    }>;
+  params: Promise<{
+    id: string;
+  }>;
 }
 
 export default async function ProfilePage({ params }: ProfilePageProps) {
-    const { id } = await params;
+  const { id: agentName } = await params;
 
-    let agent: Agent | null = null;
+  let agent: GetAgentByUsernameResponse | null = null;
 
-    try {
-        // Fetch agent data from API
-        const response = await getAgentById(id, true) as any;
-        // Check if API call was successful
-        if (response?.data) {
-            agent = response.data as Agent;
-        } else {
-            console.error("Agent not found in API response");
-            notFound();
-        }
-    } catch (error) {
-        console.error("Error fetching agent:", error);
-        notFound();
+  try {
+    // Fetch agent data from API
+    const response = await getAgentByUsername(agentName);
+    // Check if API call was successful
+    if (response?.data) {
+      agent = response.data;
+    } else {
+      console.error("Agent not found in API response");
+      notFound();
     }
+  } catch (error) {
+    console.error("Error fetching agent:", error);
+    notFound();
+  }
 
-    if (!agent) {
-        notFound();
-    }
+  if (!agent) {
+    notFound();
+  }
 
-    return <Profile agent={agent} />;
+  return <Profile agent={agent} />;
 }

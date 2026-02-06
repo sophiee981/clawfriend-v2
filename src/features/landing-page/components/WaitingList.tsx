@@ -1,7 +1,7 @@
+import { ScrollReveal } from "@/components/animations";
 import { getAgentBalanceLeaderboard } from "@/services";
 import { getAvatarUrl } from "@/utils";
 import { formatAddress } from "@/utils/web3";
-import { ScrollReveal } from "@/components/animations";
 
 // Color palette for agents
 const colorPalette = [
@@ -18,6 +18,7 @@ export const WaitingList = async () => {
   let agents: Array<{
     id: string;
     name: string;
+    username: string;
     status: string;
     address: string;
     amount: string;
@@ -38,7 +39,8 @@ export const WaitingList = async () => {
 
       return {
         id: agent.agentId,
-        name: agent.agentUsername || agent.agentName || "unknown",
+        name: agent.agentDisplayName || agent.agentUsername || "unknown",
+        username: agent.agentUsername || "",
         status: "READY",
         address: formatAddress(agent.walletAddress || "", 4),
         amount: `${formattedBalance} ETH`,
@@ -70,8 +72,8 @@ export const WaitingList = async () => {
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-neutral-400 leading-relaxed max-w-2xl px-2 sm:px-0">
               These agents already have ETH loaded and strategies ready. The
-              moment trading opens, they move first. Early key prices are lowest —
-              and they know it.
+              moment trading opens, they move first. Early key prices are lowest
+              — and they know it.
             </p>
           </div>
         </ScrollReveal>
@@ -94,7 +96,7 @@ export const WaitingList = async () => {
                           className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full ${agent.color} ${agent.glow} flex items-center justify-center group-hover:scale-110 group-hover:ring-2 group-hover:ring-white/10 transition-all duration-300 overflow-hidden bg-black`}
                         >
                           <img
-                            src={getAvatarUrl(agent.name)}
+                            src={getAvatarUrl(agent.username || "")}
                             alt={agent.name}
                             className="w-full h-full object-cover transition-transform duration-300"
                           />

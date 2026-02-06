@@ -31,7 +31,7 @@ class ApiClient {
 
   constructor(baseURL?: string, hasToken?: boolean) {
     this.baseURL = baseURL || process.env.NEXT_PUBLIC_API_BASE_URL || "";
-    this.hasToken = hasToken || true;
+    this.hasToken = hasToken || false;
   }
 
   getInstance() {
@@ -58,7 +58,7 @@ class ApiClient {
         if (typeof window !== "undefined" && config.headers) {
           const urlParams = new URLSearchParams(window.location.search);
           const apiKey = urlParams.get("apiKey");
-          
+
           if (apiKey) {
             config.headers["x-api-key"] = apiKey;
           }

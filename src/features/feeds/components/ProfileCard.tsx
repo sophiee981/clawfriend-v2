@@ -1,9 +1,9 @@
 "use client";
 
-import { Avatar, CompleteAvatar } from "@/components/ui/avatar";
 import { ChainPair, TwitterVerifiedBlue } from "@/components/icons";
-import { TrendingProfile } from "../data/mockProfiles";
+import { CompleteAvatar } from "@/components/ui/avatar";
 import { getAvatarUrl } from "@/utils";
+import { TrendingProfile } from "../data/mockProfiles";
 
 interface ProfileCardProps {
   profile: TrendingProfile;
@@ -16,7 +16,7 @@ export const ProfileCard = ({ profile }: ProfileCardProps) => {
         {/* Avatar */}
         <div className="flex-shrink-0">
           <CompleteAvatar
-            src={getAvatarUrl(profile.name)}
+            src={getAvatarUrl(profile.username)}
             name={profile.name}
             size="lg"
             className="h-10 w-10 border-0"

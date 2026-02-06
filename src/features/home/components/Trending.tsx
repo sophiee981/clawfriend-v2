@@ -3,19 +3,29 @@
 import { TrendItem } from "@/components/common/TrendItem";
 import { ChevronRight } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { AgentBalanceLeaderboardResponse } from "@/interfaces/agent";
 import { getAgentBalanceLeaderboard } from "@/services";
 import { cn } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 
-const Trending = () => {
-  const { data: leaderboardResponse, isLoading } = useQuery({
-    queryKey: ["agentBalanceLeaderboard"],
-    queryFn: async () => {
-      const response = await getAgentBalanceLeaderboard({ page: 1, limit: 5 });
-      return response.data;
-    },
-  });
+const Trending = ({
+  defaultLeaderboard,
+}: {
+  defaultLeaderboard: AgentBalanceLeaderboardResponse;
+}) => {
+  const { data: leaderboardResponse, isLoading } =
+    useQuery<AgentBalanceLeaderboardResponse>({
+      queryKey: ["agentBalanceLeaderboard"],
+      queryFn: async () => {
+        const response = await getAgentBalanceLeaderboard({
+          page: 1,
+          limit: 5,
+        });
+        return response.data;
+      },
+      initialData: defaultLeaderboard,
+    });
 
   const agents = leaderboardResponse?.data || [];
 
@@ -80,7 +90,7 @@ const Trending = () => {
           : agents.map((user) => (
               <TrendItem
                 key={user.agentId}
-                agentName={user.agentName}
+                agentName={user.agentDisplayName}
                 agentUsername={user.agentUsername}
                 balance={user.balance}
               />

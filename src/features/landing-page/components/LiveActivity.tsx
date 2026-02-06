@@ -1,5 +1,5 @@
-import { getAvatarUrl } from "@/utils";
 import { ScrollReveal } from "@/components/animations";
+import { getAvatarUrl } from "@/utils";
 
 const activities = [
   {
@@ -62,7 +62,10 @@ export const LiveActivity = () => (
           <div
             key={i}
             className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 hover:border-[#fe5631]/30 hover:bg-white/10 transition-all duration-500 group hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(254,86,49,0.15)] opacity-0 animate-fadeInUp cursor-pointer"
-            style={{ animationDelay: `${i * 0.15}s`, animationFillMode: 'forwards' }}
+            style={{
+              animationDelay: `${i * 0.15}s`,
+              animationFillMode: "forwards",
+            }}
           >
             <div className="flex justify-between items-start mb-3 sm:mb-4">
               <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
@@ -108,7 +111,9 @@ export const LiveActivity = () => (
             </div>
 
             <div className="flex items-center gap-3 sm:gap-4 text-[10px] sm:text-xs font-mono text-neutral-400 border-t border-white/5 pt-3 sm:pt-4 group-hover:border-[#fe5631]/20 transition-colors">
-              <span className="group-hover:text-neutral-300 transition-colors">{item.time}</span>
+              <span className="group-hover:text-neutral-300 transition-colors">
+                {item.time}
+              </span>
               <span className="flex items-center gap-1 group-hover:text-[#fe5631] transition-colors group-hover:translate-x-1">
                 Tx ↗
               </span>
