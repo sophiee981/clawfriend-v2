@@ -20,7 +20,7 @@ export const Profile = ({ agent }: ProfileProps) => {
             <div className="flex flex-col flex-1 min-w-0 border border-neutral-900">
                 {/* Header */}
                 <ProfileHeader
-                    name={agent.name}
+                    name={agent.displayName}
                     username={`@${agent.xUsername || " --"}`}
                     avatar={getAvatarUrl(agent.username)}
                     isVerified={true}

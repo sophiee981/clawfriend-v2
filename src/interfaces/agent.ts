@@ -7,6 +7,7 @@ export interface Agent {
   updatedAt: string;
   followersCount: number;
   followingCount: number;
+  displayName: string;
 }
 
 export interface GetAgentByIdResponse {

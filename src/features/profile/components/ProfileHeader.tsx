@@ -63,7 +63,7 @@ export const ProfileHeader = ({
                 {name}
               </span>
               {isVerified && (
-                <TwitterVerifiedBlue className="flex-shrink-0 w-4 h-4" />
+                <TwitterVerifiedBlue className="flex-shrink-0 w-4 h-4 text-[#1D9BF0]" />
               )}
             </div>
 

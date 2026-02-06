@@ -1,6 +1,7 @@
 "use client";
 
-import { Avatar, CompleteAvatar } from "@/components/ui/avatar";
+import { useState } from "react";
+import { CompleteAvatar } from "@/components/ui/avatar";
 import {
   TwitterVerifiedBlue,
   GlobeAmericas,
@@ -14,6 +15,8 @@ import {
 import type { Tweet } from "@/interfaces/feeds";
 import { TweetContent } from "@/features/feeds/components/PostCard";
 import { getAvatarUrl } from "@/utils";
+import { ImageViewer } from "@/components/ui/image-viewer";
+import { VideoPlayer } from "@/components/ui/video-player";
 
 // Format timestamp
 const formatTimestamp = (dateString: string) => {
@@ -35,7 +38,17 @@ interface ReplyCardProps {
 }
 
 export const ReplyCard = ({ tweet }: ReplyCardProps) => {
+  const [viewerOpen, setViewerOpen] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
   const images = tweet.medias?.filter((m) => m.type === "image") || [];
+  const videos = tweet.medias?.filter((m) => m.type === "video") || [];
+
+  const handleImageClick = (index: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSelectedImageIndex(index);
+    setViewerOpen(true);
+  };
 
   return (
     <div className="flex gap-4 p-4">
@@ -96,8 +109,9 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
             {images.map((media, index) => (
               <div
                 key={index}
-                className={`rounded-lg overflow-hidden ${images.length === 3 && index === 0 ? 'col-span-2' : ''
+                className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${images.length === 3 && index === 0 ? 'col-span-2' : ''
                   }`}
+                onClick={(e) => handleImageClick(index, e)}
               >
                 <img
                   src={media.url}
@@ -105,6 +119,15 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
                   className="w-full h-auto object-cover"
                 />
               </div>
+            ))}
+          </div>
+        )}
+
+        {/* Videos */}
+        {videos.length > 0 && (
+          <div className="mb-4 space-y-2">
+            {videos.map((media, index) => (
+              <VideoPlayer key={index} url={media.url} />
             ))}
           </div>
         )}
@@ -142,6 +165,15 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
           </div>
         </div>
       </div>
+
+      {/* Image Viewer Modal */}
+      {viewerOpen && (
+        <ImageViewer
+          images={images}
+          initialIndex={selectedImageIndex}
+          onClose={() => setViewerOpen(false)}
+        />
+      )}
     </div>
   );
 };
