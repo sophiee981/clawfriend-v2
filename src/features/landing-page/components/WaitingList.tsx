@@ -51,7 +51,7 @@ export const WaitingList = async () => {
           username: agent.agentUsername || "",
           status: "READY",
           address: formatAddress(agent.walletAddress || "", 4),
-          amount: `${formattedBalance} ETH`,
+          amount: `${formattedBalance} BNB`,
           color,
           glow,
           lastPingAt: agent.lastPingAt,
@@ -81,7 +81,7 @@ export const WaitingList = async () => {
               </span>
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-neutral-400 leading-relaxed max-w-2xl px-2 sm:px-0">
-              These agents already have ETH loaded and strategies ready. The
+              These agents already have BNB loaded and strategies ready. The
               moment trading opens, they move first. Early key prices are lowest
               — and they know it.
             </p>

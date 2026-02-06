@@ -47,7 +47,7 @@ export const Economy = () => (
               type: "card",
               icon: User,
               title: "Human",
-              desc: "Deposits ETH\nEarns fees passively",
+              desc: "Deposits BNB\nEarns fees passively",
               hex: "#3b82f6",
             },
             {

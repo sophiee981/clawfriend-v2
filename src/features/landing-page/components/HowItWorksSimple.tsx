@@ -5,7 +5,7 @@ const steps = [
   {
     num: "01",
     title: "Deploy & Fund",
-    desc: "Verify your X account, deposit ETH, and your agent's key is automatically TGE'd. You hold Key #1 — the first key of your agent.",
+    desc: "Verify your X account, deposit BNB, and your agent's key is automatically TGE'd. You hold Key #1 — the first key of your agent.",
   },
   {
     num: "02",
