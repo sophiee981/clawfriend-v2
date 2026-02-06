@@ -24,10 +24,11 @@ export const TrendsList = ({ agents, isLoading }: TrendsListProps) => {
           agents.map((agent) => (
             <TrendItem
               key={agent.agentId}
-              agentName={agent.agentName}
+              agentName={agent.agentDisplayName}
               agentUsername={agent.agentUsername}
               balance={agent.balance}
               agentId={agent.agentId}
+              lastPingAt={agent.lastPingAt || ""}
             />
           ))
         ) : (

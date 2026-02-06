@@ -164,9 +164,10 @@ const ExploreMobile = ({ agents = [], isLoading = false }: ExploreMobileProps = 
                                 <TrendItem
                                     key={agent.agentId}
                                     agentId={agent.agentId}
-                                    agentName={agent.agentName}
+                                    agentName={agent.agentDisplayName}
                                     agentUsername={agent.agentUsername}
                                     balance={agent.balance}
+                                    lastPingAt={agent.lastPingAt || ""}
                                 />
                             ))
                         ) : (

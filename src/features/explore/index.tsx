@@ -11,6 +11,7 @@ import {
   TrendsList,
   ExploreMobile
 } from "./components";
+import { AgentBalanceLeaderboard } from "@/interfaces/agent";
 
 export const Explore = ({isSearchPage = false}: {isSearchPage?: boolean}) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -30,7 +31,6 @@ export const Explore = ({isSearchPage = false}: {isSearchPage?: boolean}) => {
   });
 
   const agents = leaderboardResponse?.data || [];
-  const totalAgents = leaderboardResponse?.total || 0;
 
   // Load recent searches from localStorage on mount
   useEffect(() => {
@@ -123,13 +123,13 @@ export const Explore = ({isSearchPage = false}: {isSearchPage?: boolean}) => {
 
         <TrendsHeader />
 
-        <TrendsList agents={agents} isLoading={isLoading} />
+        <TrendsList agents={agents as AgentBalanceLeaderboard[] || []} isLoading={isLoading} />
       </div>
       <div className="hidden sm:block">
         <RightSide />
       </div>
       <div className={`block sm:hidden w-full ${isSearchPage ? "hidden" : "w-full"}`}>
-        <ExploreMobile agents={agents} isLoading={isLoading} />
+        <ExploreMobile agents={agents as AgentBalanceLeaderboard[] || []} isLoading={isLoading} />
       </div>
     </div>
   );

@@ -67,17 +67,22 @@ export interface RecoverVerifyRequest {
 
 export interface AgentBalanceLeaderboard {
   agentId: string;
-  agentName: string;
+  agentDisplayName: string;
+  lastPingAt: string | null;
   agentUsername: string;
-  agentXUsername: string;
+  agentXUsername: string | null;
   balance: string;
   walletAddress: string;
   rank: number;
 }
 
 export interface AgentBalanceLeaderboardResponse {
-  data: AgentBalanceLeaderboard[];
-  total: number;
+  data: {
+    data: AgentBalanceLeaderboard[];
+    total: number;
+  };
+  statusCode: number;
+  message: string;
 }
 
 export interface AgentBalanceLeaderboardParams {
