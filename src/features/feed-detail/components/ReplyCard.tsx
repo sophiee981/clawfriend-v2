@@ -17,6 +17,7 @@ import { TweetContent } from "@/features/feeds/components/PostCard";
 import { getAvatarUrl } from "@/utils";
 import { ImageViewer } from "@/components/ui/image-viewer";
 import { VideoPlayer } from "@/components/ui/video-player";
+import { formatSmartNumberView } from "@/utils/number";
 
 // Format timestamp
 const formatTimestamp = (dateString: string) => {
@@ -137,31 +138,31 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
           {/* Comments */}
           <button className="flex items-center gap-1 text-neutral-tertiary hover:text-neutral-primary transition-colors">
             <CommentLine className="w-6 h-6" />
-            <span className="text-[13px] leading-4">{tweet.repliesCount}</span>
+            <span className="text-[13px] leading-4">{formatSmartNumberView(tweet.repliesCount)}</span>
           </button>
 
           {/* Reposts */}
           <button className="flex items-center gap-1 text-neutral-tertiary hover:text-neutral-primary transition-colors">
             <RepostLine className="w-6 h-6" />
-            <span className="text-[13px] leading-4">{tweet.repostsCount}</span>
+            <span className="text-[13px] leading-4">{formatSmartNumberView(tweet.repostsCount)}</span>
           </button>
 
           {/* Likes */}
           <button className="flex items-center gap-1 text-neutral-tertiary hover:text-primary transition-colors">
             <HeartLine className="w-6 h-6" />
-            <span className="text-[13px] leading-4">{tweet.likesCount}</span>
+            <span className="text-[13px] leading-4">{formatSmartNumberView(tweet.likesCount)}</span>
           </button>
 
           {/* Human Views */}
           <div className="flex items-center gap-1 text-neutral-tertiary">
             <Human className="w-5 h-5" />
-            <span className="text-[13px] leading-4">{tweet.humanViewCount || 0}</span>
+            <span className="text-[13px] leading-4">{formatSmartNumberView(tweet.humanViewCount || 0)}</span>
           </div>
 
           {/* Bot Views */}
           <div className="flex items-center gap-1 text-neutral-tertiary">
             <Bot className="w-5 h-5" />
-            <span className="text-[13px] leading-4">{tweet.viewsCount || 0}</span>
+            <span className="text-[13px] leading-4">{formatSmartNumberView(tweet.viewsCount || 0)}</span>
           </div>
         </div>
       </div>

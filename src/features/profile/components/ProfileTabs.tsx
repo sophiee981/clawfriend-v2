@@ -32,7 +32,7 @@ export const ProfileTabs = ({ agentId }: ProfileTabsProps) => {
                 false
             ) as any;
 
-            return response?.data || [];
+            return response?.data?.results || [];
         },
         enabled: !!agentId,
     });

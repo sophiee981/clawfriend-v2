@@ -4,6 +4,11 @@ import {
   ChainPair,
   GlobeAmericas,
   TwitterVerifiedBlue,
+  CommentLine,
+  RepostLine,
+  HeartLine,
+  Human,
+  Bot,
 } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
 import { ImageViewer } from "@/components/ui/image-viewer";
@@ -12,6 +17,7 @@ import { TweetContent } from "@/features/feeds/components/PostCard";
 import type { Tweet } from "@/interfaces/feeds";
 import { getAvatarUrl } from "@/utils";
 import { useState } from "react";
+import { formatSmartNumberView } from "@/utils/number";
 
 // Format timestamp
 const formatTimestamp = (dateString: string) => {
@@ -98,22 +104,20 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
       {/* Images - aligned to left edge */}
       {images.length > 0 && (
         <div
-          className={`mb-4 gap-2 ${
-            images.length === 1
+          className={`mb-4 gap-2 ${images.length === 1
               ? "grid grid-cols-1"
               : images.length === 2
-              ? "grid grid-cols-2"
-              : images.length === 3
-              ? "grid grid-cols-2"
-              : "grid grid-cols-2"
-          }`}
+                ? "grid grid-cols-2"
+                : images.length === 3
+                  ? "grid grid-cols-2"
+                  : "grid grid-cols-2"
+            }`}
         >
           {images.map((media, index) => (
             <div
               key={index}
-              className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${
-                images.length === 3 && index === 0 ? "col-span-2" : ""
-              }`}
+              className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${images.length === 3 && index === 0 ? "col-span-2" : ""
+                }`}
               onClick={() => handleImageClick(index)}
             >
               <img
@@ -136,37 +140,43 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
       )}
 
       {/* Stats Bar - aligned to left edge */}
-      <div className="flex items-center gap-4 pt-3 text-[13px] leading-4 text-neutral-tertiary border-t border-neutral-900">
+      <div className="flex items-center gap-4 py-3 text-[13px] leading-4 text-neutral-tertiary border-t border-neutral-900">
         <div className="flex items-center gap-1">
-          <span className="font-medium text-neutral-primary">
-            {tweet.repliesCount}
-          </span>
+          <span className="font-medium text-neutral-primary">{formatSmartNumberView(tweet.repliesCount)}</span>
           <span>Replies</span>
         </div>
         <div className="flex items-center gap-1">
-          <span className="font-medium text-neutral-primary">
-            {tweet.repostsCount}
-          </span>
+          <span className="font-medium text-neutral-primary">{formatSmartNumberView(tweet.repostsCount)}</span>
           <span>Retweets</span>
         </div>
         <div className="flex items-center gap-1">
-          <span className="font-medium text-neutral-primary">
-            {tweet.likesCount}
-          </span>
+          <span className="font-medium text-neutral-primary">{formatSmartNumberView(tweet.likesCount)}</span>
           <span>Likes</span>
         </div>
         <div className="flex items-center gap-1">
-          <span className="font-medium text-neutral-primary">
-            {tweet.humanViewCount || 0}
-          </span>
+          <span className="font-medium text-neutral-primary">{formatSmartNumberView(tweet.humanViewCount || 0)}</span>
           <span>Human Views</span>
         </div>
         <div className="flex items-center gap-1">
-          <span className="font-medium text-neutral-primary">
-            {tweet.viewsCount || 0}
-          </span>
+          <span className="font-medium text-neutral-primary">{formatSmartNumberView(tweet.viewsCount || 0)}</span>
           <span>Agent Views</span>
         </div>
+      </div>
+
+      {/* Action Bar - aligned to left edge */}
+      <div className="flex items-center justify-around pt-3 border-t border-neutral-900">
+        {/* Comment */}
+        <CommentLine className="w-6 h-6 text-neutral-tertiary" />
+
+        {/* Repost */}
+        <RepostLine className="w-6 h-6 text-neutral-tertiary" />
+
+        {/* Like */}
+        <HeartLine className="w-6 h-6 text-neutral-tertiary" />
+
+        <Human className="w-6 h-6 text-neutral-tertiary" />
+
+        <Bot className="w-6 h-6 text-neutral-tertiary" />
       </div>
 
       {/* Image Viewer Modal */}
