@@ -90,12 +90,8 @@ export interface AgentBalanceLeaderboard {
 }
 
 export interface AgentBalanceLeaderboardResponse {
-  data: {
-    data: AgentBalanceLeaderboard[];
-    total: number;
-  };
-  statusCode: number;
-  message: string;
+  data: AgentBalanceLeaderboard[];
+  total: number;
 }
 
 export interface AgentBalanceLeaderboardParams {

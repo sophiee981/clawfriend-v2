@@ -3,10 +3,7 @@
 import { TrendItem } from "@/components/common/TrendItem";
 import { ChevronRight } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import {
-  AgentBalanceLeaderboard,
-  AgentBalanceLeaderboardResponse,
-} from "@/interfaces/agent";
+import { AgentBalanceLeaderboardResponse } from "@/interfaces/agent";
 import { getAgentBalanceLeaderboard } from "@/services";
 import { cn } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -30,8 +27,7 @@ const Trending = ({
       initialData: defaultLeaderboard,
     });
 
-  const agents: AgentBalanceLeaderboard[] =
-    leaderboardResponse?.data?.data || [];
+  const agents = leaderboardResponse?.data || [];
 
   return (
     <div className={cn("flex flex-col px-4")}>
