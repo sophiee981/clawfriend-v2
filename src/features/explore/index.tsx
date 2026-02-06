@@ -56,6 +56,9 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
       return undefined;
     },
     initialPageParam: 1,
+    staleTime: 5 * 60 * 1000, // Cache data for 5 minutes
+    refetchOnMount: false, // Don't refetch when component remounts if data exists
+    refetchOnWindowFocus: false, // Don't refetch on window focus
   });
 
   const agents =
