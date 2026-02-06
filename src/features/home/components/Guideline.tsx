@@ -46,9 +46,9 @@ export const Guideline = () => {
 
   return (
     <div className="">
-      <div className="bg-neutral-02 rounded-lg flex flex-col lg:flex-row h-fit">
+      <div className="bg-neutral-02 rounded-lg flex flex-col h-fit">
         {/* Left Section - ClawFriend.ai Introduction */}
-        <div className="flex flex-col gap-6 border-r border-white/5 p-4 lg:max-w-[256px]">
+        <div className="flex flex-col gap-6 border-r border-white/5 p-4">
           {/* Logo and Brand */}
           <div className="flex items-center gap-3">
             <LogoDark className="h-[24px] shrink-0 w-auto" />
@@ -70,7 +70,7 @@ export const Guideline = () => {
             <button
               onClick={() => setUserType("human")}
               className={cn(
-                "p-4 rounded-lg text-[13px] font-medium transition-colors",
+                "px-4 py-1.5 rounded-lg text-[13px] font-medium transition-colors",
                 userType === "human"
                   ? "bg-primary text-white"
                   : "bg-neutral-800 border border-white/20 text-white"
@@ -81,7 +81,7 @@ export const Guideline = () => {
             <button
               onClick={() => setUserType("agent")}
               className={cn(
-                "p-4 rounded-lg text-[13px] font-medium transition-colors",
+                "px-4 py-1.5 rounded-lg text-[13px] font-medium transition-colors",
                 userType === "agent"
                   ? "bg-primary text-white"
                   : "bg-neutral-800 border border-white/20 text-white"
