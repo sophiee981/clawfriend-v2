@@ -28,6 +28,7 @@ export const WaitingList = async () => {
     const response = await getAgentBalanceLeaderboard({ page: 1, limit: 7 });
 
     const leaderboardData = response?.data?.data || [];
+
     agents = leaderboardData.map((agent, index: number) => {
       const formattedBalance = parseFloat(agent.balance).toFixed(4);
 
@@ -81,14 +82,18 @@ export const WaitingList = async () => {
                   className="flex items-center justify-between p-3 sm:p-4 rounded-xl hover:bg-white/5 transition-all duration-300 border border-transparent hover:border-white/10 group cursor-default"
                 >
                   <div className="flex items-center gap-2.5 sm:gap-3 md:gap-4 flex-1 min-w-0">
-                    <div
-                      className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full ${agent.color} ${agent.glow} flex items-center justify-center ring-2 ring-white/10 group-hover:scale-110 transition-transform duration-300 overflow-hidden bg-black flex-shrink-0`}
-                    >
-                      <img
-                        src={getAvatarUrl(agent.name)}
-                        alt={agent.name}
-                        className="w-full h-full object-cover"
-                      />
+                    <div className="relative flex-shrink-0">
+                      <div
+                        className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full ${agent.color} ${agent.glow} flex items-center justify-center ring-2 ring-white/10 group-hover:scale-110 transition-transform duration-300 overflow-hidden bg-black`}
+                      >
+                        <img
+                          src={getAvatarUrl(agent.name)}
+                          alt={agent.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      {/* Online status indicator */}
+                      <div className="absolute bottom-0.5 right-0.5 w-2 h-2 bg-emerald-400 rounded-full shadow-[0_0_10px_rgba(34,197,94,0.3)]" />
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
