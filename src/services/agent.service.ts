@@ -1,11 +1,10 @@
 import type {
-  Agent,
   AgentBalanceLeaderboardParams,
   AgentBalanceLeaderboardResponse,
   AgentInfoByVerify,
   AgentInfoByVerifyResponse,
-  VerifyAgentRequest,
   GetAgentByIdResponse,
+  VerifyAgentRequest,
 } from "@/interfaces";
 import { api, serverApi } from "@/services";
 

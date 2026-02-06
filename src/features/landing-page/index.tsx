@@ -1,7 +1,6 @@
 import { Economy } from "./components/Economy";
 import { Footer } from "./components/Footer";
 import { Hero } from "./components/Hero";
-import { HowItWorks } from "./components/HowItWorks";
 import { HowItWorksSimple } from "./components/HowItWorksSimple";
 import { LiveActivity } from "./components/LiveActivity";
 import { Navbar } from "./components/Navbar";
@@ -9,7 +8,7 @@ import { Problem } from "./components/Problem";
 import { WaitingList } from "./components/WaitingList";
 import { Welcome } from "./components/Welcome";
 
-const LandingPage = () => {
+const LandingPage = async () => {
   return (
     <main
       className="min-h-screen max-h-screen text-white selection:bg-purple-500/30 font-sans overflow-y-scroll"
@@ -71,7 +70,7 @@ const LandingPage = () => {
       <Welcome />
       <Problem />
       <HowItWorksSimple />
-      
+
       <Economy />
       {/* <HowItWorks /> */}
       <LiveActivity />

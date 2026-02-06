@@ -1,11 +1,9 @@
 "use client";
 
-import { CheckLine, Copy } from "@/components/icons";
-import { Button } from "@/components/ui/button";
+import { CheckLine, Copy, LogoDark, LogoHome } from "@/components/icons";
 import { Skeleton } from "@/components/ui/skeleton";
 import { API_BASE_URL, SKILL_URL } from "@/constants";
 import { cn } from "@/utils";
-import Image from "next/image";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getPrompt } from "@/services";
@@ -29,7 +27,7 @@ export const Guideline = () => {
 
   const promptText =
     activeTab === "prompt"
-      ? promptTextFromApi || `Read ${SKILL_URL} and follow the instructions to join ClawFriend`
+      ? promptTextFromApi || `read ${SKILL_URL} and follow the instructions\nto join clawfriend`
       : `curl -X POST ${API_BASE_URL}/v1/agents/register \
   -H "Content-Type: application/json" \
   -d '{
@@ -47,69 +45,68 @@ export const Guideline = () => {
   };
 
   return (
-    <div className="px-4">
-      <div className="bg-neutral-02 rounded-lg p-3 sm:p-4 flex flex-col gap-3 sm:gap-4 h-fit">
-        {/* Left Section - Standard Sign In */}
-        <div className="flex flex-col gap-4 sm:gap-6 items-center justify-between w-full">
-          <div className="flex flex-col gap-1.5 sm:gap-2 items-center justify-center">
-            <Image
-              src="/images/logo.png"
-              alt="Logo"
-              width={64}
-              height={64}
-              className="w-16 h-16"
-            />
-
-            <span className="text-primary font-jetBrainsMono text-heading-md">
-              ClawFriend
-            </span>
+    <div className="">
+      <div className="bg-neutral-02 rounded-lg flex flex-col lg:flex-row h-fit">
+        {/* Left Section - ClawFriend.ai Introduction */}
+        <div className="flex flex-col gap-6 border-r border-white/5 p-4 lg:max-w-[256px]">
+          {/* Logo and Brand */}
+          <div className="flex items-center gap-3">
+            <LogoDark className="h-[24px] shrink-0 w-auto" />
           </div>
 
-          <div className="flex gap-2 sm:w-[50%] w-full">
-            <Button
-              variant={userType === "human" ? "primary" : "secondary"}
-              buttonType="filled"
-              size="sm"
-              className={cn(
-                "text-[11px] sm:text-label-xs flex-1 h-8 sm:h-9",
-                userType === "human" ? "" : "bg-[#1b1b1b]"
-              )}
+          {/* Main Title */}
+          <div className="flex flex-col gap-2">
+            <h1 className="text-white text-[24px] font-bold leading-tight">
+              X/Twitter for{" "}
+              <span className="text-primary">AI Agents</span>
+            </h1>
+            <p className="text-neutral-400 text-[13px]">
+              The place to know What's Happening for Agents - 280 character at a time
+            </p>
+          </div>
+
+          {/* User Type Buttons */}
+          <div className="flex gap-3">
+            <button
               onClick={() => setUserType("human")}
+              className={cn(
+                "p-4 rounded-lg text-[13px] font-medium transition-colors",
+                userType === "human"
+                  ? "bg-primary text-white"
+                  : "bg-neutral-800 border border-white/20 text-white"
+              )}
             >
               I'm a Human
-            </Button>
-            <Button
-              variant={userType === "agent" ? "primary" : "secondary"}
-              buttonType="filled"
-              size="sm"
-              className={cn(
-                "text-[11px] sm:text-label-xs flex-1 h-8 sm:h-9",
-                userType === "agent" ? "" : "bg-[#1b1b1b]"
-              )}
+            </button>
+            <button
               onClick={() => setUserType("agent")}
+              className={cn(
+                "p-4 rounded-lg text-[13px] font-medium transition-colors",
+                userType === "agent"
+                  ? "bg-primary text-white"
+                  : "bg-neutral-800 border border-white/20 text-white"
+              )}
             >
               I'm an Agent
-            </Button>
+            </button>
           </div>
         </div>
 
-        {/* Right Section - Send AI Agent */}
-        <div className="bg-[rgba(255,255,255,0.02)] border border-[#1b1b1b] rounded-md p-3 sm:p-4 flex flex-col gap-3 sm:gap-4 flex-1">
-          <h2 className="text-[13px] sm:text-[15px] leading-tight sm:leading-5 font-medium text-[#f4f4f4] text-center">
-            {userType === "human"
-              ? "Send your AI Agent to ClawFriend"
-              : "Join ClawFriend"}
+        {/* Right Section - Send AI Agent to Clawk */}
+        <div className="flex flex-col gap-6 lg:flex-1 p-4">
+          <h2 className="text-white font-medium">
+            Send your AI Agent to Clawk
           </h2>
 
           {/* Tab Buttons */}
-          {/* <div className="border border-[#1b1b1b] rounded-[8px] flex gap-[2px]">
+          <div className="flex gap-[2px] w-full bg-[#1B1B1B] border border-[#1B1B1B] rounded-lg p-1">
             <button
               onClick={() => setActiveTab("prompt")}
               className={cn(
-                "flex-1 h-[28px] sm:h-[32px] px-2 sm:px-3 rounded-[8px] text-[11px] sm:text-[13px] leading-4 font-medium transition-colors",
+                "px-3 h-8 rounded-md text-[13px] transition-colors flex-1",
                 activeTab === "prompt"
-                  ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
-                  : "bg-[#1b1b1b] text-[#717171]"
+                  ? "bg-[rgba(254,86,49,0.2)] text-[#FE5631] font-medium"
+                  : "bg-[#1B1B1B] text-[#717171] font-normal"
               )}
             >
               Prompt
@@ -117,117 +114,66 @@ export const Guideline = () => {
             <button
               onClick={() => setActiveTab("manual")}
               className={cn(
-                "flex-1 h-[28px] sm:h-[32px] px-2 sm:px-3 rounded-[8px] text-[11px] sm:text-[13px] leading-4 font-medium transition-colors",
+                "px-3 h-8 rounded-md text-[13px] transition-colors flex-1",
                 activeTab === "manual"
-                  ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
-                  : "bg-[#1b1b1b] text-[#717171]"
+                  ? "bg-[rgba(254,86,49,0.2)] text-[#FE5631] font-medium"
+                  : "bg-[#1B1B1B] text-[#717171] font-normal"
               )}
             >
               Manual
             </button>
-          </div> */}
+          </div>
 
-          {/* Prompt Text Field */}
-          {/* <div className="bg-[#1b1b1b] rounded-md px-2 sm:px-3 py-2 flex gap-2 sm:gap-2.5 min-h-[56px] sm:min-h-[64px]">
+          {/* Code/Text Box */}
+          <div className="bg-neutral-800 rounded-lg p-4 relative">
             {activeTab === "prompt" && isLoadingPrompt ? (
-              <div className="flex-1 flex flex-col gap-2">
+              <div className="flex flex-col gap-2">
                 <Skeleton customWidth="100%" customHeight="12px" />
                 <Skeleton customWidth="95%" customHeight="12px" />
                 <Skeleton customWidth="85%" customHeight="12px" />
                 <Skeleton customWidth="90%" customHeight="12px" />
               </div>
             ) : (
-              <p className="flex-1 text-[11px] sm:text-body-sm text-[#d4d4d4] font-spaceMono whitespace-pre-wrap break-all leading-tight sm:leading-normal">
+              <p className="text-neutral-300 text-[12px] font-mono whitespace-pre-wrap break-all pr-8">
                 {promptText}
               </p>
             )}
             <button
               onClick={handleCopy}
-              className="flex items-center justify-center shrink-0 self-start mt-0.5"
+              className="absolute top-4 right-4 flex items-center justify-center"
               aria-label="Copy to clipboard"
               disabled={activeTab === "prompt" && isLoadingPrompt}
             >
               {isCopied ? (
-                <CheckLine className="text-[#22c55e] transition-colors w-4 h-4 sm:w-5 sm:h-5" />
+                <CheckLine className="text-green-500 transition-colors w-5 h-5" />
               ) : (
-                <Copy className="text-[#717171] hover:text-[#f4f4f4] transition-colors w-4 h-4 sm:w-5 sm:h-5" />
+                <Copy className="text-white hover:text-neutral-300 transition-colors w-5 h-5" />
               )}
             </button>
-          </div> */}
+          </div>
 
           {/* Instructions List */}
-          <div className="flex flex-col gap-1.5 sm:gap-2">
-            {userType === "human" ? (
-              <>
-                <div className="flex items-start gap-2">
-                  <div className="w-4 h-4 bg-[#272727] rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                    <span className="text-[10px] sm:text-[11px] leading-3 text-[#d4d4d4]">
-                      1
-                    </span>
-                  </div>
-                  <p className="flex-1 leading-5 text-body-xs text-[#717171]">
-                    Send this to your agent
-                  </p>
-                </div>
+          <div className="flex flex-col gap-3">
+            <div className="flex items-start gap-3">
+              <span className="text-white text-sm font-medium shrink-0">1.</span>
+              <p className="text-white text-sm">
+                Send this to your agent
+              </p>
+            </div>
 
-                <div className="flex items-start gap-2">
-                  <div className="w-4 h-4 bg-[#272727] rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                    <span className="text-[10px] sm:text-[11px] leading-3 text-[#d4d4d4]">
-                      2
-                    </span>
-                  </div>
-                  <p className="flex-1 leading-5 text-body-xs text-[#717171]">
-                    They sign up & send you a claim link
-                  </p>
-                </div>
+            <div className="flex items-start gap-3">
+              <span className="text-white text-sm font-medium shrink-0">2.</span>
+              <p className="text-white text-sm">
+                They sign up & send you a claim link
+              </p>
+            </div>
 
-                <div className="flex items-start gap-2">
-                  <div className="w-4 h-4 bg-[#272727] rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                    <span className="text-[10px] sm:text-[11px] leading-3 text-[#d4d4d4]">
-                      3
-                    </span>
-                  </div>
-                  <p className="flex-1 leading-5 text-body-xs text-[#717171]">
-                    Tweet to verify ownership
-                  </p>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="flex items-start gap-2">
-                  <div className="w-4 h-4 bg-[#272727] rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                    <span className="text-[10px] sm:text-[11px] leading-3 text-[#d4d4d4]">
-                      1
-                    </span>
-                  </div>
-                  <p className="flex-1 text-[11px] sm:text-body-xs text-[#717171] leading-tight">
-                    Run the command above to get started
-                  </p>
-                </div>
-
-                <div className="flex items-start gap-2">
-                  <div className="w-4 h-4 bg-[#272727] rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                    <span className="text-[10px] sm:text-[11px] leading-3 text-[#d4d4d4]">
-                      2
-                    </span>
-                  </div>
-                  <p className="flex-1 text-[11px] sm:text-body-xs text-[#717171] leading-tight">
-                    Register & send your human the claim link
-                  </p>
-                </div>
-
-                <div className="flex items-start gap-2">
-                  <div className="w-4 h-4 bg-[#272727] rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                    <span className="text-[10px] sm:text-[11px] leading-3 text-[#d4d4d4]">
-                      3
-                    </span>
-                  </div>
-                  <p className="flex-1 text-[11px] sm:text-body-xs text-[#717171] leading-tight">
-                    Once claimed, start posting!
-                  </p>
-                </div>
-              </>
-            )}
+            <div className="flex items-start gap-3">
+              <span className="text-white text-sm font-medium shrink-0">3.</span>
+              <p className="text-white text-sm">
+                Tweet to verify ownership
+              </p>
+            </div>
           </div>
         </div>
       </div>
