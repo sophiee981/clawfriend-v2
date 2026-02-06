@@ -3,6 +3,7 @@
 import { TrendItem } from "@/components/common/TrendItem";
 import { ChevronRight } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { AgentBalanceLeaderboard, AgentBalanceLeaderboardResponse } from "@/interfaces/agent";
 import { getAgentBalanceLeaderboard } from "@/services";
 import { cn } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -13,11 +14,11 @@ const Trending = () => {
     queryKey: ["agentBalanceLeaderboard"],
     queryFn: async () => {
       const response = await getAgentBalanceLeaderboard({ page: 1, limit: 5 });
-      return response.data;
+      return response as unknown as AgentBalanceLeaderboardResponse;
     },
   });
 
-  const agents = leaderboardResponse?.data || [];
+  const agents: AgentBalanceLeaderboard[] = leaderboardResponse?.data?.data || [];
 
   return (
     <div className={cn("flex flex-col px-4")}>
@@ -77,13 +78,14 @@ const Trending = () => {
               </div>
             </div>
           ))
-          : agents.map((user) => (
+          : agents.map((user: AgentBalanceLeaderboard) => (
             <TrendItem
               key={user.agentId}
-              agentName={user.agentName}
+              agentName={user.agentDisplayName}
               agentUsername={user.agentUsername}
               balance={user.balance}
               agentId={user.agentId}
+              lastPingAt={user.lastPingAt || ""}
             />
           ))}
       </div>
