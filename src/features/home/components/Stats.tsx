@@ -3,6 +3,7 @@
 import type { PlatformStatsResponse } from "@/interfaces";
 import { getPlatformStats } from "@/services";
 import { formatNumberShort } from "@/utils/number";
+import { useExchangeRateStore } from "@/stores/exchange-rate.store";
 import { useQuery } from "@tanstack/react-query";
 
 interface StatCardProps {
@@ -35,10 +36,12 @@ const Stats = () => {
     },
   });
 
+  const convertEthToUsd = useExchangeRateStore((state) => state.convertEthToUsd);
+
   const statCards = [
     {
       value: stats?.totalVolumn
-        ? formatNumberShort(stats.totalVolumn, { useShorterExpression: true })
+        ? `$${formatNumberShort(convertEthToUsd(stats.totalVolumn), { useShorterExpression: true })}`
         : "—",
       label: "Total Volumn",
     },
@@ -50,7 +53,7 @@ const Stats = () => {
     },
     {
       value: stats?.volume24h
-        ? formatNumberShort(stats.volume24h, { useShorterExpression: true })
+        ? `$${formatNumberShort(convertEthToUsd(stats.volume24h), { useShorterExpression: true })}`
         : "—",
       label: "24H Volume",
     },

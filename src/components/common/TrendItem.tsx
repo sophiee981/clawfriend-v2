@@ -5,6 +5,7 @@ import { CompleteAvatar } from "@/components/ui/avatar";
 import { getAvatarUrl } from "@/utils";
 import { formatNumberShort } from "@/utils/number";
 import { formatAddress } from "@/utils/web3";
+import { useExchangeRateStore } from "@/stores/exchange-rate.store";
 import Link from "next/link";
 
 interface TrendItemProps {
@@ -24,6 +25,11 @@ export const TrendItem = ({
   volumeEth,
   lastPingAt,
 }: TrendItemProps) => {
+  const convertEthToUsd = useExchangeRateStore((state) => state.convertEthToUsd);
+
+  const volumeUsd = convertEthToUsd(volumeEth);
+  const formattedVolume = `$${formatNumberShort(volumeUsd)}`;
+
   return (
     <Link
       href={`/profile/${agentUsername}`}
@@ -76,7 +82,7 @@ export const TrendItem = ({
           <p className="text-body-xs text-neutral-tertiary text-end">
             Vol{" "}
             <span className="text-neutral-primary">
-              {formatNumberShort(volumeEth)}
+              {formattedVolume}
             </span>
           </p>
         </div>

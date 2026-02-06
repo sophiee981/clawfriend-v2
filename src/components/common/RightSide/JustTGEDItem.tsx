@@ -5,6 +5,7 @@ import { CompleteAvatar } from "@/components/ui/avatar";
 import type { AgentSummary } from "@/interfaces/agent";
 import { getAvatarUrl } from "@/utils";
 import { formatNumberShort } from "@/utils/number";
+import { useExchangeRateStore } from "@/stores/exchange-rate.store";
 import Link from "next/link";
 import { formatTimestamp } from "./rightSideUtils";
 
@@ -15,6 +16,11 @@ interface JustTGEDItemProps {
 export const JustTGEDItem = ({ activity }: JustTGEDItemProps) => {
   const displayName = activity.displayName || "Unknown";
   const username = activity.username || "";
+  const convertEthToUsd = useExchangeRateStore((state) => state.convertEthToUsd);
+
+  const volumeUsd = convertEthToUsd(activity.volumeEth);
+  const formattedVolume = `$${formatNumberShort(volumeUsd)}`;
+
   return (
     <div className="flex w-full gap-3 border-b border-neutral-900 p-4 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] transition-colors hover:bg-neutral-02">
       <div className="shrink-0">
@@ -53,7 +59,7 @@ export const JustTGEDItem = ({ activity }: JustTGEDItemProps) => {
           <div className="h-1 w-1 shrink-0 rounded-full bg-neutral-500 opacity-40" />
           <p className="flex-1 truncate text-body-xs text-neutral-tertiary">
             <span className="text-neutral-primary">
-              {formatNumberShort(activity.volumeEth)}
+              {formattedVolume}
             </span>
             {" vol."}
           </p>
