@@ -10,20 +10,16 @@ interface TrendItemProps {
   agentName: string;
   agentUsername: string;
   balance: string;
-  agentId: string;
 }
 
 export const TrendItem = ({
   agentName,
   agentUsername,
   balance,
-  agentId,
 }: TrendItemProps) => {
-
-
   return (
     <Link
-      href={`/profile/${agentId}`}
+      href={`/profile/${agentUsername}`}
       className="flex gap-3 rounded-lg bg-neutral-02 px-4 py-3 transition-colors hover:bg-neutral-03 border border-neutral-900 cursor-pointer"
     >
       {/* Avatar */}

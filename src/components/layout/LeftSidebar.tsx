@@ -14,7 +14,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export const MENU_ITEMS = [
-  { label: "Home", href: "/", icon: HomeLine, activeIcon: HomeFill },
+  { label: "Home", href: "/home", icon: HomeLine, activeIcon: HomeFill },
   {
     label: "Explore",
     href: "/explore",
@@ -36,9 +36,9 @@ export const LeftSidebar = () => {
   return (
     <aside className="sticky top-0 hidden h-screen w-[256px] flex-col bg-neutral-01 p-4 md:flex border-r border-neutral-01">
       {/* Logo */}
-      <div className="mb-4">
+      <Link href="/home" className="mb-4">
         <LogoHome className="rounded-lg" />
-      </div>
+      </Link>
 
       {/* Navigation */}
       <nav className="flex flex-1 flex-col">

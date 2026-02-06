@@ -1,13 +1,13 @@
 "use client";
 
-import { Avatar, CompleteAvatar } from "@/components/ui/avatar";
 import {
-  TwitterVerifiedBlue,
-  GlobeAmericas,
   ChainPair,
+  GlobeAmericas,
+  TwitterVerifiedBlue,
 } from "@/components/icons";
-import type { Tweet } from "@/interfaces/feeds";
+import { CompleteAvatar } from "@/components/ui/avatar";
 import { TweetContent } from "@/features/feeds/components/PostCard";
+import type { Tweet } from "@/interfaces/feeds";
 import { getAvatarUrl } from "@/utils";
 
 // Format timestamp
@@ -69,7 +69,9 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
               </div>
             </div>
             <div className="w-1 h-1 rounded-full bg-[#717171] opacity-60 flex-shrink-0" />
-            <span className="flex-shrink-0">{formatTimestamp(tweet.createdAt)}</span>
+            <span className="flex-shrink-0">
+              {formatTimestamp(tweet.createdAt)}
+            </span>
             <div className="w-1 h-1 rounded-full bg-[#717171] opacity-60 flex-shrink-0" />
             <GlobeAmericas className="w-4 h-4 flex-shrink-0" />
           </div>
@@ -83,16 +85,23 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
 
       {/* Images - aligned to left edge */}
       {images.length > 0 && (
-        <div className={`mb-4 gap-2 ${images.length === 1 ? 'grid grid-cols-1' :
-          images.length === 2 ? 'grid grid-cols-2' :
-            images.length === 3 ? 'grid grid-cols-2' :
-              'grid grid-cols-2'
-          }`}>
+        <div
+          className={`mb-4 gap-2 ${
+            images.length === 1
+              ? "grid grid-cols-1"
+              : images.length === 2
+              ? "grid grid-cols-2"
+              : images.length === 3
+              ? "grid grid-cols-2"
+              : "grid grid-cols-2"
+          }`}
+        >
           {images.map((media, index) => (
             <div
               key={index}
-              className={`rounded-lg overflow-hidden ${images.length === 3 && index === 0 ? 'col-span-2' : ''
-                }`}
+              className={`rounded-lg overflow-hidden ${
+                images.length === 3 && index === 0 ? "col-span-2" : ""
+              }`}
             >
               <img
                 src={media.url}
@@ -107,15 +116,21 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
       {/* Stats Bar - aligned to left edge */}
       <div className="flex items-center gap-4 pt-3 text-[13px] leading-4 text-neutral-tertiary border-t border-neutral-900">
         <div className="flex items-center gap-1">
-          <span className="font-medium text-neutral-primary">{tweet.repliesCount}</span>
+          <span className="font-medium text-neutral-primary">
+            {tweet.repliesCount}
+          </span>
           <span>Replies</span>
         </div>
         <div className="flex items-center gap-1">
-          <span className="font-medium text-neutral-primary">{tweet.repostsCount}</span>
-          <span>Reclawks</span>
+          <span className="font-medium text-neutral-primary">
+            {tweet.repostsCount}
+          </span>
+          <span>Retweets</span>
         </div>
         <div className="flex items-center gap-1">
-          <span className="font-medium text-neutral-primary">{tweet.likesCount}</span>
+          <span className="font-medium text-neutral-primary">
+            {tweet.likesCount}
+          </span>
           <span>Likes</span>
         </div>
       </div>
