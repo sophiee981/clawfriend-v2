@@ -1,23 +1,23 @@
 "use client";
 
-import { useState } from "react";
-import { CompleteAvatar } from "@/components/ui/avatar";
 import {
-  TwitterVerifiedBlue,
-  GlobeAmericas,
-  CommentLine,
-  RepostLine,
-  HeartLine,
-  ChainPair,
-  Human,
   Bot,
+  ChainPair,
+  CommentLine,
+  GlobeAmericas,
+  HeartLine,
+  Human,
+  RepostLine,
+  TwitterVerifiedBlue,
 } from "@/components/icons";
-import type { Tweet } from "@/interfaces/feeds";
-import { TweetContent } from "@/features/feeds/components/PostCard";
-import { getAvatarUrl } from "@/utils";
+import { CompleteAvatar } from "@/components/ui/avatar";
 import { ImageViewer } from "@/components/ui/image-viewer";
 import { VideoPlayer } from "@/components/ui/video-player";
-import { formatSmartNumberView } from "@/utils/number";
+import { TweetContent } from "@/features/feeds/components/PostCard";
+import type { Tweet } from "@/interfaces/feeds";
+import { getAvatarUrl } from "@/utils";
+import { formatNumberShort } from "@/utils/number";
+import { useState } from "react";
 
 // Format timestamp
 const formatTimestamp = (dateString: string) => {
@@ -91,7 +91,9 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
               </div>
             </div>
             <div className="w-1 h-1 rounded-full bg-[#717171] opacity-60 flex-shrink-0" />
-            <span className="flex-shrink-0">{formatTimestamp(tweet.createdAt)}</span>
+            <span className="flex-shrink-0">
+              {formatTimestamp(tweet.createdAt)}
+            </span>
             <div className="w-1 h-1 rounded-full bg-[#717171] opacity-60 flex-shrink-0" />
             <GlobeAmericas className="w-4 h-4 flex-shrink-0" />
           </div>
@@ -104,16 +106,23 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
 
         {/* Images */}
         {images.length > 0 && (
-          <div className={`mb-4 gap-2 ${images.length === 1 ? 'grid grid-cols-1' :
-            images.length === 2 ? 'grid grid-cols-2' :
-              images.length === 3 ? 'grid grid-cols-2' :
-                'grid grid-cols-2'
-            }`}>
+          <div
+            className={`mb-4 gap-2 ${
+              images.length === 1
+                ? "grid grid-cols-1"
+                : images.length === 2
+                ? "grid grid-cols-2"
+                : images.length === 3
+                ? "grid grid-cols-2"
+                : "grid grid-cols-2"
+            }`}
+          >
             {images.map((media, index) => (
               <div
                 key={index}
-                className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${images.length === 3 && index === 0 ? 'col-span-2' : ''
-                  }`}
+                className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${
+                  images.length === 3 && index === 0 ? "col-span-2" : ""
+                }`}
                 onClick={(e) => handleImageClick(index, e)}
               >
                 <img
@@ -140,31 +149,51 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
           {/* Comments */}
           <button className="flex items-center gap-1 text-neutral-tertiary hover:text-neutral-primary transition-colors">
             <CommentLine className="w-6 h-6" />
-            <span className="text-[13px] leading-4">{formatSmartNumberView(tweet.repliesCount)}</span>
+            <span className="text-[13px] leading-4">
+              {formatNumberShort(tweet.repliesCount, {
+                useShorterExpression: true,
+              })}
+            </span>
           </button>
 
           {/* Reposts */}
           <button className="flex items-center gap-1 text-neutral-tertiary hover:text-neutral-primary transition-colors">
             <RepostLine className="w-6 h-6" />
-            <span className="text-[13px] leading-4">{formatSmartNumberView(tweet.repostsCount)}</span>
+            <span className="text-[13px] leading-4">
+              {formatNumberShort(tweet.repostsCount, {
+                useShorterExpression: true,
+              })}
+            </span>
           </button>
 
           {/* Likes */}
           <button className="flex items-center gap-1 text-neutral-tertiary hover:text-primary transition-colors">
             <HeartLine className="w-6 h-6" />
-            <span className="text-[13px] leading-4">{formatSmartNumberView(tweet.likesCount)}</span>
+            <span className="text-[13px] leading-4">
+              {formatNumberShort(tweet.likesCount, {
+                useShorterExpression: true,
+              })}
+            </span>
           </button>
 
           {/* Human Views */}
           <div className="flex items-center gap-1 text-neutral-tertiary">
             <Human className="w-5 h-5" />
-            <span className="text-[13px] leading-4">{formatSmartNumberView(tweet.humanViewCount || 0)}</span>
+            <span className="text-[13px] leading-4">
+              {formatNumberShort(tweet.humanViewCount || 0, {
+                useShorterExpression: true,
+              })}
+            </span>
           </div>
 
           {/* Bot Views */}
           <div className="flex items-center gap-1 text-neutral-tertiary">
             <Bot className="w-5 h-5" />
-            <span className="text-[13px] leading-4">{formatSmartNumberView(tweet.viewsCount || 0)}</span>
+            <span className="text-[13px] leading-4">
+              {formatNumberShort(tweet.viewsCount || 0, {
+                useShorterExpression: true,
+              })}
+            </span>
           </div>
         </div>
       </div>

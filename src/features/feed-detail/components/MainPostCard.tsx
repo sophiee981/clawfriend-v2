@@ -1,14 +1,14 @@
 "use client";
 
 import {
+  Bot,
   ChainPair,
-  GlobeAmericas,
-  TwitterVerifiedBlue,
   CommentLine,
-  RepostLine,
+  GlobeAmericas,
   HeartLine,
   Human,
-  Bot,
+  RepostLine,
+  TwitterVerifiedBlue,
 } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
 import { ImageViewer } from "@/components/ui/image-viewer";
@@ -16,8 +16,8 @@ import { VideoPlayer } from "@/components/ui/video-player";
 import { TweetContent } from "@/features/feeds/components/PostCard";
 import type { Tweet } from "@/interfaces/feeds";
 import { getAvatarUrl } from "@/utils";
+import { formatNumberShort } from "@/utils/number";
 import { useState } from "react";
-import { formatSmartNumberView } from "@/utils/number";
 
 // Format timestamp
 const formatTimestamp = (dateString: string) => {
@@ -106,20 +106,22 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
       {/* Images - aligned to left edge */}
       {images.length > 0 && (
         <div
-          className={`mb-4 gap-2 ${images.length === 1
-            ? "grid grid-cols-1"
-            : images.length === 2
+          className={`mb-4 gap-2 ${
+            images.length === 1
+              ? "grid grid-cols-1"
+              : images.length === 2
               ? "grid grid-cols-2"
               : images.length === 3
-                ? "grid grid-cols-2"
-                : "grid grid-cols-2"
-            }`}
+              ? "grid grid-cols-2"
+              : "grid grid-cols-2"
+          }`}
         >
           {images.map((media, index) => (
             <div
               key={index}
-              className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${images.length === 3 && index === 0 ? "col-span-2" : ""
-                }`}
+              className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${
+                images.length === 3 && index === 0 ? "col-span-2" : ""
+              }`}
               onClick={() => handleImageClick(index)}
             >
               <img
@@ -144,23 +146,41 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
       {/* Stats Bar - aligned to left edge */}
       <div className="flex items-center gap-4 py-3 text-[13px] leading-4 text-neutral-tertiary border-t border-neutral-900">
         <div className="flex items-center gap-1">
-          <span className="font-medium text-neutral-primary">{formatSmartNumberView(tweet.repliesCount)}</span>
+          <span className="font-medium text-neutral-primary">
+            {formatNumberShort(tweet.repliesCount, {
+              useShorterExpression: true,
+            })}
+          </span>
           <span>Replies</span>
         </div>
         <div className="flex items-center gap-1">
-          <span className="font-medium text-neutral-primary">{formatSmartNumberView(tweet.repostsCount)}</span>
+          <span className="font-medium text-neutral-primary">
+            {formatNumberShort(tweet.repostsCount, {
+              useShorterExpression: true,
+            })}
+          </span>
           <span>Retweets</span>
         </div>
         <div className="flex items-center gap-1">
-          <span className="font-medium text-neutral-primary">{formatSmartNumberView(tweet.likesCount)}</span>
+          <span className="font-medium text-neutral-primary">
+            {formatNumberShort(tweet.likesCount, {
+              useShorterExpression: true,
+            })}
+          </span>
           <span>Likes</span>
         </div>
         <div className="flex items-center gap-1">
-          <span className="font-medium text-neutral-primary">{formatSmartNumberView(tweet.humanViewCount || 0)}</span>
+          <span className="font-medium text-neutral-primary">
+            {formatNumberShort(tweet.humanViewCount || 0, {
+              useShorterExpression: true,
+            })}
+          </span>
           <span>Human Views</span>
         </div>
         <div className="flex items-center gap-1">
-          <span className="font-medium text-neutral-primary">{formatSmartNumberView(tweet.viewsCount || 0)}</span>
+          <span className="font-medium text-neutral-primary">
+            {formatNumberShort(tweet.viewsCount || 0)}
+          </span>
           <span>Agent Views</span>
         </div>
       </div>
