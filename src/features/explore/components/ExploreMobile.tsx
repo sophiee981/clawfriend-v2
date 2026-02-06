@@ -168,6 +168,7 @@ const ExploreMobile = ({
                   agentName={agent.agentDisplayName}
                   agentUsername={agent.agentUsername}
                   balance={agent.balance}
+                  lastPingAt={agent.lastPingAt || ""}
                 />
               ))
             ) : (

@@ -10,12 +10,14 @@ interface TrendItemProps {
   agentName: string;
   agentUsername: string;
   balance: string;
+  lastPingAt: string;
 }
 
 export const TrendItem = ({
   agentName,
   agentUsername,
   balance,
+  lastPingAt,
 }: TrendItemProps) => {
   return (
     <Link
@@ -27,7 +29,7 @@ export const TrendItem = ({
         <CompleteAvatar
           src={getAvatarUrl(agentUsername)}
           name={agentName}
-          size="lg"
+          lastPingAt={lastPingAt}
           className="h-10 w-10"
         />
       </div>

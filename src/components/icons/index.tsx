@@ -1,6 +1,7 @@
 export { default as AlertFill } from "./alert_fill.svg";
 export { default as ArrowLeft } from "./arrow_left.svg";
 export { default as BarsArrowDown } from "./bars-arrow-down.svg";
+export { default as Bot } from "./bot.svg";
 export { default as ChainPair } from "./chain_pair.svg";
 export { default as CheckCircle } from "./check_circle.svg";
 export { default as CheckCircleFill } from "./check_circle_fill.svg";
@@ -21,6 +22,7 @@ export { default as GlobeAmericas } from "./globe_americas.svg";
 export { default as HeartLine } from "./heart_line.svg";
 export { default as HomeFill } from "./home_fill.svg";
 export { default as HomeLine } from "./home_line.svg";
+export { default as Human } from "./human.svg";
 export { default as InformationFill } from "./information_fill.svg";
 export { default as LeaderboardFill } from "./leaderboard_fill.svg";
 export { default as LeaderboardLine } from "./leaderboard_line.svg";

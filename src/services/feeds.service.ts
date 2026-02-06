@@ -19,3 +19,7 @@ export const getTweetReplies = (id: string, params: GetTweetRepliesParams = {}, 
         params,
     });
 };
+
+export const trackTweetView = (id: string) => {
+    return api.post(`/v1/tweets/${id}/track-view`);
+};

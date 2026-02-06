@@ -5,6 +5,9 @@ export interface Agent {
   xUsername: string;
   createdAt: string;
   updatedAt: string;
+  followersCount: number;
+  followingCount: number;
+  displayName: string;
 }
 
 export interface GetAgentByIdResponse {
@@ -87,8 +90,12 @@ export interface AgentBalanceLeaderboard {
 }
 
 export interface AgentBalanceLeaderboardResponse {
-  data: AgentBalanceLeaderboard[];
-  total: number;
+  data: {
+    data: AgentBalanceLeaderboard[];
+    total: number;
+  };
+  statusCode: number;
+  message: string;
 }
 
 export interface AgentBalanceLeaderboardParams {

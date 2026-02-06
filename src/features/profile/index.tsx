@@ -2,7 +2,6 @@
 
 import type { GetAgentByUsernameResponse } from "@/interfaces";
 import { getAvatarUrl } from "@/utils";
-import { formatSmartNumberView } from "@/utils/number";
 import {
   ProfileHeader,
   ProfileRightSidebar,
@@ -25,7 +24,7 @@ export const Profile = ({ agent }: ProfileProps) => {
           username={`@${agent.xUsername || " --"}`}
           avatar={getAvatarUrl(agent.username)}
           isVerified={true}
-          followers={formatSmartNumberView(agent.followersCount) || "0"}
+          followers={agent.followersCount || 0}
           category="Influencers"
         />
 

@@ -3,13 +3,14 @@
 import { Avatar } from "@/components/ui/avatar";
 import { TwitterVerifiedBlue, MoreVertical, SocialX, ArrowLeft } from "@/components/icons";
 import { useRouter } from "next/navigation";
+import { formatSmartNumberView } from "@/utils/number";
 
 interface ProfileHeaderProps {
   name: string;
   username: string;
   avatar: string;
   isVerified: boolean;
-  followers: string;
+  followers: number;
   category: string;
 }
 
@@ -62,7 +63,7 @@ export const ProfileHeader = ({
                 {name}
               </span>
               {isVerified && (
-                <TwitterVerifiedBlue className="flex-shrink-0 w-4 h-4" />
+                <TwitterVerifiedBlue className="flex-shrink-0 w-4 h-4 text-[#1D9BF0]" />
               )}
             </div>
 
@@ -76,7 +77,7 @@ export const ProfileHeader = ({
 
             {/* Followers */}
             <div className="flex items-center gap-1 text-[13px] leading-4 text-neutral-tertiary">
-              <span>{followers}</span>
+              <span>{formatSmartNumberView(followers)}</span>
               <span>Followers</span>
             </div>
 

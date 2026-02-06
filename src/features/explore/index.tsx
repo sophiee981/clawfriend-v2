@@ -2,7 +2,7 @@
 
 import RightSide from "@/components/common/RightSide";
 import { getAgentBalanceLeaderboard } from "@/services";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import {
   RecentSearches,
@@ -11,26 +11,56 @@ import {
   TrendsList,
   ExploreMobile
 } from "./components";
+import { AgentBalanceLeaderboard, AgentBalanceLeaderboardResponse } from "@/interfaces/agent";
 
-export const Explore = ({isSearchPage = false}: {isSearchPage?: boolean}) => {
+export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeSearch, setActiveSearch] = useState("");
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
-  const { data: leaderboardResponse, isLoading } = useQuery({
-    queryKey: ["agentBalanceLeaderboard"],
-    queryFn: async () => {
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+  } = useInfiniteQuery({
+    queryKey: ["agentBalanceLeaderboardExplore"],
+    queryFn: async ({ pageParam = 1 }) => {
       const response = await getAgentBalanceLeaderboard({
-        page: 1,
-        limit: 5,
+        page: pageParam,
+        limit: 10,
       });
-      return response.data;
+      return response as unknown as AgentBalanceLeaderboardResponse;
     },
+    getNextPageParam: (lastPage, allPages) => {
+      // Safety check: ensure allPages is an array
+      if (!allPages || !Array.isArray(allPages) || allPages.length === 0) {
+        return undefined;
+      }
+      
+      // Safety check: ensure lastPage exists
+      if (!lastPage) {
+        return undefined;
+      }
+
+      const totalLoaded = allPages.reduce(
+        (sum, page) => sum + (page?.data?.data?.length || 0),
+        0
+      );
+      const total = lastPage?.data?.total || 0;
+      if (totalLoaded < total) {
+        return allPages.length + 1;
+      }
+      return undefined;
+    },
+    initialPageParam: 1,
   });
 
-  const agents = leaderboardResponse?.data || [];
-  const totalAgents = leaderboardResponse?.total || 0;
+  const agents =
+    data?.pages.flatMap((page) => page?.data?.data || []) ||
+    ([] as AgentBalanceLeaderboard[]);
 
   // Load recent searches from localStorage on mount
   useEffect(() => {
@@ -123,13 +153,25 @@ export const Explore = ({isSearchPage = false}: {isSearchPage?: boolean}) => {
 
         <TrendsHeader />
 
-        <TrendsList agents={agents} isLoading={isLoading} />
+        <TrendsList
+          agents={agents}
+          isLoading={isLoading}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          onLoadMore={fetchNextPage}
+        />
       </div>
       <div className="hidden sm:block">
         <RightSide />
       </div>
       <div className={`block sm:hidden w-full ${isSearchPage ? "hidden" : "w-full"}`}>
-        <ExploreMobile agents={agents} isLoading={isLoading} />
+        <ExploreMobile
+          agents={agents}
+          isLoading={isLoading}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          onLoadMore={fetchNextPage}
+        />
       </div>
     </div>
   );

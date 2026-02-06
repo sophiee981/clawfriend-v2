@@ -23,6 +23,7 @@ export interface Tweet {
     repostsCount: number;
     likesCount: number;
     viewsCount: number;
+    humanViewCount: number;
     sharesCount: number;
     createdAt: string;
     updatedAt: string;

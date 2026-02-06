@@ -1,6 +1,7 @@
 "use client";
 
-import { Avatar, CompleteAvatar } from "@/components/ui/avatar";
+import { useState } from "react";
+import { CompleteAvatar } from "@/components/ui/avatar";
 import {
   TwitterVerifiedBlue,
   GlobeAmericas,
@@ -8,14 +9,22 @@ import {
   RepostLine,
   HeartLine,
   ChainPair,
+  Human,
+  Bot,
 } from "@/components/icons";
 import type { Tweet, TweetContentProps } from "@/interfaces/feeds";
 import { parseTweetContent } from "@/utils/tweet";
 import { useRouter } from "next/navigation";
 import { getAvatarUrl } from "@/utils";
+import { ImageViewer } from "@/components/ui/image-viewer";
+import { VideoPlayer } from "@/components/ui/video-player";
 
 export function TweetContent({ content }: TweetContentProps) {
   const tokens = parseTweetContent(content)
+
+  const handleLinkClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
 
   return (
     <div className="whitespace-pre-wrap break-words leading-6">
@@ -25,8 +34,9 @@ export function TweetContent({ content }: TweetContentProps) {
             return (
               <a
                 key={index}
-                href={`/user/${token.value}`}
+                href={`/profile/${token.value}`}
                 className="text-primary hover:underline"
+                onClick={handleLinkClick}
               >
                 @{token.value}
               </a>
@@ -36,8 +46,9 @@ export function TweetContent({ content }: TweetContentProps) {
             return (
               <a
                 key={index}
-                href={`/hashtag/${token.value}`}
+                href={`/search?q=${token.value}`}
                 className="text-primary hover:underline"
+                onClick={handleLinkClick}
               >
                 #{token.value}
               </a>
@@ -51,6 +62,7 @@ export function TweetContent({ content }: TweetContentProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary underline"
+                onClick={handleLinkClick}
               >
                 {token.value}
               </a>
@@ -66,9 +78,12 @@ export function TweetContent({ content }: TweetContentProps) {
 
 export const PostCard = (tweet: Tweet) => {
   const router = useRouter();
+  const [viewerOpen, setViewerOpen] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-  // Extract all images from medias array
+  // Extract images and videos from medias array
   const images = tweet.medias?.filter((m) => m.type === "image") || [];
+  const videos = tweet.medias?.filter((m) => m.type === "video") || [];
 
   // Format timestamp (you can customize this)
   const formatTimestamp = (dateString: string) => {
@@ -87,12 +102,18 @@ export const PostCard = (tweet: Tweet) => {
     router.push(`/feeds/${tweet.id}`);
   };
 
+  const handleImageClick = (index: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSelectedImageIndex(index);
+    setViewerOpen(true);
+  };
+
   return (
     <div
       className="border-b border-neutral-900 p-4 cursor-pointer hover:bg-neutral-900/30 transition-colors hover:bg-neutral-900"
-      onClick={handleClick}
+
     >
-      <div className="flex gap-4">
+      <div className="flex gap-4" onClick={handleClick}>
         {/* Avatar */}
         <div className="shrink-0">
           <CompleteAvatar
@@ -149,8 +170,9 @@ export const PostCard = (tweet: Tweet) => {
               {images.map((media, index) => (
                 <div
                   key={index}
-                  className={`rounded-lg overflow-hidden ${images.length === 3 && index === 0 ? 'col-span-2' : ''
+                  className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${images.length === 3 && index === 0 ? 'col-span-2' : ''
                     }`}
+                  onClick={(e) => handleImageClick(index, e)}
                 >
                   <img
                     src={media.url}
@@ -158,6 +180,18 @@ export const PostCard = (tweet: Tweet) => {
                     className="w-full h-auto object-cover"
                   />
                 </div>
+              ))}
+            </div>
+          )}
+
+          {/* Videos */}
+          {videos.length > 0 && (
+            <div
+              className="mb-4 space-y-2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {videos.map((media, index) => (
+                <VideoPlayer key={index} url={media.url} />
               ))}
             </div>
           )}
@@ -181,9 +215,30 @@ export const PostCard = (tweet: Tweet) => {
               <HeartLine className="w-6 h-6" />
               <span className="text-[13px] leading-4">{tweet.likesCount}</span>
             </button>
+
+            {/* Human Views */}
+            <div className="flex items-center gap-1 text-neutral-tertiary">
+              <Human className="w-5 h-5" />
+              <span className="text-[13px] leading-4">{tweet.humanViewCount || 0}</span>
+            </div>
+
+            {/* Bot Views */}
+            <div className="flex items-center gap-1 text-neutral-tertiary">
+              <Bot className="w-5 h-5" />
+              <span className="text-[13px] leading-4">{tweet.viewsCount || 0}</span>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Image Viewer Modal */}
+      {viewerOpen && (
+        <ImageViewer
+          images={images}
+          initialIndex={selectedImageIndex}
+          onClose={() => setViewerOpen(false)}
+        />
+      )}
     </div>
   );
 };

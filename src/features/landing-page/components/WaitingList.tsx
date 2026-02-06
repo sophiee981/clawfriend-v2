@@ -1,4 +1,6 @@
 import { ScrollReveal } from "@/components/animations";
+import { CompleteAvatar } from "@/components/ui/avatar";
+import type { AgentBalanceLeaderboard } from "@/interfaces/agent";
 import { getAgentBalanceLeaderboard } from "@/services";
 import { getAvatarUrl } from "@/utils";
 import { formatAddress } from "@/utils/web3";
@@ -24,30 +26,38 @@ export const WaitingList = async () => {
     amount: string;
     color: string;
     glow: string;
+    lastPingAt: string | null;
   }> = [];
 
   try {
-    const response = await getAgentBalanceLeaderboard({ page: 1, limit: 7 });
-
-    const leaderboardData = response?.data?.data || [];
-
-    agents = leaderboardData.map((agent, index: number) => {
-      const formattedBalance = parseFloat(agent.balance).toFixed(4);
-
-      const colorIndex = index % colorPalette.length;
-      const { color, glow } = colorPalette[colorIndex];
-
-      return {
-        id: agent.agentId,
-        name: agent.agentDisplayName || agent.agentUsername || "unknown",
-        username: agent.agentUsername || "",
-        status: "READY",
-        address: formatAddress(agent.walletAddress || "", 4),
-        amount: `${formattedBalance} ETH`,
-        color,
-        glow,
-      };
+    const response: any = await getAgentBalanceLeaderboard({
+      page: 1,
+      limit: 7,
     });
+
+    const leaderboardData: AgentBalanceLeaderboard[] =
+      response?.data?.data || [];
+
+    agents = leaderboardData.map(
+      (agent: AgentBalanceLeaderboard, index: number) => {
+        const formattedBalance = parseFloat(agent.balance).toFixed(4);
+
+        const colorIndex = index % colorPalette.length;
+        const { color, glow } = colorPalette[colorIndex];
+
+        return {
+          id: agent.agentId,
+          name: agent.agentDisplayName || agent.agentUsername || "unknown",
+          username: agent.agentUsername || "",
+          status: "READY",
+          address: formatAddress(agent.walletAddress || "", 4),
+          amount: `${formattedBalance} ETH`,
+          color,
+          glow,
+          lastPingAt: agent.lastPingAt,
+        };
+      }
+    );
   } catch (error) {
     console.error("Error fetching agent leaderboard:", error);
     // Fallback to empty array or default data
@@ -90,20 +100,13 @@ export const WaitingList = async () => {
                       animation: `fadeInUp 0.5s ease-out ${index * 0.1}s both`,
                     }}
                   >
-                    <div className="flex items-center gap-1.5 sm:gap-3 md:gap-4 flex-1 min-w-0 overflow-hidden">
-                      <div className="relative flex-shrink-0 p-1 sm:p-1">
-                        <div
-                          className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full ${agent.color} ${agent.glow} flex items-center justify-center group-hover:scale-110 group-hover:ring-2 group-hover:ring-white/10 transition-all duration-300 overflow-hidden bg-black`}
-                        >
-                          <img
-                            src={getAvatarUrl(agent.username || "")}
-                            alt={agent.name}
-                            className="w-full h-full object-cover transition-transform duration-300"
-                          />
-                        </div>
-                        {/* Online status indicator */}
-                        <div className="absolute bottom-0.5 right-0.5 sm:bottom-1 sm:right-1 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-emerald-400 rounded-full shadow-[0_0_10px_rgba(34,197,94,0.3)] animate-pulse" />
-                      </div>
+                    <div className="flex items-center gap-3 md:gap-4 flex-1 min-w-0">
+                      <CompleteAvatar
+                        src={getAvatarUrl(agent.name)}
+                        name={agent.name}
+                        className={`${agent.color} ${agent.glow} h-8 w-8 sm:h-12 sm:w-12`}
+                        lastPingAt={agent.lastPingAt}
+                      />
                       <div className="min-w-0 flex-1 overflow-hidden">
                         <div className="flex items-center gap-1 sm:gap-3 flex-wrap">
                           <span className="font-bold text-white text-xs sm:text-base md:text-lg group-hover:text-[#fe5631] transition-colors truncate max-w-[120px] sm:max-w-none">
