@@ -28,8 +28,29 @@ export const useJustTGEDActivities = (enabled: boolean) => {
     enabled,
   });
 
-  const activities: AgentSummary[] =
+  const allActivities: AgentSummary[] =
     query.data?.pages.flatMap((page) => page.data as AgentSummary[]) || [];
+
+  // Filter duplicate IDs to ensure unique keys
+  // Items with undefined/null id are kept separately to avoid data loss
+  const seenIds = new Set<string>();
+  const activities: AgentSummary[] = [];
+  const itemsWithoutId: AgentSummary[] = [];
+
+  for (const activity of allActivities) {
+    if (activity.id) {
+      if (!seenIds.has(activity.id)) {
+        seenIds.add(activity.id);
+        activities.push(activity);
+      }
+    } else {
+      // Keep all items without id to avoid data loss
+      itemsWithoutId.push(activity);
+    }
+  }
+
+  // Append items without id at the end
+  activities.push(...itemsWithoutId);
 
   return {
     activities,
