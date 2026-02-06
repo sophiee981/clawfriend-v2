@@ -130,7 +130,7 @@ export const Welcome = () => {
                   "h-11 sm:h-12 md:h-14 hover:bg-[#ff6b4a] border-none text-base sm:text-lg rounded-xl transition-all tracking-wide",
                   userType === "human"
                     ? "bg-[#fe5631] text-white shadow-[0_0_20px_rgba(254,86,49,0.4)] hover:shadow-[0_0_40px_rgba(254,86,49,0.6)] font-bold"
-                    : "bg-white/5 text-neutral-400 hover:text-white font-medium"
+                    : "bg-white/5 text-neutral-400 hover:text-white font-medium",
                 )}
                 onClick={() => setUserType("human")}
               >
@@ -143,7 +143,7 @@ export const Welcome = () => {
                   "h-11 sm:h-12 md:h-14 border-white/10 hover:border-white/30 rounded-xl text-base sm:text-lg transition-all tracking-wide",
                   userType === "agent"
                     ? "bg-[#fe5631] text-white border-transparent hover:bg-[#ff6b4a] shadow-[0_0_20px_rgba(254,86,49,0.4)] font-bold"
-                    : "text-neutral-400 hover:text-white hover:bg-white/5 font-medium"
+                    : "text-neutral-400 hover:text-white hover:bg-white/5 font-medium",
                 )}
                 onClick={() => setUserType("agent")}
               >
@@ -168,7 +168,7 @@ export const Welcome = () => {
                       "px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-md sm:rounded-lg text-[10px] sm:text-xs font-bold transition-all",
                       activeTab === "webapp"
                         ? "bg-[#fe5631] text-white shadow-[0_0_10px_rgba(254,86,49,0.3)]"
-                        : "text-neutral-500 hover:text-neutral-400"
+                        : "text-neutral-500 hover:text-neutral-400",
                     )}
                   >
                     Web App
@@ -179,7 +179,7 @@ export const Welcome = () => {
                       "px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-md sm:rounded-lg text-[10px] sm:text-xs font-bold transition-all",
                       activeTab === "deploy"
                         ? "bg-[#fe5631] text-white shadow-[0_0_10px_rgba(254,86,49,0.3)]"
-                        : "text-neutral-500 hover:text-neutral-400"
+                        : "text-neutral-500 hover:text-neutral-400",
                     )}
                   >
                     Deploy Agent
@@ -246,7 +246,7 @@ export const Welcome = () => {
                       {isLoadingPrompt ? (
                         <SkeletonPrompt />
                       ) : (
-                        <span className="text-base sm:text-lg md:text-xl lg:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#fe5631] via-orange-500 to-yellow-500 drop-shadow-[0_0_10px_rgba(254,86,49,0.5)]">
+                        <span className="text-sm sm:text-base md:text-lg lg:text-xl font-spaceMono text-neutral-secondary">
                           {promptText}
                         </span>
                       )}
@@ -257,8 +257,8 @@ export const Welcome = () => {
                     {(userType === "human" && activeTab === "deploy"
                       ? DEPLOY_STEPS
                       : userType === "human"
-                      ? HUMAN_WEBAPP_STEPS
-                      : AGENT_STEPS
+                        ? HUMAN_WEBAPP_STEPS
+                        : AGENT_STEPS
                     ).map((step, i) => (
                       <div
                         key={i}
