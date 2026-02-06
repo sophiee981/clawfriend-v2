@@ -715,11 +715,145 @@ module.exports = {
             "offset-distance": "100%",
           },
         },
+        fadeInUp: {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(40px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
+        fadeInDown: {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(-40px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
+        fadeInLeft: {
+          "0%": {
+            opacity: "0",
+            transform: "translateX(-40px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateX(0)",
+          },
+        },
+        fadeInRight: {
+          "0%": {
+            opacity: "0",
+            transform: "translateX(40px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateX(0)",
+          },
+        },
+        scaleIn: {
+          "0%": {
+            opacity: "0",
+            transform: "scale(0.8)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "scale(1)",
+          },
+        },
+        shimmer: {
+          "0%": {
+            backgroundPosition: "-1000px 0",
+          },
+          "100%": {
+            backgroundPosition: "1000px 0",
+          },
+        },
+        "glow-pulse": {
+          "0%, 100%": {
+            boxShadow: "0 0 20px rgba(254, 86, 49, 0.4)",
+          },
+          "50%": {
+            boxShadow: "0 0 40px rgba(254, 86, 49, 0.8)",
+          },
+        },
+        "gradient-x": {
+          "0%, 100%": {
+            backgroundPosition: "0% 50%",
+          },
+          "50%": {
+            backgroundPosition: "100% 50%",
+          },
+        },
+        "gradient-y": {
+          "0%, 100%": {
+            backgroundPosition: "50% 0%",
+          },
+          "50%": {
+            backgroundPosition: "50% 100%",
+          },
+        },
+        tilt: {
+          "0%, 100%": {
+            transform: "rotate(0deg)",
+          },
+          "25%": {
+            transform: "rotate(1deg)",
+          },
+          "75%": {
+            transform: "rotate(-1deg)",
+          },
+        },
+        "slide-in-up": {
+          "0%": {
+            transform: "translateY(100%)",
+            opacity: "0",
+          },
+          "100%": {
+            transform: "translateY(0)",
+            opacity: "1",
+          },
+        },
+        "bounce-subtle": {
+          "0%, 100%": {
+            transform: "translateY(0)",
+          },
+          "50%": {
+            transform: "translateY(-10px)",
+          },
+        },
+        ripple: {
+          "0%": {
+            transform: "scale(0)",
+            opacity: "1",
+          },
+          "100%": {
+            transform: "scale(4)",
+            opacity: "0",
+          },
+        },
       },
       animation: {
         slideUp: "slideUp 0.2s ease-out",
         slideHorizontal: "slideHorizontal 0.2s ease-out",
         "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
+        fadeInUp: "fadeInUp 0.6s ease-out forwards",
+        fadeInDown: "fadeInDown 0.6s ease-out forwards",
+        fadeInLeft: "fadeInLeft 0.6s ease-out forwards",
+        fadeInRight: "fadeInRight 0.6s ease-out forwards",
+        scaleIn: "scaleIn 0.5s ease-out forwards",
+        shimmer: "shimmer 3s linear infinite",
+        "glow-pulse": "glow-pulse 2s ease-in-out infinite",
+        "gradient-x": "gradient-x 3s ease infinite",
+        "gradient-y": "gradient-y 3s ease infinite",
+        tilt: "tilt 10s ease-in-out infinite",
+        "slide-in-up": "slide-in-up 0.6s ease-out forwards",
+        "bounce-subtle": "bounce-subtle 2s ease-in-out infinite",
+        ripple: "ripple 0.6s ease-out",
       },
     },
   },
