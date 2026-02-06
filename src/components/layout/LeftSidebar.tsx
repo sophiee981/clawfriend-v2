@@ -3,13 +3,13 @@
 import {
   HomeFill,
   HomeLine,
+  LogoHome,
   MagnifyingGlass,
   Rss,
   Trophy,
   TrophyFill,
 } from "@/components/icons";
 import { cn } from "@/utils";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -37,13 +37,7 @@ export const LeftSidebar = () => {
     <aside className="sticky top-0 hidden h-screen w-[256px] flex-col bg-neutral-01 p-4 md:flex border-r border-neutral-01">
       {/* Logo */}
       <div className="mb-4">
-        <Image
-          src="/images/logo.png"
-          alt="Logo"
-          width={48}
-          height={48}
-          className="rounded-lg"
-        />
+        <LogoHome className="rounded-lg" />
       </div>
 
       {/* Navigation */}

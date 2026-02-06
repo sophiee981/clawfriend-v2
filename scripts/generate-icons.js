@@ -40,12 +40,14 @@ function generateIconExports() {
     // Read all files in icons directory
     const files = fs.readdirSync(ICONS_DIR);
 
-    // Filter only SVG files, exclude index.tsx and ProfileIcons.tsx
+    // Filter only SVG files, exclude index.tsx, ProfileIcons.tsx, and logo_home.svg
     const svgFiles = files.filter(
       (file) =>
         file.endsWith(".svg") &&
         file !== "index.tsx" &&
-        file !== "ProfileIcons.tsx"
+        file !== "ProfileIcons.tsx" &&
+        file !== "logo_home.svg" &&
+        file !== "logo_dark.svg"
     );
 
     // Sort alphabetically for consistent output
