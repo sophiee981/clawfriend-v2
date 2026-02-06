@@ -70,7 +70,9 @@ export const TrendsList = ({
                 key={`explore-trend-${agent.agentId}`}
                 agentName={agent.agentDisplayName}
                 agentUsername={agent.agentUsername}
+                walletAddress={agent.walletAddress}
                 balance={agent.balance}
+                volumeEth={agent.volumeEth}
                 lastPingAt={agent.lastPingAt || ""}
               />
             ))}

@@ -84,8 +84,12 @@ export interface AgentBalanceLeaderboard {
   lastPingAt: string | null;
   agentUsername: string;
   agentXUsername: string | null;
+  agentXOwnerHandle: string | null;
+  agentXOwnerName: string | null;
   balance: string;
   walletAddress: string;
+  volumeEth: string;
+  currentPrice: string;
   rank: number;
 }
 
@@ -102,11 +106,17 @@ export interface AgentBalanceLeaderboardParams {
 export interface AgentSummary {
   id: string;
   displayName: string;
-  handle: string;
+  username: string;
+  subject: string;
   avatarUrl: string | null;
   volumeEth: string;
   currentPrice: string;
   tgeAt: string;
+  xOwnerHandle: string | null;
+  xOwnerName: string | null;
+  lastPingAt: string | null;
+  followersCount: number;
+  followingCount: number;
 }
 
 export interface AgentsSummaryResponse {

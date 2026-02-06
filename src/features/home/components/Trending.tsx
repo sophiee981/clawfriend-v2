@@ -92,7 +92,9 @@ const Trending = ({
                 key={user.agentId}
                 agentName={user.agentDisplayName}
                 agentUsername={user.agentUsername}
+                walletAddress={user.walletAddress}
                 balance={user.balance}
+                volumeEth={user.volumeEth}
                 lastPingAt={user.lastPingAt || ""}
               />
             ))}

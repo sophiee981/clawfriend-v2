@@ -3,12 +3,11 @@
 import { Empty } from "@/components/common/Empty";
 import { TrendItem } from "@/components/common/TrendItem";
 import { TrendItemSkeleton } from "@/components/common/TrendItemSkeleton";
-import { ChainPair, ExternalLink } from "@/components/icons";
-import { CompleteAvatar } from "@/components/ui/avatar";
 import { Tabs } from "@/components/ui/tabs";
 import { AgentBalanceLeaderboard } from "@/interfaces/agent";
-import { cn, getAvatarUrl } from "@/utils";
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { ActivitiesTab } from "./ActivitiesTab";
+import { JustTGEDTab } from "./JustTGEDTab";
 
 type ActivityAction = "bought" | "bid" | "sold" | "airdropped";
 
@@ -126,21 +125,6 @@ const ExploreMobile = ({
     },
   ];
 
-  const getActionColor = (action: ActivityAction): string => {
-    switch (action) {
-      case "bought":
-        return "text-success";
-      case "bid":
-        return "text-info";
-      case "sold":
-        return "text-danger";
-      case "airdropped":
-        return "text-indigo";
-      default:
-        return "text-neutral-primary";
-    }
-  };
-
   const tabs: Array<{ id: TabId; label: string }> = [
     { id: "just-tged", label: "Just TGED" },
     { id: "activities", label: "Activities" },
@@ -209,7 +193,9 @@ const ExploreMobile = ({
                     key={agent.agentId}
                     agentName={agent.agentDisplayName}
                     agentUsername={agent.agentUsername}
+                    walletAddress={agent.walletAddress}
                     balance={agent.balance}
+                    volumeEth={agent.volumeEth}
                     lastPingAt={agent.lastPingAt || ""}
                   />
                 ))}
@@ -233,121 +219,9 @@ const ExploreMobile = ({
             )}
           </div>
         ) : activeTab === "activities" ? (
-          // Activities Tab
-          mockActivities.map((activity) => (
-            <div
-              key={activity.id}
-              className="flex w-full gap-3 border-b border-neutral-900 p-4 transition-colors hover:bg-neutral-02"
-            >
-              {/* Avatars - Primary with Secondary Overlaid */}
-              <div className="relative shrink-0">
-                <CompleteAvatar
-                  src={getAvatarUrl(activity.actorName)}
-                  name={activity.actorName}
-                  size="lg"
-                  className="h-10 w-10 border-0"
-                />
-                {/* Secondary Avatar Overlaid */}
-                <div className="absolute -bottom-1 -right-1 rounded-full border-2 border-neutral-900">
-                  <CompleteAvatar
-                    src={getAvatarUrl(activity.subjectName)}
-                    name={activity.subjectName}
-                    size="sm"
-                    className="h-4 w-4 border-0"
-                  />
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="flex min-w-0 flex-1 flex-col gap-1">
-                {/* Top Row: Activity Description */}
-                <div className="flex w-full items-center gap-1">
-                  <p className="text-body-sm text-neutral-primary">
-                    <span className="font-medium">{activity.actorName}</span>{" "}
-                    <span
-                      className={cn(
-                        "font-medium",
-                        getActionColor(activity.action)
-                      )}
-                    >
-                      {activity.action}
-                    </span>{" "}
-                    <span className="font-medium">{activity.subjectName}</span>
-                    's share
-                  </p>
-                </div>
-
-                {/* Bottom Row: Amount, Icon, Timestamp */}
-                <div className="flex w-full items-center gap-1.5">
-                  <p className="text-body-xs text-primary">{activity.amount}</p>
-                  <div className="flex h-3 w-3 items-center justify-center rounded-full bg-neutral-primary">
-                    <ChainPair className="h-[12px] w-[12px]" />
-                  </div>
-                  <div className="h-1 w-1 shrink-0 rounded-full bg-neutral-500 opacity-40" />
-                  <p className="text-body-xs text-neutral-tertiary">
-                    {activity.timestamp}
-                  </p>
-                </div>
-              </div>
-
-              {/* Transaction Link */}
-              <div className="flex shrink-0 items-center gap-1 text-body-xs text-neutral-tertiary">
-                <span>Tx</span>
-                <ExternalLink className="h-3 w-3" />
-              </div>
-            </div>
-          ))
+          <ActivitiesTab activities={mockActivities} />
         ) : (
-          // Just TGED Tab (keep existing implementation)
-          mockActivities.map((activity) => (
-            <div
-              key={activity.id}
-              className="flex w-full gap-3 border-b border-neutral-900 p-4 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] transition-colors hover:bg-neutral-02"
-            >
-              {/* Avatar */}
-              <div className="shrink-0">
-                <CompleteAvatar
-                  src={getAvatarUrl(activity.actorName)}
-                  name={activity.actorName}
-                  size="lg"
-                  className="h-10 w-10 border-0"
-                />
-              </div>
-
-              {/* Content */}
-              <div className="flex min-w-0 flex-1 flex-col gap-1">
-                {/* Top Row: Name and Amount */}
-                <div className="flex w-full items-center gap-1">
-                  <p className="flex-1 truncate text-label-md text-neutral-primary">
-                    {activity.actorName}
-                  </p>
-                  <div className="flex shrink-0 items-center gap-1">
-                    <p className="text-body-xs text-primary">
-                      {activity.amount}
-                    </p>
-                    <div className="flex h-3 w-3 items-center justify-center rounded-full bg-neutral-primary">
-                      <ChainPair className="h-[12px] w-[12px]" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Bottom Row: Username, Volume, Timestamp */}
-                <div className="flex w-full items-center gap-2">
-                  <p className="max-w-[80px] truncate text-body-xs text-neutral-tertiary">
-                    @{activity.actorName.toLowerCase()}
-                  </p>
-                  <div className="h-1 w-1 shrink-0 rounded-full bg-neutral-500 opacity-40" />
-                  <p className="flex-1 truncate text-body-xs text-neutral-tertiary">
-                    <span className="text-neutral-primary">$12K</span>
-                    {" vol."}
-                  </p>
-                  <p className="shrink-0 text-body-xs text-neutral-tertiary">
-                    {activity.timestamp}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))
+          <JustTGEDTab activities={mockActivities} />
         )}
       </div>
     </div>

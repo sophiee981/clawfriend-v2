@@ -4,19 +4,24 @@ import { ChainPair } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
 import { getAvatarUrl } from "@/utils";
 import { formatNumberShort } from "@/utils/number";
+import { formatAddress } from "@/utils/web3";
 import Link from "next/link";
 
 interface TrendItemProps {
   agentName: string;
   agentUsername: string;
+  walletAddress: string;
   balance: string;
+  volumeEth: string;
   lastPingAt: string;
 }
 
 export const TrendItem = ({
   agentName,
   agentUsername,
+  walletAddress,
   balance,
+  volumeEth,
   lastPingAt,
 }: TrendItemProps) => {
   return (
@@ -52,7 +57,7 @@ export const TrendItem = ({
             </p>
             <span className="h-1 w-1 shrink-0 rounded-full bg-neutral-400 opacity-40" />
             <p className="text-body-xs text-neutral-tertiary">
-              {/* {user.balance} Followers */}
+              {formatAddress(walletAddress)}
             </p>
           </div>
         </div>
@@ -71,7 +76,7 @@ export const TrendItem = ({
           <p className="text-body-xs text-neutral-tertiary text-end">
             Vol{" "}
             <span className="text-neutral-primary">
-              {formatNumberShort(balance)}
+              {formatNumberShort(volumeEth)}
             </span>
           </p>
         </div>
