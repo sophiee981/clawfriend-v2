@@ -7,6 +7,7 @@ import { Navbar } from "./components/Navbar";
 import { Problem } from "./components/Problem";
 import { WaitingList } from "./components/WaitingList";
 import { Welcome } from "./components/Welcome";
+import { ScrollProgress, ScrollDownIndicator } from "@/components/animations";
 
 const LandingPage = async () => {
   return (
@@ -14,6 +15,9 @@ const LandingPage = async () => {
       className="min-h-screen max-h-screen text-white selection:bg-purple-500/30 font-sans overflow-y-scroll"
       data-landing-scroll-container
     >
+      <ScrollProgress />
+      {/* <ScrollDownIndicator /> */}
+      
       <div className="fixed top-0 inset-x-0 z-50 supports-[backdrop-filter]:bg-black/10">
         <Navbar />
       </div>

@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { ScrollReveal } from "@/components/animations";
 
 export const Footer = () => {
   const handleScroll = (href: string) => {
@@ -62,8 +63,9 @@ export const Footer = () => {
     <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] sm:w-[800px] md:w-[1000px] h-[300px] sm:h-[350px] md:h-[400px] bg-[#fe5631]/5 blur-[120px] rounded-full pointer-events-none" />
 
     <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 relative z-10">
-      <div className="mb-12 sm:mb-16 md:mb-20 rounded-2xl sm:rounded-3xl bg-neutral-900/50 border border-white/10 p-6 sm:p-8 md:p-10 lg:p-16 text-center relative overflow-hidden group">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#fe5631]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+      <ScrollReveal variant="scaleIn" duration={800}>
+        <div className="mb-12 sm:mb-16 md:mb-20 rounded-2xl sm:rounded-3xl bg-neutral-900/50 border border-white/10 p-6 sm:p-8 md:p-10 lg:p-16 text-center relative overflow-hidden group hover:border-[#fe5631]/30 transition-all duration-500">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#fe5631]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
         <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-white mb-4 sm:mb-5 md:mb-6 relative z-10 tracking-tight">
           Deploy an agent.
@@ -82,9 +84,10 @@ export const Footer = () => {
           <Button
             size="lg"
             onClick={() => handleScroll("#welcome")}
-            className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg bg-[#fe5631] text-white hover:bg-[#ff6b4a] hover:scale-105 transition-all shadow-[0_0_30px_rgba(254,86,49,0.3)] hover:shadow-[0_0_50px_rgba(254,86,49,0.5)] font-bold rounded-xl w-full sm:w-auto tracking-wide"
+            className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg bg-[#fe5631] text-white hover:bg-[#ff6b4a] hover:scale-110 transition-all duration-300 shadow-[0_0_30px_rgba(254,86,49,0.3)] hover:shadow-[0_0_50px_rgba(254,86,49,0.5)] font-bold rounded-xl w-full sm:w-auto tracking-wide relative overflow-hidden group"
           >
-            Deploy Your Agent
+            <span className="relative z-10">Deploy Your Agent</span>
+            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></span>
           </Button>
           <Button
             size="lg"
@@ -96,9 +99,11 @@ export const Footer = () => {
           </Button>
         </div>
       </div>
+      </ScrollReveal>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10 md:gap-12 mb-12 sm:mb-14 md:mb-16 border-t border-white/5 pt-10 sm:pt-12 md:pt-16">
-        <div className="col-span-1 sm:col-span-2 md:col-span-2">
+      <ScrollReveal variant="fadeInUp" duration={800} delay={200}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10 md:gap-12 mb-12 sm:mb-14 md:mb-16 border-t border-white/5 pt-10 sm:pt-12 md:pt-16">
+          <div className="col-span-1 sm:col-span-2 md:col-span-2">
           <div className="flex items-center gap-2 mb-4 sm:mb-5 md:mb-6">
             <Image
               src="/images/logo.png"
@@ -156,8 +161,10 @@ export const Footer = () => {
           </ul>
         </div>
       </div>
+      </ScrollReveal>
 
-      <div className="flex flex-col md:flex-row items-center justify-between pt-6 sm:pt-8 border-t border-white/5 text-[10px] sm:text-xs text-neutral-600 font-mono gap-4 md:gap-0">
+      <ScrollReveal variant="fadeInUp" duration={800} delay={400}>
+        <div className="flex flex-col md:flex-row items-center justify-between pt-6 sm:pt-8 border-t border-white/5 text-[10px] sm:text-xs text-neutral-600 font-mono gap-4 md:gap-0">
         <p>© 2026 ClawFriend.ai. All rights reserved.</p>
         <div className="flex gap-4 sm:gap-6">
           <a href="#" className="hover:text-neutral-400 transition-colors">
@@ -168,6 +175,7 @@ export const Footer = () => {
           </a>
         </div>
       </div>
+      </ScrollReveal>
     </div>
   </footer>
   );
