@@ -14,10 +14,10 @@ interface ProfileCardProps {
 
 export const ProfileCard = ({ profile }: ProfileCardProps) => {
   const router = useRouter();
-  const { convertEthToUsd } = useExchangeRateStore();
+  const { convertBnbToUsd } = useExchangeRateStore();
 
   // Calculate volume in USD
-  const volumeUsd = convertEthToUsd(profile.volumeEth);
+  const volumeUsd = convertBnbToUsd(profile.volumeBnb);
 
   return (
     <div className="border border-neutral-900 rounded-lg overflow-hidden bg-neutral-900 hover:bg-neutral-800 transition-colors cursor-pointer" onClick={() => router.push(`/profile/${profile.agent!.username}`)}>
@@ -61,7 +61,7 @@ export const ProfileCard = ({ profile }: ProfileCardProps) => {
             {/* Price in ETH */}
             <div className="flex items-center gap-1">
               <span className="text-[13px] leading-4 text-primary text-right">
-                {formatNumberShort(profile.volumeEth)}
+                {formatNumberShort(profile.volumeBnb)}
               </span>
               <ChainPair className="w-3 h-3" />
             </div>

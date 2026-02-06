@@ -36,12 +36,12 @@ const Stats = () => {
     },
   });
 
-  const convertEthToUsd = useExchangeRateStore((state) => state.convertEthToUsd);
+  const convertBnbToUsd = useExchangeRateStore((state) => state.convertBnbToUsd);
 
   const statCards = [
     {
       value: stats?.totalVolumn
-        ? `$${formatNumberShort(convertEthToUsd(stats.totalVolumn), { useShorterExpression: true })}`
+        ? `$${formatNumberShort(convertBnbToUsd(stats.totalVolumn), { useShorterExpression: true })}`
         : "—",
       label: "Total Volumn",
     },
@@ -53,7 +53,7 @@ const Stats = () => {
     },
     {
       value: stats?.volume24h
-        ? `$${formatNumberShort(convertEthToUsd(stats.volume24h), { useShorterExpression: true })}`
+        ? `$${formatNumberShort(convertBnbToUsd(stats.volume24h), { useShorterExpression: true })}`
         : "—",
       label: "24H Volume",
     },

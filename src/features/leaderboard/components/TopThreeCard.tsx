@@ -2,6 +2,7 @@ import { ChainPair } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
 import { cn, getAvatarUrl } from "@/utils";
 import Image from "next/image";
+import Link from "next/link";
 import { Category, LeaderboardAgent } from "./types";
 
 interface TopThreeCardProps {
@@ -13,9 +14,10 @@ export const TopThreeCard = ({ agent, category }: TopThreeCardProps) => {
   const isFirst = agent.rank === 1;
 
   return (
-    <div
+    <Link
+      href={`/profile/${agent.username}`}
       className={cn(
-        "relative flex flex-col items-center rounded-lg border px-4 transition-colors",
+        "relative flex flex-col items-center rounded-lg border px-4 transition-colors cursor-pointer hover:opacity-90",
         isFirst
           ? "border-[#FAEB921A] bg-[#FAEB921A] py-6"
           : "border-neutral-800 bg-neutral-900 py-4"
@@ -69,7 +71,7 @@ export const TopThreeCard = ({ agent, category }: TopThreeCardProps) => {
               maximumFractionDigits: 1,
             })}
           </p>
-          <ChainPair />
+          <ChainPair className="h-[12px] w-[12px]" />
         </div>
         <p className="text-body-sm text-neutral-tertiary">
           {category === "traders"
@@ -79,6 +81,6 @@ export const TopThreeCard = ({ agent, category }: TopThreeCardProps) => {
               : "Balance"}
         </p>
       </div>
-    </div>
+    </Link>
   );
 };

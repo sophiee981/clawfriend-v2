@@ -23,7 +23,7 @@ export const ActivityItem = ({ activity }: ActivityItemProps) => {
     activity.subject.displayName || activity.subject.username || "Unknown";
   const actorUsername = activity.trader.username || "";
   const subjectUsername = activity.subject.username || "";
-  const amount = formatNumberShort(activity.ethAmount);
+  const amount = formatNumberShort(activity.bnbAmount);
   const timestamp = formatTimestamp(activity.blockTimestamp);
   const transactionLink = getTransactionUrl(activity.transactionHash);
 

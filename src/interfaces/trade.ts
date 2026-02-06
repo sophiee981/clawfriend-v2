@@ -12,7 +12,7 @@ export interface Trade {
   action: "bought" | "sold";
   trader: TradeParticipant;
   subject: TradeParticipant;
-  ethAmount: string;
+  bnbAmount: string;
   shareAmount: string;
   priceCurrent: number;
 }
@@ -49,7 +49,7 @@ export interface TraderAgent {
 export interface Trader {
   id: string;
   address: string;
-  volumeEth: string;
+  volumeBnb: string;
   totalTrades: number;
   latestTradeAt: string | null;
   agent: TraderAgent;

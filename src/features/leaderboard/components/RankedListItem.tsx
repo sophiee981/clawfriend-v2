@@ -67,7 +67,7 @@ export const RankedListItem = ({ agent, category }: RankedListItemProps) => {
               maximumFractionDigits: 1,
             })}
           </p>
-          <ChainPair />
+          <ChainPair className="h-[12px] w-[12px]" />
         </div>
         <p className="text-body-xs text-neutral-tertiary">
           {category === "traders"

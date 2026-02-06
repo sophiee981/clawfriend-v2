@@ -1,21 +1,33 @@
 "use client";
 
 import { ChainPair } from "@/components/icons";
-import { Trade } from "../data/mockTrades";
 import { cn } from "@/utils";
+
+type TradeAction = "buy" | "sell" | "airdrop";
+
+interface Trade {
+  id: string;
+  user: string;
+  targetUser: string;
+  avatar: string;
+  action: TradeAction;
+  price: string;
+  timestamp: string;
+  txLink: string;
+}
 
 interface TradeCardProps {
   trade: Trade;
 }
 
 export const TradeCard = ({ trade }: TradeCardProps) => {
-  const actionColors = {
+  const actionColors: Record<TradeAction, string> = {
     buy: "text-[#2bfdab]", // green
     sell: "text-[#ff3d33]", // red
     airdrop: "text-[#8184f8]", // indigo
   };
 
-  const actionText = {
+  const actionText: Record<TradeAction, string> = {
     buy: "buy",
     sell: "sell",
     airdrop: "airdrop",

@@ -1,4 +1,4 @@
-import type { AgentSummary } from "@/interfaces/agent";
+import type { AgentSummary, AgentsSummaryResponse } from "@/interfaces/agent";
 import { getAgentsSummary } from "@/services/agent.service";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
@@ -6,11 +6,11 @@ export const useJustTGEDActivities = (enabled: boolean) => {
   const query = useInfiniteQuery({
     queryKey: ["agents-summary", "just-tged"],
     queryFn: async ({ pageParam = 1 }) => {
-      const response = await getAgentsSummary({
+      const response = (await getAgentsSummary({
         page: pageParam,
         limit: 20,
         search: "",
-      });
+      })) as unknown as AgentsSummaryResponse | undefined;
 
       return {
         data: response?.data?.data || [],
@@ -29,7 +29,7 @@ export const useJustTGEDActivities = (enabled: boolean) => {
   });
 
   const allActivities: AgentSummary[] =
-    query.data?.pages.flatMap((page) => page.data as AgentSummary[]) || [];
+    query.data?.pages.flatMap((page) => page.data) || [];
 
   // Filter duplicate IDs to ensure unique keys
   // Items with undefined/null id are kept separately to avoid data loss

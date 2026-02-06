@@ -195,7 +195,7 @@ const ExploreMobile = ({
                     agentUsername={agent.agentUsername}
                     walletAddress={agent.walletAddress}
                     balance={agent.balance}
-                    volumeEth={agent.volumeEth}
+                    volumeBnb={agent.volumeBnb}
                     lastPingAt={agent.lastPingAt || ""}
                     followersCount={agent.followersCount || 0}
                   />

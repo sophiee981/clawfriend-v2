@@ -2,13 +2,13 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
 interface ExchangeRateState {
-    ethToUsd: number;
+    bnbToUsd: number;
     lastUpdated: number | null;
     isLoading: boolean;
     error: string | null;
     setExchangeRate: (rate: number) => void;
     fetchExchangeRate: () => Promise<void>;
-    convertEthToUsd: (ethAmount: string | number) => number;
+    convertBnbToUsd: (bnbAmount: string | number) => number;
 }
 
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
@@ -16,14 +16,14 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 export const useExchangeRateStore = create<ExchangeRateState>()(
     persist(
         (set, get) => ({
-            ethToUsd: 0,
+            bnbToUsd: 0,
             lastUpdated: null,
             isLoading: false,
             error: null,
 
             setExchangeRate: (rate: number) => {
                 set({
-                    ethToUsd: rate,
+                    bnbToUsd: rate,
                     lastUpdated: Date.now(),
                     error: null,
                 });
@@ -36,7 +36,7 @@ export const useExchangeRateStore = create<ExchangeRateState>()(
                 if (
                     state.lastUpdated &&
                     Date.now() - state.lastUpdated < CACHE_DURATION &&
-                    state.ethToUsd > 0
+                    state.bnbToUsd > 0
                 ) {
                     return;
                 }
@@ -47,7 +47,7 @@ export const useExchangeRateStore = create<ExchangeRateState>()(
                     // Fetch from backend API
                     const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
                     const response = await fetch(
-                        `${baseUrl}/v1/price/eth`,
+                        `${baseUrl}/v1/price/bnb`,
                         {
                             headers: {
                                 'accept': 'application/json',
@@ -65,7 +65,7 @@ export const useExchangeRateStore = create<ExchangeRateState>()(
 
                     if (typeof rate === 'number') {
                         set({
-                            ethToUsd: rate,
+                            bnbToUsd: rate,
                             lastUpdated: lastUpdatedAt ? lastUpdatedAt * 1000 : Date.now(), // Convert to milliseconds
                             isLoading: false,
                             error: null,
@@ -82,22 +82,22 @@ export const useExchangeRateStore = create<ExchangeRateState>()(
                 }
             },
 
-            convertEthToUsd: (ethAmount: string | number) => {
+            convertBnbToUsd: (bnbAmount: string | number) => {
                 const state = get();
-                const eth = typeof ethAmount === 'string' ? parseFloat(ethAmount) : ethAmount;
+                const bnb = typeof bnbAmount === 'string' ? parseFloat(bnbAmount) : bnbAmount;
 
-                if (isNaN(eth) || state.ethToUsd === 0) {
+                if (isNaN(bnb) || state.bnbToUsd === 0) {
                     return 0;
                 }
 
-                return eth * state.ethToUsd;
+                return bnb * state.bnbToUsd;
             },
         }),
         {
             name: 'exchange-rate-storage',
             storage: createJSONStorage(() => localStorage),
             partialize: (state) => ({
-                ethToUsd: state.ethToUsd,
+                bnbToUsd: state.bnbToUsd,
                 lastUpdated: state.lastUpdated,
             }),
         }

@@ -19,6 +19,7 @@ import {
   type Category,
   type LeaderboardAgent,
 } from "./components";
+import { formatNumberShort, formatSmartNumber } from "@/utils/number";
 
 export const Leaderboard = () => {
   const [activeCategory, setActiveCategory] = useState<Category>("creators");
@@ -88,7 +89,7 @@ export const Leaderboard = () => {
             rank: index + 1,
             name: trader.agent?.displayName ?? "",
             username: trader.agent?.username ?? "",
-            shares: parseFloat(trader.volumeEth) || 0,
+            shares: Number(formatSmartNumber(trader.volumeBnb)) || 0,
             avatar: undefined,
             isCurrentUser: false, // TODO: Add logic to identify current user
           }))
@@ -98,7 +99,7 @@ export const Leaderboard = () => {
             rank: agent.rank,
             name: agent.agentDisplayName,
             username: agent.agentUsername,
-            shares: parseFloat(agent.positionValueETH) || 0,
+          shares: Number(formatSmartNumber(agent.positionValueBNB)) || 0,
             avatar: undefined,
             isCurrentUser: false, // TODO: Add logic to identify current user
           }))
@@ -107,7 +108,7 @@ export const Leaderboard = () => {
             rank: agent.rank,
             name: agent.agentDisplayName,
             username: agent.agentUsername,
-            shares: parseFloat(agent.balance) || 0,
+          shares: Number(formatSmartNumber(agent.balance)) || 0,
             avatar: undefined,
             isCurrentUser: false, // TODO: Add logic to identify current user
           }));

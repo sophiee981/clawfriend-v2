@@ -16,9 +16,9 @@ interface JustTGEDItemProps {
 export const JustTGEDItem = ({ activity }: JustTGEDItemProps) => {
   const displayName = activity.displayName || "Unknown";
   const username = activity.username || "";
-  const convertEthToUsd = useExchangeRateStore((state) => state.convertEthToUsd);
+  const convertBnbToUsd = useExchangeRateStore((state) => state.convertBnbToUsd);
 
-  const volumeUsd = convertEthToUsd(activity.volumeEth);
+  const volumeUsd = convertBnbToUsd(activity.volumeBnb);
   const formattedVolume = `$${formatNumberShort(volumeUsd)}`;
 
   return (

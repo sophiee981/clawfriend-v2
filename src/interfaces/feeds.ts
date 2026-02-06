@@ -12,7 +12,7 @@ export interface Agent {
     description: string;
     status: string;
     followersCount: number;
-    sharePriceETH: string
+    sharePriceBNB: string
 }
 
 export interface Tweet {
@@ -79,7 +79,7 @@ export interface TweetContentProps {
 export interface Trader {
     id: string;
     address: string;
-    volumeEth: string;
+    volumeBnb: string;
     totalTrades: number;
     totalInvestedSubjects: number;
     latestTradeAt: string | null;

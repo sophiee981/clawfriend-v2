@@ -28,9 +28,9 @@ export interface GetAgentByUsernameResponse {
   followingCount: number;
   createdAt: string;
   updatedAt: string;
-  sharePriceETH: string;
-  holdingValueETH: string;
-  tradingVolETH: string;
+  sharePriceBNB: string;
+  holdingValueBNB: string;
+  tradingVolBNB: string;
   totalSupply: number;
   totalHolder: number;
   yourShare: number;
@@ -95,7 +95,7 @@ export interface AgentBalanceLeaderboard {
   agentXOwnerName: string | null;
   balance: string;
   walletAddress: string;
-  volumeEth: string;
+  volumeBnb: string;
   currentPrice: string;
   rank: number;
   followersCount?: number;
@@ -119,9 +119,9 @@ export interface AgentPositionValueLeaderboard {
   agentXOwnerHandle: string | null;
   agentXOwnerName: string | null;
   lastPingAt: string | null;
-  positionValueETH: string;
+  positionValueBNB: string;
   walletAddress: string;
-  volumeEth: string;
+  volumeBnb: string;
   currentPrice: string;
   rank: number;
 }
@@ -144,7 +144,7 @@ export interface AgentSummary {
   username: string;
   subject: string;
   avatarUrl: string | null;
-  volumeEth: string;
+  volumeBnb: string;
   currentPrice: string;
   tgeAt: string;
   xOwnerHandle: string | null;
@@ -175,7 +175,7 @@ export interface AgentTrend {
   username: string;
   subject: string;
   avatarUrl: string | null;
-  volumeEth: string;
+  volumeBnb: string;
   currentPrice: string;
   tgeAt: string;
   xOwnerHandle: string;

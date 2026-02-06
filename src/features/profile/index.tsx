@@ -30,7 +30,7 @@ export const Profile = ({ agent }: ProfileProps) => {
 
                 {/* Stats */}
                 <div className="px-4 py-4">
-                    <ProfileStats totalHolder={agent.totalHolder} sharePrice={agent.sharePriceETH} tradingVol={agent.tradingVolETH} holdingValue={agent.holdingValueETH} earnings={Number(agent.tradingVolETH || 0) * 0.05} yourShare={agent.yourShare} totalSupply={agent.totalSupply} />
+                    <ProfileStats totalHolder={agent.totalHolder} sharePrice={agent.sharePriceBNB} tradingVol={agent.tradingVolBNB} holdingValue={agent.holdingValueBNB} earnings={Number(agent.tradingVolBNB || 0) * 0.05} yourShare={agent.yourShare} totalSupply={agent.totalSupply} />
                 </div>
 
                 {/* Tabs and Content */}
