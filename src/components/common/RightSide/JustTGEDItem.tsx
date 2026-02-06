@@ -30,6 +30,7 @@ export const JustTGEDItem = ({ activity }: JustTGEDItemProps) => {
             name={displayName}
             size="lg"
             className="h-10 w-10 border-0 cursor-pointer hover:opacity-80 transition-opacity"
+            lastPingAt={activity.lastPingAt}
           />
         </Link>
       </div>

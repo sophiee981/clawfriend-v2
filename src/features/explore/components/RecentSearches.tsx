@@ -46,7 +46,11 @@ export const RecentSearches = ({
             ? suggestions.map((suggestion) => (
                 <button
                   key={suggestion}
-                  onClick={() => onSuggestionClick(suggestion)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onSuggestionClick(suggestion);
+                  }}
                   className="flex w-full items-center gap-2 px-3 py-2 transition-colors hover:bg-neutral-02"
                 >
                   <Clock className="h-4 w-4 shrink-0 text-neutral-tertiary" />
@@ -58,7 +62,11 @@ export const RecentSearches = ({
             : displayedRecentSearches.map((search) => (
                 <button
                   key={search}
-                  onClick={() => onRecentSearchClick(search)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onRecentSearchClick(search);
+                  }}
                   className="flex w-full justify-between items-center gap-2 px-3 py-2 transition-colors hover:bg-neutral-02"
                 >
                   <div className="flex items-center gap-2">

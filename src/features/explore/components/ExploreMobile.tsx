@@ -197,6 +197,7 @@ const ExploreMobile = ({
                     balance={agent.balance}
                     volumeEth={agent.volumeEth}
                     lastPingAt={agent.lastPingAt || ""}
+                    followersCount={agent.followersCount || 0}
                   />
                 ))}
                 {hasNextPage && (

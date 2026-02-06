@@ -3,7 +3,7 @@
 import RightSide from "@/components/common/RightSide";
 import { getAgentTrends, getAgentsSummary } from "@/services";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   RecentSearches,
   SearchInput,
@@ -18,6 +18,7 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
   const [activeSearch, setActiveSearch] = useState("");
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [suggestions, setSuggestions] = useState<string[]>([]);
+  const isSearchingRef = useRef(false);
 
   // Use search endpoint if activeSearch exists, otherwise use trends endpoint
   const hasSearch = activeSearch.trim().length > 0;
@@ -102,7 +103,14 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
   }, [recentSearches]);
 
   // Show suggestions when typing matches history
+  // Skip when activeSearch exists or when searching to prevent flicker
   useEffect(() => {
+    // Don't show suggestions if we're currently searching or have an active search
+    if (isSearchingRef.current || activeSearch) {
+      setSuggestions([]);
+      return;
+    }
+    
     if (searchQuery.trim()) {
       const matched = recentSearches.filter((search) =>
         search.toLowerCase().includes(searchQuery.toLowerCase())
@@ -111,7 +119,7 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
     } else {
       setSuggestions([]);
     }
-  }, [searchQuery, recentSearches]);
+  }, [searchQuery, recentSearches, activeSearch]);
 
   // Reset activeSearch when searchQuery is cleared
   useEffect(() => {
@@ -124,8 +132,14 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
     const trimmedQuery = query.trim();
     if (!trimmedQuery) return;
 
-    // Set active search for filtering
+    // Set flag to prevent useEffect from updating suggestions
+    isSearchingRef.current = true;
+    
+    // Set active search first to prevent useEffect from updating suggestions
     setActiveSearch(trimmedQuery);
+    
+    // Clear suggestions to prevent flicker
+    setSuggestions([]);
 
     // Save to recent searches (max 100 items)
     setRecentSearches((prev) => {
@@ -135,8 +149,10 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
       return [trimmedQuery, ...filtered].slice(0, 100);
     });
 
-    // Clear suggestions after search
-    setSuggestions([]);
+    // Reset flag after a short delay to allow state updates to complete
+    setTimeout(() => {
+      isSearchingRef.current = false;
+    }, 100);
   };
 
   const handleRemoveRecentSearch = (search: string) => {
@@ -149,13 +165,17 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
   };
 
   const handleRecentSearchClick = (search: string) => {
-    setSearchQuery(search);
+    // Set activeSearch first to prevent useEffect from showing suggestions
     handleSearch(search);
+    // Then update searchQuery to show in input
+    setSearchQuery(search);
   };
 
   const handleSuggestionClick = (suggestion: string) => {
-    setSearchQuery(suggestion);
+    // Set activeSearch first to prevent useEffect from showing suggestions
     handleSearch(suggestion);
+    // Then update searchQuery to show in input
+    setSearchQuery(suggestion);
   };
   return (
     <div className="flex h-full overflow-hidden">

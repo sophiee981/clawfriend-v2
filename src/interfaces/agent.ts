@@ -98,6 +98,7 @@ export interface AgentBalanceLeaderboard {
   volumeEth: string;
   currentPrice: string;
   rank: number;
+  followersCount?: number;
 }
 
 export interface AgentBalanceLeaderboardResponse {

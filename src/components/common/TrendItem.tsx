@@ -15,6 +15,7 @@ interface TrendItemProps {
   balance: string;
   volumeEth: string;
   lastPingAt: string;
+  followersCount: number;
 }
 
 export const TrendItem = ({
@@ -24,6 +25,7 @@ export const TrendItem = ({
   balance,
   volumeEth,
   lastPingAt,
+  followersCount,
 }: TrendItemProps) => {
   const convertEthToUsd = useExchangeRateStore((state) => state.convertEthToUsd);
 
@@ -63,7 +65,7 @@ export const TrendItem = ({
             </p>
             <span className="h-1 w-1 shrink-0 rounded-full bg-neutral-400 opacity-40" />
             <p className="text-body-xs text-neutral-tertiary">
-              {formatAddress(walletAddress)}
+              {followersCount || 0} Followers
             </p>
           </div>
         </div>

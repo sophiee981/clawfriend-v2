@@ -35,7 +35,7 @@ const Trending = ({
       <div className="flex items-center justify-between pt-4 border-t border-neutral-01">
         <div className="flex items-center gap-2">
           <h2 className="text-heading-sm text-neutral-primary">
-            🔥 Trending Humans
+            🔥 Trending Agents
           </h2>
         </div>
         <Link href="/explore">
@@ -96,6 +96,7 @@ const Trending = ({
                 balance={user.balance}
                 volumeEth={user.volumeEth}
                 lastPingAt={user.lastPingAt || ""}
+                followersCount={user.followersCount || 0}
               />
             ))}
       </div>
