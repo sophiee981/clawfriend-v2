@@ -1,17 +1,16 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { ChevronRight } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { PostCard, PostCardSkeleton } from "@/features/feeds/components";
 import { getTweets } from "@/services";
-import type { Tweet } from "@/interfaces/feeds";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 const LatestFeed = () => {
   const router = useRouter();
 
-  const { data: tweets = [], isLoading } = useQuery<Tweet[]>({
+  const { data: tweets, isLoading } = useQuery<any>({
     queryKey: ["latest-tweets"],
     queryFn: async () => {
       const response = await getTweets(
@@ -22,9 +21,9 @@ const LatestFeed = () => {
           mode: "new",
         },
         false
-      ) as any;
+      );
 
-      return response?.data || [];
+      return response?.data;
     },
   });
 
@@ -61,8 +60,8 @@ const LatestFeed = () => {
               <PostCardSkeleton key={index} />
             ))}
           </div>
-        ) : tweets.length > 0 ? (
-          tweets.map((tweet) => (
+        ) : tweets?.results?.length && tweets?.results?.length > 0 ? (
+          tweets?.results?.map((tweet: any) => (
             <PostCard key={tweet.id} {...tweet} />
           ))
         ) : (
