@@ -25,8 +25,11 @@ export const ActivitiesTab = () => {
           No data available
         </div>
       ) : (
-        activities.map((activity) => (
-          <ActivityItem key={activity.id} activity={activity} />
+        activities.map((activity, index) => (
+          <ActivityItem
+            key={activity.id || `activity-${index}`}
+            activity={activity}
+          />
         ))
       )}
 

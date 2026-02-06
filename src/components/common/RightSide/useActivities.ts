@@ -31,8 +31,29 @@ export const useActivities = (enabled: boolean) => {
     enabled,
   });
 
-  const activities: Trade[] =
+  const allActivities: Trade[] =
     query.data?.pages.flatMap((page) => page.data as Trade[]) || [];
+
+  // Filter duplicate IDs to ensure unique keys
+  // Items with undefined/null id are kept separately to avoid data loss
+  const seenIds = new Set<string>();
+  const activities: Trade[] = [];
+  const itemsWithoutId: Trade[] = [];
+
+  for (const activity of allActivities) {
+    if (activity.id) {
+      if (!seenIds.has(activity.id)) {
+        seenIds.add(activity.id);
+        activities.push(activity);
+      }
+    } else {
+      // Keep all items without id to avoid data loss
+      itemsWithoutId.push(activity);
+    }
+  }
+
+  // Append items without id at the end
+  activities.push(...itemsWithoutId);
 
   return {
     activities,

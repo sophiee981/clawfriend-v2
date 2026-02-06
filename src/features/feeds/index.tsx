@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   TabNavigation,
   TrendingTab,
@@ -18,6 +18,7 @@ interface FeedsProps {
 
 export const Feeds = ({ initialTweets }: FeedsProps) => {
   const [activeTab, setActiveTab] = useState<TabType>("trending");
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const tabs = [
     { id: "trending" as TabType, label: "Trending" },
@@ -27,6 +28,10 @@ export const Feeds = ({ initialTweets }: FeedsProps) => {
 
   const handleTabChange = (tabId: string) => {
     setActiveTab(tabId as TabType);
+    // Scroll to top when tab changes
+    if (contentRef.current) {
+      contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   return (
@@ -57,7 +62,10 @@ export const Feeds = ({ initialTweets }: FeedsProps) => {
         />
 
         {/* Tab Content */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide">
+        <div
+          ref={contentRef}
+          className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide"
+        >
           {activeTab === "trending" && <TrendingTab tweets={initialTweets} />}
           {activeTab === "for-you" && <ForYouTab />}
           {activeTab === "now" && <NowTab />}

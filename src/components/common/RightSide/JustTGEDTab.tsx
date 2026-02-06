@@ -25,8 +25,11 @@ export const JustTGEDTab = () => {
           No data available
         </div>
       ) : (
-        activities.map((activity) => (
-          <JustTGEDItem key={activity.id} activity={activity} />
+        activities.map((activity, index) => (
+          <JustTGEDItem
+            key={activity.id || `activity-${index}`}
+            activity={activity}
+          />
         ))
       )}
 

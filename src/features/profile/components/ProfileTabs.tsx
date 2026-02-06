@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect, useRef } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { PostCard, PostCardSkeleton } from "@/features/feeds/components";
 import { TradeCard } from "./TradeCard";
 import { mockTrades } from "../data/mockTrades";
@@ -13,34 +13,80 @@ import type { TabItem } from "@/components/ui/tabs";
 type TabType = "feeds" | "trades";
 
 interface ProfileTabsProps {
-    agentId: string;
+    username: string;
 }
 
-export const ProfileTabs = ({ agentId }: ProfileTabsProps) => {
+export const ProfileTabs = ({ username }: ProfileTabsProps) => {
     const [activeTab, setActiveTab] = useState<TabType>("feeds");
+    const observerRef = useRef<IntersectionObserver | null>(null);
+    const loadMoreRef = useRef<HTMLDivElement | null>(null);
+    const contentRef = useRef<HTMLDivElement>(null);
 
-    const { data: tweets = [], isLoading } = useQuery<Tweet[]>({
-        queryKey: ["agent-tweets", agentId],
-        queryFn: async () => {
+    const {
+        data,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+        isLoading,
+    } = useInfiniteQuery({
+        queryKey: ["agent-tweets", username],
+        queryFn: async ({ pageParam = 1 }) => {
             const response = await getTweets(
                 {
-                    page: 1,
+                    page: pageParam,
                     limit: 20,
                     onlyRootTweets: true,
-                    agentId: agentId,
+                    username: username,
                 },
                 false
             ) as any;
 
-            return response?.data || [];
+            return {
+                results: response?.data?.results || [],
+                nextPage: response?.data?.next || null,
+            };
         },
-        enabled: !!agentId,
+        getNextPageParam: (lastPage) => lastPage.nextPage,
+        initialPageParam: 1,
+        enabled: !!username,
     });
+
+    // Intersection Observer for infinite scroll
+    useEffect(() => {
+        if (activeTab !== "feeds" || !loadMoreRef.current) return;
+
+        observerRef.current = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+                    fetchNextPage();
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        observerRef.current.observe(loadMoreRef.current);
+
+        return () => {
+            if (observerRef.current) {
+                observerRef.current.disconnect();
+            }
+        };
+    }, [hasNextPage, isFetchingNextPage, fetchNextPage, activeTab]);
+
+    const allTweets = data?.pages.flatMap((page) => page.results) || [];
 
     const tabs: TabItem<TabType>[] = [
         { id: "feeds", label: "Feeds" },
         { id: "trades", label: "Trades" },
     ];
+
+    const handleTabChange = (tabId: TabType) => {
+        setActiveTab(tabId);
+        // Scroll to top when tab changes
+        if (contentRef.current) {
+            contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
+        }
+    };
 
     return (
         <div className="flex flex-col flex-1 min-h-0">
@@ -49,13 +95,16 @@ export const ProfileTabs = ({ agentId }: ProfileTabsProps) => {
                 <Tabs
                     tabs={tabs}
                     activeTab={activeTab}
-                    onTabChange={setActiveTab}
+                    onTabChange={handleTabChange}
                     className="max-w-full w-full"
                 />
             </div>
 
             {/* Tab Content - Scrollable */}
-            <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide">
+            <div
+                ref={contentRef}
+                className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide"
+            >
                 {activeTab === "feeds" && (
                     <>
                         {isLoading ? (
@@ -64,10 +113,25 @@ export const ProfileTabs = ({ agentId }: ProfileTabsProps) => {
                                     <PostCardSkeleton key={index} />
                                 ))}
                             </div>
-                        ) : tweets.length > 0 ? (
-                            tweets.map((tweet) => (
-                                <PostCard key={tweet.id} {...tweet} />
-                            ))
+                        ) : allTweets.length > 0 ? (
+                            <>
+                                {allTweets.map((tweet: Tweet) => (
+                                    <PostCard key={tweet.id} {...tweet} />
+                                ))}
+
+                                {/* Load More Trigger */}
+                                {hasNextPage && (
+                                    <div ref={loadMoreRef} className="py-4">
+                                        {isFetchingNextPage && (
+                                            <div className="w-full">
+                                                {Array.from({ length: 3 }).map((_, index) => (
+                                                    <PostCardSkeleton key={index} />
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </>
                         ) : (
                             <div className="flex items-center justify-center py-8 h-full">
                                 <p className="text-neutral-tertiary text-sm">No feeds available</p>

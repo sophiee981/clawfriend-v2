@@ -14,7 +14,7 @@ export default async function FeedsPage() {
             },
             true
         ) as any;
-        tweets = response?.data?.length ? response?.data : [];
+        tweets = response?.data?.results || [];
     } catch (error) {
         console.error("Error fetching tweets:", error);
     }

@@ -4,18 +4,28 @@ import { ChevronRight } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { PostCard, PostCardSkeleton } from "@/features/feeds/components";
 import { getTweets } from "@/services";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { useEffect, useRef } from "react";
 
 const LatestFeed = () => {
   const router = useRouter();
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+  const queryClient = useQueryClient();
 
-  const { data: tweets, isLoading } = useQuery<any>({
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    refetch,
+  } = useInfiniteQuery({
     queryKey: ["latest-tweets"],
-    queryFn: async () => {
+    queryFn: async ({ pageParam = 1 }) => {
       const response = await getTweets(
         {
-          page: 1,
+          page: pageParam,
           limit: 3,
           onlyRootTweets: true,
           mode: "new",
@@ -25,7 +35,90 @@ const LatestFeed = () => {
 
       return response?.data;
     },
+    getNextPageParam: (lastPage, allPages) => {
+      // Check if there are more pages based on response structure
+      // Handle both 'results' and 'data' structures
+      const pageData = lastPage as any;
+      
+      // If response has results array, check if there are more items
+      if (pageData?.results && Array.isArray(pageData.results)) {
+        // If last page has items, there might be more
+        if (pageData.results.length > 0) {
+          return allPages.length + 1;
+        }
+      }
+      // If response has data array (standard structure)
+      if (pageData?.data && Array.isArray(pageData.data)) {
+        if (pageData.data.length > 0) {
+          return allPages.length + 1;
+        }
+      }
+      return undefined;
+    },
+    initialPageParam: 1,
+    staleTime: 0,
+    gcTime: 0,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
+
+  // Reset to page 1 and refetch on mount
+  useEffect(() => {
+    queryClient.resetQueries({ queryKey: ["latest-tweets"] });
+    refetch();
+  }, []);
+
+  // Reset to page 1 and refetch on window focus
+  useEffect(() => {
+    const handleFocus = () => {
+      queryClient.resetQueries({ queryKey: ["latest-tweets"] });
+      refetch();
+    };
+
+    window.addEventListener("focus", handleFocus);
+    return () => {
+      window.removeEventListener("focus", handleFocus);
+    };
+  }, [queryClient, refetch]);
+
+  // Intersection Observer for infinite scroll
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const first = entries[0];
+        if (
+          first?.isIntersecting &&
+          hasNextPage &&
+          !isFetchingNextPage &&
+          fetchNextPage
+        ) {
+          fetchNextPage();
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "100px",
+      }
+    );
+
+    const currentRef = loadMoreRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  // Flatten all pages into a single array
+  const tweets =
+    data?.pages.flatMap((page) => {
+      const pageData = page as any;
+      return pageData?.results || pageData?.data || [];
+    }) || [];
 
   const handleViewAll = () => {
     router.push("/feeds");
@@ -60,10 +153,26 @@ const LatestFeed = () => {
               <PostCardSkeleton key={index} />
             ))}
           </div>
-        ) : tweets?.results?.length && tweets?.results?.length > 0 ? (
-          tweets?.results?.map((tweet: any) => (
-            <PostCard key={tweet.id} {...tweet} />
-          ))
+        ) : tweets.length > 0 ? (
+          <>
+            {tweets.map((tweet: any) => (
+              <PostCard key={tweet.id} {...tweet} />
+            ))}
+            {hasNextPage && (
+              <div
+                ref={loadMoreRef}
+                className="flex flex-col gap-2 justify-center"
+              >
+                {isFetchingNextPage && (
+                  <>
+                    {Array.from({ length: 3 }).map((_, index) => (
+                      <PostCardSkeleton key={index} />
+                    ))}
+                  </>
+                )}
+              </div>
+            )}
+          </>
         ) : (
           <div className="flex items-center justify-center py-8">
             <p className="text-neutral-tertiary text-sm">No feeds available</p>
