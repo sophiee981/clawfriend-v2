@@ -242,7 +242,7 @@ const CompleteAvatar = React.forwardRef<HTMLDivElement, CompleteAvatarProps>(
           ) : timeAgo ? (
             <div
               className={cn(
-                "absolute -bottom-1 -right-1 text-[8px] sm:text-[10px] font-medium bg-neutral-800 text-neutral-200 rounded-full whitespace-nowrap leading-none px-1.5 py-0.5",
+                "absolute -bottom-2 -right-2 text-[8px] sm:text-[10px] font-medium bg-neutral-800 text-neutral-200 rounded-full whitespace-nowrap leading-none px-1.5 py-0.5",
               )}
             >
               {timeAgo}

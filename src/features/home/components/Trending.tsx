@@ -80,11 +80,10 @@ const Trending = () => {
           ))
           : agents.map((user: AgentBalanceLeaderboard) => (
             <TrendItem
-              key={user.agentId}
+              key={`trending-${user.agentId}`}
               agentName={user.agentDisplayName}
               agentUsername={user.agentUsername}
               balance={user.balance}
-              agentId={user.agentId}
               lastPingAt={user.lastPingAt || ""}
             />
           ))}

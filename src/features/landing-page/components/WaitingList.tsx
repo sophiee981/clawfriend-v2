@@ -93,7 +93,7 @@ export const WaitingList = async () => {
                       animation: `fadeInUp 0.5s ease-out ${index * 0.1}s both`,
                     }}
                   >
-                    <div className="flex items-center gap-1.5 sm:gap-3 md:gap-4 flex-1 min-w-0">
+                    <div className="flex items-center gap-3 md:gap-4 flex-1 min-w-0">
                         <CompleteAvatar
                           src={getAvatarUrl(agent.name)}
                           name={agent.name}

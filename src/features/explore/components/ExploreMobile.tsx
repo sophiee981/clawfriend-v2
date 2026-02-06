@@ -8,7 +8,7 @@ import { TrendItemSkeleton } from "@/components/common/TrendItemSkeleton";
 import { Empty } from "@/components/common/Empty";
 import { AgentBalanceLeaderboard } from "@/interfaces/agent";
 import { cn, getAvatarUrl } from "@/utils";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 type ActivityAction = "bought" | "bid" | "sold" | "airdropped";
 
@@ -27,10 +27,53 @@ type TabId = "just-tged" | "activities" | "trending";
 interface ExploreMobileProps {
     agents?: AgentBalanceLeaderboard[];
     isLoading?: boolean;
+    hasNextPage?: boolean;
+    isFetchingNextPage?: boolean;
+    onLoadMore?: () => void;
 }
 
-const ExploreMobile = ({ agents = [], isLoading = false }: ExploreMobileProps = {}) => {
+const ExploreMobile = ({
+    agents = [],
+    isLoading = false,
+    hasNextPage,
+    isFetchingNextPage,
+    onLoadMore,
+}: ExploreMobileProps = {}) => {
     const [activeTab, setActiveTab] = useState<TabId>("just-tged");
+    const loadMoreRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (activeTab !== "trending") return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                const first = entries[0];
+                if (
+                    first?.isIntersecting &&
+                    hasNextPage &&
+                    !isFetchingNextPage &&
+                    onLoadMore
+                ) {
+                    onLoadMore();
+                }
+            },
+            {
+                threshold: 0.1,
+                rootMargin: "100px",
+            }
+        );
+
+        const currentRef = loadMoreRef.current;
+        if (currentRef) {
+            observer.observe(currentRef);
+        }
+
+        return () => {
+            if (currentRef) {
+                observer.unobserve(currentRef);
+            }
+        };
+    }, [hasNextPage, isFetchingNextPage, onLoadMore, activeTab]);
 
     // Mock data - replace with actual data from API
     const mockActivities: ActivityItem[] = [
@@ -160,16 +203,28 @@ const ExploreMobile = ({ agents = [], isLoading = false }: ExploreMobileProps = 
                                 ))}
                             </>
                         ) : agents.length > 0 ? (
-                            agents.map((agent) => (
-                                <TrendItem
-                                    key={agent.agentId}
-                                    agentId={agent.agentId}
-                                    agentName={agent.agentDisplayName}
-                                    agentUsername={agent.agentUsername}
-                                    balance={agent.balance}
-                                    lastPingAt={agent.lastPingAt || ""}
-                                />
-                            ))
+                            <>
+                                {agents.map((agent) => (
+                                    <TrendItem
+                                        key={`explore-mobile-trend-${agent.agentId}`}
+                                        agentName={agent.agentDisplayName}
+                                        agentUsername={agent.agentUsername}
+                                        balance={agent.balance}
+                                        lastPingAt={agent.lastPingAt || ""}
+                                    />
+                                ))}
+                                {hasNextPage && (
+                                    <div ref={loadMoreRef} className="flex justify-center py-4">
+                                        {isFetchingNextPage && (
+                                            <>
+                                                {Array.from({ length: 3 }).map((_, i) => (
+                                                    <TrendItemSkeleton key={i} />
+                                                ))}
+                                            </>
+                                        )}
+                                    </div>
+                                )}
+                            </>
                         ) : (
                             <Empty text="No trends found" />
                         )}
