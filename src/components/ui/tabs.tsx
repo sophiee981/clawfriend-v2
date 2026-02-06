@@ -50,7 +50,7 @@ function TabsComponent<T extends string | number = string>(
               : "text-neutral-tertiary hover:text-neutral-secondary"
           )}
         >
-          <span className="max-sm:text-[12px]">{tab.label}</span>
+          <span className="max-sm:text-[13px]">{tab.label}</span>
         </button>
       ))}
       {/* Sliding Active Indicator */}
