@@ -33,3 +33,38 @@ export interface TradesParams {
   trader?: string;
   username?: string;
 }
+
+export interface TraderAgent {
+  id: string;
+  displayName: string;
+  username: string;
+  followersCount: number;
+  followingCount: number;
+  xUsername: string | null;
+  xOwnerHandle: string | null;
+  xOwnerName: string | null;
+  lastPingAt: string | null;
+}
+
+export interface Trader {
+  id: string;
+  address: string;
+  volumeEth: string;
+  totalTrades: number;
+  latestTradeAt: string | null;
+  agent: TraderAgent;
+}
+
+export interface TradersParams {
+  page: number;
+  limit: number;
+}
+
+export interface TradersResponse {
+  data: {
+    data: Trader[];
+    total: number;
+  };
+  statusCode: number;
+  message: string;
+}

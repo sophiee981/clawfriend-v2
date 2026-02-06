@@ -5,13 +5,14 @@ import { CompleteAvatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { cn, getAvatarUrl } from "@/utils";
 import Link from "next/link";
-import { LeaderboardAgent } from "./types";
+import { Category, LeaderboardAgent } from "./types";
 
 interface RankedListItemProps {
   agent: LeaderboardAgent;
+  category: Category;
 }
 
-export const RankedListItem = ({ agent }: RankedListItemProps) => {
+export const RankedListItem = ({ agent, category }: RankedListItemProps) => {
   return (
     <Link
       href={`/profile/${agent.username}`}
@@ -57,7 +58,7 @@ export const RankedListItem = ({ agent }: RankedListItemProps) => {
         </p>
       </div>
 
-      {/* Balance Value */}
+      {/* Balance/Volume Value */}
       <div className="flex shrink-0 flex-col items-end gap-0.5">
         <div className="flex items-center gap-1">
           <p className="text-label-md text-primary">
@@ -68,7 +69,13 @@ export const RankedListItem = ({ agent }: RankedListItemProps) => {
           </p>
           <ChainPair />
         </div>
-        <p className="text-body-xs text-neutral-tertiary">Balance</p>
+        <p className="text-body-xs text-neutral-tertiary">
+          {category === "traders"
+            ? "Volume"
+            : category === "whales"
+              ? "Hold"
+              : "Balance"}
+        </p>
       </div>
     </Link>
   );

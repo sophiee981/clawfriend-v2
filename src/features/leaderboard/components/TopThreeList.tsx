@@ -1,15 +1,16 @@
-import { LeaderboardAgent } from "./types";
+import { Category, LeaderboardAgent } from "./types";
 import { TopThreeCard } from "./TopThreeCard";
 
 interface TopThreeListProps {
   agents: LeaderboardAgent[];
+  category: Category;
 }
 
-export const TopThreeList = ({ agents }: TopThreeListProps) => {
+export const TopThreeList = ({ agents, category }: TopThreeListProps) => {
   return (
     <div className="grid grid-cols-3 gap-4 items-end">
       {agents.map((agent) => (
-        <TopThreeCard key={agent.id} agent={agent} />
+        <TopThreeCard key={agent.id} agent={agent} category={category} />
       ))}
     </div>
   );

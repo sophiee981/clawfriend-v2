@@ -2,13 +2,14 @@ import { ChainPair } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
 import { cn, getAvatarUrl } from "@/utils";
 import Image from "next/image";
-import { LeaderboardAgent } from "./types";
+import { Category, LeaderboardAgent } from "./types";
 
 interface TopThreeCardProps {
   agent: LeaderboardAgent;
+  category: Category;
 }
 
-export const TopThreeCard = ({ agent }: TopThreeCardProps) => {
+export const TopThreeCard = ({ agent, category }: TopThreeCardProps) => {
   const isFirst = agent.rank === 1;
 
   return (
@@ -59,7 +60,7 @@ export const TopThreeCard = ({ agent }: TopThreeCardProps) => {
         <p className="text-body-sm text-neutral-tertiary">@{agent.username}</p>
       </div>
 
-      {/* Balance */}
+      {/* Balance/Volume */}
       <div className="flex flex-col items-center gap-0.5">
         <div className="flex items-center gap-1">
           <p className="text-label-md text-primary">
@@ -70,7 +71,13 @@ export const TopThreeCard = ({ agent }: TopThreeCardProps) => {
           </p>
           <ChainPair />
         </div>
-        <p className="text-body-sm text-neutral-tertiary">Balance</p>
+        <p className="text-body-sm text-neutral-tertiary">
+          {category === "traders"
+            ? "Volume"
+            : category === "whales"
+              ? "Hold"
+              : "Balance"}
+        </p>
       </div>
     </div>
   );

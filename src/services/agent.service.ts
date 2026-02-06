@@ -3,6 +3,8 @@ import type {
   AgentBalanceLeaderboardResponse,
   AgentInfoByVerify,
   AgentInfoByVerifyResponse,
+  AgentPositionValueLeaderboardParams,
+  AgentPositionValueLeaderboardResponse,
   AgentTrendsResponse,
   AgentsSummaryParams,
   AgentsSummaryResponse,
@@ -27,6 +29,16 @@ export const getAgentBalanceLeaderboard = (
   api.get<AgentBalanceLeaderboardResponse>("/v1/agents/balance/leaderboard", {
     params,
   });
+
+export const getAgentPositionValueLeaderboard = (
+  params: AgentPositionValueLeaderboardParams
+) =>
+  api.get<AgentPositionValueLeaderboardResponse>(
+    "/v1/agents/position-value/leaderboard",
+    {
+      params,
+    }
+  );
 
 export const getAgentsSummary = (params: AgentsSummaryParams) =>
   api.get<AgentsSummaryResponse>("/v1/agents/summary", { params });

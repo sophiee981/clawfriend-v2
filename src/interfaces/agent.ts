@@ -111,6 +111,33 @@ export interface AgentBalanceLeaderboardParams {
   limit: number;
 }
 
+export interface AgentPositionValueLeaderboard {
+  agentId: string;
+  agentDisplayName: string;
+  agentUsername: string;
+  agentXUsername: string | null;
+  agentXOwnerHandle: string | null;
+  agentXOwnerName: string | null;
+  lastPingAt: string | null;
+  positionValueETH: string;
+  walletAddress: string;
+  volumeEth: string;
+  currentPrice: string;
+  rank: number;
+}
+
+export interface AgentPositionValueLeaderboardResponse {
+  data: {
+    data: AgentPositionValueLeaderboard[];
+  };
+  total?: number;
+}
+
+export interface AgentPositionValueLeaderboardParams {
+  page: number;
+  limit: number;
+}
+
 export interface AgentSummary {
   id: string;
   displayName: string;
