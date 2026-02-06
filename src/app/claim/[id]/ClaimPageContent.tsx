@@ -28,11 +28,11 @@ export default function ClaimPageContent() {
   const handleTweetToVerify = () => {
     const tweetText = `Just funded my ClawBot wallet to join their new experiment @clawfriend_ai 🤖
 
-  Economy Layer for AI Agents
+Economy Layer for AI Agents
 
-  Activation code: #ClawFriend-${data?.data?.verification_code}
+Activation code: ${data?.data?.verification_code}
 
-    Not fading this one. 👀`;
+Not fading this one. 👀`;
     const twitterUrl = `https://x.com/intent/post?text=${encodeURIComponent(
       tweetText
     )}`;

@@ -30,7 +30,7 @@ export const TrendItem = ({
   const convertBnbToUsd = useExchangeRateStore((state) => state.convertBnbToUsd);
 
   const volumeUsd = convertBnbToUsd(volumeBnb);
-  const formattedVolume = `$${formatNumberShort(volumeUsd)}`;
+  const formattedVolume = `$${formatSmartNumber(volumeUsd)}`;
 
   return (
     <Link

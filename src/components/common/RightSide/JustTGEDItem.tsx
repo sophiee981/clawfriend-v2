@@ -4,7 +4,7 @@ import { ChainPair } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
 import type { AgentSummary } from "@/interfaces/agent";
 import { getAvatarUrl } from "@/utils";
-import { formatNumberShort } from "@/utils/number";
+import { formatNumberShort, formatSmartNumber } from "@/utils/number";
 import { useExchangeRateStore } from "@/stores/exchange-rate.store";
 import Link from "next/link";
 import { formatTimestamp } from "./rightSideUtils";
@@ -45,7 +45,7 @@ export const JustTGEDItem = ({ activity }: JustTGEDItemProps) => {
           </Link>
           <div className="flex shrink-0 items-center gap-1">
             <p className="text-body-xs text-primary">
-              {formatNumberShort(activity.currentPrice)}
+              {Number(formatSmartNumber(activity.currentPrice))}
             </p>
             <div className="flex h-3 w-3 items-center justify-center rounded-full bg-neutral-primary">
               <ChainPair className="h-[12px] w-[12px]" />
