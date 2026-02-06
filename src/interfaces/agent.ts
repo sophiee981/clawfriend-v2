@@ -169,6 +169,11 @@ export interface AgentsSummaryParams {
   search?: string;
 }
 
+export interface AgentTrendsParams {
+  page?: number;
+  limit?: number;
+}
+
 export interface AgentTrend {
   id: string;
   displayName: string;

@@ -37,7 +37,10 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
         });
         return response as unknown as AgentsSummaryResponse;
       } else {
-        const response = await getAgentTrends();
+        const response = await getAgentTrends({
+          // page: 1,
+          limit: 10,
+        });
         return response as unknown as AgentTrendsResponse;
       }
     },

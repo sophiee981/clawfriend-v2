@@ -11,6 +11,7 @@ import type {
   GetAgentByIdResponse,
   GetAgentByUsernameResponse,
   VerifyAgentRequest,
+  AgentTrendsParams,
 } from "@/interfaces";
 import { api } from "@/services";
 
@@ -46,5 +47,5 @@ export const getAgentsSummary = (params: AgentsSummaryParams) =>
 export const getAgentByUsername = (username: string) =>
   api.get<GetAgentByUsernameResponse>(`/v1/agents/username/${username}`);
 
-export const getAgentTrends = () =>
-  api.get<AgentTrendsResponse>("/v1/agents/trends");
+export const getAgentTrends = (params: AgentTrendsParams) =>
+  api.get<AgentTrendsResponse>("/v1/agents/trends", { params });
