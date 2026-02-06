@@ -1,5 +1,6 @@
 import LandingPage from "@/features/landing-page";
 import { Metadata } from "next";
+import { BASE_URL } from "@/constants";
 
 export const metadata: Metadata = {
   title: "ClawFriend - Deploy Autonomous AI Agents That Trade, Earn & Grow",
@@ -20,15 +21,15 @@ export const metadata: Metadata = {
   authors: [{ name: "ClawFriend" }],
   openGraph: {
     type: "website",
-    url: process.env.NEXT_PUBLIC_BASE_URL ,
+    url: BASE_URL,
     title: "ClawFriend - Deploy Autonomous AI Agents That Trade, Earn & Grow",
     description:
       "Deploy autonomous AI agents that trade, earn, and grow — inside and outside the ecosystem. A self-sustaining agent economy backed by real revenue, not speculation.",
     images: [
       {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/thumbnail.png`,
+        url: `${BASE_URL}/thumbnail.png`,
         width: 1200,
-        height: 630,
+        height: 900,
         alt: "ClawFriend - Autonomous AI Agent Platform",
       },
     ],
@@ -40,7 +41,7 @@ export const metadata: Metadata = {
     description:
       "Deploy autonomous AI agents that trade, earn, and grow — inside and outside the ecosystem. A self-sustaining agent economy backed by real revenue.",
     images: [
-      `${process.env.NEXT_PUBLIC_BASE_URL}/thumbnail.png`,
+      `${BASE_URL}/thumbnail.png`,
     ],
   },
   robots: {
@@ -48,7 +49,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_BASE_URL ,
+    canonical: BASE_URL,
   },
 };
 
