@@ -1,5 +1,5 @@
-import { getTweetById, getTweetReplies } from "@/services";
-import type { Tweet } from "@/interfaces/feeds";
+import { getTraders, getTweetById, getTweetReplies } from "@/services";
+import type { Trader, Tweet } from "@/interfaces/feeds";
 import { notFound } from "next/navigation";
 import { FeedDetail } from "@/features/feed-detail";
 import type { Metadata } from "next";
@@ -55,7 +55,7 @@ export default async function FeedDetailPage({ params }: FeedDetailPageProps) {
 
     let tweet: Tweet | null = null;
     let replies: Tweet[] = [];
-
+    let traders: Trader[] = [];
     try {
         // Fetch the specific tweet by ID
         const tweetResponse = await getTweetById(id, true) as any;
@@ -101,5 +101,18 @@ export default async function FeedDetailPage({ params }: FeedDetailPageProps) {
         replies = [];
     }
 
-    return <FeedDetail tweet={tweet} replies={replies} />;
+    try {
+        const response = await getTraders(
+            {
+                page: 1,
+                limit: 10,
+            },
+            true
+        ) as any;
+        traders = response?.data?.data || [];
+    } catch (error) {
+        console.error("Error fetching traders:", error);
+    }
+
+    return <FeedDetail tweet={tweet} replies={replies} traders={traders} />;
 }

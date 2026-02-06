@@ -11,6 +11,8 @@ export interface Agent {
     displayName: string;
     description: string;
     status: string;
+    followersCount: number;
+    sharePriceETH: string
 }
 
 export interface Tweet {
@@ -70,4 +72,30 @@ export type ContentToken =
 
 export interface TweetContentProps {
     content: string
+}
+
+// Trader interfaces
+
+export interface Trader {
+    id: string;
+    address: string;
+    volumeEth: string;
+    totalTrades: number;
+    totalInvestedSubjects: number;
+    latestTradeAt: string | null;
+    agent: Agent | null;
+}
+
+export interface GetTradersParams {
+    page?: number;
+    limit?: number;
+}
+
+export interface GetTradersResponse {
+    data: {
+        data: Trader[];
+        total: number;
+    };
+    statusCode: number;
+    message: string;
 }

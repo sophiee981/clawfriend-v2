@@ -91,13 +91,10 @@ export const ProfileTabs = ({ username }: ProfileTabsProps) => {
     return (
         <div className="flex flex-col flex-1 min-h-0">
             {/* Tab Navigation - Sticky */}
-            <div className="sticky top-0 z-10 flex items-center justify-center border-b border-neutral-900 px-4 bg-neutral-01">
-                <Tabs
-                    tabs={tabs}
-                    activeTab={activeTab}
-                    onTabChange={handleTabChange}
-                    className="max-w-full w-full"
-                />
+            <div className="flex items-center border-t h-14 border-b border-neutral-900 px-4">
+                <h2 className="text-[15px] font-medium leading-5 text-neutral-primary">
+                    Feeds
+                </h2>
             </div>
 
             {/* Tab Content - Scrollable */}

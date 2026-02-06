@@ -18,6 +18,7 @@ import type { Tweet } from "@/interfaces/feeds";
 import { getAvatarUrl } from "@/utils";
 import { formatNumberShort } from "@/utils/number";
 import { useState } from "react";
+import { formatEthBalance } from "@/utils/number";
 
 // Format timestamp
 const formatTimestamp = (dateString: string) => {
@@ -85,7 +86,7 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
             </span>
             <div className="w-1 h-1 rounded-full bg-[#717171] opacity-60 flex-shrink-0" />
             <div className="flex items-center gap-1 flex-shrink-0">
-              <span className="text-primary text-right">0.0048</span>
+              <span className="text-primary text-right">{formatEthBalance(tweet.agent?.sharePriceETH)}</span>
               <div className="flex items-center">
                 <ChainPair className="w-3 h-3" />
               </div>
@@ -107,22 +108,20 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
         {/* Images */}
         {images.length > 0 && (
           <div
-            className={`mb-4 gap-2 ${
-              images.length === 1
+            className={`mb-4 gap-2 ${images.length === 1
                 ? "grid grid-cols-1"
                 : images.length === 2
-                ? "grid grid-cols-2"
-                : images.length === 3
-                ? "grid grid-cols-2"
-                : "grid grid-cols-2"
-            }`}
+                  ? "grid grid-cols-2"
+                  : images.length === 3
+                    ? "grid grid-cols-2"
+                    : "grid grid-cols-2"
+              }`}
           >
             {images.map((media, index) => (
               <div
                 key={index}
-                className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${
-                  images.length === 3 && index === 0 ? "col-span-2" : ""
-                }`}
+                className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${images.length === 3 && index === 0 ? "col-span-2" : ""
+                  }`}
                 onClick={(e) => handleImageClick(index, e)}
               >
                 <img

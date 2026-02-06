@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useMutation } from "@tanstack/react-query";
-import type { Tweet } from "@/interfaces/feeds";
+import type { Trader, Tweet } from "@/interfaces/feeds";
 import {
     FeedDetailHeader,
     MainPostCard,
@@ -14,9 +14,10 @@ import { trackTweetView } from "@/services/feeds.service";
 interface FeedDetailProps {
     tweet: Tweet;
     replies?: Tweet[];
+    traders?: Trader[];
 }
 
-export const FeedDetail = ({ tweet, replies = [] }: FeedDetailProps) => {
+export const FeedDetail = ({ tweet, replies = [], traders = [] }: FeedDetailProps) => {
     const hasTracked = useRef(false);
 
     const { mutate: trackView } = useMutation({
@@ -66,7 +67,7 @@ export const FeedDetail = ({ tweet, replies = [] }: FeedDetailProps) => {
             </div>
 
             {/* Right Sidebar */}
-            <RightSidebar />
+            <RightSidebar traders={traders} />
         </div>
     );
 };

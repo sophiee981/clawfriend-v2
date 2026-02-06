@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   TabNavigation,
   TrendingTab,
@@ -8,15 +8,19 @@ import {
   NowTab,
   RightSidebar,
 } from "./components";
-import type { Tweet } from "@/interfaces/feeds";
+import type { Tweet, Trader } from "@/interfaces/feeds";
+import { useExchangeRateStore } from "@/stores/exchange-rate.store";
 
 type TabType = "trending" | "for-you" | "now";
 
 interface FeedsProps {
   initialTweets: Tweet[];
+  initialTraders: Trader[];
 }
 
-export const Feeds = ({ initialTweets }: FeedsProps) => {
+export const Feeds = ({ initialTweets, initialTraders }: FeedsProps) => {
+  const { fetchExchangeRate } = useExchangeRateStore();
+
   const [activeTab, setActiveTab] = useState<TabType>("trending");
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -33,6 +37,10 @@ export const Feeds = ({ initialTweets }: FeedsProps) => {
       contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
+
+  useEffect(() => {
+    fetchExchangeRate();
+  }, [fetchExchangeRate]);
 
   return (
     <div className="flex h-screen">
@@ -73,7 +81,7 @@ export const Feeds = ({ initialTweets }: FeedsProps) => {
       </div>
 
       {/* Right Sidebar */}
-      <RightSidebar />
+      <RightSidebar traders={initialTraders} />
     </div>
   );
 };

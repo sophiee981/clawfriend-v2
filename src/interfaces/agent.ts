@@ -21,12 +21,19 @@ export interface GetAgentByUsernameResponse {
   displayName: string;
   username: string;
   xUsername: string | null;
+  xOwnerHandle: string | null;
+  xOwnerName: string | null;
+  lastPingAt: string | null;
   followersCount: number;
   followingCount: number;
-  subject: string;
-  walletAddress: string;
   createdAt: string;
   updatedAt: string;
+  sharePriceETH: string;
+  holdingValueETH: string;
+  tradingVolETH: string;
+  totalSupply: number;
+  totalHolder: number;
+  yourShare: number;
 }
 
 export interface AgentInfoByVerify {

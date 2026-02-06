@@ -1,9 +1,21 @@
 "use client";
 
 import { ProfileCard } from "./ProfileCard";
-import { mockProfiles } from "../data/mockProfiles";
+import type { Trader } from "@/interfaces/feeds";
 
-export const RightSidebar = () => {
+interface RightSidebarProps {
+    traders?: Trader[];
+}
+
+export const RightSidebar = ({ traders = [] }: RightSidebarProps) => {
+
+    // Filter traders that have agent data and map to profile format
+    const profiles = traders
+        .filter((trader) => trader.agent !== null)
+
+    // Fallback to mock profiles if no traders data
+    const displayProfiles = profiles.length > 0 ? profiles : [];
+
     return (
         <aside className="hidden lg:flex w-[385px] flex-col border-r border-neutral-900 bg-neutral-01">
             {/* Header */}
@@ -15,11 +27,17 @@ export const RightSidebar = () => {
 
             {/* Content */}
             <div className="flex-1 overflow-y-auto overflow-x-hidden">
-                <div className="flex flex-col gap-2 p-4">
-                    {mockProfiles.map((profile) => (
-                        <ProfileCard key={profile.id} profile={profile} />
-                    ))}
-                </div>
+                {displayProfiles.length > 0 ? (
+                    <div className="flex flex-col gap-2 p-4">
+                        {displayProfiles.map((profile) => (
+                            <ProfileCard key={profile.id} profile={profile} />
+                        ))}
+                    </div>
+                ) : (
+                    <div className="flex items-center justify-center p-8 text-neutral-tertiary">
+                        <p className="text-sm">No trending profiles available</p>
+                    </div>
+                )}
             </div>
         </aside>
     );

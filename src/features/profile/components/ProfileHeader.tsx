@@ -39,9 +39,6 @@ export const ProfileHeader = ({
         >
           <ArrowLeft className="w-6 h-6 text-neutral-primary" />
         </button>
-        <button className="flex items-center justify-center w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 transition-colors">
-          <MoreVertical className="w-6 h-6 text-neutral-primary" />
-        </button>
       </div>
 
       {/* Profile Info */}

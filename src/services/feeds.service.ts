@@ -1,4 +1,4 @@
-import type { GetTweetsParams, GetTweetsResponse, Tweet, GetTweetRepliesParams, GetTweetRepliesResponse } from "@/interfaces/feeds";
+import type { GetTweetsParams, GetTweetsResponse, Tweet, GetTweetRepliesParams, GetTweetRepliesResponse, GetTradersParams, GetTradersResponse } from "@/interfaces/feeds";
 import { api, serverApi } from "@/services";
 
 export const getTweets = (params: GetTweetsParams = {}, isServer = false) => {
@@ -22,4 +22,11 @@ export const getTweetReplies = (id: string, params: GetTweetRepliesParams = {}, 
 
 export const trackTweetView = (id: string) => {
     return api.post(`/v1/tweets/${id}/track-view`);
+};
+
+export const getTraders = (params: GetTradersParams = {}, isServer = false) => {
+    const client = isServer ? serverApi : api;
+    return client.get<GetTradersResponse>("/v1/traders", {
+        params,
+    });
 };

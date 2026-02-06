@@ -31,4 +31,5 @@ export interface TradesParams {
   limit: number;
   subject?: string;
   trader?: string;
+  username?: string;
 }

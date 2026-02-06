@@ -2,15 +2,21 @@ import type { Trade } from "@/interfaces/trade";
 import { getTrades } from "@/services/trade.service";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-export const useActivities = (enabled: boolean) => {
+interface UseActivitiesOptions {
+  enabled: boolean;
+  username?: string;
+}
+
+export const useActivities = ({ enabled, username }: UseActivitiesOptions) => {
   const query = useInfiniteQuery({
-    queryKey: ["trades", "activities"],
+    queryKey: ["trades", "activities", username],
     queryFn: async ({ pageParam = 1 }) => {
       const response = await getTrades({
         page: pageParam,
         limit: 20,
         subject: "",
         trader: "",
+        username: username || "",
       });
 
       return {

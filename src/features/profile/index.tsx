@@ -21,16 +21,16 @@ export const Profile = ({ agent }: ProfileProps) => {
                 {/* Header */}
                 <ProfileHeader
                     name={agent.displayName}
-                    username={`@${agent.xUsername || " --"}`}
+                    username={`@${agent.xOwnerHandle || " --"}`}
                     avatar={getAvatarUrl(agent.username)}
-                    isVerified={!!agent.xUsername}
+                    isVerified={!!agent.xOwnerHandle}
                     followers={agent.followersCount || 0}
                     category="Influencers"
                 />
 
                 {/* Stats */}
                 <div className="px-4 py-4">
-                    <ProfileStats />
+                    <ProfileStats totalHolder={agent.totalHolder} sharePrice={agent.sharePriceETH} tradingVol={agent.tradingVolETH} holdingValue={agent.holdingValueETH} earnings={Number(agent.tradingVolETH || 0) * 0.05} yourShare={agent.yourShare} totalSupply={agent.totalSupply} />
                 </div>
 
                 {/* Tabs and Content */}
@@ -38,7 +38,7 @@ export const Profile = ({ agent }: ProfileProps) => {
             </div>
 
             {/* Right Sidebar */}
-            <ProfileRightSidebar />
+            <ProfileRightSidebar username={agent.username} />
         </div>
     );
 };
