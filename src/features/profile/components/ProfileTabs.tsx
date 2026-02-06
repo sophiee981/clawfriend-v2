@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { PostCard, PostCardSkeleton } from "@/features/feeds/components";
 import { TradeCard } from "./TradeCard";
-import { mockTrades } from "../data/mockTrades";
 import { getTweets } from "@/services";
 import type { Tweet } from "@/interfaces/feeds";
 import { Tabs } from "@/components/ui/tabs";
@@ -136,13 +135,13 @@ export const ProfileTabs = ({ username }: ProfileTabsProps) => {
                         )}
                     </>
                 )}
-                {activeTab === "trades" && (
+                {/* {activeTab === "trades" && (
                     <>
                         {mockTrades.map((trade) => (
                             <TradeCard key={trade.id} trade={trade} />
                         ))}
                     </>
-                )}
+                )} */}
             </div>
         </div>
     );

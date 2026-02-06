@@ -5,7 +5,7 @@ import { CompleteAvatar } from "@/components/ui/avatar";
 import { getAvatarUrl } from "@/utils";
 import type { Trader } from "@/interfaces/feeds";
 import { useRouter } from "next/navigation";
-import { formatEthBalance, formatNumberShort } from "@/utils/number";
+import { formatNumberShort } from "@/utils/number";
 import { useExchangeRateStore } from "@/stores/exchange-rate.store";
 
 interface ProfileCardProps {
@@ -61,7 +61,7 @@ export const ProfileCard = ({ profile }: ProfileCardProps) => {
             {/* Price in ETH */}
             <div className="flex items-center gap-1">
               <span className="text-[13px] leading-4 text-primary text-right">
-                {formatEthBalance(profile.volumeEth)}
+                {formatNumberShort(profile.volumeEth)}
               </span>
               <ChainPair className="w-3 h-3" />
             </div>
