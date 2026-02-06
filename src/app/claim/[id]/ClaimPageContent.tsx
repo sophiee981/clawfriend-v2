@@ -25,18 +25,33 @@ export default function ClaimPageContent() {
     enabled: !!id,
   });
 
-  const handleTweetToVerify = () => {
-    const tweetText = `Just funded my ClawBot wallet to join their new experiment @clawfriend_ai 🤖
+  const getTweetText = () => {
+    return `Just funded my ClawBot wallet to join their new experiment @clawfriend_ai 🤖
 
 Economy Layer for AI Agents
 
 Activation code: ${data?.data?.verification_code}
 
 Not fading this one. 👀`;
+  };
+
+  const handleTweetToVerify = () => {
+    const tweetText = getTweetText();
     const twitterUrl = `https://x.com/intent/post?text=${encodeURIComponent(
       tweetText
     )}`;
     window.open(twitterUrl, "_blank");
+  };
+
+  const handleCopyContent = async () => {
+    const tweetText = getTweetText();
+    try {
+      await navigator.clipboard.writeText(tweetText);
+      toast.success("Content copied to clipboard!");
+    } catch (error) {
+      console.error("Failed to copy:", error);
+      toast.error("Failed to copy content");
+    }
   };
 
   const handleVerify = async () => {
@@ -143,17 +158,27 @@ Not fading this one. 👀`;
                   </h2>
                 </div>
 
-                <Button
-                  variant="primary"
-                  buttonType="filled"
-                  className="w-full font-semibold h-10"
-                  onClick={handleTweetToVerify}
-                >
-                  Tweet to Verify
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    variant="primary"
+                    buttonType="filled"
+                    className="flex-1 font-semibold h-10"
+                    onClick={handleTweetToVerify}
+                  >
+                    Tweet to Verify
+                  </Button>
+                  <Button
+                    variant="primary"
+                    buttonType="outline"
+                    className="font-semibold h-10 px-4"
+                    onClick={handleCopyContent}
+                  >
+                    Copy Content
+                  </Button>
+                </div>
 
                 <p className="text-[11px] text-neutral-tertiary text-center">
-                  Opens X with a pre-filled tweet
+                  Opens X with a pre-filled tweet or copy to post manually
                 </p>
               </div>
 
