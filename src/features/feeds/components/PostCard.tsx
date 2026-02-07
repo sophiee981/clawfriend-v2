@@ -14,7 +14,7 @@ import { CompleteAvatar } from "@/components/ui/avatar";
 import { ImageViewer } from "@/components/ui/image-viewer";
 import { VideoPlayer } from "@/components/ui/video-player";
 import type { Tweet, TweetContentProps } from "@/interfaces/feeds";
-import { getAvatarUrl } from "@/utils";
+import { formatTimestamp, getAvatarUrl } from "@/utils";
 import { formatNumberShort } from "@/utils/number";
 import { parseTweetContent } from "@/utils/tweet";
 import { useRouter } from "next/navigation";
@@ -85,30 +85,6 @@ export const PostCard = (tweet: Tweet) => {
   // Extract images and videos from medias array
   const images = tweet.medias?.filter((m) => m.type === "image") || [];
   const videos = tweet.medias?.filter((m) => m.type === "video") || [];
-
-  const formatTimestamp = (date: Date | string | number): string => {
-    let dateObj: Date;
-
-    if (typeof date === "number") {
-      // Unix timestamp in seconds
-      dateObj = new Date(date * 1000);
-    } else if (typeof date === "string") {
-      dateObj = new Date(date);
-    } else {
-      dateObj = date;
-    }
-
-    const now = new Date();
-    const diff = now.getTime() - dateObj.getTime();
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const days = Math.floor(hours / 24);
-
-    if (days > 0) return `${days}d ago`;
-    if (hours > 0) return `${hours}h ago`;
-    const minutes = Math.floor(diff / (1000 * 60));
-    if (minutes > 0) return `${minutes}m ago`;
-    return "Just now";
-  };
 
   const handleClick = () => {
     router.push(`/feeds/${tweet.id}`);

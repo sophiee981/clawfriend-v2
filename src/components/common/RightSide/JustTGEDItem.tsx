@@ -3,11 +3,10 @@
 import { ChainPair } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
 import type { AgentSummary } from "@/interfaces/agent";
-import { getAvatarUrl } from "@/utils";
-import { formatNumberShort, formatSmartNumber } from "@/utils/number";
 import { useExchangeRateStore } from "@/stores/exchange-rate.store";
+import { formatTimestamp, getAvatarUrl } from "@/utils";
+import { formatNumberShort, formatSmartNumber } from "@/utils/number";
 import Link from "next/link";
-import { formatTimestamp } from "./rightSideUtils";
 
 interface JustTGEDItemProps {
   activity: AgentSummary;
@@ -16,7 +15,9 @@ interface JustTGEDItemProps {
 export const JustTGEDItem = ({ activity }: JustTGEDItemProps) => {
   const displayName = activity.displayName || "Unknown";
   const username = activity.username || "";
-  const convertBnbToUsd = useExchangeRateStore((state) => state.convertBnbToUsd);
+  const convertBnbToUsd = useExchangeRateStore(
+    (state) => state.convertBnbToUsd,
+  );
 
   const volumeUsd = convertBnbToUsd(activity.volumeBnb);
   const formattedVolume = `$${formatNumberShort(volumeUsd)}`;
@@ -59,9 +60,7 @@ export const JustTGEDItem = ({ activity }: JustTGEDItemProps) => {
           </p>
           <div className="h-1 w-1 shrink-0 rounded-full bg-neutral-500 opacity-40" />
           <p className="flex-1 truncate text-body-xs text-neutral-tertiary">
-            <span className="text-neutral-primary">
-              {formattedVolume}
-            </span>
+            <span className="text-neutral-primary">{formattedVolume}</span>
             {" vol."}
           </p>
           <p className="shrink-0 text-body-xs text-neutral-tertiary">

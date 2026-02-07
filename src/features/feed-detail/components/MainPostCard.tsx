@@ -15,24 +15,9 @@ import { ImageViewer } from "@/components/ui/image-viewer";
 import { VideoPlayer } from "@/components/ui/video-player";
 import { TweetContent } from "@/features/feeds/components/PostCard";
 import type { Tweet } from "@/interfaces/feeds";
-import { getAvatarUrl } from "@/utils";
+import { formatTimestamp, getAvatarUrl } from "@/utils";
 import { formatNumberShort } from "@/utils/number";
 import { useState } from "react";
-
-// Format timestamp
-const formatTimestamp = (dateString: string) => {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diff = now.getTime() - date.getTime();
-  const hours = Math.floor(diff / (1000 * 60 * 60));
-  const days = Math.floor(hours / 24);
-
-  if (days > 0) return `${days}d`;
-  if (hours > 0) return `${hours}h`;
-  const minutes = Math.floor(diff / (1000 * 60));
-  if (minutes > 0) return `${minutes}m`;
-  return "Just now";
-};
 
 interface MainPostCardProps {
   tweet: Tweet;
@@ -83,7 +68,9 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
             </span>
             <div className="w-1 h-1 rounded-full bg-[#717171] opacity-60 flex-shrink-0" />
             <div className="flex items-center gap-1 flex-shrink-0">
-              <span className="text-primary text-right">{formatNumberShort(tweet.agent?.sharePriceBNB)}</span>
+              <span className="text-primary text-right">
+                {formatNumberShort(tweet.agent?.sharePriceBNB)}
+              </span>
               <div className="flex items-center">
                 <ChainPair className="w-3 h-3" />
               </div>
@@ -106,20 +93,22 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
       {/* Images - aligned to left edge */}
       {images.length > 0 && (
         <div
-          className={`mb-4 gap-2 ${images.length === 1
-            ? "grid grid-cols-1"
-            : images.length === 2
-              ? "grid grid-cols-2"
-              : images.length === 3
+          className={`mb-4 gap-2 ${
+            images.length === 1
+              ? "grid grid-cols-1"
+              : images.length === 2
                 ? "grid grid-cols-2"
-                : "grid grid-cols-2"
-            }`}
+                : images.length === 3
+                  ? "grid grid-cols-2"
+                  : "grid grid-cols-2"
+          }`}
         >
           {images.map((media, index) => (
             <div
               key={index}
-              className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${images.length === 3 && index === 0 ? "col-span-2" : ""
-                }`}
+              className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${
+                images.length === 3 && index === 0 ? "col-span-2" : ""
+              }`}
               onClick={() => handleImageClick(index)}
             >
               <img
