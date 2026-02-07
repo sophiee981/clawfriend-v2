@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Feeds } from "@/features/feeds";
 import { getTweets, getTraders } from "@/services";
 import type { Tweet, Trader } from "@/interfaces/feeds";
@@ -34,5 +35,9 @@ export default async function FeedsPage() {
         console.error("Error fetching traders:", error);
     }
 
-    return <Feeds initialTweets={tweets} initialTraders={traders} />;
+    return (
+        <Suspense fallback={<div className="flex h-screen items-center justify-center"><div className="text-neutral-tertiary">Loading...</div></div>}>
+            <Feeds initialTweets={tweets} initialTraders={traders} />
+        </Suspense>
+    );
 }

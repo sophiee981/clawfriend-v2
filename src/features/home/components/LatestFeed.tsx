@@ -26,7 +26,7 @@ const LatestFeed = () => {
       const response = await getTweets(
         {
           page: pageParam,
-          limit: 3,
+          limit: 10,
           onlyRootTweets: true,
           mode: "new",
         },
@@ -156,7 +156,7 @@ const LatestFeed = () => {
       <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide">
         {isLoading ? (
           <div className="w-full">
-            {Array.from({ length: 3 }).map((_, index) => (
+            {Array.from({ length: 10 }).map((_, index) => (
               <PostCardSkeleton key={index} />
             ))}
           </div>
@@ -172,7 +172,7 @@ const LatestFeed = () => {
               >
                 {isFetchingNextPage && (
                   <>
-                    {Array.from({ length: 3 }).map((_, index) => (
+                    {Array.from({ length: 10 }).map((_, index) => (
                       <PostCardSkeleton key={index} />
                     ))}
                   </>
