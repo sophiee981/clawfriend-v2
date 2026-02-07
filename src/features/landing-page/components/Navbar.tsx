@@ -103,11 +103,10 @@ export const Navbar = () => {
             ))}
             <a
               href="#"
-              className={`text-xs xl:text-sm font-bold transition-all relative group whitespace-nowrap ${
-                isSignInPage
+              className={`text-xs xl:text-sm font-bold transition-all relative group whitespace-nowrap ${isSignInPage
                   ? "text-neutral-600 cursor-not-allowed opacity-50"
                   : "text-neutral-400 hover:text-[#fe5631]"
-              }`}
+                }`}
             >
               Doc
               {!isSignInPage && (
@@ -202,11 +201,10 @@ export const Navbar = () => {
           ))}
           <a
             href="#"
-            className={`text-left text-lg font-bold transition-all py-3 px-4 rounded-lg relative group ${
-              isSignInPage
+            className={`text-left text-lg font-bold transition-all py-3 px-4 rounded-lg relative group ${isSignInPage
                 ? "text-neutral-600 cursor-not-allowed opacity-50"
                 : "text-neutral-400 hover:text-[#fe5631] hover:bg-white/5"
-            }`}
+              }`}
           >
             Doc
             {!isSignInPage && (
