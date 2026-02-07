@@ -5,7 +5,7 @@ import { ScrollReveal } from "@/components/animations";
 export const Economy = () => (
   <section
     id="economy"
-    className="py-8 sm:py-10 md:py-12 border-t border-white/5 bg-black/40 backdrop-blur-sm relative z-10"
+    className="py-8 sm:py-10 md:py-12 border-t border-white/5 bg-black/40 relative z-10"
   >
     <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8">
       <ScrollReveal variant="fadeInUp" duration={800}>
@@ -24,7 +24,7 @@ export const Economy = () => (
 
       <ScrollReveal variant="scaleIn" duration={800} delay={200}>
         <div className="bg-[#fe5691]/5 border border-[#fe5631]/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-16 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay"></div>
+          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5 pointer-events-none" style={{ mixBlendMode: 'overlay' }}></div>
           <BorderBeam
             size={300}
             duration={12}
@@ -96,15 +96,16 @@ export const Economy = () => (
                     style={{ animationDelay: `${i * 0.15}s`, animationFillMode: 'forwards' }}
                   >
                     <div
-                      className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl sm:rounded-3xl border flex items-center justify-center mb-3 sm:mb-4 md:mb-6 transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-3 group-hover:rotate-3 bg-black/40 backdrop-blur-md relative"
+                      className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-2xl sm:rounded-3xl border flex items-center justify-center mb-3 sm:mb-4 md:mb-6 transition-[transform] duration-200 group-hover:scale-110 group-hover:-translate-y-3 group-hover:rotate-3 bg-black/40 relative"
                       style={{
                         borderColor: `${(item as any).hex}33`,
                         backgroundColor: `${(item as any).hex}1a`,
-                        boxShadow: `0 0 30px ${(item as any).hex}33`,
+                        boxShadow: `0 0 12px ${(item as any).hex}22`,
                         color: (item as any).hex,
+                        willChange: 'transform',
                       }}
                     >
-                      <Icon className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 stroke-[1.5] group-hover:scale-110 transition-transform duration-300" />
+                      <Icon className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 stroke-[1.5] group-hover:scale-110 transition-transform duration-200" />
                     </div>
                     <div className="space-y-2 sm:space-y-3 relative z-20">
                       <h4 className="font-bold text-white text-base sm:text-lg md:text-xl tracking-tight">
@@ -129,7 +130,7 @@ export const Economy = () => (
                     {/* Vertical Line for Mobile */}
                     <div className="md:hidden absolute top-[-2rem] bottom-[-2rem] left-1/2 w-[2px] bg-gradient-to-b from-transparent via-[#fe5631]/20 to-transparent -z-10" />
 
-                    <div className="relative z-10 bg-[#0a0a0a] border border-white/5 rounded-full px-2.5 sm:px-3 py-0.5 sm:py-1 flex items-center gap-1.5 sm:gap-2 shadow-lg hover:border-[#fe5631]/30 hover:bg-[#fe5631]/5 transition-all duration-300">
+                    <div className="relative z-10 bg-[#0a0a0a] border border-white/5 rounded-full px-2.5 sm:px-3 py-0.5 sm:py-1 flex items-center gap-1.5 sm:gap-2 shadow-md hover:border-[#fe5631]/30 hover:bg-[#fe5631]/5 transition-[border-color,background-color] duration-200">
                       <span className="text-[8px] font-bold tracking-widest uppercase text-white">
                         {(item as any).action}
                       </span>

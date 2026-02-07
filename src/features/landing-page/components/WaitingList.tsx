@@ -89,15 +89,16 @@ export const WaitingList = async () => {
         </ScrollReveal>
 
         <ScrollReveal variant="scaleIn" duration={800} delay={200}>
-          <div className="bg-white/5 rounded-lg sm:rounded-xl border border-white/10 p-1.5 sm:p-4 backdrop-blur-md shadow-2xl">
+          <div className="bg-white/5 rounded-lg sm:rounded-xl border border-white/10 p-1.5 sm:p-4 backdrop-blur-sm shadow-lg">
             <div className="space-y-0.5 sm:space-y-1">
               {agents.length > 0 ? (
                 agents.map((agent, index) => (
                   <div
                     key={agent.id}
-                    className="flex items-center justify-between p-2 sm:p-4 rounded-lg sm:rounded-xl hover:bg-white/5 transition-all duration-300 border border-transparent hover:border-[#fe5631]/20 hover:shadow-[0_0_20px_rgba(254,86,49,0.1)] group cursor-default"
+                    className="flex items-center justify-between p-2 sm:p-4 rounded-lg sm:rounded-xl hover:bg-white/5 transition-[background-color,border-color] duration-200 border border-transparent hover:border-[#fe5631]/20 group cursor-default"
                     style={{
                       animation: `fadeInUp 0.5s ease-out ${index * 0.1}s both`,
+                      willChange: index < 3 ? 'transform, opacity' : 'auto',
                     }}
                   >
                     <div className="flex items-center gap-3 md:gap-4 flex-1 min-w-0">
@@ -109,20 +110,20 @@ export const WaitingList = async () => {
                       />
                       <div className="min-w-0 flex-1 overflow-hidden">
                         <div className="flex items-center gap-1 sm:gap-3 flex-wrap">
-                          <span className="font-bold text-white text-xs sm:text-base md:text-lg group-hover:text-[#fe5631] transition-colors truncate max-w-[120px] sm:max-w-none">
+                          <span className="font-bold text-white text-xs sm:text-base md:text-lg group-hover:text-[#fe5631] transition-colors duration-200 truncate max-w-[120px] sm:max-w-none">
                             {agent.name}
                           </span>
-                          <span className="bg-emerald-500/10 text-emerald-400 text-[8px] sm:text-[10px] px-1 sm:px-2  rounded-full border border-emerald-500/20 uppercase font-bold tracking-wider shadow-[0_0_8px_rgba(52,211,153,0.1)] flex-shrink-0 group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40 transition-all">
+                          <span className="bg-emerald-500/10 text-emerald-400 text-[8px] sm:text-[10px] px-1 sm:px-2  rounded-full border border-emerald-500/20 uppercase font-bold tracking-wider shadow-[0_0_4px_rgba(52,211,153,0.08)] flex-shrink-0 group-hover:bg-emerald-500/20 group-hover:border-emerald-500/40 transition-[background-color,border-color] duration-200">
                             {agent.status}
                           </span>
                         </div>
-                        <div className="text-[9px] sm:text-xs text-neutral-500 font-mono group-hover:text-neutral-300 transition-colors truncate">
+                        <div className="text-[9px] sm:text-xs text-neutral-500 font-mono group-hover:text-neutral-300 transition-colors duration-200 truncate">
                           {agent.address}
                         </div>
                       </div>
                     </div>
                     <div className="text-right flex-shrink-0 ml-1 sm:ml-4 flex flex-col">
-                      <div className="font-bold text-[#fe5631] font-mono text-xs sm:text-base md:text-lg group-hover:scale-110 transition-transform whitespace-nowrap">
+                      <div className="font-bold text-[#fe5631] font-mono text-xs sm:text-base md:text-lg group-hover:scale-105 transition-transform duration-200 whitespace-nowrap" style={{ willChange: 'transform' }}>
                         {agent.amount}
                       </div>
                     </div>

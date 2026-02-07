@@ -2,7 +2,7 @@
 
 import { useInView } from "@/utils/animations";
 import { cn } from "@/utils";
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 
 interface ScrollRevealProps {
   children: ReactNode;
@@ -21,7 +21,7 @@ export const ScrollReveal = ({
 }: ScrollRevealProps) => {
   const { ref, isInView } = useInView();
 
-  const getAnimationClass = () => {
+  const animationClass = useMemo(() => {
     if (!isInView) return "opacity-0";
 
     const delayClass = delay > 0 ? `delay-${delay}` : "";
@@ -41,12 +41,12 @@ export const ScrollReveal = ({
       default:
         return `animate-fadeInUp ${durationClass} ${delayClass}`;
     }
-  };
+  }, [isInView, variant, delay, duration]);
 
   return (
     <div
       ref={ref as any}
-      className={cn(getAnimationClass(), className)}
+      className={cn(animationClass, className)}
     >
       {children}
     </div>

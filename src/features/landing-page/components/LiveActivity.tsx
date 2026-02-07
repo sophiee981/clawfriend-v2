@@ -61,10 +61,11 @@ export const LiveActivity = () => (
         {activities.map((item, i) => (
           <div
             key={i}
-            className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 hover:border-[#fe5631]/30 hover:bg-white/10 transition-all duration-500 group hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(254,86,49,0.15)] opacity-0 animate-fadeInUp cursor-pointer"
+            className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 hover:border-[#fe5631]/30 hover:bg-white/10 transition-[border-color,background-color,transform,box-shadow] duration-200 group hover:scale-[1.01] hover:shadow-[0_0_12px_rgba(254,86,49,0.1)] opacity-0 animate-fadeInUp cursor-pointer"
             style={{
               animationDelay: `${i * 0.15}s`,
               animationFillMode: "forwards",
+              willChange: i < 2 ? 'transform, opacity' : 'auto',
             }}
           >
             <div className="flex justify-between items-start mb-3 sm:mb-4">
@@ -72,19 +73,20 @@ export const LiveActivity = () => (
                 <img
                   src={getAvatarUrl(item.name)}
                   alt={item.name}
-                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300"
+                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex-shrink-0 group-hover:scale-105 group-hover:rotate-2 transition-transform duration-200"
+                  style={{ willChange: 'transform' }}
                 />
                 <div className="min-w-0 flex-1">
-                  <div className="font-bold text-white flex items-center gap-2 text-sm sm:text-base truncate group-hover:text-[#fe5631] transition-colors">
+                  <div className="font-bold text-white flex items-center gap-2 text-sm sm:text-base truncate group-hover:text-[#fe5631] transition-colors duration-200">
                     {item.name}
                   </div>
-                  <div className="text-[10px] sm:text-xs text-neutral-500 font-mono truncate group-hover:text-neutral-400 transition-colors">
+                  <div className="text-[10px] sm:text-xs text-neutral-500 font-mono truncate group-hover:text-neutral-400 transition-colors duration-200">
                     {item.handle}
                   </div>
                 </div>
               </div>
               <span
-                className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-[9px] sm:text-[10px] font-bold border ${item.tagColor} tracking-widest flex-shrink-0 ml-2 group-hover:scale-110 transition-transform animate-pulse`}
+                className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-[9px] sm:text-[10px] font-bold border ${item.tagColor} tracking-widest flex-shrink-0 ml-2 group-hover:scale-105 transition-transform duration-200`}
               >
                 {item.tag}
               </span>
@@ -110,11 +112,11 @@ export const LiveActivity = () => (
               {item.suffix}
             </div>
 
-            <div className="flex items-center gap-3 sm:gap-4 text-[10px] sm:text-xs font-mono text-neutral-400 border-t border-white/5 pt-3 sm:pt-4 group-hover:border-[#fe5631]/20 transition-colors">
-              <span className="group-hover:text-neutral-300 transition-colors">
+            <div className="flex items-center gap-3 sm:gap-4 text-[10px] sm:text-xs font-mono text-neutral-400 border-t border-white/5 pt-3 sm:pt-4 group-hover:border-[#fe5631]/20 transition-colors duration-200">
+              <span className="group-hover:text-neutral-300 transition-colors duration-200">
                 {item.time}
               </span>
-              <span className="flex items-center gap-1 group-hover:text-[#fe5631] transition-colors group-hover:translate-x-1">
+              <span className="flex items-center gap-1 group-hover:text-[#fe5631] transition-[color,transform] duration-200 group-hover:translate-x-1">
                 Tx ↗
               </span>
             </div>
