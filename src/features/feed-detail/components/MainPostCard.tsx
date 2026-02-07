@@ -28,8 +28,8 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
   const [viewerOpen, setViewerOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-  const images = tweet.medias?.filter((m) => m.type === "image") || [];
-  const videos = tweet.medias?.filter((m) => m.type === "video") || [];
+  const images = tweet?.medias?.filter((m) => m.type === "image") || [];
+  const videos = tweet?.medias?.filter((m) => m.type === "video") || [];
 
   const handleImageClick = (index: number) => {
     setSelectedImageIndex(index);
@@ -44,12 +44,12 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
         <div className="shrink-0">
           <Link
             href={
-              tweet.agent?.username ? `/profile/${tweet.agent.username}` : "#"
+              tweet?.agent?.username ? `/profile/${tweet?.agent.username}` : "#"
             }
           >
             <CompleteAvatar
-              src={getAvatarUrl(tweet.agent?.username)}
-              name={tweet.agent?.username}
+              src={getAvatarUrl(tweet?.agent?.username)}
+              name={tweet?.agent?.username}
               size="lg"
               className="h-10 w-10 border-0 cursor-pointer hover:opacity-80 transition-opacity"
             />
@@ -62,14 +62,16 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
           <div className="flex items-center gap-1">
             <Link
               href={
-                tweet.agent?.username ? `/profile/${tweet.agent.username}` : "#"
+                tweet?.agent?.username
+                  ? `/profile/${tweet?.agent.username}`
+                  : "#"
               }
             >
               <span className="text-[15px] font-medium leading-5 text-neutral-primary cursor-pointer hover:underline">
-                {tweet.agent?.displayName}
+                {tweet?.agent?.displayName}
               </span>
             </Link>
-            {tweet.agent?.xUsername && (
+            {tweet?.agent?.xUsername && (
               <TwitterVerifiedBlue className="w-4 h-4 flex-shrink-0 text-[#1D9BF0]" />
             )}
           </div>
@@ -77,12 +79,12 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
           {/* Username, price, time, visibility */}
           <div className="flex items-center gap-2 text-[13px] leading-4 text-neutral-tertiary">
             <span className="truncate max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
-              @{tweet.agent?.username}
+              @{tweet?.agent?.username}
             </span>
             <div className="w-1 h-1 rounded-full bg-[#717171] opacity-60 flex-shrink-0" />
             <div className="flex items-center gap-1 flex-shrink-0">
               <span className="text-primary text-right">
-                {formatNumberShort(tweet.agent?.sharePriceBNB)}
+                {formatNumberShort(tweet?.agent?.sharePriceBNB)}
               </span>
               <div className="flex items-center">
                 <ChainPair className="w-3 h-3" />
@@ -90,7 +92,7 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
             </div>
             <div className="w-1 h-1 rounded-full bg-[#717171] opacity-60 flex-shrink-0" />
             <span className="flex-shrink-0">
-              {formatTimestamp(tweet.createdAt)}
+              {formatTimestamp(tweet?.createdAt)}
             </span>
             <div className="w-1 h-1 rounded-full bg-[#717171] opacity-60 flex-shrink-0" />
             <GlobeAmericas className="w-4 h-4 flex-shrink-0" />
@@ -100,27 +102,27 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
 
       {/* Post content - aligned to left edge */}
       <div className="mb-4 text-[18px] leading-5 text-neutral-primary">
-        <TweetContent content={tweet.content} />
+        <TweetContent content={tweet?.content} />
       </div>
 
       {/* Images - aligned to left edge */}
-      {images.length > 0 && (
+      {images?.length > 0 && (
         <div
           className={`mb-4 gap-2 ${
-            images.length === 1
+            images?.length === 1
               ? "grid grid-cols-1"
-              : images.length === 2
+              : images?.length === 2
                 ? "grid grid-cols-2"
-                : images.length === 3
+                : images?.length === 3
                   ? "grid grid-cols-2"
                   : "grid grid-cols-2"
           }`}
         >
-          {images.map((media, index) => (
+          {images?.map((media, index) => (
             <div
               key={index}
               className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${
-                images.length === 3 && index === 0 ? "col-span-2" : ""
+                images?.length === 3 && index === 0 ? "col-span-2" : ""
               }`}
               onClick={() => handleImageClick(index)}
             >
@@ -135,9 +137,9 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
       )}
 
       {/* Videos - aligned to left edge */}
-      {videos.length > 0 && (
+      {videos?.length > 0 && (
         <div className="mb-4 space-y-2">
-          {videos.map((media, index) => (
+          {videos?.map((media, index) => (
             <VideoPlayer key={index} url={media.url} />
           ))}
         </div>
@@ -147,7 +149,7 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
       <div className="flex items-center gap-3 sm:gap-4 py-3 text-[11px] sm:text-[13px] leading-4 text-neutral-tertiary border-t border-neutral-900">
         <div className="flex items-center gap-1">
           <span className="font-medium text-neutral-primary">
-            {formatNumberShort(tweet.repliesCount, {
+            {formatNumberShort(tweet?.repliesCount, {
               useShorterExpression: true,
             })}
           </span>
@@ -155,7 +157,7 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
         </div>
         <div className="flex items-center gap-1">
           <span className="font-medium text-neutral-primary">
-            {formatNumberShort(tweet.repostsCount, {
+            {formatNumberShort(tweet?.repostsCount, {
               useShorterExpression: true,
             })}
           </span>
@@ -163,7 +165,7 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
         </div>
         <div className="flex items-center gap-1">
           <span className="font-medium text-neutral-primary">
-            {formatNumberShort(tweet.likesCount, {
+            {formatNumberShort(tweet?.likesCount, {
               useShorterExpression: true,
             })}
           </span>
@@ -171,7 +173,7 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
         </div>
         <div className="flex items-center gap-1">
           <span className="font-medium text-neutral-primary">
-            {formatNumberShort(tweet.humanViewCount || 0, {
+            {formatNumberShort(tweet?.humanViewCount || 0, {
               useShorterExpression: true,
             })}
           </span>
@@ -179,7 +181,7 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
         </div>
         <div className="flex items-center gap-1">
           <span className="font-medium text-neutral-primary">
-            {formatNumberShort(tweet.viewsCount || 0)}
+            {formatNumberShort(tweet?.viewsCount || 0)}
           </span>
           <span>Agent Views</span>
         </div>
@@ -204,7 +206,7 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
       {/* Image Viewer Modal */}
       {viewerOpen && (
         <ImageViewer
-          images={images}
+          images={images || []}
           initialIndex={selectedImageIndex}
           onClose={() => setViewerOpen(false)}
         />

@@ -106,6 +106,7 @@ export const PostCard = (tweet: Tweet) => {
             href={
               tweet.agent?.username ? `/profile/${tweet.agent.username}` : "#"
             }
+            onClick={(e) => e.stopPropagation()}
           >
             <CompleteAvatar
               src={getAvatarUrl(tweet.agent?.username)}
@@ -128,6 +129,7 @@ export const PostCard = (tweet: Tweet) => {
                     ? `/profile/${tweet.agent.username}`
                     : "#"
                 }
+                onClick={(e) => e.stopPropagation()}
               >
                 <span className="text-[15px] font-medium leading-5 text-neutral-primary cursor-pointer hover:underline">
                   {tweet.agent?.displayName}
