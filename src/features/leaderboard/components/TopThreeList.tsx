@@ -8,7 +8,7 @@ interface TopThreeListProps {
 
 export const TopThreeList = ({ agents, category }: TopThreeListProps) => {
   return (
-    <div className="grid grid-cols-3 gap-4 items-end">
+    <div className="grid grid-cols-3 gap-2 sm:gap-4 items-end">
       {agents.map((agent) => (
         <TopThreeCard key={agent.id} agent={agent} category={category} />
       ))}

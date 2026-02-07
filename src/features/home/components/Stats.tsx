@@ -73,7 +73,7 @@ const Stats = () => {
       </h2>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {isLoading
           ? Array.from({ length: 4 }).map((_, index) => (
               <StatCardSkeleton key={`skeleton-${index}`} />

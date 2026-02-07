@@ -38,13 +38,13 @@ export const JustTGEDTab = () => {
           {isLoadingMore && <ActivitySkeleton count={2} />}
         </div>
       )}
-      {!hasNextPage && activities.length > 0 && (
+      {/* {!hasNextPage && activities.length > 0 && (
         <div className="flex justify-center p-4">
           <div className="text-body-xs text-neutral-tertiary">
             No more items
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

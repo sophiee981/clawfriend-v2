@@ -1,7 +1,7 @@
 export const LeaderboardSkeleton = () => {
   return (
     <div className="flex flex-col gap-4">
-      <div className="grid grid-cols-3 gap-4 items-end">
+      <div className="grid grid-cols-3 gap-2 sm:gap-4 items-end">
         {Array.from({ length: 3 }).map((_, index) => (
           <div
             key={`skeleton-top-${index}`}
