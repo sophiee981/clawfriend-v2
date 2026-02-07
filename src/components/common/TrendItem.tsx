@@ -73,7 +73,7 @@ export const TrendItem = ({
 
         {/* Column 2: Metric and Volume */}
         <div className="flex flex-col gap-1">
-          <div className="flex shrink-0 items-center gap-1">
+          <div className="flex shrink-0 items-center gap-1 justify-end  ">
             <span className="text-body-sm text-primary text-end">
               {formatNumberShort(balance, { useShorterExpression: true })}
             </span>
