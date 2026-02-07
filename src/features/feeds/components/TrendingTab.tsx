@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { PostCard, PostCardSkeleton } from "./";
 import type { Tweet } from "@/interfaces/feeds";
 import { getTweets } from "@/services";
@@ -13,14 +13,12 @@ interface TrendingTabProps {
 export const TrendingTab = ({ tweets = [] }: TrendingTabProps) => {
     const observerRef = useRef<IntersectionObserver | null>(null);
     const loadMoreRef = useRef<HTMLDivElement | null>(null);
-    const queryClient = useQueryClient();
 
     const {
         data,
         fetchNextPage,
         hasNextPage,
         isFetchingNextPage,
-        refetch,
     } = useInfiniteQuery({
         queryKey: ["trending-tweets"],
         queryFn: async ({ pageParam = 1 }) => {
@@ -49,37 +47,8 @@ export const TrendingTab = ({ tweets = [] }: TrendingTabProps) => {
             }],
             pageParams: [1],
         } : undefined,
-        // Don't cache, but we'll handle refetch manually to reset to page 1
-        staleTime: 0,
-        gcTime: 0,
-        refetchOnMount: false, // We handle manually to reset to page 1
-        refetchOnWindowFocus: false, // We handle manually to reset to page 1
+        refetchOnMount: true,
     });
-
-    // Reset to page 1 and refetch when component mounts
-    useEffect(() => {
-        // Reset query cache to page 1, then refetch to ensure fresh data
-        // Note: resetQueries resets to initialPageParam (page 1), but doesn't auto-refetch
-        queryClient.resetQueries({ queryKey: ["trending-tweets"] });
-        refetch();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    // Reset to page 1 and refetch when window gains focus
-    // Note: We use manual focus handler instead of refetchOnWindowFocus because
-    // refetchOnWindowFocus only refetches existing pages, doesn't reset to page 1
-    useEffect(() => {
-        const handleFocus = () => {
-            // Reset query cache to page 1, then refetch to ensure fresh data
-            queryClient.resetQueries({ queryKey: ["trending-tweets"] });
-            refetch();
-        };
-
-        window.addEventListener("focus", handleFocus);
-        return () => {
-            window.removeEventListener("focus", handleFocus);
-        };
-    }, [refetch, queryClient]);
 
     // Intersection Observer for infinite scroll
     useEffect(() => {

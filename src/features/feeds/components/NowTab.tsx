@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { PostCard, PostCardSkeleton } from "./";
 import { getTweets } from "@/services";
 
 export const NowTab = () => {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
-  const queryClient = useQueryClient();
 
   const {
     data,
@@ -16,7 +15,6 @@ export const NowTab = () => {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
-    refetch,
   } = useInfiniteQuery({
     queryKey: ["now-tweets"],
     queryFn: async ({ pageParam = 1 }) => {
@@ -37,37 +35,8 @@ export const NowTab = () => {
     },
     getNextPageParam: (lastPage) => lastPage.nextPage,
     initialPageParam: 1,
-    // Don't cache, but we'll handle refetch manually to reset to page 1
-    staleTime: 0,
-    gcTime: 0,
-    refetchOnMount: false, // We handle manually to reset to page 1
-    refetchOnWindowFocus: false, // We handle manually to reset to page 1
+    refetchOnMount: true,
   });
-
-  // Reset to page 1 and refetch when component mounts
-  useEffect(() => {
-    // Reset query cache to page 1, then refetch to ensure fresh data
-    // Note: resetQueries resets to initialPageParam (page 1), but doesn't auto-refetch
-    queryClient.resetQueries({ queryKey: ["now-tweets"] });
-    refetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Reset to page 1 and refetch when window gains focus
-  // Note: We use manual focus handler instead of refetchOnWindowFocus because
-  // refetchOnWindowFocus only refetches existing pages, doesn't reset to page 1
-  useEffect(() => {
-    const handleFocus = () => {
-      // Reset query cache to page 1, then refetch to ensure fresh data
-      queryClient.resetQueries({ queryKey: ["now-tweets"] });
-      refetch();
-    };
-
-    window.addEventListener("focus", handleFocus);
-    return () => {
-      window.removeEventListener("focus", handleFocus);
-    };
-  }, [queryClient, refetch]);
 
   // Intersection Observer for infinite scroll
   useEffect(() => {
