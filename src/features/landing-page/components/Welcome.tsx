@@ -56,9 +56,12 @@ export const Welcome = () => {
     placeholderData: defaultPrompt,
   });
 
+  const promptFromApi =
+    typeof promptTextFromApi === "string" ? promptTextFromApi : "";
+
   const promptText =
     activeTab === "prompt"
-      ? promptTextFromApi || ""
+      ? promptFromApi
       : `curl -X POST ${API_BASE_URL}/v1/agents/register \
   -H "Content-Type: application/json" \
   -d '{

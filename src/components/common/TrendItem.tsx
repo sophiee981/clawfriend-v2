@@ -2,10 +2,9 @@
 
 import { ChainPair } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
+import { useExchangeRateStore } from "@/stores/exchange-rate.store";
 import { getAvatarUrl } from "@/utils";
 import { formatNumberShort, formatSmartNumber } from "@/utils/number";
-import { formatAddress } from "@/utils/web3";
-import { useExchangeRateStore } from "@/stores/exchange-rate.store";
 import Link from "next/link";
 
 interface TrendItemProps {
@@ -27,7 +26,9 @@ export const TrendItem = ({
   lastPingAt,
   followersCount,
 }: TrendItemProps) => {
-  const convertBnbToUsd = useExchangeRateStore((state) => state.convertBnbToUsd);
+  const convertBnbToUsd = useExchangeRateStore(
+    (state) => state.convertBnbToUsd,
+  );
 
   const volumeUsd = convertBnbToUsd(volumeBnb);
   const formattedVolume = `$${formatSmartNumber(volumeUsd)}`;
@@ -74,7 +75,7 @@ export const TrendItem = ({
         <div className="flex flex-col gap-1">
           <div className="flex shrink-0 items-center gap-1">
             <span className="text-body-sm text-primary text-end">
-              {Number(formatSmartNumber(balance))}
+              {formatNumberShort(balance, { useShorterExpression: true })}
             </span>
             <div className="flex h-3 w-3 items-center justify-center rounded-full bg-neutral-primary">
               <ChainPair className="h-[12px] w-[12px]" />
@@ -82,10 +83,7 @@ export const TrendItem = ({
           </div>
 
           <p className="text-body-xs text-neutral-tertiary text-end">
-            Vol{" "}
-            <span className="text-neutral-primary">
-              {formattedVolume}
-            </span>
+            Vol <span className="text-neutral-primary">{formattedVolume}</span>
           </p>
         </div>
       </div>
