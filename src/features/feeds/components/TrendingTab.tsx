@@ -26,7 +26,7 @@ export const TrendingTab = ({ tweets = [] }: TrendingTabProps) => {
                 {
                     page: pageParam,
                     limit: 20,
-                    // onlyRootTweets: true,
+                    onlyRootTweets: true,
                     mode: "trending",
                 },
                 false
