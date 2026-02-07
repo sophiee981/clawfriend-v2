@@ -5,21 +5,9 @@ import { TrendItem } from "@/components/common/TrendItem";
 import { TrendItemSkeleton } from "@/components/common/TrendItemSkeleton";
 import { Tabs } from "@/components/ui/tabs";
 import { AgentBalanceLeaderboard } from "@/interfaces/agent";
+import { ActivitiesTab as RightSideActivitiesTab } from "@/components/common/RightSide/ActivitiesTab";
+import { JustTGEDTab as RightSideJustTGEDTab } from "@/components/common/RightSide/JustTGEDTab";
 import { useEffect, useRef, useState } from "react";
-import { ActivitiesTab } from "./ActivitiesTab";
-import { JustTGEDTab } from "./JustTGEDTab";
-
-type ActivityAction = "bought" | "bid" | "sold" | "airdropped";
-
-interface ActivityItem {
-  id: string;
-  actorName: string;
-  subjectName: string;
-  action: ActivityAction;
-  amount: string;
-  timestamp: string;
-  transactionLink?: string;
-}
 
 type TabId = "just-tged" | "activities" | "trending";
 
@@ -40,90 +28,6 @@ const ExploreMobile = ({
 }: ExploreMobileProps = {}) => {
   const [activeTab, setActiveTab] = useState<TabId>("just-tged");
   const loadMoreRef = useRef<HTMLDivElement>(null);
-
-  // Mock data - replace with actual data from API
-  const mockActivities: ActivityItem[] = [
-    {
-      id: "1",
-      actorName: "Chairman",
-      subjectName: "olimpio",
-      action: "bought",
-      amount: "0.0048",
-      timestamp: "1d ago",
-    },
-    {
-      id: "2",
-      actorName: "Chairman",
-      subjectName: "Small Cap",
-      action: "bid",
-      amount: "0.0048",
-      timestamp: "1d ago",
-    },
-    {
-      id: "3",
-      actorName: "Yoh879",
-      subjectName: "Chairman",
-      action: "sold",
-      amount: "0.0048",
-      timestamp: "1d ago",
-    },
-    {
-      id: "4",
-      actorName: "TheHawk",
-      subjectName: "Chairman",
-      action: "airdropped",
-      amount: "0.0048",
-      timestamp: "1d ago",
-    },
-    {
-      id: "5",
-      actorName: "Adrian",
-      subjectName: "Chark Beagle",
-      action: "bought",
-      amount: "0.0048",
-      timestamp: "1d ago",
-    },
-    {
-      id: "6",
-      actorName: "Goat",
-      subjectName: "Small Cap",
-      action: "bid",
-      amount: "0.0048",
-      timestamp: "1d ago",
-    },
-    {
-      id: "7",
-      actorName: "Claud",
-      subjectName: "olimpio",
-      action: "sold",
-      amount: "0.0048",
-      timestamp: "1d ago",
-    },
-    {
-      id: "8",
-      actorName: "Claudecraft",
-      subjectName: "Chairman",
-      action: "airdropped",
-      amount: "0.0048",
-      timestamp: "1d ago",
-    },
-    {
-      id: "9",
-      actorName: "Kurt",
-      subjectName: "Adrian",
-      action: "bought",
-      amount: "0.0048",
-      timestamp: "1d ago",
-    },
-    {
-      id: "10",
-      actorName: "John",
-      subjectName: "TheHawk",
-      action: "bid",
-      amount: "0.0048",
-      timestamp: "1d ago",
-    },
-  ];
 
   const tabs: Array<{ id: TabId; label: string }> = [
     { id: "just-tged", label: "Just TGED" },
@@ -220,9 +124,11 @@ const ExploreMobile = ({
             )}
           </div>
         ) : activeTab === "activities" ? (
-          <ActivitiesTab activities={mockActivities} />
+          // Activities Tab - use component from RightSide
+          <RightSideActivitiesTab username="" enabled={activeTab === "activities"} />
         ) : (
-          <JustTGEDTab activities={mockActivities} />
+          // Just TGED Tab - use component from RightSide
+          <RightSideJustTGEDTab enabled={activeTab === "just-tged"} />
         )}
       </div>
     </div>

@@ -24,7 +24,7 @@ export const NowTab = () => {
         {
           page: pageParam,
           limit: 20,
-          onlyRootTweets: true,
+          // onlyRootTweets: true,
           mode: "new",
         },
         false

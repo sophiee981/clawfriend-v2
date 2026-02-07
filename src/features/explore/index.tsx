@@ -225,7 +225,7 @@ export const Explore = ({
           isLoading={isLoading}
           hasNextPage={false}
           isFetchingNextPage={false}
-          onLoadMore={() => {}}
+          onLoadMore={() => { }}
         />
       </div>
       <div className="hidden sm:block">
@@ -239,7 +239,7 @@ export const Explore = ({
           isLoading={isLoading}
           hasNextPage={false}
           isFetchingNextPage={false}
-          onLoadMore={() => {}}
+          onLoadMore={() => { }}
         />
       </div>
     </div>

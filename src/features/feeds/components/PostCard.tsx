@@ -105,8 +105,27 @@ export const PostCard = (tweet: Tweet) => {
 
   return (
     <div className="border-b border-neutral-900 p-4 cursor-pointer hover:bg-neutral-900/30 transition-colors hover:bg-neutral-900">
+      {/* Repost Indicator */}
+      {isRepost && (
+        <div className="flex items-center gap-2 mb-2 text-[13px] text-neutral-tertiary">
+          <RepostLine  />
+          <Link
+            href={
+              tweet.agent?.username ? `/profile/${tweet.agent.username}` : "#"
+            }
+            onClick={(e) => e.stopPropagation()}
+            className="hover:underline"
+          >
+            <span className="font-medium text-neutral-primary">
+              {tweet.agent?.displayName}
+            </span>
+          </Link>
+          <span>reposted</span>
+        </div>
+      )}
+      
       <div className="flex gap-4" onClick={handleClick}>
-        {/* Avatar */}
+        {/* Avatar - Always show reposter's avatar for REPOST, otherwise show tweet author */}
         <div className="shrink-0">
           <Link
             href={
@@ -126,98 +145,198 @@ export const PostCard = (tweet: Tweet) => {
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          {/* Header */}
-          <div className="flex flex-col gap-0.5 mb-2">
-            {/* Name and verified badge */}
-            <div className="flex items-center gap-1">
-              <Link
-                href={
-                  tweet.agent?.username
-                    ? `/profile/${tweet.agent.username}`
-                    : "#"
-                }
-                onClick={(e) => e.stopPropagation()}
-              >
-                <span className="text-[15px] font-medium leading-5 text-neutral-primary cursor-pointer hover:underline">
-                  {tweet.agent?.displayName}
-                </span>
-              </Link>
-              {tweet.agent?.xUsername && (
-                <TwitterVerifiedBlue className="w-4 h-4 flex-shrink-0 text-[#1D9BF0]" />
+          {isRepost && tweet.parentTweet ? (
+            <>
+              {/* Reposter's comment if exists */}
+              {tweet.content && (
+                <div className="mb-3 text-[15px] leading-5 text-neutral-primary">
+                  <TweetContent content={tweet.content} />
+                </div>
               )}
-            </div>
 
-            {/* Username, price, time, visibility */}
-            <div className="flex items-center gap-2 text-[13px] leading-4 text-neutral-tertiary">
-              <span className="truncate max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
-                @{tweet.agent?.username}
-              </span>
-              <div className="w-1 h-1 rounded-full bg-[#717171] flex-shrink-0" />
-              <div className="flex items-center gap-1 flex-shrink-0">
-                <span className="text-primary text-right">
-                  {formatNumberShort(tweet.agent?.sharePriceBNB)}
-                </span>
-                <div className="flex items-center">
-                  <ChainPair className="w-3 h-3" />
+              {/* Parent Tweet Card */}
+              <div className="border border-neutral-800 rounded-lg overflow-hidden mb-4">
+                <div className="p-3">
+                  {/* Parent Tweet Header */}
+                  <div className="flex items-center gap-2 mb-2">
+                    <Link
+                      href={
+                        tweet.parentTweet.agent?.username
+                          ? `/profile/${tweet.parentTweet.agent.username}`
+                          : "#"
+                      }
+                      onClick={(e) => e.stopPropagation()}
+                      className="flex items-center gap-1"
+                    >
+                      <CompleteAvatar
+                        src={getAvatarUrl(tweet.parentTweet.agent?.username)}
+                        name={tweet.parentTweet.agent?.username}
+                        size="md"
+                        className="h-8 w-8 border-0"
+                        lastPingAt={tweet.parentTweet.agent?.lastPingAt}
+                      />
+                      <span className="text-[15px] font-medium leading-5 text-neutral-primary hover:underline">
+                        {tweet.parentTweet.agent?.displayName}
+                      </span>
+                      {tweet.parentTweet.agent?.xUsername && (
+                        <TwitterVerifiedBlue className="w-4 h-4 flex-shrink-0 text-[#1D9BF0]" />
+                      )}
+                    </Link>
+                    <div className="flex items-center gap-2 text-[13px] leading-4 text-neutral-tertiary">
+                      <span>@{tweet.parentTweet.agent?.username}</span>
+                      <div className="w-1 h-1 rounded-full bg-[#717171] flex-shrink-0" />
+                      <span>{formatTimestamp(tweet.parentTweet.createdAt)}</span>
+                    </div>
+                  </div>
+
+                  {/* Parent Tweet Content */}
+                  {tweet.parentTweet.content && (
+                    <div className="mb-3 text-[15px] leading-5 text-neutral-primary">
+                      <TweetContent content={tweet.parentTweet.content} />
+                    </div>
+                  )}
+
+                  {/* Parent Tweet Images */}
+                  {images.length > 0 && (
+                    <div
+                      className={`mb-3 gap-2 ${
+                        images.length === 1
+                          ? "grid grid-cols-1"
+                          : images.length === 2
+                            ? "grid grid-cols-2"
+                            : images.length === 3
+                              ? "grid grid-cols-2"
+                              : "grid grid-cols-2"
+                      }`}
+                    >
+                      {images.map((media, index) => (
+                        <div
+                          key={index}
+                          className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${
+                            images.length === 3 && index === 0 ? "col-span-2" : ""
+                          }`}
+                          onClick={(e) => handleImageClick(index, e)}
+                        >
+                          <img
+                            src={media.url}
+                            alt={`Post image ${index + 1}`}
+                            className="w-full h-auto object-cover"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Parent Tweet Videos */}
+                  {videos.length > 0 && (
+                    <div
+                      className="mb-3 space-y-2"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {videos.map((media, index) => (
+                        <VideoPlayer key={index} url={media.url} />
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
-              <div className="w-1 h-1 rounded-full bg-[#717171] flex-shrink-0" />
-              <span className="flex-shrink-0">
-                {formatTimestamp(tweet.createdAt)}
-              </span>
-              <div className="w-1 h-1 rounded-full bg-[#717171] flex-shrink-0" />
-              <GlobeAmericas className="w-4 h-4 flex-shrink-0" />
-            </div>
-          </div>
-
-          {/* Post content - Show parentTweet content for REPOST, otherwise show tweet content */}
-          {displayTweet.content && (
-            <div className="mb-4 text-[15px] leading-5 text-neutral-primary">
-              <TweetContent content={displayTweet.content} />
-            </div>
-          )}
-
-          {/* Images */}
-          {images.length > 0 && (
-            <div
-              className={`mb-4 gap-2 ${
-                images.length === 1
-                  ? "grid grid-cols-1"
-                  : images.length === 2
-                    ? "grid grid-cols-2"
-                    : images.length === 3
-                      ? "grid grid-cols-2"
-                      : "grid grid-cols-2"
-              }`}
-            >
-              {images.map((media, index) => (
-                <div
-                  key={index}
-                  className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${
-                    images.length === 3 && index === 0 ? "col-span-2" : ""
-                  }`}
-                  onClick={(e) => handleImageClick(index, e)}
-                >
-                  <img
-                    src={media.url}
-                    alt={`Post image ${index + 1}`}
-                    className="w-full h-auto object-cover"
-                  />
+            </>
+          ) : (
+            <>
+              {/* Normal Tweet Layout - Header */}
+              <div className="flex flex-col gap-0.5 mb-2">
+                {/* Name and verified badge */}
+                <div className="flex items-center gap-1">
+                  <Link
+                    href={
+                      tweet.agent?.username
+                        ? `/profile/${tweet.agent.username}`
+                        : "#"
+                    }
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <span className="text-[15px] font-medium leading-5 text-neutral-primary cursor-pointer hover:underline">
+                      {tweet.agent?.displayName}
+                    </span>
+                  </Link>
+                  {tweet.agent?.xUsername && (
+                    <TwitterVerifiedBlue className="w-4 h-4 flex-shrink-0 text-[#1D9BF0]" />
+                  )}
                 </div>
-              ))}
-            </div>
-          )}
 
-          {/* Videos */}
-          {videos.length > 0 && (
-            <div
-              className="mb-4 space-y-2"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {videos.map((media, index) => (
-                <VideoPlayer key={index} url={media.url} />
-              ))}
-            </div>
+                {/* Username, price, time, visibility */}
+                <div className="flex items-center gap-2 text-[13px] leading-4 text-neutral-tertiary">
+                  <span className="truncate max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
+                    @{tweet.agent?.username}
+                  </span>
+                  <div className="w-1 h-1 rounded-full bg-[#717171] flex-shrink-0" />
+                  <div className="flex items-center gap-1 flex-shrink-0">
+                    <span className="text-primary text-right">
+                      {formatNumberShort(tweet.agent?.sharePriceBNB)}
+                    </span>
+                    <div className="flex items-center">
+                      <ChainPair className="w-3 h-3" />
+                    </div>
+                  </div>
+                  <div className="w-1 h-1 rounded-full bg-[#717171] flex-shrink-0" />
+                  <span className="flex-shrink-0">
+                    {formatTimestamp(tweet.createdAt)}
+                  </span>
+                  <div className="w-1 h-1 rounded-full bg-[#717171] flex-shrink-0" />
+                  <GlobeAmericas className="w-4 h-4 flex-shrink-0" />
+                </div>
+              </div>
+
+              {/* Post content */}
+              {displayTweet.content && (
+                <div className="mb-4 text-[15px] leading-5 text-neutral-primary">
+                  <TweetContent content={displayTweet.content} />
+                </div>
+              )}
+
+              {/* Images */}
+              {images.length > 0 && (
+                <div
+                  className={`mb-4 gap-2 ${
+                    images.length === 1
+                      ? "grid grid-cols-1"
+                      : images.length === 2
+                        ? "grid grid-cols-2"
+                        : images.length === 3
+                          ? "grid grid-cols-2"
+                          : "grid grid-cols-2"
+                  }`}
+                >
+                  {images.map((media, index) => (
+                    <div
+                      key={index}
+                      className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${
+                        images.length === 3 && index === 0 ? "col-span-2" : ""
+                      }`}
+                      onClick={(e) => handleImageClick(index, e)}
+                    >
+                      <img
+                        src={media.url}
+                        alt={`Post image ${index + 1}`}
+                        className="w-full h-auto object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Videos */}
+              {videos.length > 0 && (
+                <div
+                  className="mb-4 space-y-2"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {videos.map((media, index) => (
+                    <VideoPlayer key={index} url={media.url} />
+                  ))}
+                </div>
+              )}
+            </>
           )}
 
           {/* Actions - Use stats from parentTweet for REPOST */}

@@ -5,9 +5,13 @@ import { JustTGEDItem } from "./JustTGEDItem";
 import { useInfiniteScroll } from "./useInfiniteScroll";
 import { useJustTGEDActivities } from "./useJustTGEDActivities";
 
-export const JustTGEDTab = () => {
+interface JustTGEDTabProps {
+  enabled?: boolean;
+}
+
+export const JustTGEDTab = ({ enabled = true }: JustTGEDTabProps = {}) => {
   const { activities, isLoading, isLoadingMore, hasNextPage, fetchNextPage } =
-    useJustTGEDActivities(true);
+    useJustTGEDActivities(enabled);
 
   const observerTarget = useInfiniteScroll({
     hasNextPage,
