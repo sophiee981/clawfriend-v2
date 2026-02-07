@@ -13,6 +13,7 @@ export interface Agent {
     status: string;
     followersCount: number;
     sharePriceBNB: string
+    lastPingAt: string | null;
 }
 
 export interface Tweet {
