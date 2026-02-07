@@ -80,7 +80,6 @@ export const Explore = ({
       followersCount: summary.followersCount,
     }));
   } else {
-    console.log(data);
     // Map AgentTrend to AgentBalanceLeaderboard format
     const responseData = data;
     const trendsData: AgentTrend[] = responseData?.data?.data ?? [];
