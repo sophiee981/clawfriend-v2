@@ -8,7 +8,13 @@ import { useEffect, useRef, useState } from "react";
 export const useInView = (options?: IntersectionObserverInit) => {
   const ref = useRef<HTMLElement>(null);
   const [isInView, setIsInView] = useState(false);
-  const [hasAnimated, setHasAnimated] = useState(false);
+  const hasAnimatedRef = useRef(false);
+  const optionsRef = useRef(options);
+
+  // Update options ref when options change
+  useEffect(() => {
+    optionsRef.current = options;
+  }, [options]);
 
   useEffect(() => {
     const element = ref.current;
@@ -21,21 +27,21 @@ export const useInView = (options?: IntersectionObserverInit) => {
 
     if (prefersReducedMotion) {
       setIsInView(true);
-      setHasAnimated(true);
+      hasAnimatedRef.current = true;
       return;
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !hasAnimated) {
+        if (entry.isIntersecting && !hasAnimatedRef.current) {
           setIsInView(true);
-          setHasAnimated(true);
+          hasAnimatedRef.current = true;
         }
       },
       {
         threshold: 0.1,
         rootMargin: "0px 0px -50px 0px",
-        ...options,
+        ...optionsRef.current,
       }
     );
 
@@ -44,7 +50,7 @@ export const useInView = (options?: IntersectionObserverInit) => {
     return () => {
       observer.disconnect();
     };
-  }, [hasAnimated, options]);
+  }, []); // Empty deps - only run once
 
   return { ref, isInView };
 };
@@ -55,6 +61,13 @@ export const useInView = (options?: IntersectionObserverInit) => {
 export const useParallax = (speed: number = 0.5) => {
   const ref = useRef<HTMLElement>(null);
   const [offset, setOffset] = useState(0);
+  const rafRef = useRef<number | null>(null);
+  const speedRef = useRef(speed);
+
+  // Update speed ref when speed changes
+  useEffect(() => {
+    speedRef.current = speed;
+  }, [speed]);
 
   useEffect(() => {
     const element = ref.current;
@@ -84,8 +97,17 @@ export const useParallax = (speed: number = 0.5) => {
         scrollY + windowHeight > elementTop &&
         scrollY < elementTop + elementHeight
       ) {
-        const parallaxOffset = (scrollY - elementTop) * speed;
-        setOffset(parallaxOffset);
+        const parallaxOffset = (scrollY - elementTop) * speedRef.current;
+
+        // Use requestAnimationFrame to batch updates
+        if (rafRef.current !== null) {
+          cancelAnimationFrame(rafRef.current);
+        }
+
+        rafRef.current = requestAnimationFrame(() => {
+          setOffset(parallaxOffset);
+          rafRef.current = null;
+        });
       }
     };
 
@@ -94,16 +116,19 @@ export const useParallax = (speed: number = 0.5) => {
     );
 
     if (scrollContainer) {
-      scrollContainer.addEventListener("scroll", handleScroll);
+      scrollContainer.addEventListener("scroll", handleScroll, { passive: true });
       handleScroll(); // Initial call
     }
 
     return () => {
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+      }
       if (scrollContainer) {
         scrollContainer.removeEventListener("scroll", handleScroll);
       }
     };
-  }, [speed]);
+  }, []); // Empty deps - speed is handled via ref
 
   return { ref, offset };
 };
@@ -113,6 +138,8 @@ export const useParallax = (speed: number = 0.5) => {
  */
 export const useScrollProgress = () => {
   const [progress, setProgress] = useState(0);
+  const rafRef = useRef<number | null>(null);
+  const lastProgressRef = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -128,8 +155,24 @@ export const useScrollProgress = () => {
 
       const totalScroll = scrollHeight - clientHeight;
       const currentProgress = (scrollTop / totalScroll) * 100;
+      const clampedProgress = Math.min(100, Math.max(0, currentProgress));
 
-      setProgress(Math.min(100, Math.max(0, currentProgress)));
+      // Only update if progress changed significantly (reduce unnecessary updates)
+      if (Math.abs(clampedProgress - lastProgressRef.current) < 0.1) {
+        return;
+      }
+
+      lastProgressRef.current = clampedProgress;
+
+      // Use requestAnimationFrame to batch updates
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+      }
+
+      rafRef.current = requestAnimationFrame(() => {
+        setProgress(clampedProgress);
+        rafRef.current = null;
+      });
     };
 
     const scrollContainer = document.querySelector(
@@ -137,11 +180,14 @@ export const useScrollProgress = () => {
     );
 
     if (scrollContainer) {
-      scrollContainer.addEventListener("scroll", handleScroll);
+      scrollContainer.addEventListener("scroll", handleScroll, { passive: true });
       handleScroll(); // Initial call
     }
 
     return () => {
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+      }
       if (scrollContainer) {
         scrollContainer.removeEventListener("scroll", handleScroll);
       }

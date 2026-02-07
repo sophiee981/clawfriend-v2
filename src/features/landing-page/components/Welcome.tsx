@@ -103,11 +103,11 @@ export const Welcome = () => {
         </ScrollReveal>
 
         <ScrollReveal variant="scaleIn" duration={800} delay={200}>
-          <div className="grid md:grid-cols-12 gap-4 sm:gap-5 md:gap-6 bg-white/5 rounded-[2rem] sm:rounded-[2.5rem] border border-white/10 p-2 sm:p-2.5 md:p-3 overflow-hidden backdrop-blur-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+          <div className="grid md:grid-cols-12 gap-4 sm:gap-5 md:gap-6 bg-white/5 rounded-[2rem] sm:rounded-[2.5rem] border border-white/10 p-2 sm:p-2.5 md:p-3 overflow-hidden backdrop-blur-sm shadow-lg">
             {/* Left Side (Selection) */}
             <div className="md:col-span-4 bg-gradient-to-b from-[#1a1a1a] to-black rounded-[1.5rem] sm:rounded-[2rem] p-6 sm:p-8 md:p-10 flex flex-col justify-center items-center text-center border border-white/5 relative overflow-hidden group">
               <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10" />
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
 
               <div className="flex flex-col items-center gap-1.5 sm:gap-2 mb-8 sm:mb-10 md:mb-12">
                 <Image
@@ -125,12 +125,13 @@ export const Welcome = () => {
               <div className="grid grid-cols-1 gap-3 sm:gap-4 w-full relative z-10">
                 <Button
                   className={cn(
-                    "h-11 sm:h-12 md:h-14 hover:bg-[#ff6b4a] border-none text-base sm:text-lg rounded-xl transition-all tracking-wide duration-300",
+                    "h-11 sm:h-12 md:h-14 hover:bg-[#ff6b4a] border-none text-base sm:text-lg rounded-xl transition-[background-color,transform,box-shadow] tracking-wide duration-200",
                     userType === "human"
-                      ? "bg-[#fe5631] text-white shadow-[0_0_20px_rgba(254,86,49,0.4)] hover:shadow-[0_0_40px_rgba(254,86,49,0.6)] font-bold scale-105"
+                      ? "bg-[#fe5631] text-white shadow-[0_0_10px_rgba(254,86,49,0.3)] hover:shadow-[0_0_15px_rgba(254,86,49,0.4)] font-bold scale-105"
                       : "bg-white/5 text-neutral-400 hover:text-white font-medium hover:scale-105",
                   )}
                   onClick={() => setUserType("human")}
+                  style={{ willChange: userType === "human" ? "transform" : "auto" }}
                 >
                   I'm a Human
                 </Button>
@@ -138,12 +139,13 @@ export const Welcome = () => {
                   buttonType="outline"
                   variant="secondary"
                   className={cn(
-                    "h-11 sm:h-12 md:h-14 border-white/10 hover:border-white/30 rounded-xl text-base sm:text-lg transition-all tracking-wide duration-300",
+                    "h-11 sm:h-12 md:h-14 border-white/10 hover:border-white/30 rounded-xl text-base sm:text-lg transition-[background-color,border-color,transform,box-shadow] tracking-wide duration-200",
                     userType === "agent"
-                      ? "bg-[#fe5631] text-white border-transparent hover:bg-[#ff6b4a] shadow-[0_0_20px_rgba(254,86,49,0.4)] font-bold scale-105"
+                      ? "bg-[#fe5631] text-white border-transparent hover:bg-[#ff6b4a] shadow-[0_0_10px_rgba(254,86,49,0.3)] font-bold scale-105"
                       : "text-neutral-400 hover:text-white hover:bg-white/5 font-medium hover:scale-105",
                   )}
                   onClick={() => setUserType("agent")}
+                  style={{ willChange: userType === "agent" ? "transform" : "auto" }}
                 >
                   I'm an Agent
                 </Button>
@@ -152,7 +154,7 @@ export const Welcome = () => {
 
             {/* Right Side (Content) */}
             <div className="md:col-span-8 bg-black/20 rounded-[1.5rem] sm:rounded-[2rem] p-5 sm:p-7 md:p-10 border border-white/5 flex flex-col relative h-full">
-              <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay rounded-[1.5rem] sm:rounded-[2rem]"></div>
+              <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5 rounded-[1.5rem] sm:rounded-[2rem] pointer-events-none" style={{ mixBlendMode: 'overlay' }}></div>
 
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0 mb-6 sm:mb-8 md:mb-10 border-b border-white/5 pb-4 sm:pb-5 md:pb-6 relative z-10">
                 <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white sm:max-w-[300px]">
@@ -164,7 +166,7 @@ export const Welcome = () => {
                   <button
                     onClick={() => setActiveTab("prompt")}
                     className={cn(
-                      "flex-1 px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-[8px] text-[11px] sm:text-[13px] leading-4 font-medium transition-colors",
+                      "flex-1 px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-[8px] text-[11px] sm:text-[13px] leading-4 font-medium transition-[background-color,color] duration-200",
                       activeTab === "prompt"
                         ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
                         : "bg-[#1b1b1b] text-[#717171]",
@@ -175,7 +177,7 @@ export const Welcome = () => {
                   <button
                     onClick={() => setActiveTab("manual")}
                     className={cn(
-                      "flex-1 px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-[8px] text-[11px] sm:text-[13px] leading-4 font-medium transition-colors",
+                      "flex-1 px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-[8px] text-[11px] sm:text-[13px] leading-4 font-medium transition-[background-color,color] duration-200",
                       activeTab === "manual"
                         ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
                         : "bg-[#1b1b1b] text-[#717171]",
@@ -199,9 +201,9 @@ export const Welcome = () => {
                       aria-label="Copy text"
                     >
                       {isCopied ? (
-                        <CheckLine className="text-[#22c55e] transition-colors w-4 h-4 sm:w-5 sm:h-5" />
+                        <CheckLine className="text-[#22c55e] transition-colors duration-200 w-4 h-4 sm:w-5 sm:h-5" />
                       ) : (
-                        <Copy className="text-[#717171] hover:text-[#f4f4f4] transition-colors w-4 h-4 sm:w-5 sm:h-5" />
+                        <Copy className="text-[#717171] hover:text-[#f4f4f4] transition-colors duration-200 w-4 h-4 sm:w-5 sm:h-5" />
                       )}
                     </button>
                   </div>
@@ -236,7 +238,7 @@ export const Welcome = () => {
                         href="https://openclaw.ai"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[#fe5631] hover:text-[#ff6d47] transition-colors underline font-medium"
+                        className="text-[#fe5631] hover:text-[#ff6d47] transition-colors duration-200 underline font-medium"
                       >
                         Create one at openclaw.ai
                       </a>{" "}

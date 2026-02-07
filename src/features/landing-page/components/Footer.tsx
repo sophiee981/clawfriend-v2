@@ -3,9 +3,10 @@
 import { ScrollReveal } from "@/components/animations";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { useCallback } from "react";
 
 export const Footer = () => {
-  const handleScroll = (href: string) => {
+  const handleScroll = useCallback((href: string) => {
     const isSmallScreen =
       typeof window !== "undefined" && window.innerWidth < 768;
     const smallScreenOffset = 30; // px
@@ -62,23 +63,23 @@ export const Footer = () => {
         target.scrollIntoView({ behavior: "smooth", block: "center" });
       }
     }
-  };
+  }, []);
 
   return (
     <footer className="relative border-t border-white/5 pt-12 sm:pt-16 md:pt-20 pb-8 sm:pb-10 overflow-hidden">
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5 mix-blend-overlay"></div>
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] sm:w-[800px] md:w-[1000px] h-[300px] sm:h-[350px] md:h-[400px] bg-[#fe5631]/5 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-3 pointer-events-none" style={{ mixBlendMode: 'overlay' }}></div>
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] sm:w-[800px] md:w-[1000px] h-[300px] sm:h-[350px] md:h-[400px] bg-[#fe5631]/5 blur-[60px] rounded-full pointer-events-none" />
 
       <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 relative z-10">
         <ScrollReveal variant="scaleIn" duration={800}>
-          <div className="mb-12 sm:mb-16 md:mb-20 rounded-2xl sm:rounded-3xl bg-neutral-900/50 border border-white/10 p-6 sm:p-8 md:p-10 lg:p-16 text-center relative overflow-hidden group hover:border-[#fe5631]/30 transition-all duration-500">
-            <div className="absolute inset-0 bg-gradient-to-b from-[#fe5631]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+          <div className="mb-12 sm:mb-16 md:mb-20 rounded-2xl sm:rounded-3xl bg-neutral-900/50 border border-white/10 p-6 sm:p-8 md:p-10 lg:p-16 text-center relative overflow-hidden group hover:border-[#fe5631]/30 transition-[border-color] duration-200">
+            <div className="absolute inset-0 bg-gradient-to-b from-[#fe5631]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-white mb-4 sm:mb-5 md:mb-6 relative z-10 tracking-tight">
               Deploy an agent.
               <br />
               Fund it.
-              <span className="text-[#fe5631] drop-shadow-[0_0_10px_rgba(254,86,49,0.5)]">
+              <span className="text-[#fe5631] drop-shadow-[0_0_6px_rgba(254,86,49,0.3)]">
                 Watch it earn.
               </span>
             </h2>
@@ -87,20 +88,20 @@ export const Footer = () => {
               24/7 so you don't have to.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 relative z-10 px-2 sm:px-0">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 sm:gap-6 md:gap-8 relative z-10 px-2 sm:px-0">
               <Button
                 size="lg"
                 onClick={() => handleScroll("#welcome")}
-                className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg bg-[#fe5631] text-white hover:bg-[#ff6b4a] hover:scale-110 transition-all duration-300 shadow-[0_0_30px_rgba(254,86,49,0.3)] hover:shadow-[0_0_50px_rgba(254,86,49,0.5)] font-bold rounded-xl w-full sm:w-[200px] tracking-wide relative overflow-hidden group"
+                className="h-12 sm:h-14 md:h-16 px-6 sm:px-8 md:px-10 text-sm sm:text-base md:text-lg bg-[#fe5631] text-white hover:bg-[#ff6b4a] hover:scale-110 transition-all duration-300 shadow-[0_0_8px_rgba(254,86,49,0.3)] hover:shadow-[0_0_15px_rgba(254,86,49,0.5)] border-none font-bold rounded-xl sm:rounded-2xl w-full sm:w-[200px] tracking-wide relative overflow-hidden group"
               >
                 <span className="relative z-10">Deploy Your Agent</span>
                 <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></span>
               </Button>
               <Button
                 size="lg"
-                variant="secondary"
+                buttonType="transparent"
                 onClick={() => handleScroll("#welcome")}
-                className="h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg bg-white/5 border border-white/10 text-neutral-300 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300 rounded-xl w-full sm:w-[200px] font-medium tracking-wide"
+                className="h-12 sm:h-14 md:h-16 px-6 sm:px-8 md:px-10 text-sm sm:text-base md:text-lg text-neutral-300 border border-white/10 bg-white/5 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm rounded-xl sm:rounded-2xl w-full sm:w-[200px] font-medium tracking-wide"
               >
                 Sign in
               </Button>
@@ -134,7 +135,7 @@ export const Footer = () => {
                 <li>
                   <a
                     href="#"
-                    className="hover:text-[#fe5631] transition-colors"
+                    className="hover:text-[#fe5631] transition-colors duration-200"
                   >
                     Documentation
                   </a>
@@ -142,7 +143,7 @@ export const Footer = () => {
                 <li>
                   <a
                     href="#"
-                    className="hover:text-[#fe5631] transition-colors"
+                    className="hover:text-[#fe5631] transition-colors duration-200"
                   >
                     GitHub
                   </a>
@@ -150,7 +151,7 @@ export const Footer = () => {
                 <li>
                   <a
                     href="#"
-                    className="hover:text-[#fe5631] transition-colors"
+                    className="hover:text-[#fe5631] transition-colors duration-200"
                   >
                     Smart Contracts
                   </a>
@@ -164,17 +165,17 @@ export const Footer = () => {
               </h4>
               <ul className="space-y-3 sm:space-y-4 text-xs sm:text-sm text-neutral-500">
                 <li>
-                  <a href="" className="hover:text-[#fe5631] transition-colors">
+                  <a href="" className="hover:text-[#fe5631] transition-colors duration-200">
                     X / Twitter
                   </a>
                 </li>
                 <li>
-                  <a href="" className="hover:text-[#fe5631] transition-colors">
+                  <a href="" className="hover:text-[#fe5631] transition-colors duration-200">
                     Telegram
                   </a>
                 </li>
                 <li>
-                  <a href="" className="hover:text-[#fe5631] transition-colors">
+                  <a href="" className="hover:text-[#fe5631] transition-colors duration-200">
                     Discord
                   </a>
                 </li>
@@ -187,10 +188,10 @@ export const Footer = () => {
           <div className="flex flex-col md:flex-row items-center justify-between pt-6 sm:pt-8 border-t border-white/5 text-[10px] sm:text-xs text-neutral-600 font-mono gap-4 md:gap-0">
             <p>© 2026 ClawFriend.ai. All rights reserved.</p>
             <div className="flex gap-4 sm:gap-6">
-              <a href="#" className="hover:text-neutral-400 transition-colors">
+              <a href="#" className="hover:text-neutral-400 transition-colors duration-200">
                 Terms
               </a>
-              <a href="#" className="hover:text-neutral-400 transition-colors">
+              <a href="#" className="hover:text-neutral-400 transition-colors duration-200">
                 Privacy
               </a>
             </div>
