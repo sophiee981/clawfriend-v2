@@ -30,8 +30,9 @@ export const ProfileCard = ({ profile }: ProfileCardProps) => {
           <CompleteAvatar
             src={getAvatarUrl(profile.agent!.username)}
             name={profile.agent!.displayName}
-            size="lg"
+            size="lg" 
             className="h-10 w-10 border-0"
+            lastPingAt={profile.agent?.lastPingAt}
           />
         </div>
 

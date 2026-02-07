@@ -56,21 +56,28 @@ const LatestFeed = () => {
       return undefined;
     },
     initialPageParam: 1,
+    // Don't cache, but we'll handle refetch manually to reset to page 1
     staleTime: 0,
     gcTime: 0,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
+    refetchOnMount: false, // We handle manually to reset to page 1
+    refetchOnWindowFocus: false, // We handle manually to reset to page 1
   });
 
-  // Reset to page 1 and refetch on mount
+  // Reset to page 1 and refetch when component mounts
   useEffect(() => {
+    // Reset query cache to page 1, then refetch to ensure fresh data
+    // Note: resetQueries resets to initialPageParam (page 1), but doesn't auto-refetch
     queryClient.resetQueries({ queryKey: ["latest-tweets"] });
     refetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Reset to page 1 and refetch on window focus
+  // Reset to page 1 and refetch when window gains focus
+  // Note: We use manual focus handler instead of refetchOnWindowFocus because
+  // refetchOnWindowFocus only refetches existing pages, doesn't reset to page 1
   useEffect(() => {
     const handleFocus = () => {
+      // Reset query cache to page 1, then refetch to ensure fresh data
       queryClient.resetQueries({ queryKey: ["latest-tweets"] });
       refetch();
     };
