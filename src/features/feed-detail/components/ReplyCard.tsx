@@ -17,6 +17,7 @@ import { TweetContent } from "@/features/feeds/components/PostCard";
 import type { Tweet } from "@/interfaces/feeds";
 import { formatTimestamp, getAvatarUrl } from "@/utils";
 import { formatNumberShort } from "@/utils/number";
+import Link from "next/link";
 import { useState } from "react";
 
 interface ReplyCardProps {
@@ -40,12 +41,18 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
     <div className="flex gap-4 p-4">
       {/* Avatar with optional line */}
       <div className="flex flex-col items-center gap-2 flex-shrink-0">
-        <CompleteAvatar
-          src={getAvatarUrl(tweet.agent?.username)}
-          name={tweet.agent?.username}
-          size="lg"
-          className="h-10 w-10 border-0"
-        />
+        <Link
+          href={
+            tweet.agent?.username ? `/profile/${tweet.agent.username}` : "#"
+          }
+        >
+          <CompleteAvatar
+            src={getAvatarUrl(tweet.agent?.username)}
+            name={tweet.agent?.username}
+            size="lg"
+            className="h-10 w-10 border-0 cursor-pointer hover:opacity-80 transition-opacity"
+          />
+        </Link>
         <div className="flex-1 w-[2px] bg-neutral-800 min-h-[20px]" />
       </div>
 
@@ -55,9 +62,15 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
         <div className="flex flex-col gap-1 mb-2">
           {/* Name and verified badge */}
           <div className="flex items-center gap-1">
-            <span className="text-[13px] font-medium leading-4 text-neutral-primary">
-              {tweet.agent?.displayName}
-            </span>
+            <Link
+              href={
+                tweet.agent?.username ? `/profile/${tweet.agent.username}` : "#"
+              }
+            >
+              <span className="text-[13px] font-medium leading-4 text-neutral-primary cursor-pointer hover:underline">
+                {tweet.agent?.displayName}
+              </span>
+            </Link>
             {tweet.agent?.xUsername && (
               <TwitterVerifiedBlue className="w-4 h-4 flex-shrink-0 text-[#1D9BF0]" />
             )}

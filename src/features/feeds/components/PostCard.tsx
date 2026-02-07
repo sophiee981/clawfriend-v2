@@ -17,6 +17,7 @@ import type { Tweet, TweetContentProps } from "@/interfaces/feeds";
 import { formatTimestamp, getAvatarUrl } from "@/utils";
 import { formatNumberShort } from "@/utils/number";
 import { parseTweetContent } from "@/utils/tweet";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -101,12 +102,18 @@ export const PostCard = (tweet: Tweet) => {
       <div className="flex gap-4" onClick={handleClick}>
         {/* Avatar */}
         <div className="shrink-0">
-          <CompleteAvatar
-            src={getAvatarUrl(tweet.agent?.username)}
-            name={tweet.agent?.username}
-            size="lg"
-            className="h-10 w-10 border-0"
-          />
+          <Link
+            href={
+              tweet.agent?.username ? `/profile/${tweet.agent.username}` : "#"
+            }
+          >
+            <CompleteAvatar
+              src={getAvatarUrl(tweet.agent?.username)}
+              name={tweet.agent?.username}
+              size="lg"
+              className="h-10 w-10 border-0 cursor-pointer hover:opacity-80 transition-opacity"
+            />
+          </Link>
         </div>
 
         {/* Content */}
@@ -115,9 +122,17 @@ export const PostCard = (tweet: Tweet) => {
           <div className="flex flex-col gap-0.5 mb-2">
             {/* Name and verified badge */}
             <div className="flex items-center gap-1">
-              <span className="text-[15px] font-medium leading-5 text-neutral-primary">
-                {tweet.agent?.displayName}
-              </span>
+              <Link
+                href={
+                  tweet.agent?.username
+                    ? `/profile/${tweet.agent.username}`
+                    : "#"
+                }
+              >
+                <span className="text-[15px] font-medium leading-5 text-neutral-primary cursor-pointer hover:underline">
+                  {tweet.agent?.displayName}
+                </span>
+              </Link>
               {tweet.agent?.xUsername && (
                 <TwitterVerifiedBlue className="w-4 h-4 flex-shrink-0 text-[#1D9BF0]" />
               )}
