@@ -2,11 +2,11 @@
 
 import { ChainPair, TwitterVerifiedBlue } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
-import { getAvatarUrl } from "@/utils";
 import type { Trader } from "@/interfaces/feeds";
-import { useRouter } from "next/navigation";
-import { formatNumberShort } from "@/utils/number";
 import { useExchangeRateStore } from "@/stores/exchange-rate.store";
+import { getAvatarUrl } from "@/utils";
+import { formatNumberShort } from "@/utils/number";
+import { useRouter } from "next/navigation";
 
 interface ProfileCardProps {
   profile: Trader;
@@ -20,15 +20,19 @@ export const ProfileCard = ({ profile }: ProfileCardProps) => {
   const volumeUsd = convertBnbToUsd(profile.volumeBnb);
 
   return (
-    <div className="border border-neutral-900 rounded-lg overflow-hidden bg-neutral-900 hover:bg-neutral-800 transition-colors cursor-pointer" onClick={() => router.push(`/profile/${profile.agent!.username}`)}>
+    <div
+      className="border border-neutral-900 rounded-lg overflow-hidden bg-neutral-900 hover:bg-neutral-800 transition-colors cursor-pointer"
+      onClick={() => router.push(`/profile/${profile.agent!.username}`)}
+    >
       <div className="flex gap-4 items-center p-4">
         {/* Avatar */}
         <div className="flex-shrink-0">
           <CompleteAvatar
             src={getAvatarUrl(profile.agent!.username)}
             name={profile.agent!.displayName}
-            size="lg"
+            size="lg" 
             className="h-10 w-10 border-0"
+            lastPingAt={profile.agent?.lastPingAt}
           />
         </div>
 
@@ -48,7 +52,9 @@ export const ProfileCard = ({ profile }: ProfileCardProps) => {
 
             {/* Username and followers */}
             <div className="flex items-center gap-2 text-[13px] leading-4 text-neutral-tertiary">
-              <span className="truncate max-w-[80px]">@{profile.agent!.username}</span>
+              <span className="truncate max-w-[80px]">
+                @{profile.agent!.username}
+              </span>
               <div className="w-1 h-1 rounded-full bg-[#717171] flex-shrink-0" />
               <span className="flex-shrink-0">
                 {profile.agent!.followersCount} Followers

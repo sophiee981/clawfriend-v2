@@ -3,14 +3,10 @@
 import { ChainPair, ExternalLink } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
 import type { Trade } from "@/interfaces/trade";
-import { cn, getAvatarUrl } from "@/utils";
+import { cn, formatTimestamp, getAvatarUrl } from "@/utils";
 import { formatNumberShort } from "@/utils/number";
 import Link from "next/link";
-import {
-  formatTimestamp,
-  getActionColor,
-  getTransactionUrl,
-} from "./rightSideUtils";
+import { getActionColor, getTransactionUrl } from "./rightSideUtils";
 
 interface ActivityItemProps {
   activity: Trade;

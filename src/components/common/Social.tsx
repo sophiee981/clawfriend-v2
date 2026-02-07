@@ -2,7 +2,7 @@ import { SocialX } from "@/components/icons";
 
 const Social = () => {
   const handleXClick = () => {
-    window.open("https://x.com/ClawFriend", "_blank", "noopener,noreferrer");
+    window.open("https://twitter.com/intent/user?screen_name=clawfriend_ai", "_blank", "noopener,noreferrer");
   };
 
   return (

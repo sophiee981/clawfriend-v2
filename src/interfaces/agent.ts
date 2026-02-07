@@ -34,6 +34,7 @@ export interface GetAgentByUsernameResponse {
   totalSupply: number;
   totalHolder: number;
   yourShare: number;
+  bio?: string | null;
 }
 
 export interface AgentInfoByVerify {

@@ -14,9 +14,10 @@ import { CompleteAvatar } from "@/components/ui/avatar";
 import { ImageViewer } from "@/components/ui/image-viewer";
 import { VideoPlayer } from "@/components/ui/video-player";
 import type { Tweet, TweetContentProps } from "@/interfaces/feeds";
-import { getAvatarUrl } from "@/utils";
+import { formatTimestamp, getAvatarUrl } from "@/utils";
 import { formatNumberShort } from "@/utils/number";
 import { parseTweetContent } from "@/utils/tweet";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -86,19 +87,6 @@ export const PostCard = (tweet: Tweet) => {
   const images = tweet.medias?.filter((m) => m.type === "image") || [];
   const videos = tweet.medias?.filter((m) => m.type === "video") || [];
 
-  // Format timestamp (you can customize this)
-  const formatTimestamp = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diff = now.getTime() - date.getTime();
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const days = Math.floor(hours / 24);
-
-    if (days > 0) return `${days}d ago`;
-    if (hours > 0) return `${hours}h ago`;
-    return "Just now";
-  };
-
   const handleClick = () => {
     router.push(`/feeds/${tweet.id}`);
   };
@@ -114,12 +102,20 @@ export const PostCard = (tweet: Tweet) => {
       <div className="flex gap-4" onClick={handleClick}>
         {/* Avatar */}
         <div className="shrink-0">
-          <CompleteAvatar
-            src={getAvatarUrl(tweet.agent?.username)}
-            name={tweet.agent?.username}
-            size="lg"
-            className="h-10 w-10 border-0"
-          />
+          <Link
+            href={
+              tweet.agent?.username ? `/profile/${tweet.agent.username}` : "#"
+            }
+            onClick={(e) => e.stopPropagation()}
+          >
+            <CompleteAvatar
+              src={getAvatarUrl(tweet.agent?.username)}
+              name={tweet.agent?.username}
+              size="lg"
+              className="h-10 w-10 border-0 cursor-pointer hover:opacity-80 transition-opacity"
+              lastPingAt={tweet.agent?.lastPingAt}
+            />
+          </Link>
         </div>
 
         {/* Content */}
@@ -128,9 +124,18 @@ export const PostCard = (tweet: Tweet) => {
           <div className="flex flex-col gap-0.5 mb-2">
             {/* Name and verified badge */}
             <div className="flex items-center gap-1">
-              <span className="text-[15px] font-medium leading-5 text-neutral-primary">
-                {tweet.agent?.displayName}
-              </span>
+              <Link
+                href={
+                  tweet.agent?.username
+                    ? `/profile/${tweet.agent.username}`
+                    : "#"
+                }
+                onClick={(e) => e.stopPropagation()}
+              >
+                <span className="text-[15px] font-medium leading-5 text-neutral-primary cursor-pointer hover:underline">
+                  {tweet.agent?.displayName}
+                </span>
+              </Link>
               {tweet.agent?.xUsername && (
                 <TwitterVerifiedBlue className="w-4 h-4 flex-shrink-0 text-[#1D9BF0]" />
               )}
@@ -143,7 +148,9 @@ export const PostCard = (tweet: Tweet) => {
               </span>
               <div className="w-1 h-1 rounded-full bg-[#717171] flex-shrink-0" />
               <div className="flex items-center gap-1 flex-shrink-0">
-                <span className="text-primary text-right">{formatNumberShort(tweet.agent?.sharePriceBNB)}</span>
+                <span className="text-primary text-right">
+                  {formatNumberShort(tweet.agent?.sharePriceBNB)}
+                </span>
                 <div className="flex items-center">
                   <ChainPair className="w-3 h-3" />
                 </div>
@@ -165,20 +172,22 @@ export const PostCard = (tweet: Tweet) => {
           {/* Images */}
           {images.length > 0 && (
             <div
-              className={`mb-4 gap-2 ${images.length === 1
-                ? "grid grid-cols-1"
-                : images.length === 2
-                  ? "grid grid-cols-2"
-                  : images.length === 3
+              className={`mb-4 gap-2 ${
+                images.length === 1
+                  ? "grid grid-cols-1"
+                  : images.length === 2
                     ? "grid grid-cols-2"
-                    : "grid grid-cols-2"
-                }`}
+                    : images.length === 3
+                      ? "grid grid-cols-2"
+                      : "grid grid-cols-2"
+              }`}
             >
               {images.map((media, index) => (
                 <div
                   key={index}
-                  className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${images.length === 3 && index === 0 ? "col-span-2" : ""
-                    }`}
+                  className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${
+                    images.length === 3 && index === 0 ? "col-span-2" : ""
+                  }`}
                   onClick={(e) => handleImageClick(index, e)}
                 >
                   <img

@@ -15,24 +15,10 @@ import { ImageViewer } from "@/components/ui/image-viewer";
 import { VideoPlayer } from "@/components/ui/video-player";
 import { TweetContent } from "@/features/feeds/components/PostCard";
 import type { Tweet } from "@/interfaces/feeds";
-import { getAvatarUrl } from "@/utils";
+import { formatTimestamp, getAvatarUrl } from "@/utils";
 import { formatNumberShort } from "@/utils/number";
+import Link from "next/link";
 import { useState } from "react";
-
-// Format timestamp
-const formatTimestamp = (dateString: string) => {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diff = now.getTime() - date.getTime();
-  const hours = Math.floor(diff / (1000 * 60 * 60));
-  const days = Math.floor(hours / 24);
-
-  if (days > 0) return `${days}d`;
-  if (hours > 0) return `${hours}h`;
-  const minutes = Math.floor(diff / (1000 * 60));
-  if (minutes > 0) return `${minutes}m`;
-  return "Just now";
-};
 
 interface ReplyCardProps {
   tweet: Tweet;
@@ -55,12 +41,19 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
     <div className="flex gap-4 p-4">
       {/* Avatar with optional line */}
       <div className="flex flex-col items-center gap-2 flex-shrink-0">
-        <CompleteAvatar
-          src={getAvatarUrl(tweet.agent?.username)}
-          name={tweet.agent?.username}
-          size="lg"
-          className="h-10 w-10 border-0"
-        />
+        <Link
+          href={
+            tweet.agent?.username ? `/profile/${tweet.agent.username}` : "#"
+          }
+        >
+          <CompleteAvatar
+            src={getAvatarUrl(tweet.agent?.username)}
+            name={tweet.agent?.username}
+            size="lg"
+            className="h-10 w-10 border-0 cursor-pointer hover:opacity-80 transition-opacity"
+            lastPingAt={tweet.agent?.lastPingAt}
+          />
+        </Link>
         <div className="flex-1 w-[2px] bg-neutral-800 min-h-[20px]" />
       </div>
 
@@ -70,9 +63,15 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
         <div className="flex flex-col gap-1 mb-2">
           {/* Name and verified badge */}
           <div className="flex items-center gap-1">
-            <span className="text-[13px] font-medium leading-4 text-neutral-primary">
-              {tweet.agent?.displayName}
-            </span>
+            <Link
+              href={
+                tweet.agent?.username ? `/profile/${tweet.agent.username}` : "#"
+              }
+            >
+              <span className="text-[13px] font-medium leading-4 text-neutral-primary cursor-pointer hover:underline">
+                {tweet.agent?.displayName}
+              </span>
+            </Link>
             {tweet.agent?.xUsername && (
               <TwitterVerifiedBlue className="w-4 h-4 flex-shrink-0 text-[#1D9BF0]" />
             )}
@@ -85,7 +84,9 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
             </span>
             <div className="w-1 h-1 rounded-full bg-[#717171] opacity-60 flex-shrink-0" />
             <div className="flex items-center gap-1 flex-shrink-0">
-              <span className="text-primary text-right">{formatNumberShort(tweet.agent?.sharePriceBNB)}</span>
+              <span className="text-primary text-right">
+                {formatNumberShort(tweet.agent?.sharePriceBNB)}
+              </span>
               <div className="flex items-center">
                 <ChainPair className="w-3 h-3" />
               </div>
@@ -107,20 +108,22 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
         {/* Images */}
         {images.length > 0 && (
           <div
-            className={`mb-4 gap-2 ${images.length === 1
-              ? "grid grid-cols-1"
-              : images.length === 2
-                ? "grid grid-cols-2"
-                : images.length === 3
+            className={`mb-4 gap-2 ${
+              images.length === 1
+                ? "grid grid-cols-1"
+                : images.length === 2
                   ? "grid grid-cols-2"
-                  : "grid grid-cols-2"
-              }`}
+                  : images.length === 3
+                    ? "grid grid-cols-2"
+                    : "grid grid-cols-2"
+            }`}
           >
             {images.map((media, index) => (
               <div
                 key={index}
-                className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${images.length === 3 && index === 0 ? "col-span-2" : ""
-                  }`}
+                className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${
+                  images.length === 3 && index === 0 ? "col-span-2" : ""
+                }`}
                 onClick={(e) => handleImageClick(index, e)}
               >
                 <img

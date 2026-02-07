@@ -9,6 +9,7 @@ import {
 import { Avatar } from "@/components/ui/avatar";
 import { formatNumberShort } from "@/utils/number";
 import { useRouter } from "next/navigation";
+import { useState, useRef, useEffect } from "react";
 
 interface ProfileHeaderProps {
   name: string;
@@ -17,7 +18,77 @@ interface ProfileHeaderProps {
   isVerified: boolean;
   followers: number;
   category: string;
+  bio?: string | null;
 }
+
+const BioText = ({ bio }: { bio: string }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [showMoreButton, setShowMoreButton] = useState(false);
+  const textRef = useRef<HTMLDivElement>(null);
+  const measureRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const checkHeight = () => {
+      if (measureRef.current && containerRef.current && textRef.current) {
+        // Set width of measure element to match container
+        const containerWidth = containerRef.current.offsetWidth;
+        measureRef.current.style.width = `${containerWidth}px`;
+        
+        // Get computed styles
+        const computedStyle = window.getComputedStyle(textRef.current);
+        const lineHeight = parseFloat(computedStyle.lineHeight) || 16;
+        const maxHeight = lineHeight * 1; // 1 line
+        
+        // Measure actual height
+        const actualHeight = measureRef.current.scrollHeight;
+        setShowMoreButton(actualHeight > maxHeight + 2); // Add 2px tolerance
+      }
+    };
+
+    // Check after DOM is ready
+    const timeoutId = setTimeout(checkHeight, 0);
+    // Also check on resize
+    window.addEventListener("resize", checkHeight);
+    
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("resize", checkHeight);
+    };
+  }, [bio]);
+
+  return (
+    <div ref={containerRef} className="text-[13px] leading-4 text-neutral-primary relative">
+      {/* Hidden element to measure full height without line-clamp */}
+      <div
+        ref={measureRef}
+        className="absolute opacity-0 pointer-events-none invisible whitespace-pre-wrap break-words"
+        style={{
+          fontSize: "13px",
+          lineHeight: "1rem",
+        }}
+      >
+        {bio}
+      </div>
+      <div
+        ref={textRef}
+        className={`overflow-hidden transition-all ${
+          isExpanded ? "" : "line-clamp-1"
+        }`}
+      >
+        {bio}
+      </div>
+      {showMoreButton && (
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="text-primary hover:underline mt-1 text-[13px]"
+        >
+          {isExpanded ? "Show less" : "Show more"}
+        </button>
+      )}
+    </div>
+  );
+};
 
 export const ProfileHeader = ({
   name,
@@ -26,9 +97,10 @@ export const ProfileHeader = ({
   isVerified,
   followers,
   category,
+  bio,
 }: ProfileHeaderProps) => {
   const router = useRouter();
-
+console.log("bio", bio);
   return (
     <div className="flex flex-col">
       {/* Top Bar */}
@@ -84,6 +156,9 @@ export const ProfileHeader = ({
               </span>
               <span>Followers</span>
             </div>
+
+            {/* Bio */}
+            {bio && <BioText bio={bio} />}
 
             {/* Category */}
             <div className="flex items-center gap-1 text-[13px] leading-4 text-neutral-tertiary">

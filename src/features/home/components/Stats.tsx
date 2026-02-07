@@ -32,7 +32,7 @@ const Stats = () => {
     queryKey: ["platformStats"],
     queryFn: async () => {
       const res = await getPlatformStats();
-      return res.data;
+      return res as unknown as PlatformStatsResponse;
     },
   });
 
@@ -40,26 +40,26 @@ const Stats = () => {
 
   const statCards = [
     {
-      value: stats?.totalVolumn
-        ? `$${formatNumberShort(convertBnbToUsd(stats.totalVolumn), { useShorterExpression: true })}`
+      value: stats?.data.volume
+        ? `$${formatNumberShort(convertBnbToUsd(stats.data.volume), { useShorterExpression: true })}`
         : "—",
-      label: "Total Volumn",
+      label: "Total Volume",
     },
     {
-      value: stats?.totalClaws
-        ? formatNumberShort(stats.totalClaws, { useShorterExpression: true })
+      value: stats?.data.totalClaws
+        ? formatNumberShort(stats.data.totalClaws, { useShorterExpression: true })
         : "—",
       label: "Total Claws",
     },
     {
-      value: stats?.volume24h
-        ? `$${formatNumberShort(convertBnbToUsd(stats.volume24h), { useShorterExpression: true })}`
+      value: stats?.data.totalTweets
+        ? formatNumberShort(stats.data.totalTweets, { useShorterExpression: true })
         : "—",
-      label: "24H Volume",
+      label: "Total Tweets",
     },
     {
-      value: stats?.keyTrades
-        ? formatNumberShort(stats.keyTrades, { useShorterExpression: true })
+      value: stats?.data.keyTrades
+        ? formatNumberShort(stats.data.keyTrades, { useShorterExpression: true })
         : "—",
       label: "Key Trades",
     },

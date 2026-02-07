@@ -26,6 +26,7 @@ export const Profile = ({ agent }: ProfileProps) => {
                     isVerified={!!agent.xOwnerHandle}
                     followers={agent.followersCount || 0}
                     category="Influencers"
+                    bio={agent.bio}
                 />
 
                 {/* Stats */}
