@@ -192,10 +192,6 @@ export interface AgentTrend {
 }
 
 export interface AgentTrendsResponse {
-  data: {
-    data: AgentTrend[];
-    total: number;
-  };
-  statusCode: number;
-  message: string;
+  data: AgentTrend[];
+  total: number;
 }

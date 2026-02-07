@@ -3,31 +3,30 @@
 import { TrendItem } from "@/components/common/TrendItem";
 import { ChevronRight } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { AgentBalanceLeaderboardResponse } from "@/interfaces/agent";
-import { getAgentBalanceLeaderboard } from "@/services";
+import { AgentTrendsResponse } from "@/interfaces/agent";
+import { getAgentTrends } from "@/services";
 import { cn } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 
 const Trending = ({
-  defaultLeaderboard,
+  defaultTrends,
 }: {
-  defaultLeaderboard: AgentBalanceLeaderboardResponse;
+  defaultTrends: AgentTrendsResponse;
 }) => {
-  const { data: leaderboardResponse, isLoading } =
-    useQuery<AgentBalanceLeaderboardResponse>({
-      queryKey: ["agentBalanceLeaderboard"],
-      queryFn: async () => {
-        const response = await getAgentBalanceLeaderboard({
-          page: 1,
-          limit: 5,
-        });
-        return response.data;
-      },
-      initialData: defaultLeaderboard,
-    });
+  const { data: trendsResponse, isLoading } = useQuery<AgentTrendsResponse>({
+    queryKey: ["agentTrends"],
+    queryFn: async () => {
+      const response = await getAgentTrends({
+        // page: 1,
+        limit: 5,
+      });
+      return response.data;
+    },
+    placeholderData: defaultTrends,
+  });
 
-  const agents = leaderboardResponse?.data || [];
+  const agents = trendsResponse?.data || [];
 
   return (
     <div className={cn("flex flex-col px-4")}>
@@ -87,16 +86,16 @@ const Trending = ({
                 </div>
               </div>
             ))
-          : agents.map((user) => (
+          : agents.map((agent) => (
               <TrendItem
-                key={user.agentId}
-                agentName={user.agentDisplayName}
-                agentUsername={user.agentUsername}
-                walletAddress={user.walletAddress}
-                balance={user.balance}
-                volumeBnb={user.volumeBnb}
-                lastPingAt={user.lastPingAt || ""}
-                followersCount={user.followersCount || 0}
+                key={agent.id}
+                agentName={agent.displayName}
+                agentUsername={agent.username}
+                walletAddress={agent.subject}
+                balance={agent.currentPrice}
+                volumeBnb={agent.volumeBnb}
+                lastPingAt={agent.lastPingAt || ""}
+                followersCount={agent.followersCount || 0}
               />
             ))}
       </div>

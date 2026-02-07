@@ -1,19 +1,27 @@
 "use client";
 
 import RightSide from "@/components/common/RightSide";
+import {
+  AgentBalanceLeaderboard,
+  AgentTrend,
+  AgentsSummaryResponse,
+} from "@/interfaces/agent";
 import { getAgentTrends, getAgentsSummary } from "@/services";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import {
+  ExploreMobile,
   RecentSearches,
   SearchInput,
   TrendsHeader,
   TrendsList,
-  ExploreMobile
 } from "./components";
-import { AgentBalanceLeaderboard, AgentTrend, AgentTrendsResponse, AgentsSummaryResponse } from "@/interfaces/agent";
 
-export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) => {
+export const Explore = ({
+  isSearchPage = false,
+}: {
+  isSearchPage?: boolean;
+}) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeSearch, setActiveSearch] = useState("");
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
@@ -23,11 +31,10 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
   // Use search endpoint if activeSearch exists, otherwise use trends endpoint
   const hasSearch = activeSearch.trim().length > 0;
 
-  const {
-    data,
-    isLoading,
-  } = useQuery({
-    queryKey: hasSearch ? ["agentsSummaryExplore", activeSearch] : ["agentTrendsExplore"],
+  const { data, isLoading } = useQuery({
+    queryKey: hasSearch
+      ? ["agentsSummaryExplore", activeSearch]
+      : ["agentTrendsExplore"],
     queryFn: async () => {
       if (hasSearch) {
         const response = await getAgentsSummary({
@@ -41,7 +48,7 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
           // page: 1,
           limit: 10,
         });
-        return response as unknown as AgentTrendsResponse;
+        return response as any;
       }
     },
     enabled: true,
@@ -73,8 +80,9 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
       followersCount: summary.followersCount,
     }));
   } else {
+    console.log(data);
     // Map AgentTrend to AgentBalanceLeaderboard format
-    const responseData = data as AgentTrendsResponse | undefined;
+    const responseData = data;
     const trendsData: AgentTrend[] = responseData?.data?.data ?? [];
     agents = trendsData.map((trend) => ({
       agentId: trend.id,
@@ -110,7 +118,7 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
     if (recentSearches.length > 0) {
       localStorage.setItem(
         "explore_recent_searches",
-        JSON.stringify(recentSearches)
+        JSON.stringify(recentSearches),
       );
     }
   }, [recentSearches]);
@@ -126,7 +134,7 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
 
     if (searchQuery.trim()) {
       const matched = recentSearches.filter((search) =>
-        search.toLowerCase().includes(searchQuery.toLowerCase())
+        search.toLowerCase().includes(searchQuery.toLowerCase()),
       );
       setSuggestions(matched.slice(0, 5)); // Show max 5 suggestions
     } else {
@@ -192,7 +200,9 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
   };
   return (
     <div className="flex h-full overflow-hidden">
-      <div className={`flex h-full flex-col flex-1 ${!isSearchPage ? "max-sm:hidden" : "w-full"}`}>
+      <div
+        className={`flex h-full flex-col flex-1 ${!isSearchPage ? "max-sm:hidden" : "w-full"}`}
+      >
         <SearchInput
           value={searchQuery}
           onChange={setSearchQuery}
@@ -215,19 +225,21 @@ export const Explore = ({ isSearchPage = false }: { isSearchPage?: boolean }) =>
           isLoading={isLoading}
           hasNextPage={false}
           isFetchingNextPage={false}
-          onLoadMore={() => { }}
+          onLoadMore={() => {}}
         />
       </div>
       <div className="hidden sm:block">
         <RightSide />
       </div>
-      <div className={`block sm:hidden w-full ${isSearchPage ? "hidden" : "w-full"}`}>
+      <div
+        className={`block sm:hidden w-full ${isSearchPage ? "hidden" : "w-full"}`}
+      >
         <ExploreMobile
           agents={agents}
           isLoading={isLoading}
           hasNextPage={false}
           isFetchingNextPage={false}
-          onLoadMore={() => { }}
+          onLoadMore={() => {}}
         />
       </div>
     </div>
