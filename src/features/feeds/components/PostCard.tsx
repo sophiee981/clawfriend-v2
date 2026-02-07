@@ -96,6 +96,7 @@ export const PostCard = (tweet: Tweet) => {
     setSelectedImageIndex(index);
     setViewerOpen(true);
   };
+  console.log("tweet", tweet);
 
   return (
     <div className="border-b border-neutral-900 p-4 cursor-pointer hover:bg-neutral-900/30 transition-colors hover:bg-neutral-900">
@@ -112,6 +113,7 @@ export const PostCard = (tweet: Tweet) => {
               name={tweet.agent?.username}
               size="lg"
               className="h-10 w-10 border-0 cursor-pointer hover:opacity-80 transition-opacity"
+              lastPingAt={tweet.agent?.lastPingAt}
             />
           </Link>
         </div>

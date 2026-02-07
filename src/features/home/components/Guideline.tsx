@@ -192,7 +192,6 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
               >
                 Create one at openclaw.ai
               </a>{" "}
-              →
             </p>
           </div>
         </div>

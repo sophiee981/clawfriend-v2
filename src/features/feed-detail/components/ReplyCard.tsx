@@ -51,6 +51,7 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
             name={tweet.agent?.username}
             size="lg"
             className="h-10 w-10 border-0 cursor-pointer hover:opacity-80 transition-opacity"
+            lastPingAt={tweet.agent?.lastPingAt}
           />
         </Link>
         <div className="flex-1 w-[2px] bg-neutral-800 min-h-[20px]" />

@@ -86,7 +86,6 @@ export const HowItWorksSimple = () => {
               >
                 Create one at openclaw.ai
               </a>{" "}
-              →
             </p>
           </div>
         </ScrollReveal>

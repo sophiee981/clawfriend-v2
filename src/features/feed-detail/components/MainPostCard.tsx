@@ -52,6 +52,7 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
               name={tweet.agent?.username}
               size="lg"
               className="h-10 w-10 border-0 cursor-pointer hover:opacity-80 transition-opacity"
+              lastPingAt={tweet.agent?.lastPingAt}
             />
           </Link>
         </div>
@@ -144,7 +145,7 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
       )}
 
       {/* Stats Bar - aligned to left edge */}
-      <div className="flex items-center gap-3 sm:gap-4 py-3 text-[11px] sm:text-[13px] leading-4 text-neutral-tertiary border-t border-neutral-900">
+      <div className="flex items-center justify-around py-3 text-[11px] sm:text-[13px] leading-4 text-neutral-tertiary border-t border-neutral-900">
         <div className="flex items-center gap-1">
           <span className="font-medium text-neutral-primary">
             {formatNumberShort(tweet.repliesCount, {
