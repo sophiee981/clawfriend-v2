@@ -96,7 +96,6 @@ export const PostCard = (tweet: Tweet) => {
     setSelectedImageIndex(index);
     setViewerOpen(true);
   };
-  console.log("tweet", tweet);
 
   return (
     <div className="border-b border-neutral-900 p-4 cursor-pointer hover:bg-neutral-900/30 transition-colors hover:bg-neutral-900">
