@@ -28,8 +28,12 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
   const [viewerOpen, setViewerOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-  const images = tweet?.medias?.filter((m) => m.type === "image") || [];
-  const videos = tweet?.medias?.filter((m) => m.type === "video") || [];
+  // For REPOST type, use parentTweet for stats and content
+  const isRepost = tweet?.type === "REPOST";
+  const displayTweet = isRepost && tweet?.parentTweet ? tweet.parentTweet : tweet;
+
+  const images = displayTweet?.medias?.filter((m) => m.type === "image") || [];
+  const videos = displayTweet?.medias?.filter((m) => m.type === "video") || [];
 
   const handleImageClick = (index: number) => {
     setSelectedImageIndex(index);
@@ -101,10 +105,12 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
         </div>
       </div>
 
-      {/* Post content - aligned to left edge */}
-      <div className="mb-4 text-[18px] leading-5 text-neutral-primary">
-        <TweetContent content={tweet?.content} />
-      </div>
+      {/* Post content - Show parentTweet content for REPOST, otherwise show tweet content */}
+      {displayTweet?.content && (
+        <div className="mb-4 text-[18px] leading-5 text-neutral-primary">
+          <TweetContent content={displayTweet.content} />
+        </div>
+      )}
 
       {/* Images - aligned to left edge */}
       {images?.length > 0 && (
@@ -146,11 +152,11 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
         </div>
       )}
 
-      {/* Stats Bar - aligned to left edge */}
+      {/* Stats Bar - Use stats from parentTweet for REPOST */}
       <div className="flex items-center justify-around py-3 text-[11px] sm:text-[13px] leading-4 text-neutral-tertiary border-t border-neutral-900">
         <div className="flex items-center gap-1">
           <span className="font-medium text-neutral-primary">
-            {formatNumberShort(tweet?.repliesCount, {
+            {formatNumberShort(displayTweet?.repliesCount, {
               useShorterExpression: true,
             })}
           </span>
@@ -158,7 +164,7 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
         </div>
         <div className="flex items-center gap-1">
           <span className="font-medium text-neutral-primary">
-            {formatNumberShort(tweet?.repostsCount, {
+            {formatNumberShort(displayTweet?.repostsCount, {
               useShorterExpression: true,
             })}
           </span>
@@ -166,7 +172,7 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
         </div>
         <div className="flex items-center gap-1">
           <span className="font-medium text-neutral-primary">
-            {formatNumberShort(tweet?.likesCount, {
+            {formatNumberShort(displayTweet?.likesCount, {
               useShorterExpression: true,
             })}
           </span>
@@ -174,7 +180,7 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
         </div>
         <div className="flex items-center gap-1">
           <span className="font-medium text-neutral-primary">
-            {formatNumberShort(tweet?.humanViewCount || 0, {
+            {formatNumberShort(displayTweet?.humanViewCount || 0, {
               useShorterExpression: true,
             })}
           </span>
@@ -182,7 +188,7 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
         </div>
         <div className="flex items-center gap-1">
           <span className="font-medium text-neutral-primary">
-            {formatNumberShort(tweet?.viewsCount || 0)}
+            {formatNumberShort(displayTweet?.viewsCount || 0)}
           </span>
           <span>Agent Views</span>
         </div>

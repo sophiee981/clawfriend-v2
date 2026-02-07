@@ -83,12 +83,18 @@ export const PostCard = (tweet: Tweet) => {
   const [viewerOpen, setViewerOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
+  // For REPOST type, use parentTweet for stats and content
+  const isRepost = tweet.type === "REPOST";
+  const displayTweet = isRepost && tweet.parentTweet ? tweet.parentTweet : tweet;
+  
   // Extract images and videos from medias array
-  const images = tweet.medias?.filter((m) => m.type === "image") || [];
-  const videos = tweet.medias?.filter((m) => m.type === "video") || [];
+  const images = displayTweet.medias?.filter((m) => m.type === "image") || [];
+  const videos = displayTweet.medias?.filter((m) => m.type === "video") || [];
 
   const handleClick = () => {
-    router.push(`/feeds/${tweet.id}`);
+    // Navigate to parent tweet if REPOST, otherwise to the tweet itself
+    const targetId = isRepost && tweet.parentTweet ? tweet.parentTweet.id : tweet.id;
+    router.push(`/feeds/${targetId}`);
   };
 
   const handleImageClick = (index: number, e: React.MouseEvent) => {
@@ -164,10 +170,12 @@ export const PostCard = (tweet: Tweet) => {
             </div>
           </div>
 
-          {/* Post content */}
-          <div className="mb-4 text-[15px] leading-5 text-neutral-primary">
-            <TweetContent content={tweet.content} />
-          </div>
+          {/* Post content - Show parentTweet content for REPOST, otherwise show tweet content */}
+          {displayTweet.content && (
+            <div className="mb-4 text-[15px] leading-5 text-neutral-primary">
+              <TweetContent content={displayTweet.content} />
+            </div>
+          )}
 
           {/* Images */}
           {images.length > 0 && (
@@ -212,13 +220,13 @@ export const PostCard = (tweet: Tweet) => {
             </div>
           )}
 
-          {/* Actions */}
+          {/* Actions - Use stats from parentTweet for REPOST */}
           <div className="flex items-center gap-4 py-2">
             {/* Comments */}
             <button className="flex items-center gap-1 text-neutral-tertiary hover:text-neutral-primary transition-colors">
               <CommentLine className="w-6 h-6" />
               <span className="text-[13px] leading-4">
-                {formatNumberShort(tweet.repliesCount, {
+                {formatNumberShort(displayTweet.repliesCount, {
                   useShorterExpression: true,
                 })}
               </span>
@@ -228,7 +236,7 @@ export const PostCard = (tweet: Tweet) => {
             <button className="flex items-center gap-1 text-neutral-tertiary hover:text-neutral-primary transition-colors">
               <RepostLine className="w-6 h-6" />
               <span className="text-[13px] leading-4">
-                {formatNumberShort(tweet.repostsCount, {
+                {formatNumberShort(displayTweet.repostsCount, {
                   useShorterExpression: true,
                 })}
               </span>
@@ -238,7 +246,7 @@ export const PostCard = (tweet: Tweet) => {
             <button className="flex items-center gap-1 text-neutral-tertiary hover:text-primary transition-colors">
               <HeartLine className="w-6 h-6" />
               <span className="text-[13px] leading-4">
-                {formatNumberShort(tweet.likesCount, {
+                {formatNumberShort(displayTweet.likesCount, {
                   useShorterExpression: true,
                 })}
               </span>
@@ -248,7 +256,7 @@ export const PostCard = (tweet: Tweet) => {
             <div className="flex items-center gap-1 text-neutral-tertiary">
               <Human className="w-5 h-5" />
               <span className="text-[13px] leading-4">
-                {formatNumberShort(tweet.humanViewCount || 0, {
+                {formatNumberShort(displayTweet.humanViewCount || 0, {
                   useShorterExpression: true,
                 })}
               </span>
@@ -258,7 +266,7 @@ export const PostCard = (tweet: Tweet) => {
             <div className="flex items-center gap-1 text-neutral-tertiary">
               <Bot className="w-5 h-5" />
               <span className="text-[13px] leading-4">
-                {formatNumberShort(tweet.viewsCount || 0, {
+                {formatNumberShort(displayTweet.viewsCount || 0, {
                   useShorterExpression: true,
                 })}
               </span>
