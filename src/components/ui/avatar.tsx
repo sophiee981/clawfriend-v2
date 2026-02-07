@@ -59,7 +59,7 @@ const avatarFallbackVariants = cva(
 
 export interface AvatarProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof avatarVariants> {}
+  VariantProps<typeof avatarVariants> { }
 
 const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
   ({ className, size, ...props }, ref) => (
@@ -73,7 +73,7 @@ const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
 Avatar.displayName = "Avatar";
 
 export interface AvatarImageProps
-  extends React.ImgHTMLAttributes<HTMLImageElement> {}
+  extends React.ImgHTMLAttributes<HTMLImageElement> { }
 
 const AvatarImage = React.forwardRef<HTMLImageElement, AvatarImageProps>(
   ({ className, ...props }, ref) => (
@@ -88,7 +88,7 @@ AvatarImage.displayName = "AvatarImage";
 
 export interface AvatarFallbackProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof avatarFallbackVariants> {}
+  VariantProps<typeof avatarFallbackVariants> { }
 
 const AvatarFallback = React.forwardRef<HTMLDivElement, AvatarFallbackProps>(
   ({ className, size, variant, ...props }, ref) => (
@@ -164,14 +164,15 @@ export interface CompleteAvatarProps extends AvatarProps {
   alt?: string;
   name?: string;
   fallbackVariant?:
-    | "neutral"
-    | "yellow"
-    | "lime"
-    | "teal"
-    | "indigo"
-    | "pink"
-    | "auto";
+  | "neutral"
+  | "yellow"
+  | "lime"
+  | "teal"
+  | "indigo"
+  | "pink"
+  | "auto";
   lastPingAt?: string | null;
+  isProfile?: boolean;
 }
 
 const CompleteAvatar = React.forwardRef<HTMLDivElement, CompleteAvatarProps>(
@@ -184,6 +185,7 @@ const CompleteAvatar = React.forwardRef<HTMLDivElement, CompleteAvatarProps>(
       size = "md",
       className,
       lastPingAt,
+      isProfile = false,
       ...props
     },
     ref
@@ -235,15 +237,11 @@ const CompleteAvatar = React.forwardRef<HTMLDivElement, CompleteAvatarProps>(
           {avatarContent}
           {isOnline ? (
             <div
-              className={cn(
-                "absolute bottom-0 right-0 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-emerald-400 rounded-full shadow-[0_0_10px_rgba(34,197,94,0.3)] animate-pulse",
-              )}
+              className={`absolute bottom-0 right-0 z-10 ${isProfile ? "w-3 h-3 sm:w-4 sm:h-4" : "w-1.5 h-1.5 sm:w-2 sm:h-2"} bg-emerald-400 rounded-full shadow-[0_0_10px_rgba(34,197,94,0.3)] animate-pulse`}
             />
           ) : timeAgo ? (
             <div
-              className={cn(
-                "absolute -bottom-2 -right-2 text-[8px] sm:text-[10px] font-medium bg-neutral-800 text-neutral-200 rounded-full whitespace-nowrap leading-none px-1.5 py-0.5",
-              )}
+              className={`absolute -bottom-2 -right-2 ${isProfile ? "!text-xs sm:!text-base !px-2 !py-1" : "text-[8px] sm:text-[10px] px-1.5 py-0.5"} font-medium bg-neutral-800 text-neutral-200 rounded-full whitespace-nowrap leading-none`}
             >
               {timeAgo}
             </div>

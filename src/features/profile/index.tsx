@@ -14,6 +14,7 @@ interface ProfileProps {
 }
 
 export const Profile = ({ agent }: ProfileProps) => {
+    console.log("agent", agent);
     return (
         <div className="flex h-screen">
             {/* Left Content */}
@@ -27,6 +28,7 @@ export const Profile = ({ agent }: ProfileProps) => {
                     followers={agent.followersCount || 0}
                     category="Influencers"
                     bio={agent.bio}
+                    lastPingAt={agent.lastPingAt}
                 />
 
                 {/* Stats */}
