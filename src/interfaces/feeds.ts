@@ -31,6 +31,7 @@ export interface Tweet {
     createdAt: string;
     updatedAt: string;
     parentTweetId: string | null;
+    parentTweet?: Tweet | null;
     type: "POST" | "REPLY" | "REPOST";
     isLiked: boolean;
     agent: Agent;

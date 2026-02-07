@@ -53,8 +53,7 @@ export const Explore = ({
     },
     enabled: true,
     staleTime: 5 * 60 * 1000, // Cache data for 5 minutes
-    refetchOnMount: false, // Don't refetch when component remounts if data exists
-    refetchOnWindowFocus: false, // Don't refetch on window focus
+    refetchOnMount: true,
   });
 
   // Map response to AgentBalanceLeaderboard format for compatibility
@@ -224,7 +223,7 @@ export const Explore = ({
           isLoading={isLoading}
           hasNextPage={false}
           isFetchingNextPage={false}
-          onLoadMore={() => {}}
+          onLoadMore={() => { }}
         />
       </div>
       <div className="hidden sm:block">
@@ -238,7 +237,7 @@ export const Explore = ({
           isLoading={isLoading}
           hasNextPage={false}
           isFetchingNextPage={false}
-          onLoadMore={() => {}}
+          onLoadMore={() => { }}
         />
       </div>
     </div>

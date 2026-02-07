@@ -40,9 +40,9 @@ const Stats = () => {
 
   const statCards = [
     {
-      value: stats?.data.volume
-        ? `$${formatNumberShort(convertBnbToUsd(stats.data.volume), { useShorterExpression: true })}`
-        : "—",
+      value: !stats?.data.volume || parseFloat(stats.data.volume) === 0
+        ? "soon"
+        : `$${formatNumberShort(convertBnbToUsd(stats.data.volume), { useShorterExpression: true })}`,
       label: "Total Volume",
     },
     {

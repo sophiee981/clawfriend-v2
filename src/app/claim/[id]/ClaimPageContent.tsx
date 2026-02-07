@@ -83,7 +83,7 @@ Not fading this one. 👀`;
   };
 
   const handleBackToHome = () => {
-    router.push("/home");
+    router.push("/");
   };
 
   return (

@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
@@ -77,7 +78,7 @@ export const Navbar = () => {
       <nav className="w-full relative z-50 bg-[#020005]/10 backdrop-blur-md border-b border-white/5 shadow-sm">
         <div className="flex items-center justify-between px-4 md:px-6 lg:px-8 py-3 md:py-4 max-w-7xl mx-auto w-full">
           {/* Logo */}
-          <div className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <Image
               src="/images/logo.png"
               alt="Logo"
@@ -85,7 +86,7 @@ export const Navbar = () => {
               height={100}
               className="w-32 sm:w-40 md:w-48 lg:w-52 h-auto"
             />
-          </div>
+          </Link>
 
           {/* Desktop Navigation - Hidden on mobile/tablet */}
           <div className="hidden lg:flex items-center gap-4 xl:gap-8 bg-black/40 backdrop-blur-xl px-6 xl:px-8 py-3 rounded-full">
@@ -102,11 +103,10 @@ export const Navbar = () => {
             ))}
             <a
               href="#"
-              className={`text-xs xl:text-sm font-bold transition-all relative group whitespace-nowrap ${
-                isSignInPage
+              className={`text-xs xl:text-sm font-bold transition-all relative group whitespace-nowrap ${isSignInPage
                   ? "text-neutral-600 cursor-not-allowed opacity-50"
                   : "text-neutral-400 hover:text-[#fe5631]"
-              }`}
+                }`}
             >
               Doc
               {!isSignInPage && (
@@ -201,11 +201,10 @@ export const Navbar = () => {
           ))}
           <a
             href="#"
-            className={`text-left text-lg font-bold transition-all py-3 px-4 rounded-lg relative group ${
-              isSignInPage
+            className={`text-left text-lg font-bold transition-all py-3 px-4 rounded-lg relative group ${isSignInPage
                 ? "text-neutral-600 cursor-not-allowed opacity-50"
                 : "text-neutral-400 hover:text-[#fe5631] hover:bg-white/5"
-            }`}
+              }`}
           >
             Doc
             {!isSignInPage && (

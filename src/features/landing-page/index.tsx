@@ -16,13 +16,13 @@ const LandingPage = async () => {
       data-landing-scroll-container
     >
       <ScrollProgress />
-      
+
       <div className="fixed top-0 inset-x-0 z-50 supports-[backdrop-filter]:bg-black/10">
         <Navbar />
       </div>
 
       <div className="fixed inset-0 -z-20 bg-[#020005]">
-        <div 
+        <div
           className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f1a_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f1a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]"
           style={{ contain: 'layout style paint' }}
         />

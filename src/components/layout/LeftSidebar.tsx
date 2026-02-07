@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  GlobeAmericas,
   HomeFill,
   HomeLine,
   MagnifyingGlass,
@@ -14,7 +15,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export const MENU_ITEMS = [
-  { label: "Home", href: "/home", icon: HomeLine, activeIcon: HomeFill },
+  { label: "Home", href: "/", icon: HomeLine, activeIcon: HomeFill },
   {
     label: "Explore",
     href: "/explore",
@@ -28,6 +29,12 @@ export const MENU_ITEMS = [
     icon: Trophy,
     activeIcon: TrophyFill,
   },
+  {
+    label: "About",
+    href: "/about",
+    icon: GlobeAmericas,
+    activeIcon: GlobeAmericas,
+  },
 ];
 
 export const LeftSidebar = () => {
@@ -36,7 +43,7 @@ export const LeftSidebar = () => {
   return (
     <aside className="sticky top-0 hidden h-screen w-[256px] flex-col bg-neutral-01 p-4 md:flex border-r border-neutral-01">
       {/* Logo */}
-      <Link href="/home" className="mb-4">
+      <Link href="/" className="mb-4">
         <Image src="/images/logo.png" alt="Logo" width={180} height={41} />
       </Link>
 

@@ -4,14 +4,13 @@ import { ChevronRight } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { PostCard, PostCardSkeleton } from "@/features/feeds/components";
 import { getTweets } from "@/services";
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 
 const LatestFeed = () => {
   const router = useRouter();
   const loadMoreRef = useRef<HTMLDivElement>(null);
-  const queryClient = useQueryClient();
 
   const {
     data,
@@ -19,14 +18,13 @@ const LatestFeed = () => {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
-    refetch,
   } = useInfiniteQuery({
     queryKey: ["latest-tweets"],
     queryFn: async ({ pageParam = 1 }) => {
       const response = await getTweets(
         {
           page: pageParam,
-          limit: 3,
+          limit: 10,
           onlyRootTweets: true,
           mode: "new",
         },
@@ -56,37 +54,8 @@ const LatestFeed = () => {
       return undefined;
     },
     initialPageParam: 1,
-    // Don't cache, but we'll handle refetch manually to reset to page 1
-    staleTime: 0,
-    gcTime: 0,
-    refetchOnMount: false, // We handle manually to reset to page 1
-    refetchOnWindowFocus: false, // We handle manually to reset to page 1
+    refetchOnMount: true,
   });
-
-  // Reset to page 1 and refetch when component mounts
-  useEffect(() => {
-    // Reset query cache to page 1, then refetch to ensure fresh data
-    // Note: resetQueries resets to initialPageParam (page 1), but doesn't auto-refetch
-    queryClient.resetQueries({ queryKey: ["latest-tweets"] });
-    refetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Reset to page 1 and refetch when window gains focus
-  // Note: We use manual focus handler instead of refetchOnWindowFocus because
-  // refetchOnWindowFocus only refetches existing pages, doesn't reset to page 1
-  useEffect(() => {
-    const handleFocus = () => {
-      // Reset query cache to page 1, then refetch to ensure fresh data
-      queryClient.resetQueries({ queryKey: ["latest-tweets"] });
-      refetch();
-    };
-
-    window.addEventListener("focus", handleFocus);
-    return () => {
-      window.removeEventListener("focus", handleFocus);
-    };
-  }, [queryClient, refetch]);
 
   // Intersection Observer for infinite scroll
   useEffect(() => {
@@ -156,7 +125,7 @@ const LatestFeed = () => {
       <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide">
         {isLoading ? (
           <div className="w-full">
-            {Array.from({ length: 3 }).map((_, index) => (
+            {Array.from({ length: 10 }).map((_, index) => (
               <PostCardSkeleton key={index} />
             ))}
           </div>
@@ -172,7 +141,7 @@ const LatestFeed = () => {
               >
                 {isFetchingNextPage && (
                   <>
-                    {Array.from({ length: 3 }).map((_, index) => (
+                    {Array.from({ length: 10 }).map((_, index) => (
                       <PostCardSkeleton key={index} />
                     ))}
                   </>
