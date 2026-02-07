@@ -6,7 +6,7 @@ import {
   SocialX,
   TwitterVerifiedBlue,
 } from "@/components/icons";
-import { Avatar } from "@/components/ui/avatar";
+import { CompleteAvatar } from "@/components/ui/avatar";
 import { formatNumberShort } from "@/utils/number";
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
@@ -19,6 +19,7 @@ interface ProfileHeaderProps {
   followers: number;
   category: string;
   bio?: string | null;
+  lastPingAt?: string | null;
 }
 
 const BioText = ({ bio }: { bio: string }) => {
@@ -34,23 +35,23 @@ const BioText = ({ bio }: { bio: string }) => {
         // Set width of measure element to match container
         const containerWidth = containerRef.current.offsetWidth;
         measureRef.current.style.width = `${containerWidth}px`;
-        
-        // Get computed styles
+
+        // Get computed styles from textRef
         const computedStyle = window.getComputedStyle(textRef.current);
         const lineHeight = parseFloat(computedStyle.lineHeight) || 16;
         const maxHeight = lineHeight * 1; // 1 line
-        
-        // Measure actual height
+
+        // Measure actual height of the full text
         const actualHeight = measureRef.current.scrollHeight;
         setShowMoreButton(actualHeight > maxHeight + 2); // Add 2px tolerance
       }
     };
 
-    // Check after DOM is ready
-    const timeoutId = setTimeout(checkHeight, 0);
+    // Check after DOM is ready with a longer delay to ensure layout is complete
+    const timeoutId = setTimeout(checkHeight, 100);
     // Also check on resize
     window.addEventListener("resize", checkHeight);
-    
+
     return () => {
       clearTimeout(timeoutId);
       window.removeEventListener("resize", checkHeight);
@@ -72,9 +73,16 @@ const BioText = ({ bio }: { bio: string }) => {
       </div>
       <div
         ref={textRef}
-        className={`overflow-hidden transition-all ${
-          isExpanded ? "" : "line-clamp-1"
-        }`}
+        className="whitespace-pre-wrap break-words transition-all overflow-hidden"
+        style={
+          isExpanded
+            ? {}
+            : {
+                display: "-webkit-box",
+                WebkitLineClamp: 1,
+                WebkitBoxOrient: "vertical",
+              }
+        }
       >
         {bio}
       </div>
@@ -98,9 +106,9 @@ export const ProfileHeader = ({
   followers,
   category,
   bio,
+  lastPingAt,
 }: ProfileHeaderProps) => {
   const router = useRouter();
-console.log("bio", bio);
   return (
     <div className="flex flex-col">
       {/* Top Bar */}
@@ -119,13 +127,15 @@ console.log("bio", bio);
           {/* Avatar */}
           <div className="flex-shrink-0">
             <div className="bg-neutral-950 p-0.5 rounded-full">
-              <Avatar className="sm:w-[100px] sm:h-[100px] w-[64px] h-[64px] rounded-full overflow-hidden border-none">
-                <img
-                  src={avatar}
-                  alt={name}
-                  className="w-full h-full object-cover"
-                />
-              </Avatar>
+              <CompleteAvatar
+                src={avatar}
+                alt={name}
+                name={name}
+                lastPingAt={lastPingAt}
+                className="sm:w-[100px] sm:h-[100px] w-[64px] h-[64px] rounded-full overflow-hidden border-none"
+                size="4xl"
+                isProfile={true}
+              />
             </div>
           </div>
 
