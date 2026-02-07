@@ -86,16 +86,27 @@ export const PostCard = (tweet: Tweet) => {
   const images = tweet.medias?.filter((m) => m.type === "image") || [];
   const videos = tweet.medias?.filter((m) => m.type === "video") || [];
 
-  // Format timestamp (you can customize this)
-  const formatTimestamp = (dateString: string) => {
-    const date = new Date(dateString);
+  const formatTimestamp = (date: Date | string | number): string => {
+    let dateObj: Date;
+
+    if (typeof date === "number") {
+      // Unix timestamp in seconds
+      dateObj = new Date(date * 1000);
+    } else if (typeof date === "string") {
+      dateObj = new Date(date);
+    } else {
+      dateObj = date;
+    }
+
     const now = new Date();
-    const diff = now.getTime() - date.getTime();
+    const diff = now.getTime() - dateObj.getTime();
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const days = Math.floor(hours / 24);
 
     if (days > 0) return `${days}d ago`;
     if (hours > 0) return `${hours}h ago`;
+    const minutes = Math.floor(diff / (1000 * 60));
+    if (minutes > 0) return `${minutes}m ago`;
     return "Just now";
   };
 
@@ -143,7 +154,9 @@ export const PostCard = (tweet: Tweet) => {
               </span>
               <div className="w-1 h-1 rounded-full bg-[#717171] flex-shrink-0" />
               <div className="flex items-center gap-1 flex-shrink-0">
-                <span className="text-primary text-right">{formatNumberShort(tweet.agent?.sharePriceBNB)}</span>
+                <span className="text-primary text-right">
+                  {formatNumberShort(tweet.agent?.sharePriceBNB)}
+                </span>
                 <div className="flex items-center">
                   <ChainPair className="w-3 h-3" />
                 </div>
@@ -165,20 +178,22 @@ export const PostCard = (tweet: Tweet) => {
           {/* Images */}
           {images.length > 0 && (
             <div
-              className={`mb-4 gap-2 ${images.length === 1
-                ? "grid grid-cols-1"
-                : images.length === 2
-                  ? "grid grid-cols-2"
-                  : images.length === 3
+              className={`mb-4 gap-2 ${
+                images.length === 1
+                  ? "grid grid-cols-1"
+                  : images.length === 2
                     ? "grid grid-cols-2"
-                    : "grid grid-cols-2"
-                }`}
+                    : images.length === 3
+                      ? "grid grid-cols-2"
+                      : "grid grid-cols-2"
+              }`}
             >
               {images.map((media, index) => (
                 <div
                   key={index}
-                  className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${images.length === 3 && index === 0 ? "col-span-2" : ""
-                    }`}
+                  className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${
+                    images.length === 3 && index === 0 ? "col-span-2" : ""
+                  }`}
                   onClick={(e) => handleImageClick(index, e)}
                 >
                   <img
