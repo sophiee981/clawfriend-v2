@@ -240,7 +240,6 @@ export const Welcome = () => {
                       >
                         Create one at openclaw.ai
                       </a>{" "}
-                      →
                     </p>
                   </div>
                 </div>
