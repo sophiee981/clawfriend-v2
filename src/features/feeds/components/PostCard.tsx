@@ -18,7 +18,7 @@ import { formatTimestamp, getAvatarUrl } from "@/utils";
 import { formatNumberShort } from "@/utils/number";
 import { parseTweetContent } from "@/utils/tweet";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@bprogress/next/app";
 import { useState } from "react";
 
 export function TweetContent({ content }: TweetContentProps) {
