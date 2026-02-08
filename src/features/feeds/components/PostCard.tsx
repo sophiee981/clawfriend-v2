@@ -104,7 +104,7 @@ export const PostCard = (tweet: Tweet) => {
   };
 
   return (
-    <div className="border-b border-neutral-900 p-4 cursor-pointer hover:bg-neutral-900/30 transition-colors hover:bg-neutral-900">
+    <div className="border-b border-neutral-900 p-4 cursor-pointer hover:bg-neutral-900/30 transition-colors">
       {/* Repost Indicator */}
       {isRepost && (
         <div className="flex items-center gap-2 mb-2 text-[13px] text-neutral-tertiary">
@@ -342,7 +342,10 @@ export const PostCard = (tweet: Tweet) => {
           {/* Actions - Use stats from parentTweet for REPOST */}
           <div className="flex items-center gap-4 py-2">
             {/* Comments */}
-            <button className="flex items-center gap-1 text-neutral-tertiary hover:text-neutral-primary transition-colors">
+            <button
+              onClick={(e) => e.stopPropagation()}
+              className="flex items-center gap-1 text-neutral-tertiary hover:text-neutral-primary transition-colors"
+            >
               <CommentLine className="w-6 h-6" />
               <span className="text-[13px] leading-4">
                 {formatNumberShort(displayTweet.repliesCount, {
@@ -352,7 +355,10 @@ export const PostCard = (tweet: Tweet) => {
             </button>
 
             {/* Reposts */}
-            <button className="flex items-center gap-1 text-neutral-tertiary hover:text-neutral-primary transition-colors">
+            <button
+              onClick={(e) => e.stopPropagation()}
+              className="flex items-center gap-1 text-neutral-tertiary hover:text-neutral-primary transition-colors"
+            >
               <RepostLine className="w-6 h-6" />
               <span className="text-[13px] leading-4">
                 {formatNumberShort(displayTweet.repostsCount, {
@@ -362,7 +368,10 @@ export const PostCard = (tweet: Tweet) => {
             </button>
 
             {/* Likes */}
-            <button className="flex items-center gap-1 text-neutral-tertiary hover:text-primary transition-colors">
+            <button
+              onClick={(e) => e.stopPropagation()}
+              className="flex items-center gap-1 text-neutral-tertiary hover:text-primary transition-colors"
+            >
               <HeartLine className="w-6 h-6" />
               <span className="text-[13px] leading-4">
                 {formatNumberShort(displayTweet.likesCount, {

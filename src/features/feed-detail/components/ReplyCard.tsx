@@ -18,6 +18,7 @@ import type { Tweet } from "@/interfaces/feeds";
 import { formatTimestamp, getAvatarUrl } from "@/utils";
 import { formatNumberShort } from "@/utils/number";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface ReplyCardProps {
@@ -25,6 +26,7 @@ interface ReplyCardProps {
 }
 
 export const ReplyCard = ({ tweet }: ReplyCardProps) => {
+  const router = useRouter();
   const [viewerOpen, setViewerOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
@@ -35,6 +37,12 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
   const images = displayTweet.medias?.filter((m) => m.type === "image") || [];
   const videos = displayTweet.medias?.filter((m) => m.type === "video") || [];
 
+  const handleClick = () => {
+    // Navigate to parent tweet if REPOST, otherwise to the tweet itself
+    const targetId = isRepost && tweet.parentTweet ? tweet.parentTweet.id : tweet.id;
+    router.push(`/feeds/${targetId}`);
+  };
+
   const handleImageClick = (index: number, e: React.MouseEvent) => {
     e.stopPropagation();
     setSelectedImageIndex(index);
@@ -42,13 +50,14 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
   };
 
   return (
-    <div className="flex gap-4 p-4">
+    <div className="flex gap-4 p-4 cursor-pointer hover:bg-neutral-900/30 transition-colors">
       {/* Avatar with optional line */}
       <div className="flex flex-col items-center gap-2 flex-shrink-0">
         <Link
           href={
             tweet.agent?.username ? `/profile/${tweet.agent.username}` : "#"
           }
+          onClick={(e) => e.stopPropagation()}
         >
           <CompleteAvatar
             src={getAvatarUrl(tweet.agent?.username)}
@@ -62,7 +71,7 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
       </div>
 
       {/* Content */}
-      <div className="flex-1 min-w-0 pb-2">
+      <div className="flex-1 min-w-0 pb-2" onClick={handleClick}>
         {/* Repost Indicator */}
         {isRepost && (
           <div className="flex items-center gap-2 mb-2 text-[13px] text-neutral-tertiary">
@@ -71,6 +80,7 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
               href={
                 tweet.agent?.username ? `/profile/${tweet.agent.username}` : "#"
               }
+              onClick={(e) => e.stopPropagation()}
               className="hover:underline"
             >
               <span className="font-medium text-neutral-primary">
@@ -101,6 +111,7 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
                         ? `/profile/${tweet.parentTweet.agent.username}`
                         : "#"
                     }
+                    onClick={(e) => e.stopPropagation()}
                     className="flex items-center gap-1"
                   >
                     <CompleteAvatar
@@ -164,7 +175,10 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
 
                 {/* Parent Tweet Videos */}
                 {videos.length > 0 && (
-                  <div className="mb-3 space-y-2">
+                  <div
+                    className="mb-3 space-y-2"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     {videos.map((media, index) => (
                       <VideoPlayer key={index} url={media.url} />
                     ))}
@@ -183,6 +197,7 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
                   href={
                     tweet.agent?.username ? `/profile/${tweet.agent.username}` : "#"
                   }
+                  onClick={(e) => e.stopPropagation()}
                 >
                   <span className="text-[13px] font-medium leading-4 text-neutral-primary cursor-pointer hover:underline">
                     {tweet.agent?.displayName}
@@ -256,7 +271,10 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
 
             {/* Videos */}
             {videos.length > 0 && (
-              <div className="mb-4 space-y-2">
+              <div
+                className="mb-4 space-y-2"
+                onClick={(e) => e.stopPropagation()}
+              >
                 {videos.map((media, index) => (
                   <VideoPlayer key={index} url={media.url} />
                 ))}
@@ -265,50 +283,13 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
           </>
         )}
 
-        {/* Images */}
-        {images.length > 0 && (
-          <div
-            className={`mb-4 gap-2 ${
-              images.length === 1
-                ? "grid grid-cols-1"
-                : images.length === 2
-                  ? "grid grid-cols-2"
-                  : images.length === 3
-                    ? "grid grid-cols-2"
-                    : "grid grid-cols-2"
-            }`}
-          >
-            {images.map((media, index) => (
-              <div
-                key={index}
-                className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${
-                  images.length === 3 && index === 0 ? "col-span-2" : ""
-                }`}
-                onClick={(e) => handleImageClick(index, e)}
-              >
-                <img
-                  src={media.url}
-                  alt={`Reply image ${index + 1}`}
-                  className="w-full h-auto object-cover"
-                />
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Videos */}
-        {videos.length > 0 && (
-          <div className="mb-4 space-y-2">
-            {videos.map((media, index) => (
-              <VideoPlayer key={index} url={media.url} />
-            ))}
-          </div>
-        )}
-
         {/* Actions - Use stats from parentTweet for REPOST */}
         <div className="flex items-center gap-4 py-2">
           {/* Comments */}
-          <button className="flex items-center gap-1 text-neutral-tertiary hover:text-neutral-primary transition-colors">
+          <button
+            onClick={(e) => e.stopPropagation()}
+            className="flex items-center gap-1 text-neutral-tertiary hover:text-neutral-primary transition-colors"
+          >
             <CommentLine className="w-6 h-6" />
             <span className="text-[13px] leading-4">
               {formatNumberShort(displayTweet.repliesCount, {
@@ -318,7 +299,10 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
           </button>
 
           {/* Reposts */}
-          <button className="flex items-center gap-1 text-neutral-tertiary hover:text-neutral-primary transition-colors">
+          <button
+            onClick={(e) => e.stopPropagation()}
+            className="flex items-center gap-1 text-neutral-tertiary hover:text-neutral-primary transition-colors"
+          >
             <RepostLine className="w-6 h-6" />
             <span className="text-[13px] leading-4">
               {formatNumberShort(displayTweet.repostsCount, {
@@ -328,7 +312,10 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
           </button>
 
           {/* Likes */}
-          <button className="flex items-center gap-1 text-neutral-tertiary hover:text-primary transition-colors">
+          <button
+            onClick={(e) => e.stopPropagation()}
+            className="flex items-center gap-1 text-neutral-tertiary hover:text-primary transition-colors"
+          >
             <HeartLine className="w-6 h-6" />
             <span className="text-[13px] leading-4">
               {formatNumberShort(displayTweet.likesCount, {
