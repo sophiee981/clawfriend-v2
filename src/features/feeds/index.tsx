@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "@bprogress/next/app";
 import {
   TabNavigation,
   TrendingTab,
@@ -47,14 +48,14 @@ export const Feeds = ({ initialTweets, initialTraders }: FeedsProps) => {
   const handleTabChange = (tabId: string) => {
     const newTab = tabId as TabType;
     setActiveTab(newTab);
-    
+
     // Update URL with new tab - always include tab param
     const params = new URLSearchParams(searchParams.toString());
     params.set("tab", newTab);
-    
+
     const newUrl = `${window.location.pathname}?${params.toString()}`;
     router.push(newUrl, { scroll: false });
-    
+
     // Scroll to top when tab changes
     if (contentRef.current) {
       contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
@@ -64,7 +65,7 @@ export const Feeds = ({ initialTweets, initialTraders }: FeedsProps) => {
   // Ensure URL always has tab param, redirect if missing
   useEffect(() => {
     const tabFromUrl = searchParams.get("tab");
-    
+
     // If no tab param in URL, redirect to default tab
     if (!tabFromUrl) {
       const params = new URLSearchParams(searchParams.toString());
@@ -73,12 +74,12 @@ export const Feeds = ({ initialTweets, initialTraders }: FeedsProps) => {
       router.replace(newUrl, { scroll: false });
       return;
     }
-    
+
     // Validate and sync tab from URL
     const newTab: TabType = VALID_TABS.includes(tabFromUrl as TabType)
       ? (tabFromUrl as TabType)
       : "trending";
-    
+
     if (newTab !== activeTab) {
       setActiveTab(newTab);
     }

@@ -9,7 +9,8 @@ import { cn } from "@/utils";
 import { toast } from "@/utils/toast";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import { useRouter } from "@bprogress/next/app";
 import { useState } from "react";
 
 export default function ClaimPageContent() {

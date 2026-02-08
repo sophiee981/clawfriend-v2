@@ -22,7 +22,7 @@ import {
   ModalHeader,
   ModalTitle,
 } from "@/components/ui/modal";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@bprogress/next/app";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -219,8 +219,8 @@ export const FeedDetailHeader = () => {
               <label
                 key={reason.id}
                 className={`flex items-center gap-3 p-4 rounded-lg border cursor-pointer transition-all duration-200 ${selectedReportReason === reason.id
-                    ? "border-primary bg-primary-muted-20 shadow-sm"
-                    : "border-neutral-900 hover:border-primary-muted bg-neutral-02"
+                  ? "border-primary bg-primary-muted-20 shadow-sm"
+                  : "border-neutral-900 hover:border-primary-muted bg-neutral-02"
                   }`}
               >
                 <input

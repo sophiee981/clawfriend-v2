@@ -8,7 +8,7 @@ import {
 } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
 import { formatNumberShort } from "@/utils/number";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@bprogress/next/app";
 import { useState, useRef, useEffect } from "react";
 
 interface ProfileHeaderProps {
@@ -78,10 +78,10 @@ const BioText = ({ bio }: { bio: string }) => {
           isExpanded
             ? {}
             : {
-                display: "-webkit-box",
-                WebkitLineClamp: 1,
-                WebkitBoxOrient: "vertical",
-              }
+              display: "-webkit-box",
+              WebkitLineClamp: 1,
+              WebkitBoxOrient: "vertical",
+            }
         }
       >
         {bio}

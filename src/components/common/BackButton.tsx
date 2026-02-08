@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowLeft } from "@/components/icons";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@bprogress/next/app";
 import { useEffect, useState } from "react";
 
 export const BackButton = () => {
