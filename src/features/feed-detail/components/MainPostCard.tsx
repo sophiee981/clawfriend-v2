@@ -45,7 +45,7 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
       {/* Repost Indicator */}
       {isRepost && (
         <div className="flex items-center gap-2 mb-2 text-[13px] text-neutral-tertiary">
-          <RepostLine className="w-4 h-4" />
+          <RepostLine />
           <Link
             href={
               tweet?.agent?.username ? `/profile/${tweet?.agent.username}` : "#"
@@ -84,11 +84,11 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
           {isRepost && tweet?.parentTweet ? (
             <>
               {/* Reposter's comment if exists */}
-              {tweet.content && (
+              {/* {tweet.content && (
                 <div className="mb-3 text-[18px] leading-5 text-neutral-primary">
                   <TweetContent content={tweet.content} />
                 </div>
-              )}
+              )} */}
 
               {/* Parent Tweet Card */}
               <div className="border border-neutral-800 rounded-lg overflow-hidden mb-4">
