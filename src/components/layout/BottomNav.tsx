@@ -9,7 +9,10 @@ export const BottomNav = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center gap-3 border-t border-neutral-900 bg-neutral-01 p-3 md:hidden">
+    <nav 
+      className="flex items-center gap-3 border-t border-neutral-900 bg-neutral-01 p-3 md:hidden" 
+      style={{ paddingBottom: 'max(0.75rem, calc(0.75rem + env(safe-area-inset-bottom)))' }}
+    >
       {MENU_ITEMS.map((item) => {
         const isActive = pathname === item.href;
         const Icon = isActive && item.activeIcon ? item.activeIcon : item.icon;
