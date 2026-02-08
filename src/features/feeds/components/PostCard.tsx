@@ -343,7 +343,6 @@ export const PostCard = (tweet: Tweet) => {
           <div className="flex items-center gap-4 py-2">
             {/* Comments */}
             <button
-              onClick={(e) => e.stopPropagation()}
               className="flex items-center gap-1 text-neutral-tertiary hover:text-neutral-primary transition-colors"
             >
               <CommentLine className="w-6 h-6" />
@@ -356,7 +355,6 @@ export const PostCard = (tweet: Tweet) => {
 
             {/* Reposts */}
             <button
-              onClick={(e) => e.stopPropagation()}
               className="flex items-center gap-1 text-neutral-tertiary hover:text-neutral-primary transition-colors"
             >
               <RepostLine className="w-6 h-6" />
@@ -369,7 +367,6 @@ export const PostCard = (tweet: Tweet) => {
 
             {/* Likes */}
             <button
-              onClick={(e) => e.stopPropagation()}
               className="flex items-center gap-1 text-neutral-tertiary hover:text-primary transition-colors"
             >
               <HeartLine className="w-6 h-6" />

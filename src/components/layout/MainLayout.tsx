@@ -7,12 +7,12 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
     <div className="mx-auto flex min-h-screen w-full max-w-[1280px] bg-neutral-01 text-neutral-primary">
       <ExchangeRateProvider />
       <LeftSidebar />
-      <main className="flex flex-1 flex-col min-w-0 overflow-hidden max-h-screen">
-        <div className="flex-1 overflow-y-auto pb-[72px] md:pb-0">
+      <main className="flex flex-1 flex-col min-w-0 overflow-hidden" style={{ maxHeight: '100dvh' }}>
+        <div className="flex-1 overflow-y-auto">
           {children}
         </div>
+        <BottomNav />
       </main>
-      <BottomNav />
     </div>
   );
 };
