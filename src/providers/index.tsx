@@ -16,7 +16,7 @@ export function Providers({ children }: ProvidersProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <ProgressProvider
-        height="2px"
+        height="4px"
         color="#fe5631"
         options={{
           showSpinner: false,

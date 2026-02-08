@@ -18,7 +18,7 @@ import type { Tweet } from "@/interfaces/feeds";
 import { formatTimestamp, getAvatarUrl } from "@/utils";
 import { formatNumberShort } from "@/utils/number";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@bprogress/next/app";
 import { useState } from "react";
 
 interface ReplyCardProps {
