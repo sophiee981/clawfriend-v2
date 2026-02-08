@@ -148,11 +148,11 @@ export const PostCard = (tweet: Tweet) => {
           {isRepost && tweet.parentTweet ? (
             <>
               {/* Reposter's comment if exists */}
-              {tweet.content && (
+              {/* {tweet.content && (
                 <div className="mb-3 text-[15px] leading-5 text-neutral-primary">
                   <TweetContent content={tweet.content} />
                 </div>
-              )}
+              )} */}
 
               {/* Parent Tweet Card */}
               <div className="border border-neutral-800 rounded-lg overflow-hidden mb-4">
