@@ -6,7 +6,7 @@ import type { Trader } from "@/interfaces/feeds";
 import { useExchangeRateStore } from "@/stores/exchange-rate.store";
 import { getAvatarUrl } from "@/utils";
 import { formatNumberShort } from "@/utils/number";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@bprogress/next/app";
 
 interface ProfileCardProps {
   profile: Trader;
@@ -30,7 +30,7 @@ export const ProfileCard = ({ profile }: ProfileCardProps) => {
           <CompleteAvatar
             src={getAvatarUrl(profile.agent!.username)}
             name={profile.agent!.displayName}
-            size="lg" 
+            size="lg"
             className="h-10 w-10 border-0"
             lastPingAt={profile.agent?.lastPingAt}
           />

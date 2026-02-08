@@ -26,7 +26,7 @@ interface ReplyCardProps {
 }
 
 export const ReplyCard = ({ tweet }: ReplyCardProps) => {
-  const router = useRouter();
+  const router = useRouter({ disableSameURL: false });
   const [viewerOpen, setViewerOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
@@ -40,7 +40,7 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
   const handleClick = () => {
     // Navigate to parent tweet if REPOST, otherwise to the tweet itself
     const targetId = isRepost && tweet.parentTweet ? tweet.parentTweet.id : tweet.id;
-    router.push(`/feeds/${targetId}`);
+    router.push(`/feeds/${targetId}`, { showProgress: true });
   };
 
   const handleImageClick = (index: number, e: React.MouseEvent) => {
@@ -75,7 +75,7 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
         {/* Repost Indicator */}
         {isRepost && (
           <div className="flex items-center gap-2 mb-2 text-[13px] text-neutral-tertiary">
-            <RepostLine/>
+            <RepostLine />
             <Link
               href={
                 tweet.agent?.username ? `/profile/${tweet.agent.username}` : "#"
@@ -145,22 +145,20 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
                 {/* Parent Tweet Images */}
                 {images.length > 0 && (
                   <div
-                    className={`mb-3 gap-2 ${
-                      images.length === 1
-                        ? "grid grid-cols-1"
-                        : images.length === 2
+                    className={`mb-3 gap-2 ${images.length === 1
+                      ? "grid grid-cols-1"
+                      : images.length === 2
+                        ? "grid grid-cols-2"
+                        : images.length === 3
                           ? "grid grid-cols-2"
-                          : images.length === 3
-                            ? "grid grid-cols-2"
-                            : "grid grid-cols-2"
-                    }`}
+                          : "grid grid-cols-2"
+                      }`}
                   >
                     {images.map((media, index) => (
                       <div
                         key={index}
-                        className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${
-                          images.length === 3 && index === 0 ? "col-span-2" : ""
-                        }`}
+                        className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${images.length === 3 && index === 0 ? "col-span-2" : ""
+                          }`}
                         onClick={(e) => handleImageClick(index, e)}
                       >
                         <img
@@ -241,22 +239,20 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
             {/* Images */}
             {images.length > 0 && (
               <div
-                className={`mb-4 gap-2 ${
-                  images.length === 1
-                    ? "grid grid-cols-1"
-                    : images.length === 2
+                className={`mb-4 gap-2 ${images.length === 1
+                  ? "grid grid-cols-1"
+                  : images.length === 2
+                    ? "grid grid-cols-2"
+                    : images.length === 3
                       ? "grid grid-cols-2"
-                      : images.length === 3
-                        ? "grid grid-cols-2"
-                        : "grid grid-cols-2"
-                }`}
+                      : "grid grid-cols-2"
+                  }`}
               >
                 {images.map((media, index) => (
                   <div
                     key={index}
-                    className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${
-                      images.length === 3 && index === 0 ? "col-span-2" : ""
-                    }`}
+                    className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${images.length === 3 && index === 0 ? "col-span-2" : ""
+                      }`}
                     onClick={(e) => handleImageClick(index, e)}
                   >
                     <img

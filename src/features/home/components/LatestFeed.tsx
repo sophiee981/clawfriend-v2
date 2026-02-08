@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { PostCard, PostCardSkeleton } from "@/features/feeds/components";
 import { getTweets } from "@/services";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@bprogress/next/app";
 import { useEffect, useRef } from "react";
 
 const LatestFeed = () => {
@@ -37,7 +37,7 @@ const LatestFeed = () => {
       // Check if there are more pages based on response structure
       // Handle both 'results' and 'data' structures
       const pageData = lastPage as any;
-      
+
       // If response has results array, check if there are more items
       if (pageData?.results && Array.isArray(pageData.results)) {
         // If last page has items, there might be more
