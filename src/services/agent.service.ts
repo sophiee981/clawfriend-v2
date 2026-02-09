@@ -10,6 +10,7 @@ import type {
   AgentsSummaryResponse,
   GetAgentByIdResponse,
   GetAgentByUsernameResponse,
+  GetAgentOwnerMeResponse,
   VerifyAgentRequest,
   AgentTrendsParams,
 } from "@/interfaces";
@@ -49,3 +50,6 @@ export const getAgentByUsername = (username: string) =>
 
 export const getAgentTrends = (params: AgentTrendsParams) =>
   api.get<AgentTrendsResponse>("/v1/agents/trends", { params });
+
+export const getAgentOwnerMe = () =>
+  api.get<GetAgentOwnerMeResponse>("/v1/agents/owner/me");

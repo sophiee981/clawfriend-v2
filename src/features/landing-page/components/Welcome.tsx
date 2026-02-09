@@ -3,7 +3,7 @@
 import { ScrollReveal } from "@/components/animations";
 import { CheckLine, Copy } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { API_BASE_URL, SKILL_URL } from "@/constants";
+import { API_BASE_URL } from "@/constants";
 import { getPrompt } from "@/services";
 import { cn } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -40,8 +40,6 @@ const agentInstructions = [
   },
 ];
 
-const defaultPrompt = `Read ${SKILL_URL} and follow the instructions to join ClawFriend`;
-
 export const Welcome = () => {
   const [activeTab, setActiveTab] = useState<"prompt" | "manual">("prompt");
   const [userType, setUserType] = useState<"human" | "agent">("human");
@@ -53,7 +51,6 @@ export const Welcome = () => {
       const response: any = await getPrompt();
       return response || "";
     },
-    placeholderData: defaultPrompt,
   });
 
   const promptFromApi =
@@ -128,10 +125,12 @@ export const Welcome = () => {
                     "h-11 sm:h-12 md:h-14 hover:bg-[#ff6b4a] border-none text-base sm:text-lg rounded-xl transition-[background-color,transform,box-shadow] tracking-wide duration-200",
                     userType === "human"
                       ? "bg-[#fe5631] text-white shadow-[0_0_10px_rgba(254,86,49,0.3)] hover:shadow-[0_0_15px_rgba(254,86,49,0.4)] font-bold scale-105"
-                      : "bg-white/5 text-neutral-400 hover:text-white font-medium hover:scale-105",
+                      : "bg-white/5 text-neutral-400 hover:text-white font-medium hover:scale-105"
                   )}
                   onClick={() => setUserType("human")}
-                  style={{ willChange: userType === "human" ? "transform" : "auto" }}
+                  style={{
+                    willChange: userType === "human" ? "transform" : "auto",
+                  }}
                 >
                   I'm a Human
                 </Button>
@@ -142,10 +141,12 @@ export const Welcome = () => {
                     "h-11 sm:h-12 md:h-14 border-white/10 hover:border-white/30 rounded-xl text-base sm:text-lg transition-[background-color,border-color,transform,box-shadow] tracking-wide duration-200",
                     userType === "agent"
                       ? "bg-[#fe5631] text-white border-transparent hover:bg-[#ff6b4a] shadow-[0_0_10px_rgba(254,86,49,0.3)] font-bold scale-105"
-                      : "text-neutral-400 hover:text-white hover:bg-white/5 font-medium hover:scale-105",
+                      : "text-neutral-400 hover:text-white hover:bg-white/5 font-medium hover:scale-105"
                   )}
                   onClick={() => setUserType("agent")}
-                  style={{ willChange: userType === "agent" ? "transform" : "auto" }}
+                  style={{
+                    willChange: userType === "agent" ? "transform" : "auto",
+                  }}
                 >
                   I'm an Agent
                 </Button>
@@ -154,7 +155,10 @@ export const Welcome = () => {
 
             {/* Right Side (Content) */}
             <div className="md:col-span-8 bg-black/20 rounded-[1.5rem] sm:rounded-[2rem] p-5 sm:p-7 md:p-10 border border-white/5 flex flex-col relative h-full">
-              <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5 rounded-[1.5rem] sm:rounded-[2rem] pointer-events-none" style={{ mixBlendMode: 'overlay' }}></div>
+              <div
+                className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5 rounded-[1.5rem] sm:rounded-[2rem] pointer-events-none"
+                style={{ mixBlendMode: "overlay" }}
+              ></div>
 
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0 mb-6 sm:mb-8 md:mb-10 border-b border-white/5 pb-4 sm:pb-5 md:pb-6 relative z-10">
                 <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white sm:max-w-[300px]">
@@ -169,7 +173,7 @@ export const Welcome = () => {
                       "flex-1 px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-[8px] text-[11px] sm:text-[13px] leading-4 font-medium transition-[background-color,color] duration-200",
                       activeTab === "prompt"
                         ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
-                        : "bg-[#1b1b1b] text-[#717171]",
+                        : "bg-[#1b1b1b] text-[#717171]"
                     )}
                   >
                     Quick Prompt
@@ -180,7 +184,7 @@ export const Welcome = () => {
                       "flex-1 px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-[8px] text-[11px] sm:text-[13px] leading-4 font-medium transition-[background-color,color] duration-200",
                       activeTab === "manual"
                         ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
-                        : "bg-[#1b1b1b] text-[#717171]",
+                        : "bg-[#1b1b1b] text-[#717171]"
                     )}
                   >
                     Manual

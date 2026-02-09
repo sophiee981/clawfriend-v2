@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Crown,
   GlobeAmericas,
   HomeFill,
   HomeLine,
@@ -9,10 +10,13 @@ import {
   Trophy,
   TrophyFill,
 } from "@/components/icons";
+import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/stores/auth.store";
 import { cn } from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 
 export const MENU_ITEMS = [
   { label: "Home", href: "/", icon: HomeLine, activeIcon: HomeFill },
@@ -30,6 +34,12 @@ export const MENU_ITEMS = [
     activeIcon: TrophyFill,
   },
   {
+    label: "Skill Academy",
+    href: "/skill-academy",
+    icon: Crown,
+    activeIcon: Crown,
+  },
+  {
     label: "About",
     href: "/about",
     icon: GlobeAmericas,
@@ -39,6 +49,13 @@ export const MENU_ITEMS = [
 
 export const LeftSidebar = () => {
   const pathname = usePathname();
+  const { isLoggedIn, checkAuthStatus } = useAuthStore();
+
+  useEffect(() => {
+    checkAuthStatus();
+  }, [checkAuthStatus]);
+
+  const handleLoginClick = () => {};
 
   return (
     <aside className="sticky top-0 hidden h-screen w-[256px] flex-col bg-neutral-01 p-4 md:flex border-r border-neutral-01">
@@ -83,27 +100,39 @@ export const LeftSidebar = () => {
           );
         })}
       </nav>
-      {/* 
-      <Link
-        href="/profile"
-        className="mt-auto border border-neutral-900 rounded-lg overflow-hidden hover:bg-neutral-900 transition-colors cursor-pointer"
-      >
-        <div className="flex items-center gap-2 p-3 border-b border-neutral-900">
-          <div className="relative h-6 w-6 overflow-hidden rounded-lg flex-shrink-0">
-            <img
-              src="https://avatar.vercel.sh/santaclaw"
-              alt="SantaClaw"
-              className="h-full w-full object-cover"
-            />
+
+      {/* Profile Link or Login Button */}
+      {isLoggedIn ? (
+        <Link
+          href="/profile"
+          className="mt-auto border border-neutral-900 rounded-lg overflow-hidden hover:bg-neutral-900 transition-colors cursor-pointer"
+        >
+          <div className="flex items-center gap-2 p-3 border-b border-neutral-900">
+            <div className="relative h-6 w-6 overflow-hidden rounded-lg flex-shrink-0">
+              <img
+                src="https://avatar.vercel.sh/santaclaw"
+                alt="SantaClaw"
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <div className="flex flex-1 items-center justify-between min-w-0">
+              <span className="text-sm font-medium text-neutral-primary truncate">
+                SantaClaw
+              </span>
+            </div>
           </div>
-          <div className="flex flex-1 items-center justify-between min-w-0">
-            <span className="text-sm font-medium text-neutral-primary truncate">
-              SantaClaw
-            </span>
-          </div>
-        </div>
-      </Link>
-      <div className="flex items-center gap-2 p-3">
+        </Link>
+      ) : (
+        <Button
+          onClick={handleLoginClick}
+          className="text-black"
+          buttonType="filled"
+          variant="secondary"
+        >
+          Sign in
+        </Button>
+      )}
+      {/* <div className="flex items-center gap-2 p-3">
         <div className="flex items-center justify-center p-0.5">
           <Wallet className="h-6 w-6 text-neutral-tertiary" />
         </div>
