@@ -1,7 +1,7 @@
 "use client";
 
 import { Tabs } from "@/components/ui/tabs";
-import { getSkills, getPrompts } from "@/services";
+import { getSkills } from "@/services";
 import type { Skill } from "@/interfaces";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useMemo } from "react";
@@ -39,7 +39,7 @@ const mapSkillToAcademyItem = (skill: Skill, type: AcademyItemType): AcademyItem
 // Component that reads search params from URL
 const SkillAcademyContent = () => {
   const router = useRouter();
-  
+
   // Read initial tab from URL
   const getInitialTab = (): AcademyItemType => {
     if (typeof window !== "undefined") {
@@ -49,7 +49,7 @@ const SkillAcademyContent = () => {
     }
     return "skill";
   };
-  
+
   const [activeTab, setActiveTab] = useState<AcademyItemType>(getInitialTab);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
@@ -72,77 +72,38 @@ const SkillAcademyContent = () => {
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
-  // Fetch skills from API using React Query
+  // Fetch data from API using React Query
   const {
-    data: skillsResponse,
-    isLoading: isLoadingSkills,
-    error: skillsError,
+    data: response,
+    isLoading,
+    error,
   } = useQuery({
-    queryKey: ["skills", activeTab],
+    queryKey: [activeTab === "skill" ? "skills" : "prompts", activeTab],
     queryFn: async () => {
-      const response = await getSkills({
+      return await getSkills({
         page: 1,
         limit: 20,
         is_active: true,
-        type: "skills",
+        // type: activeTab === "skill" ? "skills" : "prompts",
       });
-      return response;
     },
-    enabled: activeTab === "skill",
-    staleTime: 5 * 60 * 1000, // Cache data for 5 minutes
-    refetchOnMount: true,
   });
 
-  // Fetch prompts from API using React Query
-  const {
-    data: promptsResponse,
-    isLoading: isLoadingPrompts,
-    error: promptsError,
-  } = useQuery({
-    queryKey: ["prompts", activeTab],
-    queryFn: async () => {
-      const response = await getPrompts({
-        page: 1,
-        limit: 20,
-        is_active: true,
-      });
-      return response;
-    },
-    enabled: activeTab === "prompt",
-    staleTime: 5 * 60 * 1000, // Cache data for 5 minutes
-    refetchOnMount: true,
-  });
-
-  // Map skills data to AcademyItem format
-  const skills = useMemo(() => {
-    if (skillsResponse && "data" in skillsResponse && Array.isArray(skillsResponse.data)) {
-      return skillsResponse.data.map((skill) => mapSkillToAcademyItem(skill, "skill"));
+  // Map response data to AcademyItem format
+  const currentItems = useMemo(() => {
+    if (response?.data?.data && Array.isArray(response.data.data)) {
+      return response.data.data.map((item) => mapSkillToAcademyItem(item, activeTab));
     }
     return [];
-  }, [skillsResponse]);
-
-  // Map prompts data to AcademyItem format
-  const prompts = useMemo(() => {
-    if (promptsResponse && "data" in promptsResponse && Array.isArray(promptsResponse.data)) {
-      return promptsResponse.data.map((prompt) => mapSkillToAcademyItem(prompt, "prompt"));
-    }
-    return [];
-  }, [promptsResponse]);
-
-  // Determine loading and error states based on active tab
-  const isLoading = activeTab === "skill" ? isLoadingSkills : isLoadingPrompts;
-  const error = activeTab === "skill" 
-    ? (skillsError ? (skillsError as any)?.error || "Failed to load skills" : null)
-    : (promptsError ? (promptsError as any)?.error || "Failed to load prompts" : null);
+  }, [response, activeTab]);
 
   // Update URL when tab changes
   const handleTabChange = (id: AcademyItemType) => {
     setActiveTab(id);
-    const newTab = id === "skill" ? "skills" : "prompts";
-    router.push(`/skill-academy?tab=${newTab}`, { scroll: false });
+    router.push(`/skill-academy?tab=${id === "skill" ? "skills" : "prompts"}`, { scroll: false });
   };
 
-  const currentItems = activeTab === "skill" ? skills : prompts;
+  const errorMessage = error ? (error as any)?.error || `Failed to load ${activeTab}s` : null;
 
   return (
     <div className="flex h-full flex-col items-center overflow-y-auto pb-4 relative">
@@ -162,13 +123,13 @@ const SkillAcademyContent = () => {
       <div className="flex flex-1 flex-col gap-6 pt-6 w-full px-4">
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {Array.from({ length: 6 }).map((_, index) => (
+            {Array.from({ length: 3 }).map((_, index) => (
               <SkillCardSkeleton key={`skeleton-${index}`} />
             ))}
           </div>
-        ) : error ? (
+        ) : errorMessage ? (
           <div className="text-center py-12">
-            <p className="text-body-md text-red-500">{error}</p>
+            <p className="text-body-md text-red-500">{errorMessage}</p>
           </div>
         ) : currentItems.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

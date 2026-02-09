@@ -14,11 +14,6 @@ import { apiWithToken, api } from "@/services";
 export const getSkills = (params: GetSkillsParams) =>
   apiWithToken.get<GetSkillsResponse>("/v1/academy/skills", { params });
 
-export const getPrompts = (params: GetSkillsParams) =>
-  apiWithToken.get<GetSkillsResponse>("/v1/academy/skills", { 
-    params: { ...params, type: "prompts" }
-  });
-
 export const getSkill = (skillId: number) =>
   apiWithToken.get<GetSkillResponse>(`/v1/academy/skills/${skillId}`);
 

@@ -76,6 +76,12 @@ export interface GetSkillsParams {
 }
 
 export interface GetSkillsResponse {
-  data: Skill[];
-  total: number;
+  data: {
+    data: Skill[];
+    total: number;
+    page: number;
+    limit: number;
+  };
+  statusCode: number;
+  message: string;
 }
