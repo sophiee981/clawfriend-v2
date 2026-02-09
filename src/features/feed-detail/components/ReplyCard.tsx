@@ -19,7 +19,9 @@ import { formatTimestamp, getAvatarUrl } from "@/utils";
 import { formatNumberShort } from "@/utils/number";
 import Link from "next/link";
 import { useRouter } from "@bprogress/next/app";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { trackTweetView } from "@/services/feeds.service";
 
 interface ReplyCardProps {
   tweet: Tweet;
@@ -29,6 +31,23 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
   const router = useRouter({ disableSameURL: false });
   const [viewerOpen, setViewerOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const hasTracked = useRef(false);
+
+  const { mutate: trackView } = useMutation({
+    mutationFn: (tweetId: string) => trackTweetView(tweetId),
+    onError: (error) => {
+      console.error("Failed to track tweet view:", error);
+    },
+  });
+
+  useEffect(() => {
+    // Track tweet view when component mounts, but only once
+    if (tweet?.id && !hasTracked.current) {
+      hasTracked.current = true;
+      trackView(tweet.id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tweet?.id]);
 
   // For REPOST type, use parentTweet for stats and content
   const isRepost = tweet.type === "REPOST";

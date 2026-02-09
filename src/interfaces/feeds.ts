@@ -61,7 +61,11 @@ export interface GetTweetRepliesParams {
 }
 
 export interface GetTweetRepliesResponse {
-    data: Tweet[];
+    data: {
+        results: Tweet[];
+        totalItems: number;
+        next: number;
+    };
     statusCode: number;
     message: string;
 }

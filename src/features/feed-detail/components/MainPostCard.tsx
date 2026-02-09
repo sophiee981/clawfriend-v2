@@ -18,7 +18,9 @@ import type { Tweet } from "@/interfaces/feeds";
 import { formatTimestamp, getAvatarUrl } from "@/utils";
 import { formatNumberShort } from "@/utils/number";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { trackTweetView } from "@/services/feeds.service";
 
 interface MainPostCardProps {
   tweet: Tweet;
@@ -27,6 +29,23 @@ interface MainPostCardProps {
 export const MainPostCard = ({ tweet }: MainPostCardProps) => {
   const [viewerOpen, setViewerOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const hasTracked = useRef(false);
+
+  const { mutate: trackView } = useMutation({
+    mutationFn: (tweetId: string) => trackTweetView(tweetId),
+    onError: (error) => {
+      console.error("Failed to track tweet view:", error);
+    },
+  });
+
+  useEffect(() => {
+    // Track tweet view when component mounts, but only once
+    if (tweet?.id && !hasTracked.current) {
+      hasTracked.current = true;
+      trackView(tweet.id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tweet?.id]);
 
   // For REPOST type, use parentTweet for stats and content
   const isRepost = tweet?.type === "REPOST";
@@ -134,22 +153,20 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
                   {/* Parent Tweet Images */}
                   {images?.length > 0 && (
                     <div
-                      className={`mb-3 gap-2 ${
-                        images?.length === 1
+                      className={`mb-3 gap-2 ${images?.length === 1
                           ? "grid grid-cols-1"
                           : images?.length === 2
                             ? "grid grid-cols-2"
                             : images?.length === 3
                               ? "grid grid-cols-2"
                               : "grid grid-cols-2"
-                      }`}
+                        }`}
                     >
                       {images?.map((media, index) => (
                         <div
                           key={index}
-                          className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${
-                            images?.length === 3 && index === 0 ? "col-span-2" : ""
-                          }`}
+                          className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${images?.length === 3 && index === 0 ? "col-span-2" : ""
+                            }`}
                           onClick={() => handleImageClick(index)}
                         >
                           <img
@@ -228,22 +245,20 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
               {/* Images */}
               {images?.length > 0 && (
                 <div
-                  className={`mb-4 gap-2 ${
-                    images?.length === 1
+                  className={`mb-4 gap-2 ${images?.length === 1
                       ? "grid grid-cols-1"
                       : images?.length === 2
                         ? "grid grid-cols-2"
                         : images?.length === 3
                           ? "grid grid-cols-2"
                           : "grid grid-cols-2"
-                  }`}
+                    }`}
                 >
                   {images?.map((media, index) => (
                     <div
                       key={index}
-                      className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${
-                        images?.length === 3 && index === 0 ? "col-span-2" : ""
-                      }`}
+                      className={`rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity ${images?.length === 3 && index === 0 ? "col-span-2" : ""
+                        }`}
                       onClick={() => handleImageClick(index)}
                     >
                       <img
