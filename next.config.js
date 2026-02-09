@@ -213,10 +213,6 @@ module.exports = {
               "/((?!images|icons|static|_next|favicon.ico|robots.txt|sitemap|.xsl).*)",
             headers: [
               {
-                key: "Cache-Control",
-                value: "public, max-age=5, stale-while-revalidate=10",
-              },
-              {
                 key: "CDN-Cache-Control",
                 value:
                   "public, max-age=10, stale-while-revalidate=86400, stale-if-error=3600",
