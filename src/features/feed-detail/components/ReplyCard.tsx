@@ -28,7 +28,7 @@ interface ReplyCardProps {
 }
 
 export const ReplyCard = ({ tweet }: ReplyCardProps) => {
-  const router = useRouter({ disableSameURL: false });
+  const router = useRouter();
   const [viewerOpen, setViewerOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const hasTracked = useRef(false);

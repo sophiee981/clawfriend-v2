@@ -79,7 +79,7 @@ export function TweetContent({ content }: TweetContentProps) {
 }
 
 export const PostCard = (tweet: Tweet) => {
-  const router = useRouter({ disableSameURL: false });
+  const router = useRouter();
   const [viewerOpen, setViewerOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
