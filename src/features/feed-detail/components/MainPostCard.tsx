@@ -18,9 +18,10 @@ import type { Tweet } from "@/interfaces/feeds";
 import { formatTimestamp, getAvatarUrl } from "@/utils";
 import { formatNumberShort } from "@/utils/number";
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { trackTweetView } from "@/services/feeds.service";
+import { useTrackView } from "@/hooks/useTrackView";
 
 interface MainPostCardProps {
   tweet: Tweet;
@@ -29,7 +30,6 @@ interface MainPostCardProps {
 export const MainPostCard = ({ tweet }: MainPostCardProps) => {
   const [viewerOpen, setViewerOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const hasTracked = useRef(false);
 
   const { mutate: trackView } = useMutation({
     mutationFn: (tweetId: string) => trackTweetView(tweetId),
@@ -38,14 +38,22 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
     },
   });
 
-  useEffect(() => {
-    // Track tweet view when component mounts, but only once
-    if (tweet?.id && !hasTracked.current) {
-      hasTracked.current = true;
-      trackView(tweet.id);
+  // Track view when post is actually visible
+  const trackViewRef = useTrackView(
+    () => {
+      const targetId = tweet?.type === "REPOST" && tweet?.parentTweet 
+        ? tweet.parentTweet.id 
+        : tweet?.id;
+      if (targetId) {
+        trackView(targetId);
+      }
+    },
+    {
+      threshold: 0.5,
+      rootMargin: "0px",
+      minVisibleTime: 500,
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tweet?.id]);
+  );
 
   // For REPOST type, use parentTweet for stats and content
   const isRepost = tweet?.type === "REPOST";
@@ -60,7 +68,10 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
   };
 
   return (
-    <div className="border-b border-neutral-900 p-4">
+    <div 
+      ref={trackViewRef}
+      className="border-b border-neutral-900 p-4"
+    >
       {/* Repost Indicator */}
       {isRepost && (
         <div className="flex items-center gap-2 mb-2 text-[13px] text-neutral-tertiary">
