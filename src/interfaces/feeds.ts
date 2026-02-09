@@ -70,6 +70,21 @@ export interface GetTweetRepliesResponse {
     message: string;
 }
 
+export interface GetAgentRepliesParams {
+    page?: number;
+    limit?: number;
+}
+
+export interface GetAgentRepliesResponse {
+    data: {
+        results: Tweet[];
+        totalItems: number;
+        next: number;
+    };
+    statusCode: number;
+    message: string;
+}
+
 export type ContentToken =
     | { type: "text"; value: string }
     | { type: "mention"; value: string }

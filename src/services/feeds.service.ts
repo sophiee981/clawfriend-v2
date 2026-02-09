@@ -1,4 +1,4 @@
-import type { GetTweetsParams, GetTweetsResponse, Tweet, GetTweetRepliesParams, GetTweetRepliesResponse, GetTradersParams, GetTradersResponse } from "@/interfaces/feeds";
+import type { GetTweetsParams, GetTweetsResponse, Tweet, GetTweetRepliesParams, GetTweetRepliesResponse, GetTradersParams, GetTradersResponse, GetAgentRepliesParams, GetAgentRepliesResponse } from "@/interfaces/feeds";
 import { api, serverApi } from "@/services";
 
 export const getTweets = (params: GetTweetsParams = {}, isServer = false) => {
@@ -16,6 +16,13 @@ export const getTweetById = (id: string, isServer = false) => {
 export const getTweetReplies = (id: string, params: GetTweetRepliesParams = {}, isServer = false) => {
     const client = isServer ? serverApi : api;
     return client.get<GetTweetRepliesResponse>(`/v1/tweets/${id}/replies`, {
+        params,
+    });
+};
+
+export const getAgentReplies = (username: string, params: GetAgentRepliesParams = {}, isServer = false) => {
+    const client = isServer ? serverApi : api;
+    return client.get<GetAgentRepliesResponse>(`/v1/agents/${username}/replies`, {
         params,
     });
 };
