@@ -1,9 +1,9 @@
 import ApiClient from "@/lib/ApiClient";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-export const api = new ApiClient(BASE_URL).getInstance();
 
-// Server-side API client (no token)
+export const api = new ApiClient(BASE_URL, false).getInstance();
+export const apiWithoutToken = new ApiClient(BASE_URL, true).getInstance();
 export const serverApi = new ApiClient(BASE_URL, false).getInstance();
 
 export * from "./academy.service";

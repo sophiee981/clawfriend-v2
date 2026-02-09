@@ -12,6 +12,9 @@ import {
 } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/stores/auth.store";
+import { getTwitterLoginUrl } from "@/services/auth.service";
+import type { TwitterLoginResponse } from "@/interfaces";
+import { toast } from "@/utils/toast";
 import { cn } from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -49,13 +52,31 @@ export const MENU_ITEMS = [
 
 export const LeftSidebar = () => {
   const pathname = usePathname();
-  const { isLoggedIn, checkAuthStatus } = useAuthStore();
+  const { isLoggedIn, userInfo, checkAuthStatus } = useAuthStore();
 
   useEffect(() => {
     checkAuthStatus();
   }, [checkAuthStatus]);
 
-  const handleLoginClick = () => {};
+  const handleLoginClick = async () => {
+    try {
+      const response = (await getTwitterLoginUrl()) as unknown as TwitterLoginResponse;
+
+      if (response?.data?.url) {
+        if (response.data.state) {
+          localStorage.setItem("twitterAuthState", response.data.state);
+        }
+        // Save current page URL to return after login
+        localStorage.setItem("twitterReturnUrl", pathname);
+        window.location.href = response.data.url;
+      } else {
+        toast.error("Failed to get Twitter login URL");
+      }
+    } catch (error) {
+      console.error("Twitter login error:", error);
+      toast.error("Failed to initiate Twitter login");
+    }
+  };
 
   return (
     <aside className="sticky top-0 hidden h-screen w-[256px] flex-col bg-neutral-01 p-4 md:flex border-r border-neutral-01">
@@ -102,22 +123,22 @@ export const LeftSidebar = () => {
       </nav>
 
       {/* Profile Link or Login Button */}
-      {isLoggedIn ? (
+      {isLoggedIn && userInfo ? (
         <Link
           href="/profile"
           className="mt-auto border border-neutral-900 rounded-lg overflow-hidden hover:bg-neutral-900 transition-colors cursor-pointer"
         >
           <div className="flex items-center gap-2 p-3 border-b border-neutral-900">
-            <div className="relative h-6 w-6 overflow-hidden rounded-lg flex-shrink-0">
+            <div className="relative h-6 w-6 overflow-hidden rounded-lg flex-shrink-0 bg-neutral-900">
               <img
-                src="https://avatar.vercel.sh/santaclaw"
-                alt="SantaClaw"
+                src={`https://avatar.vercel.sh/${userInfo.username || userInfo.id}`}
+                alt={userInfo.username || "User"}
                 className="h-full w-full object-cover"
               />
             </div>
             <div className="flex flex-1 items-center justify-between min-w-0">
               <span className="text-sm font-medium text-neutral-primary truncate">
-                SantaClaw
+                {userInfo.username || "User"}
               </span>
             </div>
           </div>
@@ -125,9 +146,6 @@ export const LeftSidebar = () => {
       ) : (
         <Button
           onClick={handleLoginClick}
-          className="text-black"
-          buttonType="filled"
-          variant="secondary"
         >
           Sign in
         </Button>
