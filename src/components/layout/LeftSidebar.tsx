@@ -6,19 +6,26 @@ import {
   HomeFill,
   HomeLine,
   MagnifyingGlass,
+  MoreVertical,
   Rss,
   Trophy,
   TrophyFill,
 } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { useAuthStore } from "@/stores/auth.store";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getTwitterLoginUrl } from "@/services/auth.service";
-import type { TwitterLoginResponse } from "@/interfaces";
+import { useAuthStore } from "@/stores/auth.store";
+import { cn, getAvatarUrl } from "@/utils";
 import { toast } from "@/utils/toast";
-import { cn } from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export const MENU_ITEMS = [
@@ -52,7 +59,9 @@ export const MENU_ITEMS = [
 
 export const LeftSidebar = () => {
   const pathname = usePathname();
-  const { isLoggedIn, userInfo, checkAuthStatus } = useAuthStore();
+  const router = useRouter();
+  const { isLoggedIn, userInfo, isCheckingAuth, checkAuthStatus, logout } =
+    useAuthStore();
 
   useEffect(() => {
     checkAuthStatus();
@@ -60,7 +69,7 @@ export const LeftSidebar = () => {
 
   const handleLoginClick = async () => {
     try {
-      const response = (await getTwitterLoginUrl()) as unknown as TwitterLoginResponse;
+      const response = await getTwitterLoginUrl();
 
       if (response?.data?.url) {
         if (response.data.state) {
@@ -123,32 +132,63 @@ export const LeftSidebar = () => {
       </nav>
 
       {/* Profile Link or Login Button */}
-      {isLoggedIn && userInfo ? (
-        <Link
-          href="/profile"
-          className="mt-auto border border-neutral-900 rounded-lg overflow-hidden hover:bg-neutral-900 transition-colors cursor-pointer"
-        >
+      {isCheckingAuth ? (
+        <div className="mt-auto border border-neutral-900 rounded-lg overflow-hidden">
           <div className="flex items-center gap-2 p-3 border-b border-neutral-900">
-            <div className="relative h-6 w-6 overflow-hidden rounded-lg flex-shrink-0 bg-neutral-900">
-              <img
-                src={`https://avatar.vercel.sh/${userInfo.username || userInfo.id}`}
-                alt={userInfo.username || "User"}
-                className="h-full w-full object-cover"
-              />
-            </div>
+            <Skeleton
+              variant="circle"
+              customWidth="24px"
+              customHeight="24px"
+              className="flex-shrink-0"
+            />
             <div className="flex flex-1 items-center justify-between min-w-0">
-              <span className="text-sm font-medium text-neutral-primary truncate">
-                {userInfo.username || "User"}
-              </span>
+              <Skeleton customWidth="100px" customHeight="16px" />
             </div>
           </div>
-        </Link>
+        </div>
+      ) : isLoggedIn && userInfo ? (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="mt-auto border border-neutral-900 rounded-lg overflow-hidden hover:bg-neutral-900 transition-colors cursor-pointer w-full">
+              <div className="flex items-center gap-2 p-3">
+                <div className="relative h-6 w-6 overflow-hidden rounded-lg flex-shrink-0 bg-neutral-900">
+                  <img
+                    src={getAvatarUrl(userInfo.owner.x_handle)}
+                    alt={userInfo.owner.x_handle || "User"}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <div className="flex flex-1 items-center justify-between min-w-0">
+                  <span className="text-sm font-medium text-neutral-primary truncate">
+                    {userInfo.owner.x_handle || "User"}
+                  </span>
+                  <MoreVertical className="h-4 w-4 text-neutral-tertiary flex-shrink-0" />
+                </div>
+              </div>
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48 bg-modal">
+            <DropdownMenuItem
+              onClick={() =>
+                router.push(`/profile/${userInfo.agents[0].username}`)
+              }
+              className="cursor-pointer hover:bg-overlay-light-5"
+            >
+              Agent Profile
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                logout();
+                toast.success("Logged out successfully");
+              }}
+              className="cursor-pointer text-danger focus:text-danger focus:bg-danger-muted-10"
+            >
+              Logout
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       ) : (
-        <Button
-          onClick={handleLoginClick}
-        >
-          Sign in
-        </Button>
+        <Button onClick={handleLoginClick}>Sign in</Button>
       )}
       {/* <div className="flex items-center gap-2 p-3">
         <div className="flex items-center justify-center p-0.5">

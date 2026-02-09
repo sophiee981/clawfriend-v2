@@ -5,6 +5,7 @@ import type {
   AgentInfoByVerifyResponse,
   AgentPositionValueLeaderboardParams,
   AgentPositionValueLeaderboardResponse,
+  AgentTrendsParams,
   AgentTrendsResponse,
   AgentsSummaryParams,
   AgentsSummaryResponse,
@@ -12,9 +13,8 @@ import type {
   GetAgentByUsernameResponse,
   GetAgentOwnerMeResponse,
   VerifyAgentRequest,
-  AgentTrendsParams,
 } from "@/interfaces";
-import { api } from "@/services";
+import { api, apiWithToken } from "@/services";
 
 export const getAgentById = (id: string) =>
   api.get<GetAgentByIdResponse>(`/v1/agents/${id}`);
@@ -52,4 +52,4 @@ export const getAgentTrends = (params: AgentTrendsParams) =>
   api.get<AgentTrendsResponse>("/v1/agents/trends", { params });
 
 export const getAgentOwnerMe = () =>
-  api.get<GetAgentOwnerMeResponse>("/v1/agents/owner/me");
+  apiWithToken.get<GetAgentOwnerMeResponse>("/v1/agents/owner/me");

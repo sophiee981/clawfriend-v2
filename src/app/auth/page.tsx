@@ -2,87 +2,85 @@
 
 import { getTwitterCallback } from "@/services/auth.service";
 import { useAuthStore } from "@/stores/auth.store";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
-import type { TwitterCallbackResponse } from "@/interfaces";
+
+const REDIRECT_DELAY = 3000;
+const STORAGE_KEYS = {
+  RETURN_URL: "twitterReturnUrl",
+  AUTH_STATE: "twitterAuthState",
+  ACCESS_TOKEN: "accessToken",
+} as const;
 
 export default function TwitterCallbackPage() {
-  const searchParams = useSearchParams();
   const router = useRouter();
-  const { setTokens, checkAuthStatus } = useAuthStore();
+  const { checkAuthStatus } = useAuthStore();
   const [status, setStatus] = useState<"loading" | "success" | "error">(
     "loading"
   );
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   useEffect(() => {
+    const getReturnUrl = () =>
+      localStorage.getItem(STORAGE_KEYS.RETURN_URL) || "/";
+
+    const cleanupStorage = () => {
+      localStorage.removeItem(STORAGE_KEYS.AUTH_STATE);
+      localStorage.removeItem(STORAGE_KEYS.RETURN_URL);
+    };
+
+    const handleError = (message: string) => {
+      setStatus("error");
+      setErrorMessage(message);
+      cleanupStorage();
+      setTimeout(() => router.push(getReturnUrl()), REDIRECT_DELAY);
+    };
+
+    const validateParams = (code: string | null, state: string | null) => {
+      if (!code || !state) {
+        handleError("Missing code or state parameter");
+        return false;
+      }
+
+      const savedState = localStorage.getItem(STORAGE_KEYS.AUTH_STATE);
+      if (savedState !== state) {
+        handleError("Invalid state parameter");
+        return false;
+      }
+
+      return true;
+    };
+
     const handleCallback = async () => {
       try {
-        const code = searchParams.get("code");
-        const state = searchParams.get("state");
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get("code");
+        const state = urlParams.get("state");
 
-        // Get return URL from localStorage (fallback to "/" if not found)
-        const returnUrl = localStorage.getItem("twitterReturnUrl") || "/";
+        if (!validateParams(code, state)) return;
 
-        if (!code || !state) {
-          setStatus("error");
-          setErrorMessage("Missing code or state parameter");
-          localStorage.removeItem("twitterReturnUrl");
-          setTimeout(() => router.push(returnUrl), 3000);
-          return;
-        }
+        localStorage.removeItem(STORAGE_KEYS.AUTH_STATE);
 
-        // Verify state from localStorage
-        const savedState = localStorage.getItem("twitterAuthState");
-        if (savedState !== state) {
-          setStatus("error");
-          setErrorMessage("Invalid state parameter");
-          localStorage.removeItem("twitterAuthState");
-          localStorage.removeItem("twitterReturnUrl");
-          setTimeout(() => router.push(returnUrl), 3000);
-          return;
-        }
+        const response = await getTwitterCallback({ code: code!, state: state! });
+        const returnUrl = getReturnUrl();
 
-        // Remove saved state
-        localStorage.removeItem("twitterAuthState");
-
-        // Call callback API
-        const response = await getTwitterCallback({
-          code,
-          state,
-        })
-
-        if (response?.data?.accessToken) {
-          // Save tokens
-          setTokens(response.data.accessToken, response.data.refreshToken);
-
-          // Check auth status and set user info
-          await checkAuthStatus();
-
+        if (response?.data?.token) {
+          localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, response.data.token);
           setStatus("success");
-          // Redirect to the page user was on before login
-          setTimeout(() => {
-            router.push(returnUrl);
-          }, 1000);
+          router.push(returnUrl);
         } else {
-          setStatus("error");
-          setErrorMessage("Failed to get access token");
-          setTimeout(() => router.push(returnUrl), 3000);
+          handleError("Failed to get access token");
         }
       } catch (error: any) {
         console.error("Twitter callback error:", error);
-        setStatus("error");
-        setErrorMessage(
+        handleError(
           error?.error || error?.message || "Failed to authenticate"
         );
-        const returnUrl = localStorage.getItem("twitterReturnUrl") || "/";
-        localStorage.removeItem("twitterReturnUrl");
-        setTimeout(() => router.push(returnUrl), 3000);
       }
     };
 
     handleCallback();
-  }, [searchParams, router, setTokens, checkAuthStatus]);
+  }, [router, checkAuthStatus]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-neutral-01">

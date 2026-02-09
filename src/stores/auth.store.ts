@@ -1,18 +1,15 @@
+import { GetAgentOwnerMeResponse } from "@/interfaces";
 import { getAgentOwnerMe } from "@/services/agent.service";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-interface UserInfo {
-  id: string;
-  username: string;
-  email?: string;
-}
-
 interface AuthState {
   isLoggedIn: boolean;
-  userInfo: UserInfo | null;
+  userInfo: GetAgentOwnerMeResponse | null;
+  isCheckingAuth: boolean;
   checkAuthStatus: () => Promise<void>;
   setTokens: (accessToken: string, refreshToken?: string) => void;
+  logout: () => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -20,31 +17,31 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       isLoggedIn: false,
       userInfo: null,
+      isCheckingAuth: true,
 
       checkAuthStatus: async () => {
         if (typeof window !== "undefined") {
           const accessToken = localStorage.getItem("accessToken");
           if (!accessToken) {
-            set({ isLoggedIn: false, userInfo: null });
+            set({ isLoggedIn: false, userInfo: null, isCheckingAuth: false });
             return;
           }
 
+          set({ isCheckingAuth: true });
           try {
             const res = await getAgentOwnerMe();
             if (res?.data?.owner) {
               set({
                 isLoggedIn: true,
-                userInfo: {
-                  id: res.data.owner.x_id,
-                  username: res.data.owner.x_handle,
-                },
+                userInfo: res.data,
+                isCheckingAuth: false,
               });
             } else {
-              set({ isLoggedIn: false, userInfo: null });
+              set({ isLoggedIn: false, userInfo: null, isCheckingAuth: false });
             }
           } catch (error) {
             console.error(error);
-            set({ isLoggedIn: false, userInfo: null });
+            set({ isLoggedIn: false, userInfo: null, isCheckingAuth: false });
           }
         }
       },
@@ -56,6 +53,16 @@ export const useAuthStore = create<AuthState>()(
             localStorage.setItem("refreshToken", refreshToken);
           }
         }
+      },
+
+      logout: () => {
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("twitterAuthState");
+          localStorage.removeItem("twitterReturnUrl");
+        }
+        set({ isLoggedIn: false, userInfo: null });
       },
     }),
     {

@@ -1,12 +1,6 @@
-export interface TwitterLoginData {
+export interface TwitterLoginResponse {
   url: string;
   state: string;
-}
-
-export interface TwitterLoginResponse {
-  data: TwitterLoginData;
-  statusCode: number;
-  message: string;
 }
 
 export interface TwitterLoginParams {
@@ -19,11 +13,10 @@ export interface TwitterCallbackParams {
 }
 
 export interface TwitterCallbackResponse {
-  accessToken?: string;
-  refreshToken?: string;
-  user?: {
-    id: string;
-    username: string;
-    email?: string;
-  };
+  success: boolean;
+  xId: string;
+  xUsername: string;
+  displayName: string;
+  token: string;
+  message: string;
 }
