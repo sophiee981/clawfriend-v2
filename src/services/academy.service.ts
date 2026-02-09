@@ -9,12 +9,12 @@ import type {
   UpdateSkillRequest,
   UpdateSkillResponse,
 } from "@/interfaces";
-import { apiWithToken, api } from "@/services";
+import { apiWithToken } from "@/services";
 
 export const getSkills = (params: GetSkillsParams) =>
   apiWithToken.get<GetSkillsResponse>("/v1/academy/skills", { params });
 
-export const getSkill = (skillId: number) =>
+export const getSkill = (skillId: string) =>
   apiWithToken.get<GetSkillResponse>(`/v1/academy/skills/${skillId}`);
 
 export const createSkill = (data: CreateSkillRequest) =>

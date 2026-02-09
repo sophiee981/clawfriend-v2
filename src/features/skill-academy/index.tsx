@@ -1,23 +1,23 @@
 "use client";
 
 import { Tabs } from "@/components/ui/tabs";
-import { getSkills } from "@/services";
 import type { Skill } from "@/interfaces";
-import { useRouter } from "next/navigation";
-import { useEffect, useState, useMemo } from "react";
+import { getSkills } from "@/services";
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 import { AddToAgentModal } from "./components/AddToAgentModal";
 import { CreateAcademyItemModal } from "./components/CreateAcademyItemModal";
 import { SkillAcademyHeader } from "./components/SkillAcademyHeader";
 import { SkillCard } from "./components/SkillCard";
 import { SkillCardSkeleton } from "./components/SkillCardSkeleton";
-import {
-  AcademyItem,
-  AcademyItemType,
-} from "./data";
+import { AcademyItem, AcademyItemType } from "./data";
 
 // Map Skill/Prompt from API to AcademyItem format
-const mapSkillToAcademyItem = (skill: Skill, type: AcademyItemType): AcademyItem => {
+const mapSkillToAcademyItem = (
+  skill: Skill,
+  type: AcademyItemType
+): AcademyItem => {
   return {
     id: skill.id,
     title: skill.name,
@@ -45,7 +45,7 @@ const SkillAcademyContent = () => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const tab = params.get("tab");
-      return (tab === "skills" || tab === "skill") ? "skill" : "prompt";
+      return tab === "skills" || tab === "skill" ? "skill" : "prompt";
     }
     return "skill";
   };
@@ -63,7 +63,7 @@ const SkillAcademyContent = () => {
       if (typeof window !== "undefined") {
         const params = new URLSearchParams(window.location.search);
         const tab = params.get("tab");
-        const newTab = (tab === "skills" || tab === "skill") ? "skill" : "prompt";
+        const newTab = tab === "skills" || tab === "skill" ? "skill" : "prompt";
         setActiveTab(newTab);
       }
     };
@@ -92,7 +92,9 @@ const SkillAcademyContent = () => {
   // Map response data to AcademyItem format
   const currentItems = useMemo(() => {
     if (response?.data?.data && Array.isArray(response.data.data)) {
-      return response.data.data.map((item) => mapSkillToAcademyItem(item, activeTab));
+      return response.data.data.map((item) =>
+        mapSkillToAcademyItem(item, activeTab)
+      );
     }
     return [];
   }, [response, activeTab]);
@@ -100,10 +102,14 @@ const SkillAcademyContent = () => {
   // Update URL when tab changes
   const handleTabChange = (id: AcademyItemType) => {
     setActiveTab(id);
-    router.push(`/skill-academy?tab=${id === "skill" ? "skills" : "prompts"}`, { scroll: false });
+    router.push(`/skill-academy?tab=${id === "skill" ? "skills" : "prompts"}`, {
+      scroll: false,
+    });
   };
 
-  const errorMessage = error ? (error as any)?.error || `Failed to load ${activeTab}s` : null;
+  const errorMessage = error
+    ? (error as any)?.error || `Failed to load ${activeTab}s`
+    : null;
 
   return (
     <div className="flex h-full flex-col items-center overflow-y-auto pb-4 relative">
@@ -159,7 +165,7 @@ const SkillAcademyContent = () => {
       <AddToAgentModal
         open={!!itemAddingToAgent}
         onOpenChange={(open) => !open && setItemAddingToAgent(null)}
-        item={itemAddingToAgent}
+        skill={itemAddingToAgent as unknown as Skill}
       />
     </div>
   );
