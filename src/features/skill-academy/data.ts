@@ -4,6 +4,7 @@ export interface AcademyItem {
   id: string;
   title: string;
   description: string;
+  content: string; // The full prompt or skill config JSON
   author: {
     name: string;
     avatar: string;
@@ -22,6 +23,14 @@ export const MOCK_SKILLS: AcademyItem[] = [
     title: "Auto-reply to Crypto Influencers",
     description:
       "Automatically replies to top crypto influencers with relevant market sentiment analysis.",
+    content: `{
+  "name": "Auto-reply to Crypto Influencers",
+  "trigger": "new_tweet_from_list",
+  "list_id": "crypto-influencers",
+  "action": "reply",
+  "model": "gpt-4",
+  "prompt_template": "Analyze the sentiment of this tweet: {{tweet.text}}. Draft a helpful and insightful reply that adds value to the conversation. Keep it under 280 characters."
+}`,
     author: {
       name: "CryptoWhale",
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=CryptoWhale",
@@ -38,6 +47,15 @@ export const MOCK_SKILLS: AcademyItem[] = [
     title: "Sniper Bot Strategy",
     description:
       "A high-frequency trading strategy for new token launches on DEXs.",
+    content: `{
+  "strategy": "sniper",
+  "dex": "uniswap_v3",
+  "max_slippage": 0.5,
+  "gas_limit": 500000,
+  "buy_amount_eth": 0.1,
+  "stop_loss": 0.1,
+  "take_profit": 2.0
+}`,
     author: {
       name: "AlphaHunter",
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=AlphaHunter",
@@ -54,6 +72,13 @@ export const MOCK_SKILLS: AcademyItem[] = [
     title: "Daily GM/GN Poster",
     description:
       "Schedules GM and GN posts with random inspirational quotes and images.",
+    content: `{
+  "schedule": ["08:00 UTC", "22:00 UTC"],
+  "tasks": [
+    { "time": "08:00 UTC", "action": "post_tweet", "template": "GM! {{quote}}" },
+    { "time": "22:00 UTC", "action": "post_tweet", "template": "GN! Rest well. {{image}}" }
+  ]
+}`,
     author: {
       name: "CommunityMgr",
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=CommunityMgr",
@@ -73,6 +98,8 @@ export const MOCK_PROMPTS: AcademyItem[] = [
     title: "Crypto Market Analyst Persona",
     description:
       "A prompt that makes your bot act like a seasoned specialized crypto market analyst.",
+    content:
+      "You are an expert crypto market analyst with 10 years of experience. You analyze market trends using technical analysis (RSI, MACD, Bollinger Bands) and fundamental analysis. Your tone is professional, objective, and insightful. Always cite your sources or reasoning. When asked about a token, provide a balanced view of risks and opportunities.",
     author: {
       name: "SatoshiFan",
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=SatoshiFan",
@@ -89,6 +116,8 @@ export const MOCK_PROMPTS: AcademyItem[] = [
     title: "Maximize Engagement Tone",
     description:
       "Rewrites your tweets to be more engaging, using questions and controversial hooks.",
+    content:
+      "Rewrite the following text to maximize engagement on Twitter. Use short sentences, line breaks for readability, and a strong hook at the beginning. Include a call to action or a question at the end to encourage replies. Use 1-2 relevant emojis but don't overdo it. The tone should be provocative but not offensive.",
     author: {
       name: "GrowthGuru",
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=GrowthGuru",
@@ -105,6 +134,8 @@ export const MOCK_PROMPTS: AcademyItem[] = [
     title: "Degen Slang Translator",
     description:
       "Translates normal English into crypto-twitter native slang (WAGMI, LFG, etc.).",
+    content:
+      "Translate the user's input into 'Crypto Twitter Degen' slang. Use terms like WAGMI, LFG, NGMI, ser, fren, bagholder, moon, rekt, etc. appropriately. Keep it humorous and slightly chaotic. If the input is formal, make it completely informal and slang-heavy.",
     author: {
       name: "DegenKing",
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=DegenKing",

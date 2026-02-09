@@ -28,8 +28,7 @@ export const AddToAgentModal = ({
 
   const handleCopy = () => {
     // In a real app, this would be the actual content
-    const contentToCopy =
-      item.type === "skill" ? "Sample Skill Config" : "Sample System Prompt";
+    const contentToCopy = item.content;
     navigator.clipboard.writeText(contentToCopy);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -44,10 +43,8 @@ export const AddToAgentModal = ({
           className="flex items-center gap-2 mt-2 w-full p-3 bg-neutral-02 rounded-lg border border-neutral-03 justify-between group cursor-pointer hover:border-neutral-primary transition-colors"
           onClick={handleCopy}
         >
-          <code className="text-xs font-mono text-neutral-secondary truncate">
-            {item.type === "skill"
-              ? '{"name": "Skill Config", ...}'
-              : "You are a helpful assistant..."}
+          <code className="text-xs font-mono text-neutral-secondary truncate max-w-[350px]">
+            {item.content.replace(/\n/g, " ").substring(0, 50)}...
           </code>
           <div className="text-neutral-tertiary group-hover:text-neutral-primary">
             {copied ? (

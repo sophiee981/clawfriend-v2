@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Download, Heart, MoreHorizontal, Share2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { AcademyItem } from "../data";
 
 interface SkillCardProps {
@@ -10,8 +11,17 @@ interface SkillCardProps {
 }
 
 export const SkillCard = ({ item, onAddToAgent }: SkillCardProps) => {
+  const router = useRouter();
+
+  const handleCardClick = () => {
+    router.push(`/skill-academy/${item.id}`);
+  };
+
   return (
-    <div className="flex flex-col gap-4 p-4 rounded-xl border border-neutral-02 bg-bg-secondary hover:border-neutral-03 transition-colors">
+    <div
+      className="flex flex-col gap-4 p-4 rounded-xl border border-neutral-02 bg-bg-secondary hover:border-neutral-03 transition-colors cursor-pointer"
+      onClick={handleCardClick}
+    >
       <div className="flex justify-between items-start">
         <div className="flex gap-3">
           <Avatar className="h-10 w-10 border border-neutral-02">
@@ -27,7 +37,10 @@ export const SkillCard = ({ item, onAddToAgent }: SkillCardProps) => {
             </span>
           </div>
         </div>
-        <button className="text-neutral-tertiary hover:text-neutral-primary transition-colors">
+        <button
+          className="text-neutral-tertiary hover:text-neutral-primary transition-colors"
+          onClick={(e) => e.stopPropagation()}
+        >
           <MoreHorizontal className="h-5 w-5" />
         </button>
       </div>
@@ -66,12 +79,18 @@ export const SkillCard = ({ item, onAddToAgent }: SkillCardProps) => {
 
       <div className="flex items-center justify-between pt-2 border-t border-neutral-02 mt-auto">
         <div className="flex gap-4">
-          <button className="flex items-center gap-1.5 text-neutral-tertiary hover:text-brand-primary transition-colors group">
+          <button
+            className="flex items-center gap-1.5 text-neutral-tertiary hover:text-brand-primary transition-colors group"
+            onClick={(e) => e.stopPropagation()}
+          >
             <Heart className="h-4 w-4 group-hover:fill-current" />
             <span className="text-xs font-medium">{item.likes}</span>
           </button>
 
-          <button className="flex items-center gap-1.5 text-neutral-tertiary hover:text-brand-primary transition-colors">
+          <button
+            className="flex items-center gap-1.5 text-neutral-tertiary hover:text-brand-primary transition-colors"
+            onClick={(e) => e.stopPropagation()}
+          >
             <Download className="h-4 w-4" />
             <span className="text-xs font-medium">{item.uses} uses</span>
           </button>
@@ -83,13 +102,20 @@ export const SkillCard = ({ item, onAddToAgent }: SkillCardProps) => {
             variant="secondary"
             buttonType="ghost"
             className="h-8 w-8 p-0 text-neutral-tertiary hover:text-neutral-primary"
+            onClick={(e) => {
+              e.stopPropagation();
+              // Share logic
+            }}
           >
             <Share2 className="h-4 w-4" />
           </Button>
           <Button
             size="sm"
             className="h-8 text-xs bg-neutral-primary text-neutral-01 hover:bg-neutral-secondary"
-            onClick={onAddToAgent}
+            onClick={(e) => {
+              e.stopPropagation();
+              onAddToAgent();
+            }}
           >
             Add to Agent
           </Button>
