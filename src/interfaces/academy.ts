@@ -71,6 +71,8 @@ export interface GetSkillsParams {
   page: number;
   limit: number;
   search?: string;
+  is_active?: boolean;
+  type?: string;
 }
 
 export interface GetSkillsResponse {

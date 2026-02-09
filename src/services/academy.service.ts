@@ -12,10 +12,15 @@ import type {
 import { apiWithToken, api } from "@/services";
 
 export const getSkills = (params: GetSkillsParams) =>
-  api.get<GetSkillsResponse>("/v1/academy/skills", { params });
+  apiWithToken.get<GetSkillsResponse>("/v1/academy/skills", { params });
+
+export const getPrompts = (params: GetSkillsParams) =>
+  apiWithToken.get<GetSkillsResponse>("/v1/academy/skills", { 
+    params: { ...params, type: "prompts" }
+  });
 
 export const getSkill = (skillId: number) =>
-  api.get<GetSkillResponse>(`/v1/academy/skills/${skillId}`);
+  apiWithToken.get<GetSkillResponse>(`/v1/academy/skills/${skillId}`);
 
 export const createSkill = (data: CreateSkillRequest) =>
   apiWithToken.post<CreateSkillResponse>("/v1/academy/skills", data);
