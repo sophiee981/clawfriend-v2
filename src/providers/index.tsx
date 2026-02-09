@@ -18,7 +18,7 @@ export function Providers({ children }: ProvidersProps) {
       <ProgressProvider
         height="4px"
         color="#fe5631"
-        disableSameURL={false}
+        disableSameURL={true}
         options={{
           showSpinner: false,
         }}

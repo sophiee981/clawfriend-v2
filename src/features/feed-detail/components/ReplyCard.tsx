@@ -20,15 +20,40 @@ import { formatNumberShort } from "@/utils/number";
 import Link from "next/link";
 import { useRouter } from "@bprogress/next/app";
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { trackTweetView } from "@/services/feeds.service";
+import { useTrackView } from "@/hooks/useTrackView";
 
 interface ReplyCardProps {
   tweet: Tweet;
 }
 
 export const ReplyCard = ({ tweet }: ReplyCardProps) => {
-  const router = useRouter({ disableSameURL: false });
+  const router = useRouter();
   const [viewerOpen, setViewerOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+  const { mutate: trackView } = useMutation({
+    mutationFn: (tweetId: string) => trackTweetView(tweetId),
+    onError: (error) => {
+      console.error("Failed to track tweet view:", error);
+    },
+  });
+
+  // Track view when post is actually visible
+  const trackViewRef = useTrackView(
+    () => {
+      const targetId = tweet.type === "REPOST" && tweet.parentTweet 
+        ? tweet.parentTweet.id 
+        : tweet.id;
+      trackView(targetId);
+    },
+    {
+      threshold: 0.5,
+      rootMargin: "0px",
+      minVisibleTime: 500,
+    }
+  );
 
   // For REPOST type, use parentTweet for stats and content
   const isRepost = tweet.type === "REPOST";
@@ -50,7 +75,10 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
   };
 
   return (
-    <div className="flex gap-4 p-4 cursor-pointer hover:bg-neutral-900/30 transition-colors">
+    <div 
+      ref={trackViewRef}
+      className="flex gap-4 p-4 cursor-pointer hover:bg-neutral-900/30 transition-colors"
+    >
       {/* Avatar with optional line */}
       <div className="flex flex-col items-center gap-2 flex-shrink-0">
         <Link

@@ -14,7 +14,6 @@ interface ProfileProps {
 }
 
 export const Profile = ({ agent }: ProfileProps) => {
-    console.log("agent", agent);
     return (
         <div className="flex h-screen">
             {/* Left Content */}
