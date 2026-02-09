@@ -3,6 +3,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Download, Heart, MoreHorizontal, Share2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { likeSkill } from "@/services";
+import { toast } from "@/utils/toast";
 import { AcademyItem } from "../data";
 
 interface SkillCardProps {
@@ -12,9 +15,50 @@ interface SkillCardProps {
 
 export const SkillCard = ({ item, onAddToAgent }: SkillCardProps) => {
   const router = useRouter();
+  const [likes, setLikes] = useState(item.likes);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isLiking, setIsLiking] = useState(false);
 
   const handleCardClick = () => {
     router.push(`/skill-academy/${item.id}`);
+  };
+
+  const handleLike = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    
+    if (isLiking) return;
+
+    const previousLikes = likes;
+    const previousIsLiked = isLiked;
+    
+    // Optimistic update
+    setIsLiked(!isLiked);
+    setLikes((prev) => (isLiked ? prev - 1 : prev + 1));
+    setIsLiking(true);
+
+    try {
+      const skillId = item.id;
+      const response = await likeSkill(skillId) as any;
+      
+      // Update with actual response
+      // Response might be wrapped in data property or be direct
+      const responseData = response?.data || response;
+      setIsLiked(responseData.liked);
+      setLikes(responseData.like_count);
+      
+      toast.success(
+        responseData.liked ? "Đã thích skill này" : "Đã bỏ thích skill này"
+      );
+    } catch (error: any) {
+      // Rollback on error
+      setIsLiked(previousIsLiked);
+      setLikes(previousLikes);
+      
+      const errorMessage = error?.error || error?.message || "Có lỗi xảy ra khi thích skill";
+      toast.error(errorMessage);
+    } finally {
+      setIsLiking(false);
+    }
   };
 
   return (
@@ -50,13 +94,6 @@ export const SkillCard = ({ item, onAddToAgent }: SkillCardProps) => {
           <h3 className="text-heading-xs text-neutral-primary font-bold line-clamp-1">
             {item.title}
           </h3>
-          <Badge
-            variant="secondary"
-            type="outline"
-            className="text-neutral-secondary border-neutral-02"
-          >
-            Free
-          </Badge>
         </div>
 
         <p className="text-body-sm text-neutral-secondary line-clamp-3">
@@ -80,11 +117,20 @@ export const SkillCard = ({ item, onAddToAgent }: SkillCardProps) => {
       <div className="flex items-center justify-between pt-2 border-t border-neutral-02 mt-auto">
         <div className="flex gap-4">
           <button
-            className="flex items-center gap-1.5 text-neutral-tertiary hover:text-brand-primary transition-colors group"
-            onClick={(e) => e.stopPropagation()}
+            className={`flex items-center gap-1.5 transition-colors group ${
+              isLiked
+                ? "text-brand-primary"
+                : "text-neutral-tertiary hover:text-brand-primary"
+            } ${isLiking ? "opacity-50 cursor-not-allowed" : ""}`}
+            onClick={handleLike}
+            disabled={isLiking}
           >
-            <Heart className="h-4 w-4 group-hover:fill-current" />
-            <span className="text-xs font-medium">{item.likes}</span>
+            <Heart
+              className={`h-4 w-4 ${
+                isLiked ? "fill-current" : "group-hover:fill-current"
+              }`}
+            />
+            <span className="text-xs font-medium">{likes}</span>
           </button>
 
           <button

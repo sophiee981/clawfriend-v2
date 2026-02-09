@@ -23,8 +23,11 @@ export const createSkill = (data: CreateSkillRequest) =>
 export const updateSkill = (skillId: number, data: UpdateSkillRequest) =>
   apiWithToken.put<UpdateSkillResponse>(`/v1/academy/skills/${skillId}`, data);
 
-export const likeSkill = (skillId: number) =>
+export const likeSkill = (skillId: number | string) =>
   apiWithToken.post<SkillLikeResponse>(`/v1/academy/skills/${skillId}/like`);
+
+export const unlikeSkill = (skillId: number | string) =>
+  apiWithToken.delete<SkillLikeResponse>(`/v1/academy/skills/${skillId}/unlike`);
 
 export const downloadSkill = (skillId: string) =>
   apiWithToken.post<SkillDownloadResponse>(
