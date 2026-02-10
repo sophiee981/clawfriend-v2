@@ -317,7 +317,7 @@ const SkillAcademyContent = ({
     return () => {
       observer.disconnect();
     };
-  }, [hasNextPage, isFetchingNextPage, isLoading, fetchNextPage]);
+  }, [hasNextPage, isFetchingNextPage, isLoading, isFetching, fetchNextPage]);
 
   // Fetch trending tags from API
   const { data: trendingTagsData, isLoading: isLoadingTags } = useQuery({
