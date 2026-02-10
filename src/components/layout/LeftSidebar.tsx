@@ -45,7 +45,7 @@ export const MENU_ITEMS = [
     activeIcon: TrophyFill,
   },
   {
-    label: "Skill Academy",
+    label: "Skill Market",
     mobileLabel: "Skills",
     href: "/skill-academy",
     icon: Crown,

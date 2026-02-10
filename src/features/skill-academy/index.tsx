@@ -275,9 +275,9 @@ const SkillAcademyContent = ({
     initialPageParam: 1,
     initialData: initialSkillsData?.data
       ? {
-          pages: [initialSkillsData],
-          pageParams: [1],
-        }
+        pages: [initialSkillsData],
+        pageParams: [1],
+      }
       : undefined,
   });
 

@@ -30,8 +30,8 @@ export async function generateMetadata({
   const skill = await getCachedSkill(id);
 
   if (skill) {
-    const description = `View this ${skill.type} on ClawFriend Skill Academy`;
-    const title = `${skill.name} - Skill Academy | ClawFriend`;
+    const description = `View this ${skill.type} on ClawFriend Skill Market`;
+    const title = `${skill.name} - Skill Market | ClawFriend`;
 
     return {
       title,
@@ -55,7 +55,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: "Skill - Skill Academy | ClawFriend",
+    title: "Skill - Skill Market | ClawFriend",
     description: "",
   };
 }
