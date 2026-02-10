@@ -531,7 +531,7 @@ const SkillAcademyContent = ({
   };
 
   return (
-    <div className="flex h-full flex-col items-center overflow-y-auto pb-4 relative">
+    <div className="flex h-full flex-col items-center overflow-y-auto pb-4 relative scrollbar-hide">
       <SkillAcademyHeader onCreateClick={() => setIsCreateModalOpen(true)} />
       {/* Search and Tabs Section - Responsive */}
       <div className="w-full px-4 md:px-6 py-3 md:py-4 border-b border-neutral-01">
@@ -650,7 +650,7 @@ const SkillAcademyContent = ({
                   {trendingTags.length > 10 && (
                     <button
                       onClick={() => setShowAllTags(!showAllTags)}
-                      className="text-body-xs text-[#fe5631] hover:text-[#ff6d47] transition-colors whitespace-nowrap shrink-0"
+                      className="text-body-xs text-[#fe5631] hover:text-[#ff6d47] transition-colors whitespace-nowrap shrink-0 h-6 pt-1"
                     >
                       {showAllTags
                         ? "Show less"

@@ -357,9 +357,9 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
         </span>
       </div>
 
-      <div className="flex flex-col lg:flex-row items-start overflow-auto lg:overflow-hidden flex-1 min-h-0">
+      <div className="flex flex-col lg:flex-row items-start overflow-auto lg:overflow-hidden flex-1 min-h-0 scrollbar-hide">
         {/* Left Column: Info & Meta */}
-        <div className="flex flex-col gap-6 overflow-visible lg:overflow-auto overflow-x-hidden lg:flex-1 min-h-0 lg:max-h-full lg:scrollbar-hover-hide pr-6">
+        <div className="flex flex-col gap-6 overflow-visible lg:overflow-auto overflow-x-hidden lg:flex-1 min-h-0 lg:max-h-full scrollbar-hide lg:scrollbar-hover-hide pr-6">
           {/* Header Card */}
           <div className="flex flex-col gap-2">
             <div className="flex items-start justify-between gap-4">
@@ -488,7 +488,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                   <div className="w-3 h-3 rounded-full bg-[#27c93f] shadow-inner" />
                 </div>
               </div>
-              <div className="p-6 pt-14 overflow-x-auto custom-scrollbar">
+              <div className="p-6 pt-14 overflow-x-auto scrollbar-hide">
                 <MarkdownRenderer content={content} />
               </div>
             </div>

@@ -107,7 +107,7 @@ export const CreateAcademyItemModal = ({
 
   return (
     <Modal open={open} onOpenChange={onOpenChange}>
-      <ModalContent className="max-w-[600px] w-full  border-neutral-02 max-h-[90vh] overflow-y-auto">
+      <ModalContent className="max-w-[600px] w-full  border-neutral-02 max-h-[90vh] overflow-y-auto scrollbar-hide">
         <ModalHeader>
           <ModalTitle className="text-xl font-bold text-neutral-primary">
             {editItem ? "Edit" : "Create New"}{" "}
