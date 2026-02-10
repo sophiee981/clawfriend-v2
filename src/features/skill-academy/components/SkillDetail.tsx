@@ -3,10 +3,20 @@
 import { CompleteAvatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Modal,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle,
+} from "@/components/ui/modal";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getSkill, likeSkill } from "@/services";
+import { deleteSkill } from "@/services/academy.service";
+import { useAuthStore } from "@/stores/auth.store";
 import { cn, formatTimestamp, getAvatarUrl } from "@/utils";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "@/utils/toast";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ArrowLeft,
   Calendar,
@@ -15,13 +25,16 @@ import {
   Copy,
   Download,
   Heart,
+  Pencil,
   Share2,
   Terminal,
+  Trash2,
   User,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AddToAgentModal } from "./AddToAgentModal";
+import { CreateAcademyItemModal } from "./CreateAcademyItemModal";
 
 interface SkillDetailProps {
   itemId: string;
@@ -30,7 +43,11 @@ interface SkillDetailProps {
 export const SkillDetail = ({ itemId }: SkillDetailProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { userInfo } = useAuthStore();
   const [isAddToAgentOpen, setIsAddToAgentOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
 
   const {
@@ -46,16 +63,79 @@ export const SkillDetail = ({ itemId }: SkillDetailProps) => {
     enabled: !!itemId,
   });
 
-  // Like mutation
-  const likeMutation = useMutation({
-    mutationFn: () => likeSkill(Number(itemId)),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["skill", itemId] });
-    },
-  });
+  const [likes, setLikes] = useState(skill?.like_count ?? 0);
+  const [isLiked, setIsLiked] = useState(skill?.is_liked ?? false);
+  const [isLiking, setIsLiking] = useState(false);
 
-  const handleLike = () => {
-    likeMutation.mutate();
+  // Update local state when skill data changes
+  useEffect(() => {
+    if (skill) {
+      setLikes(skill.like_count);
+      setIsLiked(skill.is_liked);
+    }
+  }, [skill]);
+
+  const handleLike = async () => {
+    if (isLiking || !skill) return;
+
+    const previousLikes = likes;
+    const previousIsLiked = isLiked;
+
+    // Optimistic update
+    setIsLiked(!isLiked);
+    setLikes((prev) => (isLiked ? prev - 1 : prev + 1));
+    setIsLiking(true);
+
+    try {
+      const skillId = skill.id;
+      const response = (await likeSkill(skillId)) as any;
+
+      // Update with actual response
+      // Response might be wrapped in data property or be direct
+      const responseData = response?.data || response;
+      setIsLiked(responseData.liked);
+      setLikes(responseData.like_count);
+
+      // Invalidate query to sync with server
+      queryClient.invalidateQueries({ queryKey: ["skill", itemId] });
+
+      toast.success(
+        responseData.liked ? "Liked this skill" : "Unliked this skill"
+      );
+    } catch (error: any) {
+      // Rollback on error
+      setIsLiked(previousIsLiked);
+      setLikes(previousLikes);
+
+      const errorMessage =
+        error?.error || error?.message || "Failed to like skill";
+      toast.error(errorMessage);
+    } finally {
+      setIsLiking(false);
+    }
+  };
+
+  const isOwner = userInfo?.owner?.x_handle === skill?.creator?.owner_x_handle;
+
+  const handleDelete = async () => {
+    if (!skill) return;
+    setIsDeleting(true);
+    try {
+      await deleteSkill(skill.id);
+      toast.success("Skill deleted successfully");
+      router.push("/academy");
+    } catch (error) {
+      console.error("Failed to delete skill:", error);
+      toast.error("Failed to delete skill");
+    } finally {
+      setIsDeleting(false);
+      setIsDeleteOpen(false);
+    }
+  };
+
+  const handleEditSuccess = () => {
+    queryClient.invalidateQueries({ queryKey: ["skill", itemId] });
+    setIsEditOpen(false);
   };
 
   const handleCopy = () => {
@@ -314,6 +394,28 @@ export const SkillDetail = ({ itemId }: SkillDetailProps) => {
 
               <div className="flex gap-2 shrink-0">
                 {/* Only show if we implement sharing properly, for now just a button */}
+                {isOwner && (
+                  <>
+                    <Button
+                      variant="secondary"
+                      buttonType="ghost"
+                      size="sm"
+                      className="rounded-full w-10 h-10 p-0 text-neutral-tertiary hover:text-neutral-primary hover:bg-neutral-02 transition-all duration-300 hover:scale-105"
+                      onClick={() => setIsEditOpen(true)}
+                    >
+                      <Pencil className="w-5 h-5" />
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      buttonType="ghost"
+                      size="sm"
+                      className="rounded-full w-10 h-10 p-0 text-neutral-tertiary hover:text-danger hover:bg-danger-muted-10 transition-all duration-300 hover:scale-105"
+                      onClick={() => setIsDeleteOpen(true)}
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </Button>
+                  </>
+                )}
                 <Button
                   variant="secondary"
                   buttonType="ghost"
@@ -366,7 +468,7 @@ export const SkillDetail = ({ itemId }: SkillDetailProps) => {
                   "gap-1.5 text-xs h-8 transition-all duration-200 shadow-sm",
                   isCopied
                     ? "border-success text-success bg-success-muted-20"
-                    : "border-neutral-03 bg-bg-primary hover:bg-neutral-01 hover:border-neutral-secondary",
+                    : "border-neutral-03 bg-bg-primary hover:bg-neutral-01 hover:border-neutral-secondary"
                 )}
                 onClick={handleCopy}
               >
@@ -384,8 +486,8 @@ export const SkillDetail = ({ itemId }: SkillDetailProps) => {
               </Button>
             </div>
 
-            <div className="relative group rounded-xl border border-neutral-03 bg-[#1e1e1e] overflow-hidden shadow-xl ring-1 ring-black/5 transition-all hover:shadow-2xl">
-              <div className="absolute top-0 w-full h-10 bg-[#252526] border-b border-[#3e3e42] flex items-center justify-between px-4">
+            <div className="relative group rounded-xl border border-neutral-03 bg-neutral-03 overflow-hidden shadow-xl ring-1 ring-black/5 transition-all hover:shadow-2xl">
+              <div className="absolute top-0 w-full h-10 bg-neutral-03 border-b border-neutral-03 flex items-center justify-between px-4">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-[#ff5f56] shadow-inner" />
                   <div className="w-3 h-3 rounded-full bg-[#ffbd2e] shadow-inner" />
@@ -411,26 +513,21 @@ export const SkillDetail = ({ itemId }: SkillDetailProps) => {
               <div className="flex items-center gap-4">
                 <CompleteAvatar
                   src={
-                    skill.creator.avatar || getAvatarUrl(skill.creator.username)
+                    skill.creator.avatar ||
+                    getAvatarUrl(skill.creator.owner_x_handle)
                   }
-                  name={skill.creator.display_name || skill.creator.username}
+                  name={skill.creator.owner_x_name || skill.creator.username}
                   size="lg"
                   className="w-14 h-14 border-4 border-bg-primary shadow-sm"
                 />
                 <div className="flex flex-col min-w-0">
                   <span className="text-body-lg font-bold text-neutral-primary truncate group-hover:text-brand-primary transition-colors">
-                    {skill.creator.display_name || skill.creator.username}
+                    {skill.creator.owner_x_name || skill.creator.username}
                   </span>
                   <div className="flex items-center gap-2">
                     <span className="text-body-sm text-neutral-tertiary truncate">
-                      @{skill.creator.username}
+                      @{skill.creator.owner_x_handle}
                     </span>
-                    {skill.creator.x_username && (
-                      <span className="flex items-center gap-1 text-[10px] text-neutral-tertiary bg-neutral-02 px-2 py-0.5 rounded-full">
-                        <span className="w-1.5 h-1.5 rounded-full bg-brand-primary" />
-                        Verified
-                      </span>
-                    )}
                   </div>
                 </div>
               </div>
@@ -450,7 +547,7 @@ export const SkillDetail = ({ itemId }: SkillDetailProps) => {
 
               <div className="flex flex-col items-center gap-1">
                 <span className="text-3xl font-black text-neutral-primary tracking-tight">
-                  {skill.like_count}
+                  {likes}
                 </span>
                 <span className="text-xs font-medium text-neutral-secondary uppercase tracking-wider">
                   Likes
@@ -468,30 +565,31 @@ export const SkillDetail = ({ itemId }: SkillDetailProps) => {
 
             <div className="flex flex-col gap-3 mt-2">
               <Button
-                variant={skill.is_liked ? "primary" : "secondary"}
-                buttonType={skill.is_liked ? "tonal" : "outline"}
+                variant={isLiked ? "primary" : "secondary"}
+                buttonType={isLiked ? "tonal" : "outline"}
                 className={cn(
                   "w-full justify-center transition-all duration-300",
-                  skill.is_liked &&
-                    "text-brand-primary bg-brand-primary/10 hover:bg-brand-primary/20",
+                  isLiked &&
+                    "text-primary bg-primary-muted-10 hover:bg-primary-muted-20",
+                  isLiking && "opacity-50 cursor-not-allowed"
                 )}
                 onClick={handleLike}
-                disabled={likeMutation.isPending}
+                disabled={isLiking}
               >
                 <Heart
                   className={cn(
-                    "w-4 h-4 mr-2 transition-transform duration-300",
-                    skill.is_liked ? "fill-current scale-110" : "scale-100",
-                    likeMutation.isPending && "animate-pulse",
+                    "w-4 h-4 mr-2 transition-transform duration-300 text-primary",
+                    isLiked ? "fill-current scale-110" : "scale-100",
+                    isLiking && "animate-pulse"
                   )}
                 />
-                {skill.is_liked ? "Liked Skill" : "Like Skill"}
+                {isLiked ? "Liked Skill" : "Like Skill"}
               </Button>
 
               <Button
                 size="lg"
                 variant="primary"
-                className="w-full justify-center shadow-lg shadow-brand-primary/20 hover:shadow-brand-primary/30 transition-all"
+                className="w-full justify-center shadow-lg shadow-primary-muted-10 hover:shadow-primary-muted-20 transition-all"
                 onClick={() => setIsAddToAgentOpen(true)}
               >
                 <Download className="w-5 h-5 mr-2" />
@@ -505,8 +603,86 @@ export const SkillDetail = ({ itemId }: SkillDetailProps) => {
       <AddToAgentModal
         open={isAddToAgentOpen}
         onOpenChange={setIsAddToAgentOpen}
-        skill={skill}
+        item={
+          skill
+            ? {
+                id: skill.id,
+                title: skill.name,
+                description: skill.description,
+                content: skill.content,
+                author: {
+                  name: skill.creator.display_name || skill.creator.username,
+                  avatar:
+                    skill.creator.avatar ||
+                    getAvatarUrl(skill.creator.username),
+                  handle: skill.creator.username,
+                  username: skill.creator.username,
+                },
+                type: skill.type as "skill" | "prompt",
+                tags: skill.tags.map((tag) => tag.name),
+                likes: skill.like_count,
+                uses: skill.download_count,
+                is_liked: skill.is_liked,
+                createdAt: skill.created_at,
+              }
+            : null
+        }
       />
+
+      {skill && (
+        <CreateAcademyItemModal
+          open={isEditOpen}
+          onOpenChange={setIsEditOpen}
+          editItem={{
+            id: skill.id,
+            title: skill.name,
+            description: skill.description,
+            content: skill.content,
+            author: {
+              name: skill.creator.display_name || skill.creator.username,
+              avatar:
+                skill.creator.avatar || getAvatarUrl(skill.creator.username),
+              handle: skill.creator.owner_x_handle || "",
+              username: skill.creator.username,
+            },
+            type: skill.type as "skill" | "prompt",
+            tags: skill.tags.map((tag) => tag.name),
+            likes: skill.like_count,
+            uses: skill.download_count,
+            is_liked: skill.is_liked,
+            createdAt: skill.created_at,
+          }}
+          onSuccess={handleEditSuccess}
+        />
+      )}
+
+      <Modal open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
+        <ModalContent className="max-w-[400px] border-neutral-02">
+          <ModalHeader>
+            <ModalTitle>Delete Skill</ModalTitle>
+          </ModalHeader>
+          <div className="py-4 text-neutral-secondary">
+            Are you sure you want to delete this skill? This action cannot be
+            undone.
+          </div>
+          <ModalFooter>
+            <Button
+              variant="secondary"
+              buttonType="ghost"
+              onClick={() => setIsDeleteOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="danger"
+              onClick={handleDelete}
+              disabled={isDeleting}
+            >
+              {isDeleting ? "Deleting..." : "Delete"}
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </div>
   );
 };
