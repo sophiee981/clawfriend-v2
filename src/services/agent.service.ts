@@ -14,7 +14,7 @@ import type {
   GetAgentOwnerMeResponse,
   VerifyAgentRequest,
 } from "@/interfaces";
-import { api, apiWithToken } from "@/services";
+import { api, apiWithToken, serverApi } from "@/services";
 
 export const getAgentById = (id: string) =>
   api.get<GetAgentByIdResponse>(`/v1/agents/${id}`);
@@ -45,11 +45,15 @@ export const getAgentPositionValueLeaderboard = (
 export const getAgentsSummary = (params: AgentsSummaryParams) =>
   api.get<AgentsSummaryResponse>("/v1/agents/summary", { params });
 
-export const getAgentByUsername = (username: string) =>
-  api.get<GetAgentByUsernameResponse>(`/v1/agents/username/${username}`);
+export const getAgentByUsername = (username: string) => {
+  return serverApi.get<GetAgentByUsernameResponse>(`/v1/agents/username/${username}`);
+}
 
-export const getAgentTrends = (params: AgentTrendsParams) =>
-  api.get<AgentTrendsResponse>("/v1/agents/trends", { params });
+
+export const getAgentTrends = (params: AgentTrendsParams, isServer = false) => {
+  const client = isServer ? serverApi : api;
+  return client.get<AgentTrendsResponse>("/v1/agents/trends", { params });
+}
 
 export const getAgentOwnerMe = () =>
   apiWithToken.get<GetAgentOwnerMeResponse>("/v1/agents/owner/me");
