@@ -20,6 +20,7 @@ import {
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useViewWidth } from "@/hooks/useViewSize";
 import { SearchInput } from "../explore/components/SearchInput";
 import { AddToAgentModal } from "./components/AddToAgentModal";
 import { CreateAcademyItemModal } from "./components/CreateAcademyItemModal";
@@ -334,9 +335,26 @@ const SkillAcademyContent = ({
     return trendingTagsData.tags
   }, [trendingTagsData]);
 
+  // Get view width for responsive tag display
+  const viewWidth = useViewWidth();
+  
+  // Calculate tag limit based on breakpoint
+  const tagLimit = useMemo(() => {
+    if (viewWidth < 640) {
+      // Smaller than sm: 5 tags
+      return 5;
+    } else if (viewWidth >= 1024) {
+      // Larger than lg: 12 tags
+      return 12;
+    } else {
+      // Between sm and lg: 10 tags (default)
+      return 10;
+    }
+  }, [viewWidth]);
+
   const displayedTags = useMemo(() => {
-    return showAllTags ? trendingTags : trendingTags.slice(0, 10);
-  }, [trendingTags, showAllTags]);
+    return showAllTags ? trendingTags : trendingTags.slice(0, tagLimit);
+  }, [trendingTags, showAllTags, tagLimit]);
 
   // Extract tag names for filtering
   const allTags = useMemo(() => {
@@ -605,7 +623,7 @@ const SkillAcademyContent = ({
             <div className="flex flex-wrap gap-2 items-center overflow-x-auto pb-1 scrollbar-hide">
               {isLoadingTags ? (
                 // Skeleton loading for tags
-                Array.from({ length: 10 }).map((_, index) => {
+                Array.from({ length: tagLimit }).map((_, index) => {
                   const widths = [60, 70, 80, 65, 75, 85, 70, 80, 65, 75];
                   return (
                     <Skeleton
@@ -649,14 +667,14 @@ const SkillAcademyContent = ({
                       </button>
                     );
                   })}
-                  {trendingTags.length > 10 && (
+                  {trendingTags.length > tagLimit && (
                     <button
                       onClick={() => setShowAllTags(!showAllTags)}
                       className="text-body-xs text-[#fe5631] hover:text-[#ff6d47] transition-colors whitespace-nowrap shrink-0 h-6 pt-1"
                     >
                       {showAllTags
                         ? "Show less"
-                        : `Show more (${trendingTags.length - 10})`}
+                        : `Show more (${trendingTags.length - tagLimit})`}
                     </button>
                   )}
                 </>
