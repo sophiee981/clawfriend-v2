@@ -74,5 +74,5 @@ export default async function SkillDetailPage({
     notFound();
   }
 
-  return <SkillDetail itemId={id} />;
+  return <SkillDetail itemId={id} defaultSkill={skill} />;
 }

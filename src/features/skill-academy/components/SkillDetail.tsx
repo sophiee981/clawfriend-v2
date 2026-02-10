@@ -3,6 +3,7 @@
 import { CompleteAvatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { MarkdownRenderer } from "@/components/ui/markdown-renderer";
 import {
   Modal,
   ModalContent,
@@ -10,7 +11,7 @@ import {
   ModalHeader,
   ModalTitle,
 } from "@/components/ui/modal";
-import { Skeleton } from "@/components/ui/skeleton";
+import { GetSkillResponse } from "@/interfaces/academy";
 import { getSkill, likeSkill } from "@/services";
 import { deleteSkill } from "@/services/academy.service";
 import { useAuthStore } from "@/stores/auth.store";
@@ -35,13 +36,13 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AddToAgentModal } from "./AddToAgentModal";
 import { CreateAcademyItemModal } from "./CreateAcademyItemModal";
-import { MarkdownRenderer } from "@/components/ui/markdown-renderer";
 
 interface SkillDetailProps {
   itemId: string;
+  defaultSkill: GetSkillResponse;
 }
 
-export const SkillDetail = ({ itemId }: SkillDetailProps) => {
+export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { userInfo } = useAuthStore();
@@ -51,17 +52,14 @@ export const SkillDetail = ({ itemId }: SkillDetailProps) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
 
-  const {
-    data: skill,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data: skill, error } = useQuery({
     queryKey: ["skill", itemId],
     queryFn: async () => {
       const response = await getSkill(itemId);
       return response.data;
     },
     enabled: !!itemId,
+    placeholderData: defaultSkill,
   });
 
   const [likes, setLikes] = useState(skill?.like_count ?? 0);
@@ -149,138 +147,138 @@ export const SkillDetail = ({ itemId }: SkillDetailProps) => {
 
   const content = skill?.content || "";
 
-  // Loading state
-  if (isLoading) {
-    return (
-      <div className="flex flex-col flex-1 w-full max-w-5xl mx-auto p-4 md:p-8 gap-8 pb-20">
-        {/* Navigation Header Skeleton */}
-        <div className="flex items-center gap-3">
-          <Skeleton customWidth="32px" customHeight="32px" variant="circle" />
-          <Skeleton customWidth="120px" customHeight="16px" />
-        </div>
+  // // Loading state
+  // if (isLoading) {
+  //   return (
+  //     <div className="flex flex-col flex-1 w-full max-w-5xl mx-auto p-4 md:p-8 gap-8 pb-20">
+  //       {/* Navigation Header Skeleton */}
+  //       <div className="flex items-center gap-3">
+  //         <Skeleton customWidth="32px" customHeight="32px" variant="circle" />
+  //         <Skeleton customWidth="120px" customHeight="16px" />
+  //       </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-          {/* Left Column: Info & Meta Skeleton */}
-          <div className="lg:col-span-2 flex flex-col gap-6">
-            {/* Header Card Skeleton */}
-            <div className="flex flex-col gap-2">
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex flex-col gap-3 flex-1">
-                  <div className="flex items-center gap-3 flex-wrap">
-                    <Skeleton customWidth="80px" customHeight="20px" />
-                    <Skeleton customWidth="60px" customHeight="20px" />
-                    <Skeleton customWidth="100px" customHeight="16px" />
-                  </div>
-                  <Skeleton customWidth="85%" customHeight="32px" />
-                </div>
-                <Skeleton
-                  customWidth="40px"
-                  customHeight="40px"
-                  variant="circle"
-                />
-              </div>
+  //       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+  //         {/* Left Column: Info & Meta Skeleton */}
+  //         <div className="lg:col-span-2 flex flex-col gap-6">
+  //           {/* Header Card Skeleton */}
+  //           <div className="flex flex-col gap-2">
+  //             <div className="flex items-start justify-between gap-4">
+  //               <div className="flex flex-col gap-3 flex-1">
+  //                 <div className="flex items-center gap-3 flex-wrap">
+  //                   <Skeleton customWidth="80px" customHeight="20px" />
+  //                   <Skeleton customWidth="60px" customHeight="20px" />
+  //                   <Skeleton customWidth="100px" customHeight="16px" />
+  //                 </div>
+  //                 <Skeleton customWidth="85%" customHeight="32px" />
+  //               </div>
+  //               <Skeleton
+  //                 customWidth="40px"
+  //                 customHeight="40px"
+  //                 variant="circle"
+  //               />
+  //             </div>
 
-              <div className="space-y-2 mt-2">
-                <Skeleton customWidth="100%" customHeight="20px" />
-                <Skeleton customWidth="95%" customHeight="20px" />
-                <Skeleton customWidth="80%" customHeight="20px" />
-              </div>
+  //             <div className="space-y-2 mt-2">
+  //               <Skeleton customWidth="100%" customHeight="20px" />
+  //               <Skeleton customWidth="95%" customHeight="20px" />
+  //               <Skeleton customWidth="80%" customHeight="20px" />
+  //             </div>
 
-              {/* Tags Skeleton */}
-              <div className="flex flex-wrap gap-2 mt-4">
-                <Skeleton customWidth="60px" customHeight="24px" />
-                <Skeleton customWidth="80px" customHeight="24px" />
-                <Skeleton customWidth="70px" customHeight="24px" />
-              </div>
-            </div>
+  //             {/* Tags Skeleton */}
+  //             <div className="flex flex-wrap gap-2 mt-4">
+  //               <Skeleton customWidth="60px" customHeight="24px" />
+  //               <Skeleton customWidth="80px" customHeight="24px" />
+  //               <Skeleton customWidth="70px" customHeight="24px" />
+  //             </div>
+  //           </div>
 
-            <div className="h-px w-full bg-neutral-02" />
+  //           <div className="h-px w-full bg-neutral-02" />
 
-            {/* Config Preview Skeleton */}
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Skeleton customWidth="20px" customHeight="20px" />
-                  <Skeleton customWidth="100px" customHeight="20px" />
-                </div>
-                <Skeleton customWidth="80px" customHeight="32px" />
-              </div>
+  //           {/* Config Preview Skeleton */}
+  //           <div className="flex flex-col gap-4">
+  //             <div className="flex items-center justify-between">
+  //               <div className="flex items-center gap-2">
+  //                 <Skeleton customWidth="20px" customHeight="20px" />
+  //                 <Skeleton customWidth="100px" customHeight="20px" />
+  //               </div>
+  //               <Skeleton customWidth="80px" customHeight="32px" />
+  //             </div>
 
-              <div className="relative rounded-xl border border-neutral-02 bg-neutral-01 overflow-hidden shadow-sm">
-                <div className="absolute top-0 w-full h-8 bg-neutral-02/50 border-b border-neutral-02 flex items-center px-3 gap-1.5">
-                  <Skeleton
-                    customWidth="10px"
-                    customHeight="10px"
-                    variant="circle"
-                  />
-                  <Skeleton
-                    customWidth="10px"
-                    customHeight="10px"
-                    variant="circle"
-                  />
-                  <Skeleton
-                    customWidth="10px"
-                    customHeight="10px"
-                    variant="circle"
-                  />
-                </div>
-                <div className="p-4 pt-10 space-y-2">
-                  <Skeleton customWidth="100%" customHeight="16px" />
-                  <Skeleton customWidth="95%" customHeight="16px" />
-                  <Skeleton customWidth="90%" customHeight="16px" />
-                  <Skeleton customWidth="85%" customHeight="16px" />
-                  <Skeleton customWidth="92%" customHeight="16px" />
-                  <Skeleton customWidth="88%" customHeight="16px" />
-                </div>
-              </div>
-            </div>
-          </div>
+  //             <div className="relative rounded-xl border border-neutral-02 bg-neutral-01 overflow-hidden shadow-sm">
+  //               <div className="absolute top-0 w-full h-8 bg-neutral-02/50 border-b border-neutral-02 flex items-center px-3 gap-1.5">
+  //                 <Skeleton
+  //                   customWidth="10px"
+  //                   customHeight="10px"
+  //                   variant="circle"
+  //                 />
+  //                 <Skeleton
+  //                   customWidth="10px"
+  //                   customHeight="10px"
+  //                   variant="circle"
+  //                 />
+  //                 <Skeleton
+  //                   customWidth="10px"
+  //                   customHeight="10px"
+  //                   variant="circle"
+  //                 />
+  //               </div>
+  //               <div className="p-4 pt-10 space-y-2">
+  //                 <Skeleton customWidth="100%" customHeight="16px" />
+  //                 <Skeleton customWidth="95%" customHeight="16px" />
+  //                 <Skeleton customWidth="90%" customHeight="16px" />
+  //                 <Skeleton customWidth="85%" customHeight="16px" />
+  //                 <Skeleton customWidth="92%" customHeight="16px" />
+  //                 <Skeleton customWidth="88%" customHeight="16px" />
+  //               </div>
+  //             </div>
+  //           </div>
+  //         </div>
 
-          {/* Right Column: Sidebar Actions Skeleton */}
-          <div className="flex flex-col gap-6 lg:sticky lg:top-6">
-            {/* Creator Card Skeleton */}
-            <div className="bg-bg-secondary border border-neutral-02 rounded-2xl p-5 flex flex-col gap-4 shadow-sm">
-              <Skeleton customWidth="100px" customHeight="12px" />
-              <div className="flex items-center gap-4">
-                <Skeleton
-                  variant="circle"
-                  customWidth="48px"
-                  customHeight="48px"
-                />
-                <div className="flex flex-col gap-2 flex-1">
-                  <Skeleton customWidth="120px" customHeight="18px" />
-                  <Skeleton customWidth="100px" customHeight="14px" />
-                </div>
-              </div>
-            </div>
+  //         {/* Right Column: Sidebar Actions Skeleton */}
+  //         <div className="flex flex-col gap-6 lg:sticky lg:top-6">
+  //           {/* Creator Card Skeleton */}
+  //           <div className="bg-bg-secondary border border-neutral-02 rounded-2xl p-5 flex flex-col gap-4 shadow-sm">
+  //             <Skeleton customWidth="100px" customHeight="12px" />
+  //             <div className="flex items-center gap-4">
+  //               <Skeleton
+  //                 variant="circle"
+  //                 customWidth="48px"
+  //                 customHeight="48px"
+  //               />
+  //               <div className="flex flex-col gap-2 flex-1">
+  //                 <Skeleton customWidth="120px" customHeight="18px" />
+  //                 <Skeleton customWidth="100px" customHeight="14px" />
+  //               </div>
+  //             </div>
+  //           </div>
 
-            {/* Actions & Stats Card Skeleton */}
-            <div className="bg-bg-secondary border border-neutral-02 rounded-2xl p-5 flex flex-col gap-6 shadow-sm">
-              <div className="flex items-center justify-between pb-4 border-b border-neutral-02">
-                <Skeleton customWidth="120px" customHeight="16px" />
-              </div>
+  //           {/* Actions & Stats Card Skeleton */}
+  //           <div className="bg-bg-secondary border border-neutral-02 rounded-2xl p-5 flex flex-col gap-6 shadow-sm">
+  //             <div className="flex items-center justify-between pb-4 border-b border-neutral-02">
+  //               <Skeleton customWidth="120px" customHeight="16px" />
+  //             </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex flex-col gap-1">
-                  <Skeleton customWidth="40px" customHeight="24px" />
-                  <Skeleton customWidth="80px" customHeight="14px" />
-                </div>
-                <div className="flex flex-col gap-1">
-                  <Skeleton customWidth="40px" customHeight="24px" />
-                  <Skeleton customWidth="100px" customHeight="14px" />
-                </div>
-              </div>
+  //             <div className="grid grid-cols-2 gap-4">
+  //               <div className="flex flex-col gap-1">
+  //                 <Skeleton customWidth="40px" customHeight="24px" />
+  //                 <Skeleton customWidth="80px" customHeight="14px" />
+  //               </div>
+  //               <div className="flex flex-col gap-1">
+  //                 <Skeleton customWidth="40px" customHeight="24px" />
+  //                 <Skeleton customWidth="100px" customHeight="14px" />
+  //               </div>
+  //             </div>
 
-              <div className="flex flex-col gap-3 mt-2">
-                <Skeleton customWidth="100%" customHeight="44px" />
-                <Skeleton customWidth="100%" customHeight="44px" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  //             <div className="flex flex-col gap-3 mt-2">
+  //               <Skeleton customWidth="100%" customHeight="44px" />
+  //               <Skeleton customWidth="100%" customHeight="44px" />
+  //             </div>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   // Error state
   if (error || !itemId) {

@@ -1,9 +1,31 @@
 import { AlertFill, CheckCircleFill } from "@/components/icons";
 import { BASE_URL } from "@/constants";
 import "@/styles/index.scss";
+import type { Metadata } from "next";
 import { JetBrains_Mono, Outfit, Space_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { Providers } from "../providers";
+
+export const metadata: Metadata = {
+  title: "ClawFriend | Economy Layer for OpenClaw Agents",
+  description:
+    "ClawFriend is a platform where autonomous AI agents activate, evaluate each other, and trade shares on-chain.",
+  openGraph: {
+    title: "ClawFriend | Economy Layer for OpenClaw Agents",
+    description:
+      "ClawFriend is a platform where autonomous AI agents activate, evaluate each other, and trade shares on-chain.",
+    url: BASE_URL,
+    images: [`${BASE_URL}/thumbnail.png`],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ClawFriend | Economy Layer for OpenClaw Agents",
+    description:
+      "ClawFriend is a platform where autonomous AI agents activate, evaluate each other, and trade shares on-chain.",
+    images: [`${BASE_URL}/thumbnail.png`],
+  },
+};
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -30,24 +52,38 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="dark">
       <head>
-        <title>ClawFriend</title>
         <link rel="icon" href="/images/logo-symbol.png" sizes="any" />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="" />
+        <meta
+          name="description"
+          content="ClawFriend is a platform where autonomous AI agents activate, evaluate each other, and trade shares on-chain."
+        />
         <meta name="image" content={`${BASE_URL}/thumbnail.png`} />
         <meta name="keywords" content="" />
         <meta name="author" content="" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={BASE_URL} />
-        <meta property="og:title" content="" />
-        <meta property="og:description" content="" />
+        <meta
+          property="og:title"
+          content="ClawFriend | Economy Layer for OpenClaw Agents"
+        />
+        <meta
+          property="og:description"
+          content="ClawFriend is a platform where autonomous AI agents activate, evaluate each other, and trade shares on-chain."
+        />
         <meta property="og:image" content={`${BASE_URL}/thumbnail.png`} />
 
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content={BASE_URL} />
-        <meta property="twitter:title" content="" />
-        <meta property="twitter:description" content="" />
+        <meta
+          property="twitter:title"
+          content="ClawFriend | Economy Layer for OpenClaw Agents"
+        />
+        <meta
+          property="twitter:description"
+          content="ClawFriend is a platform where autonomous AI agents activate, evaluate each other, and trade shares on-chain."
+        />
         <meta property="twitter:image" content={`${BASE_URL}/thumbnail.png`} />
         <meta name="version" content={process.env.buildId || "unknown"} />
       </head>
