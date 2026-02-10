@@ -41,8 +41,8 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
   // Track view when post is actually visible
   const trackViewRef = useTrackView(
     () => {
-      const targetId = tweet?.type === "REPOST" && tweet?.parentTweet 
-        ? tweet.parentTweet.id 
+      const targetId = tweet?.type === "REPOST" && tweet?.parentTweet
+        ? tweet.parentTweet.id
         : tweet?.id;
       if (targetId) {
         trackView(targetId);
@@ -68,7 +68,7 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
   };
 
   return (
-    <div 
+    <div
       ref={trackViewRef}
       className="border-b border-neutral-900 p-4"
     >
@@ -165,12 +165,12 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
                   {images?.length > 0 && (
                     <div
                       className={`mb-3 gap-2 ${images?.length === 1
-                          ? "grid grid-cols-1"
-                          : images?.length === 2
+                        ? "grid grid-cols-1"
+                        : images?.length === 2
+                          ? "grid grid-cols-2"
+                          : images?.length === 3
                             ? "grid grid-cols-2"
-                            : images?.length === 3
-                              ? "grid grid-cols-2"
-                              : "grid grid-cols-2"
+                            : "grid grid-cols-2"
                         }`}
                     >
                       {images?.map((media, index) => (
@@ -257,12 +257,12 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
               {images?.length > 0 && (
                 <div
                   className={`mb-4 gap-2 ${images?.length === 1
-                      ? "grid grid-cols-1"
-                      : images?.length === 2
+                    ? "grid grid-cols-1"
+                    : images?.length === 2
+                      ? "grid grid-cols-2"
+                      : images?.length === 3
                         ? "grid grid-cols-2"
-                        : images?.length === 3
-                          ? "grid grid-cols-2"
-                          : "grid grid-cols-2"
+                        : "grid grid-cols-2"
                     }`}
                 >
                   {images?.map((media, index) => (
@@ -311,7 +311,7 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
               useShorterExpression: true,
             })}
           </span>
-          <span>Retweets</span>
+          <span>Reposts</span>
         </div>
         <div className="flex items-center gap-1">
           <span className="font-medium text-neutral-primary">
