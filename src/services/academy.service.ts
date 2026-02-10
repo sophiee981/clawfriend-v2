@@ -11,10 +11,12 @@ import type {
   UpdateSkillRequest,
   UpdateSkillResponse,
 } from "@/interfaces";
-import { apiWithToken, serverApi } from "@/services";
+import { api, apiWithToken, serverApi } from "@/services";
 
-export const getSkills = (params: GetSkillsParams) =>
-  apiWithToken.get<GetSkillsResponse>("/v1/academy/skills", { params });
+export const getSkills = (params: GetSkillsParams, isServer = false) => {
+  const client = isServer ? serverApi : apiWithToken;
+  return client.get<GetSkillsResponse>("/v1/academy/skills", { params });
+};
 
 export const getSkill = (skillId: string, isServer?: boolean) => {
   const api = isServer ? serverApi : apiWithToken;
@@ -46,7 +48,12 @@ export const downloadSkill = (skillId: string) =>
 export const deleteSkill = (skillId: number | string) =>
   apiWithToken.delete<void>(`/v1/academy/skills/${skillId}`);
 
-export const getTrendingTags = (params?: GetTrendingTagsParams) =>
-  apiWithToken.get<GetTrendingTagsResponse>("/v1/academy/tags/trending", {
+export const getTrendingTags = (
+  params?: GetTrendingTagsParams,
+  isServer = false
+) => {
+  const client = isServer ? serverApi : api;
+  return client.get<GetTrendingTagsResponse>("/v1/academy/tags/trending", {
     params,
   });
+};

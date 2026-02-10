@@ -6,13 +6,14 @@ import { useActivities } from "./useActivities";
 import { useInfiniteScroll } from "./useInfiniteScroll";
 
 interface ActivitiesTabProps {
-  username?: string;
+  subject?: string;
+  trader?: string;
   enabled?: boolean;
 }
 
-export const ActivitiesTab = ({ username, enabled = true }: ActivitiesTabProps) => {
+export const ActivitiesTab = ({ subject, trader, enabled = true }: ActivitiesTabProps) => {
   const { activities, isLoading, isLoadingMore, hasNextPage, fetchNextPage } =
-    useActivities({ enabled, username });
+    useActivities({ enabled, subject, trader });
 
   const observerTarget = useInfiniteScroll({
     hasNextPage,

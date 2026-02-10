@@ -4,19 +4,19 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 
 interface UseActivitiesOptions {
   enabled: boolean;
-  username?: string;
+  subject?: string;
+  trader?: string;
 }
 
-export const useActivities = ({ enabled, username }: UseActivitiesOptions) => {
+export const useActivities = ({ enabled, subject, trader }: UseActivitiesOptions) => {
   const query = useInfiniteQuery({
-    queryKey: ["trades", "activities", username],
+    queryKey: ["trades", "activities", subject, trader],
     queryFn: async ({ pageParam = 1 }) => {
       const response = await getTrades({
         page: pageParam,
         limit: 20,
-        subject: "",
-        trader: "",
-        username: username || "",
+        subject: subject || "",
+        trader: trader || "",
       });
 
       return {

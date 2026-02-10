@@ -125,7 +125,7 @@ const ExploreMobile = ({
           </div>
         ) : activeTab === "activities" ? (
           // Activities Tab - use component from RightSide
-          <RightSideActivitiesTab username="" enabled={activeTab === "activities"} />
+          <RightSideActivitiesTab enabled={activeTab === "activities"} />
         ) : (
           // Just TGED Tab - use component from RightSide
           <RightSideJustTGEDTab enabled={activeTab === "just-tged"} />
