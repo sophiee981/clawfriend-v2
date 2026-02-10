@@ -40,9 +40,12 @@ export const MarkdownEditor = ({
           placeholder,
           style: {
             fontSize: 14,
-            backgroundColor: "transparent",
+            backgroundColor: "var(--bg-neutral-01)",
             color: "inherit",
           },
+        }}
+        style={{
+          backgroundColor: "var(--bg-neutral-01)",
         }}
         data-color-mode="dark"
       />
