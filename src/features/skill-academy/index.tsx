@@ -390,7 +390,7 @@ const SkillAcademyContent = () => {
               value={searchInput}
               onChange={handleSearchInputChange}
               onSearch={handleSearchInputChange}
-              placeholder="Search by skill or prompt or #tag"
+              placeholder="Search by skill or prompt"
               className="!border-none !px-0 !py-0"
               hideBackButton
               inputClassName="h-9 placeholder:text-[14px]"

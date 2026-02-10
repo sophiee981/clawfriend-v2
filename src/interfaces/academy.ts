@@ -114,6 +114,7 @@ export interface GetSkillsParams {
   search?: string;
   is_active?: boolean;
   type?: string;
+  tags?: string;
 }
 
 export interface GetSkillsResponse {
