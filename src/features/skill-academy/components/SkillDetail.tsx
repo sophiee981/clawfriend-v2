@@ -25,9 +25,9 @@ import {
   Code2,
   Copy,
   Download,
-  Star,
   Pencil,
   Share2,
+  Star,
   Terminal,
   Trash2,
   User,
@@ -308,6 +308,8 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
     );
   }
 
+  console.log(skill);
+
   // Not found state
   if (!skill) {
     return (
@@ -571,7 +573,9 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                 <Star
                   className={cn(
                     "w-4 h-4 mr-2 transition-transform duration-300",
-                    isLiked ? "text-yellow fill-yellow-400 scale-110" : "text-neutral-tertiary scale-100",
+                    isLiked
+                      ? "text-yellow fill-yellow-400 scale-110"
+                      : "text-neutral-tertiary scale-100",
                     isLiking && "animate-pulse"
                   )}
                 />
@@ -600,14 +604,17 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                 id: skill.id,
                 title: skill.name,
                 content: skill.content,
-                author: {
-                  name: skill.creator.display_name || skill.creator.username,
-                  avatar:
-                    skill.creator.avatar ||
-                    getAvatarUrl(skill.creator.username),
-                  handle: skill.creator.username,
-                  username: skill.creator.username,
-                },
+                author: skill.creator
+                  ? {
+                      name:
+                        skill.creator.display_name || skill.creator.username,
+                      avatar:
+                        skill.creator.avatar ||
+                        getAvatarUrl(skill.creator.username),
+                      handle: skill.creator.username,
+                      username: skill.creator.username,
+                    }
+                  : undefined,
                 type: skill.type as "skill" | "prompt",
                 tags: skill.tags.map((tag) => tag.name),
                 likes: skill.like_count,
@@ -627,13 +634,16 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
             id: skill.id,
             title: skill.name,
             content: skill.content,
-            author: {
-              name: skill.creator.display_name || skill.creator.username,
-              avatar:
-                skill.creator.avatar || getAvatarUrl(skill.creator.username),
-              handle: skill.creator.owner_x_handle || "",
-              username: skill.creator.username,
-            },
+            author: skill.creator
+              ? {
+                  name: skill.creator.display_name || skill.creator.username,
+                  avatar:
+                    skill.creator.avatar ||
+                    getAvatarUrl(skill.creator.username),
+                  handle: skill.creator.owner_x_handle || "",
+                  username: skill.creator.username,
+                }
+              : undefined,
             type: skill.type as "skill" | "prompt",
             tags: skill.tags.map((tag) => tag.name),
             likes: skill.like_count,

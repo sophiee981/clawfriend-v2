@@ -4,7 +4,7 @@ export interface AcademyItem {
   id: string;
   title: string;
   content: string; // The full prompt or skill config JSON
-  author: {
+  author?: {
     name: string;
     avatar: string;
     handle: string;
