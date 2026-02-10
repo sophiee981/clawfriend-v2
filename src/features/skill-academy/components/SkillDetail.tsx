@@ -52,7 +52,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
 
-  const { data: skill, error } = useQuery({
+  const { data: skill } = useQuery({
     queryKey: ["skill", itemId],
     queryFn: async () => {
       const response = await getSkill(itemId);
@@ -127,7 +127,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
     try {
       await deleteSkill(skill.id);
       toast.success("Skill deleted successfully");
-      router.push("/academy");
+      router.push("/skill-academy");
     } catch (error) {
       console.error("Failed to delete skill:", error);
       toast.error("Failed to delete skill");
@@ -152,169 +152,6 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
 
   const content = skill?.content || "";
 
-  // // Loading state
-  // if (isLoading) {
-  //   return (
-  //     <div className="flex flex-col flex-1 w-full max-w-5xl mx-auto p-4 md:p-8 gap-8 pb-20">
-  //       {/* Navigation Header Skeleton */}
-  //       <div className="flex items-center gap-3">
-  //         <Skeleton customWidth="32px" customHeight="32px" variant="circle" />
-  //         <Skeleton customWidth="120px" customHeight="16px" />
-  //       </div>
-
-  //       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-  //         {/* Left Column: Info & Meta Skeleton */}
-  //         <div className="lg:col-span-2 flex flex-col gap-6">
-  //           {/* Header Card Skeleton */}
-  //           <div className="flex flex-col gap-2">
-  //             <div className="flex items-start justify-between gap-4">
-  //               <div className="flex flex-col gap-3 flex-1">
-  //                 <div className="flex items-center gap-3 flex-wrap">
-  //                   <Skeleton customWidth="80px" customHeight="20px" />
-  //                   <Skeleton customWidth="60px" customHeight="20px" />
-  //                   <Skeleton customWidth="100px" customHeight="16px" />
-  //                 </div>
-  //                 <Skeleton customWidth="85%" customHeight="32px" />
-  //               </div>
-  //               <Skeleton
-  //                 customWidth="40px"
-  //                 customHeight="40px"
-  //                 variant="circle"
-  //               />
-  //             </div>
-
-  //             <div className="space-y-2 mt-2">
-  //               <Skeleton customWidth="100%" customHeight="20px" />
-  //               <Skeleton customWidth="95%" customHeight="20px" />
-  //               <Skeleton customWidth="80%" customHeight="20px" />
-  //             </div>
-
-  //             {/* Tags Skeleton */}
-  //             <div className="flex flex-wrap gap-2 mt-4">
-  //               <Skeleton customWidth="60px" customHeight="24px" />
-  //               <Skeleton customWidth="80px" customHeight="24px" />
-  //               <Skeleton customWidth="70px" customHeight="24px" />
-  //             </div>
-  //           </div>
-
-  //           <div className="h-px w-full bg-neutral-02" />
-
-  //           {/* Config Preview Skeleton */}
-  //           <div className="flex flex-col gap-4">
-  //             <div className="flex items-center justify-between">
-  //               <div className="flex items-center gap-2">
-  //                 <Skeleton customWidth="20px" customHeight="20px" />
-  //                 <Skeleton customWidth="100px" customHeight="20px" />
-  //               </div>
-  //               <Skeleton customWidth="80px" customHeight="32px" />
-  //             </div>
-
-  //             <div className="relative rounded-xl border border-neutral-02 bg-neutral-01 overflow-hidden shadow-sm">
-  //               <div className="absolute top-0 w-full h-8 bg-neutral-02/50 border-b border-neutral-02 flex items-center px-3 gap-1.5">
-  //                 <Skeleton
-  //                   customWidth="10px"
-  //                   customHeight="10px"
-  //                   variant="circle"
-  //                 />
-  //                 <Skeleton
-  //                   customWidth="10px"
-  //                   customHeight="10px"
-  //                   variant="circle"
-  //                 />
-  //                 <Skeleton
-  //                   customWidth="10px"
-  //                   customHeight="10px"
-  //                   variant="circle"
-  //                 />
-  //               </div>
-  //               <div className="p-4 pt-10 space-y-2">
-  //                 <Skeleton customWidth="100%" customHeight="16px" />
-  //                 <Skeleton customWidth="95%" customHeight="16px" />
-  //                 <Skeleton customWidth="90%" customHeight="16px" />
-  //                 <Skeleton customWidth="85%" customHeight="16px" />
-  //                 <Skeleton customWidth="92%" customHeight="16px" />
-  //                 <Skeleton customWidth="88%" customHeight="16px" />
-  //               </div>
-  //             </div>
-  //           </div>
-  //         </div>
-
-  //         {/* Right Column: Sidebar Actions Skeleton */}
-  //         <div className="flex flex-col gap-6 lg:sticky lg:top-6">
-  //           {/* Creator Card Skeleton */}
-  //           <div className="bg-bg-secondary border border-neutral-02 rounded-2xl p-5 flex flex-col gap-4 shadow-sm">
-  //             <Skeleton customWidth="100px" customHeight="12px" />
-  //             <div className="flex items-center gap-4">
-  //               <Skeleton
-  //                 variant="circle"
-  //                 customWidth="48px"
-  //                 customHeight="48px"
-  //               />
-  //               <div className="flex flex-col gap-2 flex-1">
-  //                 <Skeleton customWidth="120px" customHeight="18px" />
-  //                 <Skeleton customWidth="100px" customHeight="14px" />
-  //               </div>
-  //             </div>
-  //           </div>
-
-  //           {/* Actions & Stats Card Skeleton */}
-  //           <div className="bg-bg-secondary border border-neutral-02 rounded-2xl p-5 flex flex-col gap-6 shadow-sm">
-  //             <div className="flex items-center justify-between pb-4 border-b border-neutral-02">
-  //               <Skeleton customWidth="120px" customHeight="16px" />
-  //             </div>
-
-  //             <div className="grid grid-cols-2 gap-4">
-  //               <div className="flex flex-col gap-1">
-  //                 <Skeleton customWidth="40px" customHeight="24px" />
-  //                 <Skeleton customWidth="80px" customHeight="14px" />
-  //               </div>
-  //               <div className="flex flex-col gap-1">
-  //                 <Skeleton customWidth="40px" customHeight="24px" />
-  //                 <Skeleton customWidth="100px" customHeight="14px" />
-  //               </div>
-  //             </div>
-
-  //             <div className="flex flex-col gap-3 mt-2">
-  //               <Skeleton customWidth="100%" customHeight="44px" />
-  //               <Skeleton customWidth="100%" customHeight="44px" />
-  //             </div>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
-  // Error state
-  if (error || !itemId) {
-    return (
-      <div className="flex flex-col items-center justify-center h-full gap-6 animate-in fade-in zoom-in-95 duration-300">
-        <div className="w-16 h-16 rounded-full bg-neutral-02 flex items-center justify-center text-neutral-tertiary">
-          <Terminal className="w-8 h-8" />
-        </div>
-        <div className="text-center space-y-2">
-          <h3 className="text-heading-sm text-neutral-primary">
-            Failed to load skill
-          </h3>
-          <p className="text-neutral-tertiary">
-            {error
-              ? "Something went wrong while fetching the data."
-              : "Invalid skill ID provided."}
-          </p>
-        </div>
-        <Button
-          onClick={() => router.back()}
-          variant="secondary"
-          buttonType="outline"
-        >
-          Go Back
-        </Button>
-      </div>
-    );
-  }
-
-  console.log(skill);
-
   // Not found state
   if (!skill) {
     return (
@@ -331,7 +168,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
           </p>
         </div>
         <Button
-          onClick={() => router.back()}
+          onClick={() => router.push("/skill-academy")}
           variant="secondary"
           buttonType="outline"
         >
@@ -344,22 +181,19 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
   return (
     <div className="relative flex flex-col flex-1 w-full max-w-5xl mx-auto p-4 md:p-8 gap-8 pb-20 overflow-hidden lg:h-screen">
       {/* Navigation Header */}
-      <div className="flex items-center gap-3">
+      <div
+        className="flex items-center gap-3 text-neutral-tertiary hover:text-neutral-secondary transition-colors cursor-pointer group"
+        onClick={() => router.push("/skill-academy")}
+      >
         <Button
           variant="secondary"
           buttonType="ghost"
           size="sm"
-          className="rounded-full w-8 h-8 p-0 text-neutral-secondary hover:text-neutral-primary hover:bg-neutral-02"
-          onClick={() => router.back()}
+          className="rounded-full w-8 h-8 p-0 text-neutral-secondary group-hover:text-neutral-primary group-hover:bg-neutral-02"
         >
-          <ArrowLeft className="w-5 h-5" />
+          <ArrowLeft className="w-4 h-4" />
         </Button>
-        <span
-          className="text-body-sm font-medium text-neutral-tertiary hover:text-neutral-secondary transition-colors cursor-pointer"
-          onClick={() => router.back()}
-        >
-          Back to Academy
-        </span>
+        <span className="text-label-sm">Back to Academy</span>
       </div>
 
       <div className="flex flex-col lg:flex-row items-start overflow-auto lg:overflow-hidden flex-1 min-h-0 scrollbar-hide">

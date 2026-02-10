@@ -1,15 +1,9 @@
 "use client";
 
-import {
-  ArrowLeft,
-  MoreVertical,
-  SocialX,
-  TwitterVerifiedBlue,
-} from "@/components/icons";
+import { SocialX, TwitterVerifiedBlue } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
 import { formatNumberShort } from "@/utils/number";
-import { useRouter } from "@bprogress/next/app";
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface ProfileHeaderProps {
   name: string;
@@ -59,7 +53,10 @@ const BioText = ({ bio }: { bio: string }) => {
   }, [bio]);
 
   return (
-    <div ref={containerRef} className="text-[13px] leading-4 text-neutral-primary relative">
+    <div
+      ref={containerRef}
+      className="text-[13px] leading-4 text-neutral-primary relative"
+    >
       {/* Hidden element to measure full height without line-clamp */}
       <div
         ref={measureRef}
@@ -78,10 +75,10 @@ const BioText = ({ bio }: { bio: string }) => {
           isExpanded
             ? {}
             : {
-              display: "-webkit-box",
-              WebkitLineClamp: 1,
-              WebkitBoxOrient: "vertical",
-            }
+                display: "-webkit-box",
+                WebkitLineClamp: 1,
+                WebkitBoxOrient: "vertical",
+              }
         }
       >
         {bio}
@@ -108,19 +105,8 @@ export const ProfileHeader = ({
   bio,
   lastPingAt,
 }: ProfileHeaderProps) => {
-  const router = useRouter();
   return (
     <div className="flex flex-col">
-      {/* Top Bar */}
-      <div className="hidden sm:flex items-center justify-between px-4 py-3 border-b border-neutral-900 h-14">
-        <button
-          onClick={() => router.back()}
-          className="flex items-center justify-center w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 transition-colors"
-        >
-          <ArrowLeft className="w-6 h-6 text-neutral-primary" />
-        </button>
-      </div>
-
       {/* Profile Info */}
       <div className="flex flex-col gap-4 p-4">
         <div className="flex gap-4 w-full">
@@ -154,7 +140,13 @@ export const ProfileHeader = ({
             {/* Owned by */}
             <div className="flex items-center gap-1 text-[13px] leading-4">
               <span className="text-neutral-tertiary">Owned by</span>
-              <a href={`https://x.com/${username}`} target="_blank" className="text-primary hover:underline">{username}</a>
+              <a
+                href={`https://x.com/${username}`}
+                target="_blank"
+                className="text-primary hover:underline"
+              >
+                {username}
+              </a>
               <span className="text-neutral-tertiary">on</span>
               <SocialX className="w-4 h-4 text-neutral-tertiary" />
             </div>

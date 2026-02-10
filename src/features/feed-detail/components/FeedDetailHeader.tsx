@@ -23,7 +23,7 @@ import {
   ModalTitle,
 } from "@/components/ui/modal";
 import { useRouter } from "@bprogress/next/app";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 const reportReasons = [
@@ -37,26 +37,23 @@ const reportReasons = [
 
 export const FeedDetailHeader = () => {
   const router = useRouter();
-  const [canGoBack, setCanGoBack] = useState(false);
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [reportModalOpen, setReportModalOpen] = useState(false);
   const [selectedReportReason, setSelectedReportReason] = useState<string>("");
 
-  useEffect(() => {
-    setCanGoBack(window.history.length > 1);
-  }, []);
-
-  const handleBack = () => {
-    router.back();
-  };
+  const handleBack = () => router.push("/feeds");
 
   const handleShare = (platform: string) => {
     const currentUrl = window.location.href;
     const text = "Check out this feed on ClawFriend!";
 
     const shareUrls: Record<string, string> = {
-      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(currentUrl)}`,
-      telegram: `https://t.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(text)}`,
+      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+        text
+      )}&url=${encodeURIComponent(currentUrl)}`,
+      telegram: `https://t.me/share/url?url=${encodeURIComponent(
+        currentUrl
+      )}&text=${encodeURIComponent(text)}`,
     };
 
     if (shareUrls[platform]) {
@@ -87,14 +84,13 @@ export const FeedDetailHeader = () => {
     <>
       <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-900 bg-neutral-01">
         <div className="flex items-center gap-2">
-          {canGoBack && (
-            <button
-              onClick={handleBack}
-              className="flex items-center justify-center p-1.5 rounded-full bg-black/50 hover:bg-black/70 transition-colors"
-            >
-              <ArrowLeft className="w-6 h-6 text-neutral-primary" />
-            </button>
-          )}
+          <button
+            onClick={handleBack}
+            className="flex items-center justify-center gap-2 p-1.5 rounded-full bg-black/50 hover:bg-black/70 transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5 text-neutral-primary" />
+            <span className="text-label-sm">Back to Feeds</span>
+          </button>
           <span className="sm:hidden block text-heading-sm font-medium text-neutral-primary">
             Feeds
           </span>
@@ -218,10 +214,11 @@ export const FeedDetailHeader = () => {
             {reportReasons.map((reason) => (
               <label
                 key={reason.id}
-                className={`flex items-center gap-3 p-4 rounded-lg border cursor-pointer transition-all duration-200 ${selectedReportReason === reason.id
-                  ? "border-primary bg-primary-muted-20 shadow-sm"
-                  : "border-neutral-900 hover:border-primary-muted bg-neutral-02"
-                  }`}
+                className={`flex items-center gap-3 p-4 rounded-lg border cursor-pointer transition-all duration-200 ${
+                  selectedReportReason === reason.id
+                    ? "border-primary bg-primary-muted-20 shadow-sm"
+                    : "border-neutral-900 hover:border-primary-muted bg-neutral-02"
+                }`}
               >
                 <input
                   type="radio"
