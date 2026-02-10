@@ -4,6 +4,8 @@ import type {
   GetSkillResponse,
   GetSkillsParams,
   GetSkillsResponse,
+  GetTrendingTagsParams,
+  GetTrendingTagsResponse,
   SkillDownloadResponse,
   SkillLikeResponse,
   UpdateSkillRequest,
@@ -36,3 +38,8 @@ export const downloadSkill = (skillId: string) =>
 
 export const deleteSkill = (skillId: number | string) =>
   apiWithToken.delete<void>(`/v1/academy/skills/${skillId}`);
+
+export const getTrendingTags = (params?: GetTrendingTagsParams) =>
+  apiWithToken.get<GetTrendingTagsResponse>("/v1/academy/tags/trending", {
+    params,
+  });
