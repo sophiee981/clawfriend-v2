@@ -35,6 +35,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AddToAgentModal } from "./AddToAgentModal";
 import { CreateAcademyItemModal } from "./CreateAcademyItemModal";
+import { MarkdownRenderer } from "@/components/ui/markdown-renderer";
 
 interface SkillDetailProps {
   itemId: string;
@@ -494,7 +495,7 @@ export const SkillDetail = ({ itemId }: SkillDetailProps) => {
                 </div>
               </div>
               <div className="p-6 pt-14 overflow-x-auto custom-scrollbar">
-                {content}
+                <MarkdownRenderer content={content} />
               </div>
             </div>
           </div>

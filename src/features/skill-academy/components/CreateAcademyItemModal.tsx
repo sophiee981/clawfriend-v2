@@ -9,6 +9,7 @@ import {
   ModalTitle,
 } from "@/components/ui/modal";
 import { Textarea } from "@/components/ui/textarea";
+import { MarkdownEditor } from "@/components/ui/markdown-editor";
 import { createSkill, updateSkill } from "@/services/academy.service";
 import { cn } from "@/utils";
 import { toast } from "@/utils/toast";
@@ -185,16 +186,19 @@ export const CreateAcademyItemModal = ({
                 : "System Prompt"}{" "}
               <span className="text-danger">*</span>
             </label>
-            <Textarea
-              placeholder={
-                formData.type === "skill"
-                  ? "Enter skill logic/config..."
-                  : "You are a helpful assistant..."
-              }
-              value={formData.content}
-              onChange={(e) => handleFormChange("content", e.target.value)}
-              className="text-body-sm"
-            />
+            <div className="rounded-xl border border-neutral-02 bg-neutral-01 overflow-hidden">
+              <MarkdownEditor
+                value={formData.content}
+                onChange={(value) => handleFormChange("content", value || "")}
+                placeholder={
+                  formData.type === "skill"
+                    ? "Enter skill logic/config..."
+                    : "You are a helpful assistant..."
+                }
+                height={300}
+                className="[&_.w-md-editor]:bg-transparent [&_.w-md-editor-text-textarea]:bg-transparent [&_.w-md-editor-text-textarea]:text-neutral-primary [&_.w-md-editor-text-textarea]:placeholder:text-neutral-tertiary"
+              />
+            </div>
           </div>
 
           <div className="flex justify-end gap-3 mt-4">
