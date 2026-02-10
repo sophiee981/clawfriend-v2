@@ -64,26 +64,71 @@ export const useScrollToTop = (
     useEffect(() => {
         // Get the scrollable container
         let scrollContainer: HTMLElement | null = null;
+        let handleScroll: (() => void) | null = null;
+        let intervalId: NodeJS.Timeout | null = null;
+        let rafId: number | null = null;
 
-        if (containerSelector) {
-            scrollContainer = document.querySelector(containerSelector);
-        } else if (scrollContainerRef.current) {
-            scrollContainer = scrollContainerRef.current;
-        }
+        const findAndSetup = () => {
+            if (containerSelector) {
+                scrollContainer = document.querySelector(containerSelector) as HTMLElement | null;
+            } else if (scrollContainerRef.current) {
+                scrollContainer = scrollContainerRef.current;
+            }
 
-        if (!scrollContainer) return;
+            if (!scrollContainer) {
+                return false;
+            }
 
-        internalContainerRef.current = scrollContainer;
+            internalContainerRef.current = scrollContainer;
 
-        const handleScroll = () => {
-            setShowScrollTop(scrollContainer!.scrollTop > threshold);
+            handleScroll = () => {
+                if (scrollContainer) {
+                    setShowScrollTop(scrollContainer.scrollTop > threshold);
+                }
+            };
+
+            // Initial check
+            handleScroll();
+
+            scrollContainer.addEventListener("scroll", handleScroll, { passive: true });
+            return true;
         };
 
-        // Initial check
-        handleScroll();
+        // Try to find immediately
+        if (!findAndSetup()) {
+            // If not found, try with requestAnimationFrame first
+            rafId = requestAnimationFrame(() => {
+                if (!findAndSetup()) {
+                    // If still not found, use interval to keep checking
+                    intervalId = setInterval(() => {
+                        if (findAndSetup() && intervalId) {
+                            clearInterval(intervalId);
+                            intervalId = null;
+                        }
+                    }, 100);
 
-        scrollContainer.addEventListener("scroll", handleScroll);
-        return () => scrollContainer?.removeEventListener("scroll", handleScroll);
+                    // Stop after 2 seconds
+                    setTimeout(() => {
+                        if (intervalId) {
+                            clearInterval(intervalId);
+                            intervalId = null;
+                        }
+                    }, 2000);
+                }
+            });
+        }
+
+        return () => {
+            if (rafId !== null) {
+                cancelAnimationFrame(rafId);
+            }
+            if (intervalId !== null) {
+                clearInterval(intervalId);
+            }
+            if (scrollContainer && handleScroll) {
+                scrollContainer.removeEventListener("scroll", handleScroll);
+            }
+        };
     }, [containerSelector, threshold]);
 
     const scrollToTop = useCallback(() => {
