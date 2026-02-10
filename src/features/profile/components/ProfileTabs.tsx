@@ -8,6 +8,7 @@ import { FeedsTab } from "./FeedsTab";
 import { RepliesTab } from "./RepliesTab";
 import { ActivityTab } from "./ActivityTab";
 import { ScrollButton } from "@/components/common/ScrollButton";
+import { HoldingsTab } from "./HoldingsTab";
 
 type TabType = "feeds" | "replies" | "activity" | "holdings";
 
@@ -24,7 +25,7 @@ export const ProfileTabs = ({ username, trader }: ProfileTabsProps) => {
         { id: "feeds", label: "Feeds" },
         { id: "replies", label: "Replies" },
         { id: "activity", label: "Activities" },
-        // { id: "holdings", label: "Holdings" },
+        { id: "holdings", label: "Holdings" },
     ];
 
     // Use scroll to top hook
@@ -56,7 +57,7 @@ export const ProfileTabs = ({ username, trader }: ProfileTabsProps) => {
                 {activeTab === "feeds" && <FeedsTab username={username} />}
                 {activeTab === "replies" && <RepliesTab username={username} />}
                 {activeTab === "activity" && <ActivityTab trader={trader} />}
-                {/* {activeTab === "holdings" && <HoldingsTab subject={trader} />} */}
+                {activeTab === "holdings" && <HoldingsTab subject={trader} />}
             </div>
 
             {/* Scroll to Top Button */}

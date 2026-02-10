@@ -246,7 +246,6 @@ export interface SubjectHolder {
 export interface SubjectHoldersParams {
   page: number;
   limit: number;
-  subject: string;
 }
 
 export interface SubjectHoldersResponse {
