@@ -14,6 +14,7 @@ export interface CreateSkillRequest {
   description: string;
   content: string;
   is_active: boolean;
+  type: "skill" | "prompt";
 }
 
 export interface CreateSkillResponse {

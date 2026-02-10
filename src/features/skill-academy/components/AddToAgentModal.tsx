@@ -10,27 +10,46 @@ import {
 } from "@/components/ui/modal";
 import { useState } from "react";
 import { AcademyItem } from "../data";
+import { toast } from "@/utils/toast";
+import { downloadSkill } from "@/services/academy.service";
 
 interface AddToAgentModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   item: AcademyItem | null;
+  onDownloadSuccess?: (itemId: string) => void;
 }
 
 export const AddToAgentModal = ({
   open,
   onOpenChange,
   item,
+  onDownloadSuccess,
 }: AddToAgentModalProps) => {
   const [copied, setCopied] = useState(false);
 
   if (!item) return null;
 
-  const handleCopy = () => {
-    const contentToCopy = item.content;
-    navigator.clipboard.writeText(contentToCopy);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopy = async () => {
+    try {
+      const contentToCopy = item.content;
+      await navigator.clipboard.writeText(contentToCopy);
+      setCopied(true);
+      toast.success("Content copied to clipboard!");
+      setTimeout(() => setCopied(false), 2000);
+
+      // Call download API
+      try {
+        await downloadSkill(item.id);
+        // Update download count on client
+        onDownloadSuccess?.(item.id);
+      } catch (error) {
+        // Silently fail - don't show error for download
+        console.error("Failed to track download:", error);
+      }
+    } catch (error) {
+      toast.error("Failed to copy content");
+    }
   };
 
   const getPreviewContent = () => {
