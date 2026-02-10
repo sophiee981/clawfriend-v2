@@ -200,7 +200,7 @@ export const Explore = ({
   return (
     <div className="flex h-full overflow-hidden">
       <div
-        className={`flex h-full flex-col flex-1 ${!isSearchPage ? "max-sm:hidden" : "w-full"}`}
+        className={`flex h-full flex-col mt-4 flex-1 ${!isSearchPage ? "max-sm:hidden" : "w-full"}`}
       >
         <SearchInput
           value={searchQuery}

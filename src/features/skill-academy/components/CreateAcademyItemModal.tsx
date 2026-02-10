@@ -30,6 +30,8 @@ export const CreateAcademyItemModal = ({
   editItem,
   onSuccess,
 }: CreateAcademyItemModalProps) => {
+  const isEditMode = !!editItem;
+  
   const [formData, setFormData] = useState({
     type: defaultType,
     title: "",
@@ -104,32 +106,34 @@ export const CreateAcademyItemModal = ({
         </ModalHeader>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 mt-4">
-          <div className="flex bg-neutral-02 p-1 rounded-lg w-fit">
-            <button
-              type="button"
-              onClick={() => handleFormChange("type", "skill")}
-              className={cn(
-                "px-4 py-1 rounded-md text-sm font-medium transition-colors",
-                formData.type === "skill"
-                  ? "bg-neutral-01"
-                  : "text-neutral-tertiary hover:text-neutral-primary"
-              )}
-            >
-              Skill
-            </button>
-            <button
-              type="button"
-              onClick={() => handleFormChange("type", "prompt")}
-              className={cn(
-                "px-4 py-1 rounded-md text-sm font-medium transition-colors",
-                formData.type === "prompt"
-                  ? "bg-neutral-01"
-                  : "text-neutral-tertiary hover:text-neutral-primary"
-              )}
-            >
-              Prompt
-            </button>
-          </div>
+          {!isEditMode && (
+            <div className="flex bg-neutral-02 p-1 rounded-lg w-fit">
+              <button
+                type="button"
+                onClick={() => handleFormChange("type", "skill")}
+                className={cn(
+                  "px-4 py-1 rounded-md text-sm font-medium transition-colors",
+                  formData.type === "skill"
+                    ? "bg-neutral-01"
+                    : "text-neutral-tertiary hover:text-neutral-primary"
+                )}
+              >
+                Skill
+              </button>
+              <button
+                type="button"
+                onClick={() => handleFormChange("type", "prompt")}
+                className={cn(
+                  "px-4 py-1 rounded-md text-sm font-medium transition-colors",
+                  formData.type === "prompt"
+                    ? "bg-neutral-01"
+                    : "text-neutral-tertiary hover:text-neutral-primary"
+                )}
+              >
+                Prompt
+              </button>
+            </div>
+          )}
 
           <div className="flex flex-col gap-2">
             <label className="text-sm font-semibold text-neutral-primary">

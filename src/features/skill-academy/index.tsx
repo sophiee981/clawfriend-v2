@@ -1,11 +1,11 @@
 "use client";
 
-import { Tabs } from "@/components/ui/tabs";
 import { getSkills } from "@/services";
 import type { Skill } from "@/interfaces";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { cn } from "@/utils";
 import { AddToAgentModal } from "./components/AddToAgentModal";
 import { CreateAcademyItemModal } from "./components/CreateAcademyItemModal";
 import { DeleteConfirmModal } from "./components/DeleteConfirmModal";
@@ -29,13 +29,13 @@ const mapSkillToAcademyItem = (skill: Skill, type: AcademyItemType): AcademyItem
     description: skill.description,
     content: skill.content,
     author: {
-      name: skill.creator.display_name || skill.creator.owner_x_name || "Anonymous",
-      avatar: skill.creator.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=Anonymous",
-      handle: skill.creator.owner_x_handle || skill.creator.x_username || "@anonymous",
-      username: skill.creator.username,
+      name: skill.creator?.display_name || skill.creator?.owner_x_name || "Anonymous",
+      avatar: skill.creator?.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=Anonymous",
+      handle: skill.creator?.owner_x_handle || skill.creator?.x_username || "@anonymous",
+      username: skill.creator?.username,
     },
     type: (skill.type as AcademyItemType) || type,
-    tags: skill.tags.map(tag => tag.name),
+    tags: skill.tags?.map(tag => tag.name) || [],
     likes: skill.like_count,
     uses: skill.download_count,
     is_liked: skill.is_liked,
@@ -132,7 +132,7 @@ const SkillAcademyContent = () => {
 
   // Map response data to AcademyItem format
   const [items, setItems] = useState<AcademyItem[]>([]);
-  
+
   useEffect(() => {
     if (response?.data?.data && Array.isArray(response.data.data)) {
       setItems(response.data.data.map((item) => mapSkillToAcademyItem(item, activeTab)));
@@ -185,7 +185,7 @@ const SkillAcademyContent = () => {
     // Capture the ID immediately to prevent it from being lost
     const itemIdToDelete = deleteItemId;
     console.log("confirmDelete called with deleteItemId:", deleteItemId, "itemIdToDelete:", itemIdToDelete);
-    
+
     if (!itemIdToDelete) {
       console.error("No item ID to delete");
       setDeleteItemId(null);
@@ -235,27 +235,56 @@ const SkillAcademyContent = () => {
   return (
     <div className="flex h-full flex-col items-center overflow-y-auto pb-4 relative">
       <SkillAcademyHeader onCreateClick={() => setIsCreateModalOpen(true)} />
-      <div className="flex items-center gap-4 sm:gap-6 w-full py-2">
-        <SearchInput
-          value={searchInput}
-          onChange={handleSearchInputChange}
-          onSearch={handleSearchInputChange}
-          placeholder="Search by skill or prompt"
-          className="flex-1 !border-none"
-        />
-        <div className="w-[2px] h-full bg-neutral-03"></div>
-        <Tabs
-          tabs={[
-            { id: "skill", label: "Skills" },
-            { id: "prompt", label: "Prompts" },
-          ]}
-          activeTab={activeTab}
-          onTabChange={handleTabChange}
-          maxWidth=""
-          className="px-4 w-[200px]"
-        />
+      {/* Search and Tabs Section - Responsive */}
+      <div className="w-full px-4 md:px-6 py-3 md:py-4 border-b border-neutral-01">
+        <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4 w-full">
+          {/* Search Input */}
+          <div className="flex-1 min-w-0">
+            <SearchInput
+              value={searchInput}
+              onChange={handleSearchInputChange}
+              onSearch={handleSearchInputChange}
+              placeholder="Search by skill or prompt"
+              className="!border-none !px-0 !py-0"
+              hideBackButton
+              inputClassName="h-9 placeholder:text-[14px]"
+            />
+          </div>
+
+          {/* Divider - Hidden on mobile */}
+          <div className="hidden md:block w-[2px] h-10 bg-neutral-03 shrink-0"></div>
+
+          {/* Switch */}
+          <div className="md:w-auto md:min-w-[200px] shrink-0 bg-[#1b1b1b] rounded-[8px]">
+            <div className="rounded-[8px] flex gap-[2px] ">
+              <button
+                onClick={() => handleTabChange("skill")}
+                className={cn(
+                  "flex-1 px-4 py-2 text-sm font-medium rounded-[8px] transition-colors",
+                  activeTab === "skill"
+                    ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
+                    : "bg-[#1b1b1b] text-[#717171]"
+                )}
+              >
+                Skills
+              </button>
+              <button
+                onClick={() => handleTabChange("prompt")}
+                className={cn(
+                  "flex-1 px-4 py-2 text-sm font-medium rounded-[8px] transition-colors",
+                  activeTab === "prompt"
+                    ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
+                    : "bg-[#1b1b1b] text-[#717171]"
+                )}
+              >
+                Prompts
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="flex flex-1 flex-col gap-6 pt-6 w-full px-4">
+      {/* Content Grid - Responsive padding */}
+      <div className="flex flex-1 flex-col gap-4 md:gap-6 pt-4 md:pt-6 w-full px-4 md:px-6">
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {Array.from({ length: 3 }).map((_, index) => (
