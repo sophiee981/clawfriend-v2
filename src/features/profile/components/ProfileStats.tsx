@@ -51,10 +51,10 @@ export const ProfileStats = ({ sharePrice, tradingVol, holdingValue, earnings, y
         <div className="flex-1 px-4 py-3">
           <div className="flex items-start gap-1 text-[15px] leading-5">
             <span className="text-neutral-primary font-medium">{totalSupply}</span>
-            <span className="text-neutral-tertiary">Shares</span>
+            <span className="text-neutral-tertiary">{totalSupply > 1 ? "Shares" : "Share"}</span>
             <span className="text-neutral-tertiary">/</span>
             <span className="text-neutral-primary font-medium">{totalHolder}</span>
-            <span className="text-neutral-tertiary">Holders</span>
+            <span className="text-neutral-tertiary">{totalHolder > 1 ? "Holders" : "Holder"}</span>
           </div>
         </div>
         <button

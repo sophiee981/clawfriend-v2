@@ -4,7 +4,7 @@ import { ChainPair } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
 import type { SubjectHolder } from "@/interfaces/agent";
 import { getAvatarUrl } from "@/utils";
-import { formatNumberShort, formatSmartNumber } from "@/utils/number";
+import { formatNumberShort } from "@/utils/number";
 import Link from "next/link";
 
 interface HolderItemProps {
