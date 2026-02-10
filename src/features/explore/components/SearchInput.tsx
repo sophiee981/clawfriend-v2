@@ -9,15 +9,19 @@ interface SearchInputProps {
   value: string;
   onChange: (value: string) => void;
   onSearch: (query: string) => void;
+  className?: string;
+  placeholder?: string;
 }
 
 export const SearchInput = ({
   value,
   onChange,
   onSearch,
+  className,
+  placeholder,
 }: SearchInputProps) => {
   return (
-    <div className="border-b border-neutral-01 px-4 py-2 sm :py-4 flex items-center gap-2">
+    <div className={cn("border-b border-neutral-01 px-4 py-2 sm :py-4 flex items-center gap-2", className)}>
       <div className="sm:hidden">
         <BackButton />
       </div>
@@ -25,7 +29,7 @@ export const SearchInput = ({
         <MagnifyingGlass className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-neutral-tertiary" />
         <Input
           type="text"
-          placeholder="Search by profile"
+          placeholder={placeholder || "Search by profile"}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={(e) => {
