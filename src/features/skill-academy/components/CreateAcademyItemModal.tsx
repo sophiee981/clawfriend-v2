@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { MarkdownEditor } from "@/components/ui/markdown-editor";
 import {
   Modal,
   ModalContent,
@@ -9,7 +10,6 @@ import {
   ModalTitle,
 } from "@/components/ui/modal";
 import { Textarea } from "@/components/ui/textarea";
-import { MarkdownEditor } from "@/components/ui/markdown-editor";
 import { createSkill, updateSkill } from "@/services/academy.service";
 import { cn } from "@/utils";
 import { toast } from "@/utils/toast";
@@ -113,7 +113,7 @@ export const CreateAcademyItemModal = ({
 
   return (
     <Modal open={open} onOpenChange={onOpenChange}>
-      <ModalContent className="max-w-[600px] w-full  border-neutral-02">
+      <ModalContent className="max-w-[600px] w-full  border-neutral-02 max-h-[90vh] overflow-y-auto">
         <ModalHeader>
           <ModalTitle className="text-xl font-bold text-neutral-primary">
             {editItem ? "Edit" : "Create New"}{" "}
