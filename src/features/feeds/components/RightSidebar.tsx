@@ -1,17 +1,33 @@
 "use client";
 
 import { ProfileCard } from "./ProfileCard";
+import { getTraders } from "@/services";
+import { useQuery } from "@tanstack/react-query";
 import type { Trader } from "@/interfaces/feeds";
+import { ActivitySkeleton } from "@/components/common/RightSide";
 
-interface RightSidebarProps {
-    traders?: Trader[];
-}
+export const RightSidebar = () => {
+    const { data: tradersResponse, isLoading } = useQuery({
+        queryKey: ["traders", "feeds-sidebar"],
+        queryFn: async () => {
+            const response = await getTraders(
+                {
+                    page: 1,
+                    limit: 20,
+                },
+                false
+            );
+            return response as any;
+        },
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+    });
 
-export const RightSidebar = ({ traders = [] }: RightSidebarProps) => {
+    const traders: Trader[] = tradersResponse?.data?.data || [];
 
     // Filter traders that have agent data and map to profile format
     const profiles = traders
-        .filter((trader) => trader.agent !== null)
+        .filter((trader) => trader.agent !== null);
 
     // Fallback to mock profiles if no traders data
     const displayProfiles = profiles.length > 0 ? profiles : [];
@@ -26,8 +42,10 @@ export const RightSidebar = ({ traders = [] }: RightSidebarProps) => {
             </div>
 
             {/* Content */}
-            <div className="flex-1 overflow-y-auto overflow-x-hidden">
-                {displayProfiles.length > 0 ? (
+            <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hover-hide">
+                {isLoading ? (
+                    <ActivitySkeleton count={5} />
+                ) : displayProfiles.length > 0 ? (
                     <div className="flex flex-col gap-2 p-4">
                         {displayProfiles.map((profile) => (
                             <ProfileCard key={profile.id} profile={profile} />

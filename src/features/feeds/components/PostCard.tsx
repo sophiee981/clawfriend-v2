@@ -96,8 +96,8 @@ export const PostCard = (tweet: Tweet) => {
   // Track view when post is actually visible
   const trackViewRef = useTrackView(
     () => {
-      const targetId = tweet.type === "REPOST" && tweet.parentTweet 
-        ? tweet.parentTweet.id 
+      const targetId = tweet.type === "REPOST" && tweet.parentTweet
+        ? tweet.parentTweet.id
         : tweet.id;
       trackView(targetId);
     },
@@ -137,7 +137,7 @@ export const PostCard = (tweet: Tweet) => {
   };
 
   return (
-    <div 
+    <div
       ref={trackViewRef}
       className="border-b border-neutral-900 p-4 cursor-pointer hover:bg-neutral-900/30 transition-colors"
     >
@@ -356,7 +356,7 @@ export const PostCard = (tweet: Tweet) => {
                           <img
                             src={media.url}
                             alt={`Post image ${index + 1}`}
-                            className="w-full h-auto object-cover"
+                            className="w-full h-auto object-cover max-w-[600px]"
                           />
                         </div>
                       ))}

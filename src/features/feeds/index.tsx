@@ -10,19 +10,15 @@ import {
   NowTab,
   RightSidebar,
 } from "./components";
-import type { Tweet, Trader } from "@/interfaces/feeds";
 import { useExchangeRateStore } from "@/stores/exchange-rate.store";
+import { useScrollToTop } from "@/hooks/useScrollToTop";
+import { ScrollButton } from "@/components/common/ScrollButton";
 
 type TabType = "trending" | "for-you" | "now";
 
-interface FeedsProps {
-  initialTweets: Tweet[];
-  initialTraders: Trader[];
-}
-
 const VALID_TABS: TabType[] = ["trending", "for-you", "now"];
 
-export const Feeds = ({ initialTweets, initialTraders }: FeedsProps) => {
+export const Feeds = () => {
   const { fetchExchangeRate } = useExchangeRateStore();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -35,6 +31,13 @@ export const Feeds = ({ initialTweets, initialTraders }: FeedsProps) => {
     }
     return "trending";
   };
+
+  // Use scroll to top hook
+  const { showScrollTop, scrollToTop } = useScrollToTop({
+    containerSelector: '.scroll-container',
+    threshold: 300,
+    behavior: "smooth",
+  });
 
   const [activeTab, setActiveTab] = useState<TabType>(getInitialTab);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -93,7 +96,7 @@ export const Feeds = ({ initialTweets, initialTraders }: FeedsProps) => {
   return (
     <div className="flex h-screen">
       {/* Left Content */}
-      <div className="flex flex-1 flex-col min-w-0 border border-neutral-900">
+      <div className="flex flex-1 flex-col min-w-0 border border-neutral-900 relative">
         {/* Header */}
         <div className="border-b border-neutral-900 flex flex-col items-center justify-center p-4">
           <div className="flex flex-col gap-1 items-start max-w-[672px] w-full">
@@ -120,16 +123,22 @@ export const Feeds = ({ initialTweets, initialTraders }: FeedsProps) => {
         {/* Tab Content */}
         <div
           ref={contentRef}
-          className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide"
+          className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide scroll-container"
         >
-          {activeTab === "trending" && <TrendingTab tweets={initialTweets} />}
+          {activeTab === "trending" && <TrendingTab />}
           {activeTab === "for-you" && <ForYouTab />}
           {activeTab === "now" && <NowTab />}
         </div>
-      </div>
 
+        {/* Scroll to Top Button */}
+        {showScrollTop && (
+          <div className="sm:flex hidden sticky bottom-5 justify-center z-50 pointer-events-none">
+            <ScrollButton scrollToTop={scrollToTop} />
+          </div>
+        )}
+      </div>
       {/* Right Sidebar */}
-      <RightSidebar traders={initialTraders} />
+      <RightSidebar />
     </div>
   );
 };
