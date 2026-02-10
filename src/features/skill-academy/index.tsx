@@ -87,6 +87,7 @@ const SkillAcademyContent = () => {
   const [searchInput, setSearchInput] = useState<string>(getInitialSearch);
   const [searchQuery, setSearchQuery] = useState<string>(getInitialSearch);
   const [selectedTags, setSelectedTags] = useState<string[]>(getInitialSelectedTags);
+  const [showAllTags, setShowAllTags] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const queryClient = useQueryClient();
 
@@ -209,12 +210,17 @@ const SkillAcademyContent = () => {
     },
   });
 
-  // Extract trending tags (limit to 10)
+  // Extract trending tags (limit to 20)
   const trendingTags = useMemo((): TrendingTag[] => {
     const responseData = trendingTagsData as any;
     if (!responseData?.data?.tags) return [];
     return responseData.data.tags.slice(0, 20);
   }, [trendingTagsData]);
+
+  // Display tags based on showAllTags state (10 initially, 20 when expanded)
+  const displayedTags = useMemo(() => {
+    return showAllTags ? trendingTags : trendingTags.slice(0, 10);
+  }, [trendingTags, showAllTags]);
 
   // Extract tag names for filtering
   const allTags = useMemo(() => {
@@ -446,8 +452,8 @@ const SkillAcademyContent = () => {
                 </button>
               )}
             </div>
-            <div className="flex flex-wrap gap-2 overflow-x-auto pb-1 scrollbar-hide">
-              {trendingTags.map((tag) => {
+            <div className="flex flex-wrap gap-2 items-center overflow-x-auto pb-1 scrollbar-hide items-center">
+              {displayedTags.map((tag) => {
                 const isSelected = selectedTags.includes(tag.name);
                 return (
                   <button
@@ -480,6 +486,14 @@ const SkillAcademyContent = () => {
                   </button>
                 );
               })}
+              {trendingTags.length > 10 && (
+                <button
+                  onClick={() => setShowAllTags(!showAllTags)}
+                  className="text-body-xs text-[#fe5631] hover:text-[#ff6d47] transition-colors whitespace-nowrap shrink-0"
+                >
+                  {showAllTags ? "Show less" : `Show more (${trendingTags.length - 10})`}
+                </button>
+              )}
             </div>
           </div>
         </div>
