@@ -258,17 +258,6 @@ const SkillAcademyContent = () => {
           <div className="md:w-auto md:min-w-[200px] shrink-0 bg-[#1b1b1b] rounded-[8px]">
             <div className="rounded-[8px] flex gap-[2px] ">
               <button
-                onClick={() => handleTabChange("skill")}
-                className={cn(
-                  "flex-1 px-4 py-2 text-sm font-medium rounded-[8px] transition-colors",
-                  activeTab === "skill"
-                    ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
-                    : "bg-[#1b1b1b] text-[#717171]"
-                )}
-              >
-                Skills
-              </button>
-              <button
                 onClick={() => handleTabChange("prompt")}
                 className={cn(
                   "flex-1 px-4 py-2 text-sm font-medium rounded-[8px] transition-colors",
@@ -279,6 +268,18 @@ const SkillAcademyContent = () => {
               >
                 Prompts
               </button>
+              <button
+                onClick={() => handleTabChange("skill")}
+                className={cn(
+                  "flex-1 px-4 py-2 text-sm font-medium rounded-[8px] transition-colors",
+                  activeTab === "skill"
+                    ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
+                    : "bg-[#1b1b1b] text-[#717171]"
+                )}
+              >
+                Skills
+              </button>
+             
             </div>
           </div>
         </div>

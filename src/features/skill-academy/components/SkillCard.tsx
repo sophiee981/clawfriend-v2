@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { likeSkill } from "@/services";
 import { toast } from "@/utils/toast";
+import { cn } from "@/utils";
 import { AcademyItem } from "../data";
 import { useAuthStore } from "@/stores/auth.store";
 
@@ -158,22 +159,26 @@ export const SkillCard = ({ item, onAddToAgent, onEdit, onDelete }: SkillCardPro
       <div className="flex items-center justify-between pt-2 border-t border-neutral-02 mt-auto">
         <div className="flex gap-4">
           <button
-            className={`flex items-center gap-1.5 transition-colors group ${isLiked
-                ? "text-brand-primary"
-                : "text-neutral-tertiary hover:text-brand-primary"
-              } ${isLiking ? "opacity-50 cursor-not-allowed" : ""}`}
+            className={cn(
+              "flex items-center gap-1.5 transition-colors group",
+              isLiking && "opacity-50 cursor-not-allowed"
+            )}
             onClick={handleLike}
             disabled={isLiking}
           >
             <Heart
-              className={`h-4 w-4 ${isLiked ? "fill-current" : "group-hover:fill-current"
-                }`}
+              className={cn(
+                "h-4 w-4 transition-colors",
+                isLiked
+                  ? "text-[#fe5631] fill-[#fe5631]"
+                  : "text-neutral-tertiary group-hover:text-[#fe5631] group-hover:fill-[#fe5631]"
+              )}
             />
-            <span className="text-xs font-medium">{likes}</span>
+            <span className="text-xs font-medium text-neutral-tertiary">{likes}</span>
           </button>
 
           <button
-            className="flex items-center gap-1.5 text-neutral-tertiary hover:text-brand-primary transition-colors"
+            className="flex items-center gap-1.5 text-neutral-tertiary hover:text-neutral-secondary transition-colors"
             onClick={(e) => e.stopPropagation()}
           >
             <Download className="h-4 w-4" />
@@ -186,7 +191,7 @@ export const SkillCard = ({ item, onAddToAgent, onEdit, onDelete }: SkillCardPro
             size="sm"
             variant="secondary"
             buttonType="ghost"
-            className="h-8 w-8 p-0 text-neutral-tertiary hover:text-neutral-primary"
+            className="h-8 w-8 p-0 text-neutral-tertiary hover:text-[#fe5631]"
             onClick={async (e) => {
               e.stopPropagation();
               try {
@@ -202,7 +207,7 @@ export const SkillCard = ({ item, onAddToAgent, onEdit, onDelete }: SkillCardPro
           </Button>
           <Button
             size="sm"
-            className="h-8 text-xs bg-neutral-primary text-neutral-01 hover:bg-neutral-secondary"
+            className="h-8 text-xs bg-[#fe5631] text-white hover:bg-[#ff6d47]"
             onClick={(e) => {
               e.stopPropagation();
               onAddToAgent();
