@@ -163,9 +163,7 @@ export const CreateAcademyItemModal = ({
 
           <div className="flex flex-col gap-2">
             <label className="text-sm font-semibold text-neutral-primary">
-              {formData.type === "skill"
-                ? "Skill Configuration"
-                : "System Prompt"}{" "}
+              {formData.type === "skill" ? "Skill" : "Prompt"}{" "}
               <span className="text-danger">*</span>
             </label>
             <div className="rounded-xl border border-neutral-02 bg-neutral-01 overflow-hidden">
@@ -194,9 +192,7 @@ export const CreateAcademyItemModal = ({
             </Button>
             <Button
               type="submit"
-              disabled={
-                !formData.title || !formData.content
-              }
+              disabled={!formData.title || !formData.content}
             >
               {editItem ? "Update" : "Publish"}{" "}
               {formData.type === "skill" ? "Skill" : "Prompt"}

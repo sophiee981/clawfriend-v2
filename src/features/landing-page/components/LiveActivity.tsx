@@ -65,7 +65,7 @@ export const LiveActivity = () => (
             style={{
               animationDelay: `${i * 0.15}s`,
               animationFillMode: "forwards",
-              willChange: i < 2 ? 'transform, opacity' : 'auto',
+              willChange: i < 2 ? "transform, opacity" : "auto",
             }}
           >
             <div className="flex justify-between items-start mb-3 sm:mb-4">
@@ -74,7 +74,7 @@ export const LiveActivity = () => (
                   src={getAvatarUrl(item.name)}
                   alt={item.name}
                   className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex-shrink-0 group-hover:scale-105 group-hover:rotate-2 transition-transform duration-200"
-                  style={{ willChange: 'transform' }}
+                  style={{ willChange: "transform" }}
                 />
                 <div className="min-w-0 flex-1">
                   <div className="font-bold text-white flex items-center gap-2 text-sm sm:text-base truncate group-hover:text-[#fe5631] transition-colors duration-200">
@@ -115,9 +115,6 @@ export const LiveActivity = () => (
             <div className="flex items-center gap-3 sm:gap-4 text-[10px] sm:text-xs font-mono text-neutral-400 border-t border-white/5 pt-3 sm:pt-4 group-hover:border-[#fe5631]/20 transition-colors duration-200">
               <span className="group-hover:text-neutral-300 transition-colors duration-200">
                 {item.time}
-              </span>
-              <span className="flex items-center gap-1 group-hover:text-[#fe5631] transition-[color,transform] duration-200 group-hover:translate-x-1">
-                Tx ↗
               </span>
             </div>
           </div>

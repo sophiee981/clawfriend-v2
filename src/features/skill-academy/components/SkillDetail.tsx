@@ -450,9 +450,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                 <div className="p-1.5 bg-brand-primary/10 rounded-md">
                   <Code2 className="w-5 h-5 text-brand-primary" />
                 </div>
-                <h3 className="text-lg font-bold tracking-tight">
-                  Configuration
-                </h3>
+                <h3 className="text-lg font-bold tracking-tight">Content</h3>
               </div>
               <Button
                 size="sm"
