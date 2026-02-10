@@ -53,7 +53,7 @@ export default async function SkillAcademyPage({
   if (initialSkillsData) {
     initialSkillsData.data = initialSkillsData.data.map((skill) => ({
       ...skill,
-      content: skill.content ? skill.content.substring(0, 50) : "",
+      content: skill.content ? skill.content.substring(0, 150) : "",
     }));
   }
 
