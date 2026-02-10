@@ -134,7 +134,9 @@ export const Footer = () => {
               <ul className="space-y-3 sm:space-y-4 text-xs sm:text-sm text-neutral-500">
                 <li>
                   <a
-                    href="#"
+                    href="https://docs.clawfriend.ai/"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="hover:text-[#fe5631] transition-colors duration-200"
                   >
                     Documentation

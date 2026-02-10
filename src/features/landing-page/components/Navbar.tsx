@@ -102,16 +102,13 @@ export const Navbar = () => {
               </button>
             ))}
             <a
-              href="#"
-              className={`text-xs xl:text-sm font-bold transition-all relative group whitespace-nowrap ${isSignInPage
-                  ? "text-neutral-600 cursor-not-allowed opacity-50"
-                  : "text-neutral-400 hover:text-[#fe5631]"
-                }`}
+              href="https://docs.clawfriend.ai/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs xl:text-sm font-bold transition-all relative group whitespace-nowrap text-neutral-400 hover:text-[#fe5631]"
             >
               Doc
-              {!isSignInPage && (
-                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#fe5631] transition-all group-hover:w-full shadow-[0_0_10px_#fe5631]" />
-              )}
+              <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#fe5631] transition-all group-hover:w-full shadow-[0_0_10px_#fe5631]" />
             </a>
           </div>
 
@@ -200,16 +197,14 @@ export const Navbar = () => {
             </button>
           ))}
           <a
-            href="#"
-            className={`text-left text-lg font-bold transition-all py-3 px-4 rounded-lg relative group ${isSignInPage
-                ? "text-neutral-600 cursor-not-allowed opacity-50"
-                : "text-neutral-400 hover:text-[#fe5631] hover:bg-white/5"
-              }`}
+            href="https://docs.clawfriend.ai/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-left text-lg font-bold transition-all py-3 px-4 rounded-lg relative group text-neutral-400 hover:text-[#fe5631] hover:bg-white/5"
+            onClick={() => setIsMobileMenuOpen(false)}
           >
             Doc
-            {!isSignInPage && (
-              <span className="absolute bottom-2 left-4 w-0 h-[2px] bg-[#fe5631] transition-all group-hover:w-[calc(100%-2rem)] shadow-[0_0_10px_#fe5631]" />
-            )}
+            <span className="absolute bottom-2 left-4 w-0 h-[2px] bg-[#fe5631] transition-all group-hover:w-[calc(100%-2rem)] shadow-[0_0_10px_#fe5631]" />
           </a>
         </div>
 
