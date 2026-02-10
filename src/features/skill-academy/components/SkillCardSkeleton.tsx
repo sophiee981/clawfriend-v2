@@ -33,7 +33,7 @@ export const SkillCardSkeleton = () => {
         <Skeleton customWidth="70px" customHeight="20px" />
       </div>
 
-      {/* Footer: Likes, Downloads, Actions */}
+      {/* Footer: Stars, Downloads, Actions */}
       <div className="flex items-center justify-between pt-2 border-t border-neutral-02 mt-auto">
         <div className="flex gap-4">
           <Skeleton customWidth="50px" customHeight="16px" />
