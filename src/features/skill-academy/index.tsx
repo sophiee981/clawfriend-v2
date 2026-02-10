@@ -234,6 +234,7 @@ const SkillAcademyContent = ({
   const {
     data,
     isLoading,
+    isFetching,
     error,
     fetchNextPage,
     hasNextPage,
@@ -301,7 +302,8 @@ const SkillAcademyContent = ({
           entries[0].isIntersecting &&
           hasNextPage &&
           !isFetchingNextPage &&
-          !isLoading
+          !isLoading &&
+          !isFetching
         ) {
           fetchNextPage();
         }
@@ -666,7 +668,7 @@ const SkillAcademyContent = ({
 
       {/* Content Grid - Responsive padding */}
       <div className="flex flex-1 flex-col gap-4 md:gap-6 pt-4 md:pt-6 w-full px-4 md:px-6">
-        {isLoading ? (
+        {isLoading || isFetching ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {Array.from({ length: 3 }).map((_, index) => (
               <SkillCardSkeleton key={`skeleton-${index}`} />
