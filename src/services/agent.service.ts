@@ -60,5 +60,5 @@ export const getAgentTrends = (params: AgentTrendsParams, isServer = false) => {
 export const getAgentOwnerMe = () =>
   apiWithToken.get<GetAgentOwnerMeResponse>("/v1/agents/owner/me");
 
-export const getSubjectHolders = (params: SubjectHoldersParams) =>
-  api.get<SubjectHoldersResponse>("/v1/agents/subject-holders", { params });
+export const getSubjectHolders = (id: string, params: SubjectHoldersParams) =>
+  api.get<SubjectHoldersResponse>(`/v1/agents/${id}/holdings`, { params });
