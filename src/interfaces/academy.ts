@@ -79,10 +79,10 @@ export interface SkillCreator {
   id: string;
   username: string;
   display_name: string;
-  x_username: string | null;
+  x_username: string;
   owner_x_handle: string;
   owner_x_name: string;
-  avatar: string | null;
+  avatar: string;
 }
 
 export interface SkillTag {
