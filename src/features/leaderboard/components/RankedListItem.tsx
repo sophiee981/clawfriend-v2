@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn, getAvatarUrl } from "@/utils";
 import Link from "next/link";
 import { Category, LeaderboardAgent } from "./types";
+import { formatSmartNumber } from "@/utils/number";
 
 interface RankedListItemProps {
   agent: LeaderboardAgent;
@@ -62,10 +63,7 @@ export const RankedListItem = ({ agent, category }: RankedListItemProps) => {
       <div className="flex shrink-0 flex-col items-end gap-0.5">
         <div className="flex items-center gap-1">
           <p className="text-label-md text-primary">
-            {agent.shares.toLocaleString("en-US", {
-              minimumFractionDigits: 1,
-              maximumFractionDigits: 1,
-            })}
+            {formatSmartNumber(agent.shares)}
           </p>
           <ChainPair className="h-[12px] w-[12px]" />
         </div>
