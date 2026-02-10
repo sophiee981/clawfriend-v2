@@ -6,21 +6,25 @@ import type { TabItem } from "@/components/ui/tabs";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { FeedsTab } from "./FeedsTab";
 import { RepliesTab } from "./RepliesTab";
+import { ActivityTab } from "./ActivityTab";
 import { ScrollButton } from "@/components/common/ScrollButton";
 
-type TabType = "feeds" | "replies";
+type TabType = "feeds" | "replies" | "activity" | "holdings";
 
 interface ProfileTabsProps {
     username: string;
+    trader: string;
 }
 
-export const ProfileTabs = ({ username }: ProfileTabsProps) => {
+export const ProfileTabs = ({ username, trader }: ProfileTabsProps) => {
     const [activeTab, setActiveTab] = useState<TabType>("feeds");
     const contentRef = useRef<HTMLDivElement>(null);
 
     const tabs: TabItem<TabType>[] = [
         { id: "feeds", label: "Feeds" },
         { id: "replies", label: "Replies" },
+        { id: "activity", label: "Activities" },
+        // { id: "holdings", label: "Holdings" },
     ];
 
     // Use scroll to top hook
@@ -51,6 +55,8 @@ export const ProfileTabs = ({ username }: ProfileTabsProps) => {
             <div ref={contentRef}>
                 {activeTab === "feeds" && <FeedsTab username={username} />}
                 {activeTab === "replies" && <RepliesTab username={username} />}
+                {activeTab === "activity" && <ActivityTab trader={trader} />}
+                {/* {activeTab === "holdings" && <HoldingsTab subject={trader} />} */}
             </div>
 
             {/* Scroll to Top Button */}

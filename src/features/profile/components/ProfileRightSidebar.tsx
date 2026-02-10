@@ -3,10 +3,10 @@
 import { ActivitiesTab } from "@/components/common/RightSide/ActivitiesTab";
 
 interface ProfileRightSidebarProps {
-  username: string;
+  subject: string;
 }
 
-export const ProfileRightSidebar = ({ username }: ProfileRightSidebarProps) => {
+export const ProfileRightSidebar = ({ subject }: ProfileRightSidebarProps) => {
   return (
     <aside className="hidden lg:flex w-[385px] flex-col border-r border-neutral-900 bg-neutral-01">
       {/* Header */}
@@ -18,7 +18,7 @@ export const ProfileRightSidebar = ({ username }: ProfileRightSidebarProps) => {
 
       {/* Activities List */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden">
-        <ActivitiesTab username={username} />
+        <ActivitiesTab subject={subject} />
       </div>
     </aside>
   );

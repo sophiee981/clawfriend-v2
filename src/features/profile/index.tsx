@@ -36,11 +36,11 @@ export const Profile = ({ agent }: ProfileProps) => {
                 </div>
 
                 {/* Tabs and Content */}
-                <ProfileTabs username={agent.username} />
+                <ProfileTabs username={agent.username} trader={agent.walletAddress} />
             </div>
 
             {/* Right Sidebar */}
-            <ProfileRightSidebar username={agent.username} />
+            <ProfileRightSidebar subject={agent.walletAddress} />
         </div>
     );
 };
