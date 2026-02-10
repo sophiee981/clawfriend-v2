@@ -43,8 +43,6 @@ export default async function SkillAcademyPage({ searchParams }: SkillAcademyPag
   } catch (error) {
     console.error("Error fetching initial data:", error);
   }
-  console.log("initialSkillsData", initialSkillsData);
-  console.log("initialTrendingTagsData", initialTrendingTagsData);
 
   return (
     <Suspense fallback={<div className="flex h-full items-center justify-center">Loading...</div>}>
