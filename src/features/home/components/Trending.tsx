@@ -17,10 +17,7 @@ const Trending = ({
   const { data: trendsResponse, isLoading } = useQuery<AgentTrendsResponse>({
     queryKey: ["agentTrends"],
     queryFn: async () => {
-      const response = await getAgentTrends({
-        // page: 1,
-        limit: 5,
-      });
+      const response = await getAgentTrends({ limit: 5 });
       return response.data;
     },
     placeholderData: defaultTrends,
