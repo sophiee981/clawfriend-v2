@@ -1,5 +1,8 @@
 import { SkillAcademy } from "@/features/skill-academy";
-import { GetTrendingTagsResponse } from "@/interfaces/academy";
+import {
+  GetSkillsResponse,
+  GetTrendingTagsResponse,
+} from "@/interfaces/academy";
 import { getSkills, getTrendingTags } from "@/services";
 
 interface SkillAcademyPageProps {
@@ -10,7 +13,9 @@ interface SkillAcademyPageProps {
   }>;
 }
 
-export default async function SkillAcademyPage({ searchParams }: SkillAcademyPageProps) {
+export default async function SkillAcademyPage({
+  searchParams,
+}: SkillAcademyPageProps) {
   const params = await searchParams;
 
   // Get initial values from URL params
@@ -19,8 +24,8 @@ export default async function SkillAcademyPage({ searchParams }: SkillAcademyPag
   const tags = params.tags ? params.tags.split(",").filter(Boolean) : [];
 
   // Fetch initial data on server
-  let initialSkillsData = null;
-  let initialTrendingTagsData = null;
+  let initialSkillsData: GetSkillsResponse | null = null;
+  let initialTrendingTagsData: GetTrendingTagsResponse | null = null;
 
   try {
     const [skillsResponse, tagsResponse] = await Promise.all([
@@ -38,8 +43,10 @@ export default async function SkillAcademyPage({ searchParams }: SkillAcademyPag
       getTrendingTags({ limit: 20 }, true),
     ]);
 
+    console.log(skillsResponse, tagsResponse);
+
     initialSkillsData = skillsResponse?.data || null;
-    initialTrendingTagsData = tagsResponse || null;
+    initialTrendingTagsData = tagsResponse?.data || null;
   } catch (error) {
     console.error("Error fetching initial data:", error);
   }
@@ -49,10 +56,13 @@ export default async function SkillAcademyPage({ searchParams }: SkillAcademyPag
       content: skill.content ? skill.content.substring(0, 50) : "",
     }));
   }
+
   return (
     <SkillAcademy
-      initialSkillsData={initialSkillsData}
-      initialTrendingTagsData={initialTrendingTagsData}
+      initialSkillsData={
+        initialSkillsData || { data: [], total: 0, page: 1, limit: 20 }
+      }
+      initialTrendingTagsData={initialTrendingTagsData || { tags: [] }}
     />
   );
 }

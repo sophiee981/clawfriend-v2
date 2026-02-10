@@ -1,11 +1,23 @@
 "use client";
 
-import type { GetSkillsResponse, GetTrendingTagsResponse, Skill, TrendingTag } from "@/interfaces";
+import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
+import type {
+  GetSkillsResponse,
+  GetTrendingTagsResponse,
+  Skill,
+  TrendingTag,
+} from "@/interfaces";
 import { getSkills } from "@/services";
 import { deleteSkill, getTrendingTags } from "@/services/academy.service";
 import { cn } from "@/utils";
 import { toast } from "@/utils/toast";
-import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { SearchInput } from "../explore/components/SearchInput";
@@ -16,9 +28,6 @@ import { SkillAcademyHeader } from "./components/SkillAcademyHeader";
 import { SkillCard } from "./components/SkillCard";
 import { SkillCardSkeleton } from "./components/SkillCardSkeleton";
 import { AcademyItem, AcademyItemType } from "./type";
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
-import { X } from "lucide-react";
 
 // Map Skill/Prompt from API to AcademyItem format
 const mapSkillToAcademyItem = (
@@ -57,11 +66,13 @@ const SkillAcademyContent = ({
   initialSkillsData,
   initialTrendingTagsData,
 }: {
-  initialSkillsData: GetSkillsResponse | null;
-  initialTrendingTagsData: GetTrendingTagsResponse | null;
+  initialSkillsData: GetSkillsResponse;
+  initialTrendingTagsData: GetTrendingTagsResponse;
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  console.log({ initialSkillsData, initialTrendingTagsData });
 
   // Read initial tab and search from URL
   const getInitialTab = (): AcademyItemType => {
@@ -81,7 +92,9 @@ const SkillAcademyContent = ({
   const [activeTab, setActiveTab] = useState<AcademyItemType>(getInitialTab);
   const [searchInput, setSearchInput] = useState<string>(getInitialSearch);
   const [searchQuery, setSearchQuery] = useState<string>(getInitialSearch);
-  const [selectedTags, setSelectedTags] = useState<string[]>(getInitialSelectedTags);
+  const [selectedTags, setSelectedTags] = useState<string[]>(
+    getInitialSelectedTags
+  );
   const [showAllTags, setShowAllTags] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const queryClient = useQueryClient();
@@ -171,11 +184,16 @@ const SkillAcademyContent = ({
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: [activeTab, activeTab, searchQuery || null, selectedTags.length > 0 ? selectedTags.join(',') : null],
+    queryKey: [
+      activeTab,
+      activeTab,
+      searchQuery || null,
+      selectedTags.length > 0 ? selectedTags.join(",") : null,
+    ],
     queryFn: async ({ pageParam = 1 }) => {
       const response = await getSkills({
         ...(searchQuery.trim() && { search: searchQuery.trim() }),
-        ...(selectedTags.length > 0 && { tags: selectedTags.join(',') }),
+        ...(selectedTags.length > 0 && { tags: selectedTags.join(",") }),
         page: pageParam,
         limit: 20,
         is_active: true,
@@ -189,18 +207,22 @@ const SkillAcademyContent = ({
       const total = pageData.total;
       const page = pageData.page;
       const limit = pageData.limit;
-      if (typeof total !== 'number' || typeof page !== 'number' || typeof limit !== 'number') {
+      if (
+        typeof total !== "number" ||
+        typeof page !== "number" ||
+        typeof limit !== "number"
+      ) {
         return undefined;
       }
       const hasMore = page * limit < total;
       return hasMore ? page + 1 : undefined;
     },
     initialPageParam: 1,
-    initialData: initialSkillsData
+    initialData: initialSkillsData?.data
       ? {
-        pages: [initialSkillsData],
-        pageParams: [1],
-      }
+          pages: [initialSkillsData],
+          pageParams: [1],
+        }
       : undefined,
   });
 
@@ -243,16 +265,16 @@ const SkillAcademyContent = ({
   const { data: trendingTagsData, isLoading: isLoadingTags } = useQuery({
     queryKey: ["trending-tags"],
     queryFn: async () => {
-      return await getTrendingTags({ limit: 20 });
+      const response = await getTrendingTags({ limit: 20 });
+      return response.data;
     },
-    placeholderData: initialTrendingTagsData as any,
+    placeholderData: initialTrendingTagsData,
   });
 
   // Extract trending tags (limit to 20)
   const trendingTags = useMemo((): TrendingTag[] => {
-    const responseData = trendingTagsData as any;
-    if (!responseData?.data?.tags) return [];
-    return responseData.data.tags.slice(0, 20);
+    if (!trendingTagsData?.tags) return [];
+    return trendingTagsData.tags.slice(0, 20);
   }, [trendingTagsData]);
 
   // Display tags based on showAllTags state (10 initially, 20 when expanded)
@@ -395,7 +417,12 @@ const SkillAcademyContent = ({
       setDeleteItemId(null);
       // Refetch data
       queryClient.invalidateQueries({
-        queryKey: [activeTab, activeTab, searchQuery || null, selectedTags.length > 0 ? selectedTags.join(',') : null],
+        queryKey: [
+          activeTab,
+          activeTab,
+          searchQuery || null,
+          selectedTags.length > 0 ? selectedTags.join(",") : null,
+        ],
       });
     } catch (error: any) {
       toast.dismiss(loadingToast);
@@ -410,7 +437,12 @@ const SkillAcademyContent = ({
   const handleModalSuccess = () => {
     // Refetch data after create/update
     queryClient.invalidateQueries({
-      queryKey: [activeTab, activeTab, searchQuery || null, selectedTags.length > 0 ? selectedTags.join(',') : null],
+      queryKey: [
+        activeTab,
+        activeTab,
+        searchQuery || null,
+        selectedTags.length > 0 ? selectedTags.join(",") : null,
+      ],
     });
     setEditItem(null);
   };
@@ -418,7 +450,12 @@ const SkillAcademyContent = ({
   const handleDownloadSuccess = (itemId: string) => {
     // Optimistically update download count in query cache
     queryClient.setQueryData(
-      [activeTab, activeTab, searchQuery || null, selectedTags.length > 0 ? selectedTags.join(',') : null],
+      [
+        activeTab,
+        activeTab,
+        searchQuery || null,
+        selectedTags.length > 0 ? selectedTags.join(",") : null,
+      ],
       (oldData: any) => {
         if (!oldData?.pages) return oldData;
         return {
@@ -496,7 +533,9 @@ const SkillAcademyContent = ({
         <div className="w-full px-4 md:px-6 py-3 border-b border-neutral-01">
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <span className="text-body-sm text-neutral-secondary">Filter by tags</span>
+              <span className="text-body-sm text-neutral-secondary">
+                Filter by tags
+              </span>
               {selectedTags.length > 0 && !isLoadingTags && (
                 <button
                   onClick={handleClearTags}
@@ -507,7 +546,7 @@ const SkillAcademyContent = ({
                 </button>
               )}
             </div>
-            <div className="flex flex-wrap gap-2 items-center overflow-x-auto pb-1 scrollbar-hide items-center">
+            <div className="flex flex-wrap gap-2 items-center overflow-x-auto pb-1 scrollbar-hide">
               {isLoadingTags ? (
                 // Skeleton loading for tags
                 Array.from({ length: 10 }).map((_, index) => {
@@ -531,9 +570,7 @@ const SkillAcademyContent = ({
                         onClick={() => handleTagToggle(tag.name)}
                         className={cn(
                           "transition-all duration-200",
-                          isSelected
-                            ? ""
-                            : ""
+                          isSelected ? "" : ""
                         )}
                       >
                         <Badge
@@ -561,7 +598,9 @@ const SkillAcademyContent = ({
                       onClick={() => setShowAllTags(!showAllTags)}
                       className="text-body-xs text-[#fe5631] hover:text-[#ff6d47] transition-colors whitespace-nowrap shrink-0"
                     >
-                      {showAllTags ? "Show less" : `Show more (${trendingTags.length - 10})`}
+                      {showAllTags
+                        ? "Show less"
+                        : `Show more (${trendingTags.length - 10})`}
                     </button>
                   )}
                 </>
@@ -659,15 +698,13 @@ export const SkillAcademy = ({
   initialSkillsData,
   initialTrendingTagsData,
 }: {
-  initialSkillsData?: GetSkillsResponse | null;
-  initialTrendingTagsData?: GetTrendingTagsResponse | null;
+  initialSkillsData: GetSkillsResponse;
+  initialTrendingTagsData: GetTrendingTagsResponse;
 }) => {
-
-
   return (
     <SkillAcademyContent
       initialSkillsData={initialSkillsData || null}
-      initialTrendingTagsData={initialTrendingTagsData || null}
+      initialTrendingTagsData={initialTrendingTagsData}
     />
   );
 };
