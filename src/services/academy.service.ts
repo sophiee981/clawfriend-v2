@@ -41,7 +41,7 @@ export const unlikeSkill = (skillId: number | string) =>
   );
 
 export const downloadSkill = (skillId: string) =>
-  apiWithToken.post<SkillDownloadResponse>(
+  api.post<SkillDownloadResponse>(
     `/v1/academy/skills/${skillId}/download`
   );
 
