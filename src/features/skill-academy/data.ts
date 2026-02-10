@@ -14,6 +14,7 @@ export interface AcademyItem {
   tags: string[];
   likes: number;
   uses: number;
+  is_liked: boolean;
   createdAt: string;
 }
 
@@ -40,6 +41,7 @@ export const MOCK_SKILLS: AcademyItem[] = [
     tags: ["Comment", "Market Analysis", "Auto-Reply"],
     likes: 1240,
     uses: 543,
+    is_liked: false,
     createdAt: "2024-02-10T10:00:00Z",
   },
   {
@@ -65,6 +67,7 @@ export const MOCK_SKILLS: AcademyItem[] = [
     tags: ["Buy/Sell", "Trading", "High Risk"],
     likes: 89,
     uses: 12,
+    is_liked: false,
     createdAt: "2024-02-09T14:30:00Z",
   },
   {
@@ -88,6 +91,7 @@ export const MOCK_SKILLS: AcademyItem[] = [
     tags: ["Post", "Engagement", "Lifestyle"],
     likes: 450,
     uses: 1200,
+    is_liked: false,
     createdAt: "2024-02-08T09:15:00Z",
   },
 ];
@@ -109,6 +113,7 @@ export const MOCK_PROMPTS: AcademyItem[] = [
     tags: ["Persona", "Analysis"],
     likes: 2300,
     uses: 890,
+    is_liked: false,
     createdAt: "2024-02-10T11:00:00Z",
   },
   {
@@ -127,6 +132,7 @@ export const MOCK_PROMPTS: AcademyItem[] = [
     tags: ["Writing Style", "Engagement"],
     likes: 765,
     uses: 340,
+    is_liked: false,
     createdAt: "2024-02-09T16:45:00Z",
   },
   {
@@ -145,6 +151,7 @@ export const MOCK_PROMPTS: AcademyItem[] = [
     tags: ["Translation", "Humor"],
     likes: 567,
     uses: 123,
+    is_liked: false,
     createdAt: "2024-02-07T08:20:00Z",
   },
 ];

@@ -8,42 +8,51 @@ import {
   ModalHeader,
   ModalTitle,
 } from "@/components/ui/modal";
-import type { Skill } from "@/interfaces";
 import { useState } from "react";
+import { AcademyItem } from "../data";
 
 interface AddToAgentModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  skill: Skill | null;
+  item: AcademyItem | null;
 }
 
 export const AddToAgentModal = ({
   open,
   onOpenChange,
-  skill,
+  item,
 }: AddToAgentModalProps) => {
   const [copied, setCopied] = useState(false);
 
-  if (!skill) return null;
+  if (!item) return null;
 
   const handleCopy = () => {
-    const contentToCopy = skill.content;
+    const contentToCopy = item.content;
     navigator.clipboard.writeText(contentToCopy);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const getPreviewContent = () => {
+    const lines = item.content.split('\n');
+    const maxLines = 5;
+    if (lines.length > maxLines) {
+      return lines.slice(0, maxLines).join('\n') + '\n...';
+    }
+    return item.content;
+  };
+
   const steps = [
     {
       title: "Copy Content",
-      description: "Copy the skill configuration below",
+      description: `Copy the ${item.type === "skill" ? "skill" : "Prompt"} content below`,
       action: (
         <div
           className="flex items-center gap-2 mt-2 w-full p-3 bg-neutral-02 rounded-lg border border-neutral-03 justify-between group cursor-pointer hover:border-neutral-primary transition-colors"
           onClick={handleCopy}
         >
-          <code className="text-xs font-mono text-neutral-secondary truncate max-w-[350px]">
-            {skill.content.replace(/\n/g, " ").substring(0, 50)}...
+          <code className="text-xs font-mono text-neutral-secondary max-w-[350px] whitespace-pre-wrap break-words">
+            {getPreviewContent()}
           </code>
           <div className="text-neutral-tertiary group-hover:text-neutral-primary">
             {copied ? (
@@ -56,13 +65,8 @@ export const AddToAgentModal = ({
       ),
     },
     {
-      title: "Go to Agent Settings",
-      description: "Navigate to your agent's configuration page",
-      action: null,
-    },
-    {
-      title: "Paste into Skills",
-      description: "Locate the skill section and paste the code",
+      title: "Paste into Chat",
+      description: "Paste the copied content into the chat with your agent",
       action: null,
     },
   ];
@@ -72,10 +76,10 @@ export const AddToAgentModal = ({
       <ModalContent className="max-w-[500px] w-full border-neutral-02">
         <ModalHeader>
           <ModalTitle className="text-xl font-bold text-neutral-primary">
-            Add Skill to Agent
+            Add {item.type === "skill" ? "Skill" : "Prompt"} to Agent
           </ModalTitle>
           <p className="text-sm text-neutral-tertiary">
-            Follow these steps to equip this skill on your agent.
+            Follow these steps to equip this {item.type === "skill" ? "Skill" : "Prompt"} on your agent.
           </p>
         </ModalHeader>
 

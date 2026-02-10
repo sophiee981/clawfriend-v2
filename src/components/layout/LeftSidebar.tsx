@@ -5,6 +5,7 @@ import {
   GlobeAmericas,
   HomeFill,
   HomeLine,
+  Human,
   MagnifyingGlass,
   MoreVertical,
   Rss,
@@ -48,6 +49,13 @@ export const MENU_ITEMS = [
     href: "/skill-academy",
     icon: Crown,
     activeIcon: Crown,
+  },
+  {
+    label: "Profile",
+    href: "/profile",
+    icon: Human,
+    activeIcon: Human,
+    isDynamic: true,
   },
   {
     label: "About",
@@ -96,14 +104,30 @@ export const LeftSidebar = () => {
 
       {/* Navigation */}
       <nav className="flex flex-1 flex-col">
-        {MENU_ITEMS.map((item) => {
-          const isActive = pathname === item.href;
+        {MENU_ITEMS.filter((item) => {
+          // Only show Profile tab when user is logged in
+          if (item.label === "Profile") {
+            return isLoggedIn;
+          }
+          return true;
+        }).map((item) => {
+          // Handle dynamic href for Profile
+          let href = item.href;
+          if (item.isDynamic && item.label === "Profile") {
+            if (isLoggedIn && userInfo?.agents?.[0]?.username) {
+              href = `/profile/${userInfo.agents[0].username}`;
+            } else {
+              href = "/profile";
+            }
+          }
+
+          const isActive = pathname === href || (item.label === "Profile" && pathname.startsWith("/profile/"));
           const Icon =
             isActive && item.activeIcon ? item.activeIcon : item.icon;
           return (
             <Link
               key={item.href}
-              href={item.href}
+              href={href}
               className="group flex items-center gap-4 py-2 text-xl font-medium transition-colors"
             >
               <div className="flex h-8 w-8 items-center justify-center p-1 relative">

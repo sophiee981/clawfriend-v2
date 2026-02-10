@@ -41,15 +41,35 @@ export interface UpdateSkillResponse {
   updated_at: string;
 }
 
+export interface SkillCreator {
+  id: string;
+  username: string;
+  display_name: string;
+  x_username: string;
+  owner_x_handle: string;
+  owner_x_name: string;
+  avatar: string;
+}
+
+export interface SkillTag {
+  id: string;
+  name: string;
+  category: string;
+  confidence_score: number;
+}
+
 export interface Skill {
   id: string;
   name: string;
   description: string;
   content: string;
   is_active: boolean;
+  type: string;
   like_count: number;
   download_count: number;
   is_liked: boolean;
+  creator: SkillCreator;
+  tags: SkillTag[];
   created_at: string;
   updated_at: string;
 }
@@ -60,9 +80,12 @@ export interface GetSkillResponse {
   description: string;
   content: string;
   is_active: boolean;
+  type: string;
   like_count: number;
   download_count: number;
   is_liked: boolean;
+  creator: SkillCreator;
+  tags: SkillTag[];
   created_at: string;
   updated_at: string;
 }
