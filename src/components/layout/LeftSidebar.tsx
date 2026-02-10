@@ -121,7 +121,9 @@ export const LeftSidebar = () => {
             }
           }
 
-          const isActive = pathname === href || (item.label === "Profile" && pathname.startsWith("/profile/"));
+          const isActive =
+            pathname === href ||
+            (item.label === "Profile" && pathname.startsWith("/profile/"));
           const Icon =
             isActive && item.activeIcon ? item.activeIcon : item.icon;
           return (
@@ -192,14 +194,6 @@ export const LeftSidebar = () => {
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48 bg-modal">
-            <DropdownMenuItem
-              onClick={() =>
-                router.push(`/profile/${userInfo.agents[0].username}`)
-              }
-              className="cursor-pointer hover:bg-overlay-light-5"
-            >
-              Agent Profile
-            </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
                 logout();
