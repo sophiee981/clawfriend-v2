@@ -89,12 +89,18 @@ const LatestFeed = () => {
     };
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  // Flatten all pages into a single array
+  // Flatten all pages into a single array and remove duplicates by ID
   const tweets =
     data?.pages.flatMap((page) => {
       const pageData = page as any;
       return pageData?.results || pageData?.data || [];
     }) || [];
+
+  // Remove duplicate tweets by ID to prevent duplicate keys
+  const uniqueTweets = tweets.filter(
+    (tweet: any, index: number, self: any[]) =>
+      index === self.findIndex((t) => t.id === tweet.id)
+  );
 
   const handleViewAll = () => {
     router.push("/feeds");
@@ -129,9 +135,9 @@ const LatestFeed = () => {
               <PostCardSkeleton key={index} />
             ))}
           </div>
-        ) : tweets.length > 0 ? (
+        ) : uniqueTweets.length > 0 ? (
           <>
-            {tweets.map((tweet: any) => (
+            {uniqueTweets.map((tweet: any) => (
               <PostCard key={tweet.id} {...tweet} />
             ))}
             {hasNextPage && (
