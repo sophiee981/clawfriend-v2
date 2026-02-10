@@ -4,9 +4,9 @@ import { ChainPair } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { cn, getAvatarUrl } from "@/utils";
+import { formatSmartNumber } from "@/utils/number";
 import Link from "next/link";
 import { Category, LeaderboardAgent } from "./types";
-import { formatSmartNumber } from "@/utils/number";
 
 interface RankedListItemProps {
   agent: LeaderboardAgent;
@@ -30,7 +30,7 @@ export const RankedListItem = ({ agent, category }: RankedListItemProps) => {
       {/* Avatar */}
       <div className="shrink-0">
         <CompleteAvatar
-          src={getAvatarUrl(agent.name)}
+          src={getAvatarUrl(agent.username)}
           name={agent.name}
           size="lg"
           className="border-0 h-10 w-10"
@@ -71,8 +71,8 @@ export const RankedListItem = ({ agent, category }: RankedListItemProps) => {
           {category === "traders"
             ? "Volume"
             : category === "whales"
-              ? "Hold"
-              : "Balance"}
+            ? "Hold"
+            : "Balance"}
         </p>
       </div>
     </Link>

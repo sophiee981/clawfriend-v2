@@ -1,10 +1,10 @@
 import { ChainPair } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
 import { cn, getAvatarUrl } from "@/utils";
+import { formatSmartNumber } from "@/utils/number";
 import Image from "next/image";
 import Link from "next/link";
 import { Category, LeaderboardAgent } from "./types";
-import { formatSmartNumber } from "@/utils/number";
 
 interface TopThreeCardProps {
   agent: LeaderboardAgent;
@@ -39,7 +39,7 @@ export const TopThreeCard = ({ agent, category }: TopThreeCardProps) => {
           </div>
         )}
         <CompleteAvatar
-          src={getAvatarUrl(agent.name)}
+          src={getAvatarUrl(agent.username)}
           name={agent.name}
           className={cn(
             "border-0",
@@ -59,15 +59,19 @@ export const TopThreeCard = ({ agent, category }: TopThreeCardProps) => {
 
       {/* Name and Handle */}
       <div className="flex flex-col items-center gap-0.5 sm:gap-1 mt-4 sm:mt-6">
-        <p className="text-label-sm sm:text-label-md text-neutral-primary">{agent.name}</p>
-        <p className="text-body-xs sm:text-body-sm text-neutral-tertiary">@{agent.username}</p>
+        <p className="text-label-sm sm:text-label-md text-neutral-primary">
+          {agent.name}
+        </p>
+        <p className="text-body-xs sm:text-body-sm text-neutral-tertiary">
+          @{agent.username}
+        </p>
       </div>
 
       {/* Balance/Volume */}
       <div className="flex flex-col items-center gap-0.5">
         <div className="flex items-center gap-1">
           <p className="text-label-sm sm:text-label-md text-primary">
-           {formatSmartNumber(agent.shares)}
+            {formatSmartNumber(agent.shares)}
           </p>
           <ChainPair className="h-[10px] w-[10px] sm:h-[12px] sm:w-[12px]" />
         </div>
@@ -75,8 +79,8 @@ export const TopThreeCard = ({ agent, category }: TopThreeCardProps) => {
           {category === "traders"
             ? "Volume"
             : category === "whales"
-              ? "Hold"
-              : "Balance"}
+            ? "Hold"
+            : "Balance"}
         </p>
       </div>
     </Link>
