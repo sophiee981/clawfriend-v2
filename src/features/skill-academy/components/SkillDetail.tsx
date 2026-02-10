@@ -25,7 +25,7 @@ import {
   Code2,
   Copy,
   Download,
-  Heart,
+  Star,
   Pencil,
   Share2,
   Terminal,
@@ -99,7 +99,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
       queryClient.invalidateQueries({ queryKey: ["skill", itemId] });
 
       toast.success(
-        responseData.liked ? "Liked this skill" : "Unliked this skill"
+        responseData.liked ? "Starred this skill" : "Unstarred this skill"
       );
     } catch (error: any) {
       // Rollback on error
@@ -107,7 +107,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
       setLikes(previousLikes);
 
       const errorMessage =
-        error?.error || error?.message || "Failed to like skill";
+        error?.error || error?.message || "Failed to star skill";
       toast.error(errorMessage);
     } finally {
       setIsLiking(false);
@@ -542,7 +542,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                   {likes}
                 </span>
                 <span className="text-xs font-medium text-neutral-secondary uppercase tracking-wider">
-                  Likes
+                  Stars
                 </span>
               </div>
               <div className="flex flex-col items-center gap-1">
@@ -562,20 +562,20 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                 className={cn(
                   "w-full justify-center transition-all duration-300",
                   isLiked &&
-                    "text-primary bg-primary-muted-10 hover:bg-primary-muted-20",
+                    "text-yellow bg-yellow-muted hover:bg-yellow-muted/150",
                   isLiking && "opacity-50 cursor-not-allowed"
                 )}
                 onClick={handleLike}
                 disabled={isLiking}
               >
-                <Heart
+                <Star
                   className={cn(
-                    "w-4 h-4 mr-2 transition-transform duration-300 text-primary",
-                    isLiked ? "fill-current scale-110" : "scale-100",
+                    "w-4 h-4 mr-2 transition-transform duration-300",
+                    isLiked ? "text-yellow fill-yellow-400 scale-110" : "text-neutral-tertiary scale-100",
                     isLiking && "animate-pulse"
                   )}
                 />
-                {isLiked ? "Liked Skill" : "Like Skill"}
+                {isLiked ? "Starred Skill" : "Star Skill"}
               </Button>
 
               <Button
