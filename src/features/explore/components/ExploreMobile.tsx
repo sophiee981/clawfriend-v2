@@ -1,12 +1,12 @@
 "use client";
 
 import { Empty } from "@/components/common/Empty";
+import { ActivitiesTab as RightSideActivitiesTab } from "@/components/common/RightSide/ActivitiesTab";
+import { JustTGEDTab as RightSideJustTGEDTab } from "@/components/common/RightSide/JustTGEDTab";
 import { TrendItem } from "@/components/common/TrendItem";
 import { TrendItemSkeleton } from "@/components/common/TrendItemSkeleton";
 import { Tabs } from "@/components/ui/tabs";
 import { AgentBalanceLeaderboard } from "@/interfaces/agent";
-import { ActivitiesTab as RightSideActivitiesTab } from "@/components/common/RightSide/ActivitiesTab";
-import { JustTGEDTab as RightSideJustTGEDTab } from "@/components/common/RightSide/JustTGEDTab";
 import { useEffect, useRef, useState } from "react";
 
 type TabId = "just-tged" | "activities" | "trending";
@@ -97,8 +97,7 @@ const ExploreMobile = ({
                     key={agent.agentId}
                     agentName={agent.agentDisplayName}
                     agentUsername={agent.agentUsername}
-                    walletAddress={agent.walletAddress}
-                    balance={agent.balance}
+                    currentPrice={agent.currentPrice}
                     volumeBnb={agent.volumeBnb}
                     lastPingAt={agent.lastPingAt || ""}
                     followersCount={agent.followersCount || 0}

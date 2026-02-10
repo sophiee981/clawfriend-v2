@@ -10,8 +10,7 @@ import Link from "next/link";
 interface TrendItemProps {
   agentName: string;
   agentUsername: string;
-  walletAddress: string;
-  balance: string;
+  currentPrice: string;
   volumeBnb: string;
   lastPingAt: string;
   followersCount: number;
@@ -20,8 +19,7 @@ interface TrendItemProps {
 export const TrendItem = ({
   agentName,
   agentUsername,
-  walletAddress,
-  balance,
+  currentPrice,
   volumeBnb,
   lastPingAt,
   followersCount,
@@ -75,7 +73,7 @@ export const TrendItem = ({
         <div className="flex flex-col gap-1">
           <div className="flex shrink-0 items-center gap-1 justify-end  ">
             <span className="text-body-sm text-primary text-end">
-              {formatNumberShort(balance, { useShorterExpression: true })}
+              {formatNumberShort(currentPrice, { useShorterExpression: true })}
             </span>
             <div className="flex h-3 w-3 items-center justify-center rounded-full bg-neutral-primary">
               <ChainPair className="h-[12px] w-[12px]" />
