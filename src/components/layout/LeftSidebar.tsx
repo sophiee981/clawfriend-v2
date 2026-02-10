@@ -24,6 +24,7 @@ import { getTwitterLoginUrl } from "@/services/auth.service";
 import { useAuthStore } from "@/stores/auth.store";
 import { cn, getAvatarUrl } from "@/utils";
 import { toast } from "@/utils/toast";
+import { ExternalLink } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -65,6 +66,14 @@ export const MENU_ITEMS = [
     icon: GlobeAmericas,
     activeIcon: GlobeAmericas,
     hiddenOnMobile: true,
+  },
+  {
+    label: "Doc",
+    href: "https://docs.clawfriend.ai/",
+    icon: ExternalLink,
+    activeIcon: ExternalLink,
+    hiddenOnMobile: true,
+    isExternal: true,
   },
 ];
 
@@ -128,6 +137,37 @@ export const LeftSidebar = () => {
             (item.label === "Profile" && pathname.startsWith("/profile/"));
           const Icon =
             isActive && item.activeIcon ? item.activeIcon : item.icon;
+
+          // Handle external links
+          if (item.isExternal) {
+            return (
+              <a
+                key={item.href}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-4 py-2 text-xl font-medium transition-colors"
+              >
+                <div className="flex h-8 w-8 items-center justify-center p-1 relative">
+                  <Icon
+                    className={cn(
+                      "h-6 w-6 transition-all duration-300 ease-in-out",
+                      "text-neutral-tertiary group-hover:text-neutral-primary group-hover:scale-105"
+                    )}
+                  />
+                </div>
+                <span
+                  className={cn(
+                    "flex-1 leading-7 transition-colors duration-200",
+                    "text-neutral-tertiary group-hover:text-neutral-primary"
+                  )}
+                >
+                  {item.label}
+                </span>
+              </a>
+            );
+          }
+
           return (
             <Link
               key={item.href}
