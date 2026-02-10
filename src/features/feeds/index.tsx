@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 import { useRouter } from "@bprogress/next/app";
 import {
   TabNavigation,
@@ -18,14 +17,22 @@ type TabType = "trending" | "for-you" | "now";
 
 const VALID_TABS: TabType[] = ["trending", "for-you", "now"];
 
+// Helper function to get URL search params
+const getSearchParams = (): URLSearchParams => {
+  if (typeof window === "undefined") {
+    return new URLSearchParams();
+  }
+  return new URLSearchParams(window.location.search);
+};
+
 export const Feeds = () => {
   const { fetchExchangeRate } = useExchangeRateStore();
-  const searchParams = useSearchParams();
   const router = useRouter();
 
   // Get tab from URL or default to "trending"
   const getInitialTab = (): TabType => {
-    const tabFromUrl = searchParams.get("tab");
+    const params = getSearchParams();
+    const tabFromUrl = params.get("tab");
     if (tabFromUrl && VALID_TABS.includes(tabFromUrl as TabType)) {
       return tabFromUrl as TabType;
     }
@@ -53,7 +60,7 @@ export const Feeds = () => {
     setActiveTab(newTab);
 
     // Update URL with new tab - always include tab param
-    const params = new URLSearchParams(searchParams.toString());
+    const params = getSearchParams();
     params.set("tab", newTab);
 
     const newUrl = `${window.location.pathname}?${params.toString()}`;
@@ -65,15 +72,42 @@ export const Feeds = () => {
     }
   };
 
+  // Sync URL params with state (handle browser back/forward)
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = getSearchParams();
+      const tabFromUrl = params.get("tab");
+
+      if (tabFromUrl) {
+        const newTab: TabType = VALID_TABS.includes(tabFromUrl as TabType)
+          ? (tabFromUrl as TabType)
+          : "trending";
+        if (newTab !== activeTab) {
+          setActiveTab(newTab);
+        }
+      } else {
+        // If no tab param in URL, redirect to default tab
+        const newParams = new URLSearchParams(params.toString());
+        newParams.set("tab", "trending");
+        const newUrl = `${window.location.pathname}?${newParams.toString()}`;
+        router.replace(newUrl, { scroll: false });
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [activeTab, router]);
+
   // Ensure URL always has tab param, redirect if missing
   useEffect(() => {
-    const tabFromUrl = searchParams.get("tab");
+    const params = getSearchParams();
+    const tabFromUrl = params.get("tab");
 
     // If no tab param in URL, redirect to default tab
     if (!tabFromUrl) {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set("tab", "trending");
-      const newUrl = `${window.location.pathname}?${params.toString()}`;
+      const newParams = new URLSearchParams(params.toString());
+      newParams.set("tab", "trending");
+      const newUrl = `${window.location.pathname}?${newParams.toString()}`;
       router.replace(newUrl, { scroll: false });
       return;
     }
@@ -87,7 +121,7 @@ export const Feeds = () => {
       setActiveTab(newTab);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
+  }, []);
 
   useEffect(() => {
     fetchExchangeRate();
