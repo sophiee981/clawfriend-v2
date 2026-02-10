@@ -10,6 +10,8 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import type { AgentPositionValueLeaderboard } from "@/interfaces/agent";
 import type { Trader } from "@/interfaces/trade";
+import { useScrollToTop } from "@/hooks/useScrollToTop";
+import { ScrollButton } from "@/components/common/ScrollButton";
 import {
   LeaderboardHeader,
   LeaderboardSkeleton,
@@ -23,6 +25,13 @@ import { formatNumberShort, formatSmartNumber } from "@/utils/number";
 
 export const Leaderboard = () => {
   const [activeCategory, setActiveCategory] = useState<Category>("creators");
+
+  // Use scroll to top hook
+  const { showScrollTop, scrollToTop } = useScrollToTop({
+    containerSelector: '.leaderboard-scroll-container',
+    threshold: 300,
+    behavior: "smooth",
+  });
 
   // Fetch creators leaderboard data from API
   const { data: leaderboardResponse, isLoading: isLoadingCreators } = useQuery({
@@ -128,7 +137,7 @@ export const Leaderboard = () => {
   ];
 
   return (
-    <div className="flex h-full flex-col items-center overflow-y-auto px-4 pb-4">
+    <div className="flex h-full flex-col items-center overflow-y-auto px-4 pb-4 relative leaderboard-scroll-container">
       <LeaderboardHeader />
 
       {/* Category Tabs */}
@@ -139,7 +148,7 @@ export const Leaderboard = () => {
       />
 
       {/* Content */}
-      <div className="flex flex-1 flex-col gap-2 overflow-y-auto pt-6 max-w-[672px] w-full">
+      <div className="flex flex-1 flex-col gap-2 pt-6 max-w-[672px] w-full">
         {isLoading ? (
           <LeaderboardSkeleton />
         ) : agents.length === 0 ? (
@@ -151,6 +160,15 @@ export const Leaderboard = () => {
           </>
         )}
       </div>
+
+      {/* Scroll to Top Button */}
+      {showScrollTop && (
+        <div className="sm:flex hidden fixed  bottom-20 md:bottom-5 left-0 right-0 z-50 pointer-events-none pl-0 md:pl-[calc(256px)]">
+          <div className="w-full flex justify-center">
+            <ScrollButton scrollToTop={scrollToTop} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

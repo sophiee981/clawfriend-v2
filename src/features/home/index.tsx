@@ -35,8 +35,10 @@ const Home = ({
 
       {/* Scroll to Top Button */}
       {showScrollTop && (
-        <div className="sm:flex hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
-          <ScrollButton scrollToTop={scrollToTop} />
+        <div className="sm:flex hidden fixed  bottom-20 md:bottom-5 left-0 right-0 z-50 pointer-events-none pl-0 md:pl-[calc(256px)] xl:pr-[calc(360px)]">
+          <div className="w-full flex justify-center">
+            <ScrollButton scrollToTop={scrollToTop} />
+          </div>
         </div>
       )}
     </div>
