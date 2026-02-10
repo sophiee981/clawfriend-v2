@@ -365,7 +365,6 @@ export const SkillDetail = ({ itemId }: SkillDetailProps) => {
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-3">
                   <Badge
-                    variant="custom-indigo"
                     type="tonal"
                     className="uppercase tracking-wider font-semibold text-[10px] px-2.5 rounded-md"
                   >
@@ -403,7 +402,7 @@ export const SkillDetail = ({ itemId }: SkillDetailProps) => {
                       className="rounded-full w-10 h-10 p-0 text-neutral-tertiary hover:text-neutral-primary hover:bg-neutral-02 transition-all duration-300 hover:scale-105"
                       onClick={() => setIsEditOpen(true)}
                     >
-                      <Pencil className="w-5 h-5" />
+                      <Pencil className="w-4 h-4" />
                     </Button>
                     <Button
                       variant="secondary"
@@ -412,7 +411,7 @@ export const SkillDetail = ({ itemId }: SkillDetailProps) => {
                       className="rounded-full w-10 h-10 p-0 text-neutral-tertiary hover:text-danger hover:bg-danger-muted-10 transition-all duration-300 hover:scale-105"
                       onClick={() => setIsDeleteOpen(true)}
                     >
-                      <Trash2 className="w-5 h-5" />
+                      <Trash2 className="w-4 h-4" />
                     </Button>
                   </>
                 )}
@@ -422,7 +421,7 @@ export const SkillDetail = ({ itemId }: SkillDetailProps) => {
                   size="sm"
                   className="rounded-full w-10 h-10 p-0 text-neutral-tertiary hover:text-neutral-primary hover:bg-neutral-02"
                 >
-                  <Share2 className="w-5 h-5" />
+                  <Share2 className="w-4 h-4" />
                 </Button>
               </div>
             </div>
@@ -587,7 +586,6 @@ export const SkillDetail = ({ itemId }: SkillDetailProps) => {
               </Button>
 
               <Button
-                size="lg"
                 variant="primary"
                 className="w-full justify-center shadow-lg shadow-primary-muted-10 hover:shadow-primary-muted-20 transition-all"
                 onClick={() => setIsAddToAgentOpen(true)}

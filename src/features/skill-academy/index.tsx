@@ -268,7 +268,7 @@ const SkillAcademyContent = () => {
           </div>
 
           {/* Divider - Hidden on mobile */}
-          <div className="hidden md:block w-[2px] h-10 bg-neutral-03 shrink-0"></div>
+          <div className="hidden md:block w-[2px] h-5 bg-neutral-03 shrink-0"></div>
 
           {/* Switch */}
           <div className="md:w-auto md:min-w-[200px] shrink-0 bg-[#1b1b1b] rounded-[8px]">
@@ -295,7 +295,6 @@ const SkillAcademyContent = () => {
               >
                 Skills
               </button>
-             
             </div>
           </div>
         </div>

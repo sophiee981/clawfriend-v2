@@ -119,13 +119,16 @@ export const SkillCard = ({
                   <MoreHorizontal className="h-5 w-5" />
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 bg-modal">
+              <DropdownMenuContent
+                align="end"
+                className="w-48 bg-neutral-02 border border-neutral-02"
+              >
                 <DropdownMenuItem
                   onClick={(e) => {
                     e.stopPropagation();
                     onEdit?.(item);
                   }}
-                  className="flex items-center gap-2 cursor-pointer"
+                  className="flex items-center gap-2 cursor-pointer hover:bg-overlay-light-5 rounded-md"
                 >
                   <Edit className="h-4 w-4" />
                   <span>Edit</span>
@@ -136,7 +139,7 @@ export const SkillCard = ({
                     console.log("Delete clicked for item.id:", item.id);
                     onDelete?.(item.id);
                   }}
-                  className="flex items-center gap-2 cursor-pointer text-danger"
+                  className="flex items-center gap-2 cursor-pointer text-danger hover:bg-danger-muted-10 rounded-md"
                 >
                   <Trash2 className="h-4 w-4" />
                   <span>Delete</span>
