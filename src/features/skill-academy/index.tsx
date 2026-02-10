@@ -132,7 +132,7 @@ const SkillAcademyContent = () => {
 
   // Map response data to AcademyItem format
   const [items, setItems] = useState<AcademyItem[]>([]);
-  
+
   useEffect(() => {
     if (response?.data?.data && Array.isArray(response.data.data)) {
       setItems(response.data.data.map((item) => mapSkillToAcademyItem(item, activeTab)));
@@ -185,7 +185,7 @@ const SkillAcademyContent = () => {
     // Capture the ID immediately to prevent it from being lost
     const itemIdToDelete = deleteItemId;
     console.log("confirmDelete called with deleteItemId:", deleteItemId, "itemIdToDelete:", itemIdToDelete);
-    
+
     if (!itemIdToDelete) {
       console.error("No item ID to delete");
       setDeleteItemId(null);
@@ -235,27 +235,40 @@ const SkillAcademyContent = () => {
   return (
     <div className="flex h-full flex-col items-center overflow-y-auto pb-4 relative">
       <SkillAcademyHeader onCreateClick={() => setIsCreateModalOpen(true)} />
-      <div className="flex items-center gap-4 sm:gap-6 w-full py-2">
-        <SearchInput
-          value={searchInput}
-          onChange={handleSearchInputChange}
-          onSearch={handleSearchInputChange}
-          placeholder="Search by skill or prompt"
-          className="flex-1 !border-none"
-        />
-        <div className="w-[2px] h-full bg-neutral-03"></div>
-        <Tabs
-          tabs={[
-            { id: "skill", label: "Skills" },
-            { id: "prompt", label: "Prompts" },
-          ]}
-          activeTab={activeTab}
-          onTabChange={handleTabChange}
-          maxWidth=""
-          className="px-4 w-[200px]"
-        />
+      {/* Search and Tabs Section - Responsive */}
+      <div className="w-full px-4 md:px-6 py-3 md:py-4 border-b border-neutral-01">
+        <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4 w-full">
+          {/* Search Input */}
+          <div className="flex-1 min-w-0">
+            <SearchInput
+              value={searchInput}
+              onChange={handleSearchInputChange}
+              onSearch={handleSearchInputChange}
+              placeholder="Search by skill or prompt"
+              className="!border-none !px-0 !py-0"
+            />
+          </div>
+
+          {/* Divider - Hidden on mobile */}
+          <div className="hidden md:block w-[2px] h-10 bg-neutral-03 shrink-0"></div>
+
+          {/* Tabs */}
+          <div className="md:w-auto md:min-w-[200px] shrink-0">
+            <Tabs
+              tabs={[
+                { id: "skill", label: "Skills" },
+                { id: "prompt", label: "Prompts" },
+              ]}
+              activeTab={activeTab}
+              onTabChange={handleTabChange}
+              maxWidth=""
+              className="!border-none md:px-2"
+            />
+          </div>
+        </div>
       </div>
-      <div className="flex flex-1 flex-col gap-6 pt-6 w-full px-4">
+      {/* Content Grid - Responsive padding */}
+      <div className="flex flex-1 flex-col gap-4 md:gap-6 pt-4 md:pt-6 w-full px-4 md:px-6">
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {Array.from({ length: 3 }).map((_, index) => (
