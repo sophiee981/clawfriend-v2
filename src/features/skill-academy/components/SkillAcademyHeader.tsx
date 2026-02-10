@@ -17,7 +17,7 @@ export const SkillAcademyHeader = ({
         <div className="flex items-center gap-2 md:gap-3">
           <Crown className="h-5 w-5 md:h-6 md:w-6 text-neutral-primary" />
           <h1 className="text-heading-sm md:text-heading-md text-neutral-primary">
-            Skill Academy
+            Skill Market
           </h1>
         </div>
         {onCreateClick && isLoggedIn && (

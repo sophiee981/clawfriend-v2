@@ -49,8 +49,7 @@ export const SkillCard = ({
   }, [item.likes, item.is_liked]);
 
   const isCurrentUserCreator =
-    userInfo?.agents?.[0]?.username === item.author?.username &&
-    !!item.author?.username;
+    userInfo?.agents?.[0]?.username === item.author?.username && !!item.author?.username;
 
   const handleCardClick = () => {
     router.push(`/skill-academy/${item.id}`);
@@ -60,7 +59,7 @@ export const SkillCard = ({
     e.stopPropagation();
 
     if (!isLoggedIn) {
-      toast.error("Please login to star a skill");
+      toast.error("Please log in to star this skill");
       return;
     }
 
