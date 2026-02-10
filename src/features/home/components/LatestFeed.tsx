@@ -12,6 +12,8 @@ const LatestFeed = () => {
   const router = useRouter();
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
+  const LIMIT = 10;
+
   const {
     data,
     fetchNextPage,
@@ -24,7 +26,7 @@ const LatestFeed = () => {
       const response = await getTweets(
         {
           page: pageParam,
-          limit: 10,
+          limit: LIMIT,
           onlyRootTweets: true,
           mode: "new",
         },
@@ -34,23 +36,22 @@ const LatestFeed = () => {
       return response?.data;
     },
     getNextPageParam: (lastPage, allPages) => {
-      // Check if there are more pages based on response structure
-      // Handle both 'results' and 'data' structures
       const pageData = lastPage as any;
+      let itemsLength = 0;
 
-      // If response has results array, check if there are more items
+      // Handle both 'results' and 'data' structures
       if (pageData?.results && Array.isArray(pageData.results)) {
-        // If last page has items, there might be more
-        if (pageData.results.length > 0) {
-          return allPages.length + 1;
-        }
+        itemsLength = pageData.results.length;
+      } else if (pageData?.data && Array.isArray(pageData.data)) {
+        itemsLength = pageData.data.length;
       }
-      // If response has data array (standard structure)
-      if (pageData?.data && Array.isArray(pageData.data)) {
-        if (pageData.data.length > 0) {
-          return allPages.length + 1;
-        }
+
+      // Only fetch next page if current page has full limit of items
+      // If less than limit, it means we've reached the end
+      if (itemsLength === LIMIT) {
+        return allPages.length + 1;
       }
+
       return undefined;
     },
     initialPageParam: 1,
@@ -59,15 +60,16 @@ const LatestFeed = () => {
 
   // Intersection Observer for infinite scroll
   useEffect(() => {
+    // Don't set up observer if there's no next page or already fetching
+    if (!hasNextPage || isFetchingNextPage) {
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         const first = entries[0];
-        if (
-          first?.isIntersecting &&
-          hasNextPage &&
-          !isFetchingNextPage &&
-          fetchNextPage
-        ) {
+        // Double check conditions before fetching
+        if (first?.isIntersecting && hasNextPage && !isFetchingNextPage) {
           fetchNextPage();
         }
       },
@@ -86,15 +88,22 @@ const LatestFeed = () => {
       if (currentRef) {
         observer.unobserve(currentRef);
       }
+      observer.disconnect();
     };
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  // Flatten all pages into a single array
+  // Flatten all pages into a single array and remove duplicates by ID
   const tweets =
     data?.pages.flatMap((page) => {
       const pageData = page as any;
       return pageData?.results || pageData?.data || [];
     }) || [];
+
+  // Remove duplicate tweets by ID to prevent duplicate keys
+  const uniqueTweets = tweets.filter(
+    (tweet: any, index: number, self: any[]) =>
+      index === self.findIndex((t) => t.id === tweet.id)
+  );
 
   const handleViewAll = () => {
     router.push("/feeds");
@@ -125,28 +134,26 @@ const LatestFeed = () => {
       <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide">
         {isLoading ? (
           <div className="w-full">
-            {Array.from({ length: 10 }).map((_, index) => (
+            {Array.from({ length: 5 }).map((_, index) => (
               <PostCardSkeleton key={index} />
             ))}
           </div>
-        ) : tweets.length > 0 ? (
+        ) : uniqueTweets.length > 0 ? (
           <>
-            {tweets.map((tweet: any) => (
+            {uniqueTweets.map((tweet: any) => (
               <PostCard key={tweet.id} {...tweet} />
             ))}
+
+            {/* Load more trigger */}
             {hasNextPage && (
-              <div
-                ref={loadMoreRef}
-                className="flex flex-col gap-2 justify-center"
-              >
-                {isFetchingNextPage && (
-                  <>
-                    {Array.from({ length: 10 }).map((_, index) => (
-                      <PostCardSkeleton key={index} />
-                    ))}
-                  </>
-                )}
-              </div>
+              <>
+                <div className="flex flex-col gap-2">
+                  {Array.from({ length: 3 }).map((_, index) => (
+                    <PostCardSkeleton key={`loading-${index}`} />
+                  ))}
+                </div>
+                <div ref={loadMoreRef} className="h-4" />
+              </>
             )}
           </>
         ) : (
