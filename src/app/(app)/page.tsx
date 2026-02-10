@@ -1,5 +1,6 @@
 import Home from "@/features/home/index";
-import { getAgentTrends } from "@/services";
+import type { GetAgentsResponse } from "@/interfaces/agent";
+import { getAgents } from "@/services";
 import { getPrompt } from "@/services/prompt.service";
 
 // Disable static generation - this page uses server-side API calls that shouldn't run during build
@@ -8,7 +9,15 @@ export const dynamic = "force-dynamic";
 export default async function HomePage() {
   const [promptResult, trendsResult] = await Promise.allSettled([
     getPrompt(true),
-    getAgentTrends({ limit: 5 }, true),
+    getAgents(
+      {
+        page: 1,
+        limit: 5,
+        sortBy: "SHARE_PRICE",
+        sortOrder: "DESC",
+      },
+      true,
+    ),
   ]);
 
   const response =
@@ -18,7 +27,9 @@ export default async function HomePage() {
   }
 
   const defaultTrends =
-    trendsResult.status === "fulfilled" ? trendsResult.value : null;
+    trendsResult.status === "fulfilled"
+      ? (trendsResult.value.data as GetAgentsResponse)
+      : null;
   if (trendsResult.status === "rejected") {
     console.error("Error fetching trends:", trendsResult.reason);
   }
@@ -26,7 +37,7 @@ export default async function HomePage() {
   return (
     <Home
       defaultPrompt={(response as any) || ""}
-      defaultTrends={defaultTrends?.data || { data: [], total: 0 }}
+      defaultTrends={defaultTrends || []}
     />
   );
 }

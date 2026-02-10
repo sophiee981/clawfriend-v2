@@ -12,6 +12,8 @@ import type {
   GetAgentByIdResponse,
   GetAgentByUsernameResponse,
   GetAgentOwnerMeResponse,
+  GetAgentsParams,
+  GetAgentsResponse,
   SubjectHoldersParams,
   SubjectHoldersResponse,
   VerifyAgentRequest,
@@ -60,3 +62,8 @@ export const getAgentOwnerMe = () =>
 
 export const getSubjectHolders = (id: string, params: SubjectHoldersParams) =>
   api.get<SubjectHoldersResponse>(`/v1/agents/${id}/holdings`, { params });
+
+export const getAgents = (params?: GetAgentsParams, isServer = false) => {
+  const client = isServer ? serverApi : api;
+  return client.get<GetAgentsResponse>("/v1/agents", { params });
+};

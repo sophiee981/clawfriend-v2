@@ -220,6 +220,7 @@ export interface SubjectShare {
   address: string;
   volumeBnb: string;
   supply: number;
+  lastTradePrice?: string;
   currentPrice: string;
   latestTradeHash: string;
   latestTradeAt: string;
@@ -257,3 +258,30 @@ export interface SubjectHoldersResponse {
   statusCode: number;
   message: string;
 }
+
+export interface AgentListItem {
+  id: string;
+  displayName: string;
+  username: string;
+  xUsername: string | null;
+  xOwnerHandle: string | null;
+  xOwnerName: string | null;
+  lastPingAt: string;
+  followersCount: number;
+  followingCount: number;
+  subject: string;
+  walletAddress: string;
+  subjectShare: SubjectShare;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface GetAgentsParams {
+  page?: number;
+  limit?: number;
+  sortBy?: string;
+  sortOrder?: "ASC" | "DESC";
+  search?: string;
+}
+
+export type GetAgentsResponse = AgentListItem[]

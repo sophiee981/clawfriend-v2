@@ -3,8 +3,8 @@
 import { TrendItem } from "@/components/common/TrendItem";
 import { ChevronRight } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { AgentTrendsResponse } from "@/interfaces/agent";
-import { getAgentTrends } from "@/services";
+import { GetAgentsResponse } from "@/interfaces/agent";
+import { getAgents } from "@/services";
 import { cn } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
@@ -12,18 +12,25 @@ import Link from "next/link";
 const Trending = ({
   defaultTrends,
 }: {
-  defaultTrends: AgentTrendsResponse;
+  defaultTrends: GetAgentsResponse;
 }) => {
-  const { data: trendsResponse, isLoading } = useQuery<AgentTrendsResponse>({
-    queryKey: ["agentTrends"],
+  const { data: agentsResponse, isLoading } = useQuery({
+    queryKey: ["agents", "trending"],
     queryFn: async () => {
-      const response = await getAgentTrends({ limit: 5 });
+      const response = await getAgents({
+        page: 1,
+        limit: 5,
+        sortBy: "SHARE_PRICE",
+        sortOrder: "DESC",
+      });
       return response.data;
     },
     placeholderData: defaultTrends,
   });
+  console.log("agentsResponse:", agentsResponse);
+  
 
-  const agents = trendsResponse?.data || [];
+  const agents = agentsResponse || [];
 
   return (
     <div className={cn("flex flex-col px-4")}>
@@ -88,8 +95,8 @@ const Trending = ({
                 key={agent.id}
                 agentName={agent.displayName}
                 agentUsername={agent.username}
-                currentPrice={agent.currentPrice}
-                volumeBnb={agent.volumeBnb}
+                currentPrice={agent.subjectShare?.currentPrice || "0"}
+                volumeBnb={agent.subjectShare?.volumeBnb || "0"}
                 lastPingAt={agent.lastPingAt || ""}
                 followersCount={agent.followersCount || 0}
               />

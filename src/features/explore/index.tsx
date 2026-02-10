@@ -3,10 +3,10 @@
 import RightSide from "@/components/common/RightSide";
 import {
   AgentBalanceLeaderboard,
-  AgentTrend,
-  AgentsSummaryResponse,
+  AgentListItem,
+  GetAgentsResponse,
 } from "@/interfaces/agent";
-import { getAgentTrends, getAgentsSummary } from "@/services";
+import { getAgents } from "@/services";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -32,23 +32,17 @@ export const Explore = ({
 
   const { data, isLoading } = useQuery({
     queryKey: hasSearch
-      ? ["agentsSummaryExplore", activeSearch]
-      : ["agentTrendsExplore"],
+      ? ["agentsExplore", activeSearch]
+      : ["agentsExplore", "trending"],
     queryFn: async () => {
-      if (hasSearch) {
-        const response = await getAgentsSummary({
-          page: 1,
-          limit: 20,
-          search: activeSearch,
-        });
-        return response as unknown as AgentsSummaryResponse;
-      } else {
-        const response = await getAgentTrends({
-          // page: 1,
-          limit: 10,
-        });
-        return response as any;
-      }
+      const response = await getAgents({
+        page: 1,
+        limit: hasSearch ? 20 : 10,
+        sortBy: "SHARE_PRICE",
+        sortOrder: "DESC",
+        ...(hasSearch && { search: activeSearch }),
+      });
+      return response.data;
     },
     enabled: true,
     staleTime: 5 * 60 * 1000, // Cache data for 5 minutes
@@ -57,46 +51,23 @@ export const Explore = ({
 
   // Map response to AgentBalanceLeaderboard format for compatibility - memoized for performance
   const agents: AgentBalanceLeaderboard[] = useMemo(() => {
-    if (hasSearch) {
-      // Map AgentsSummaryResponse to AgentBalanceLeaderboard format
-      const responseData = data as AgentsSummaryResponse | undefined;
-      const summaryData = responseData?.data?.data ?? [];
-      return summaryData.map((summary) => ({
-        agentId: summary.id,
-        agentDisplayName: summary.displayName,
-        agentUsername: summary.username,
-        agentXUsername: summary.xOwnerHandle,
-        agentXOwnerHandle: summary.xOwnerHandle,
-        agentXOwnerName: summary.xOwnerName,
-        balance: summary.volumeBnb,
-        volumeBnb: summary.volumeBnb,
-        currentPrice: summary.currentPrice,
-        walletAddress: summary.subject,
-        lastPingAt: summary.lastPingAt,
-        rank: 0, // Summary doesn't have rank
-        followersCount: summary.followersCount,
-      }));
-    } else {
-      // Map AgentTrend to AgentBalanceLeaderboard format
-      const responseData = data;
-      const trendsData: AgentTrend[] = responseData?.data?.data ?? [];
-      return trendsData.map((trend) => ({
-        agentId: trend.id,
-        agentDisplayName: trend.displayName,
-        agentUsername: trend.username,
-        agentXUsername: trend.xOwnerHandle,
-        agentXOwnerHandle: trend.xOwnerHandle,
-        agentXOwnerName: trend.xOwnerName,
-        balance: trend.volumeBnb,
-        volumeBnb: trend.volumeBnb,
-        currentPrice: trend.currentPrice,
-        walletAddress: trend.subject,
-        lastPingAt: trend.lastPingAt,
-        rank: 0, // Trends don't have rank
-        followersCount: trend.followersCount,
-      }));
-    }
-  }, [data, hasSearch]);
+    const agentsData = (data as GetAgentsResponse | undefined) ?? [];
+    return agentsData.map((agent: AgentListItem) => ({
+      agentId: agent.id,
+      agentDisplayName: agent.displayName,
+      agentUsername: agent.username,
+      agentXUsername: agent.xOwnerHandle,
+      agentXOwnerHandle: agent.xOwnerHandle,
+      agentXOwnerName: agent.xOwnerName,
+      balance: agent.subjectShare?.volumeBnb || "0",
+      volumeBnb: agent.subjectShare?.volumeBnb || "0",
+      currentPrice: agent.subjectShare?.currentPrice || "0",
+      walletAddress: agent.walletAddress,
+      lastPingAt: agent.lastPingAt,
+      rank: 0, // Agents don't have rank
+      followersCount: agent.followersCount,
+    }));
+  }, [data]);
 
   // Load recent searches from localStorage on mount
   useEffect(() => {
@@ -113,7 +84,7 @@ export const Explore = ({
   // Save recent searches to localStorage (max 100 items) - debounced to avoid excessive writes
   useEffect(() => {
     if (recentSearches.length === 0) return;
-    
+
     const timer = setTimeout(() => {
       localStorage.setItem(
         "explore_recent_searches",
