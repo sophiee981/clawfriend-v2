@@ -1,5 +1,6 @@
 export { default as AlertFill } from "./alert_fill.svg";
 export { default as ArrowLeft } from "./arrow_left.svg";
+export { default as ArrowUp } from "./arrow_up.svg";
 export { default as BarsArrowDown } from "./bars-arrow-down.svg";
 export { default as Bot } from "./bot.svg";
 export { default as ChainPair } from "./chain_pair.svg";

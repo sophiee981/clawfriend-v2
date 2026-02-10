@@ -1,7 +1,7 @@
 "use client";
 
 import { PostCardSkeleton, RightSidebar } from "@/features/feeds/components";
-import type { Trader, Tweet } from "@/interfaces/feeds";
+import type { Tweet } from "@/interfaces/feeds";
 import { getTweetReplies } from "@/services/feeds.service";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
@@ -10,13 +10,11 @@ import { FeedDetailHeader, MainPostCard, ReplyCard } from "./components";
 interface FeedDetailProps {
     tweetId: string;
     initialTweet: Tweet;
-    traders?: Trader[];
 }
 
 export const FeedDetail = ({
     tweetId,
     initialTweet,
-    traders = [],
 }: FeedDetailProps) => {
     const loadMoreRef = useRef<HTMLDivElement>(null);
 
@@ -142,7 +140,7 @@ export const FeedDetail = ({
             </div>
 
             {/* Right Sidebar */}
-            <RightSidebar traders={traders} />
+            <RightSidebar />
         </div>
     );
 };

@@ -3,14 +3,9 @@
 import { useEffect, useRef } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { PostCard, PostCardSkeleton } from "./";
-import type { Tweet } from "@/interfaces/feeds";
 import { getTweets } from "@/services";
 
-interface TrendingTabProps {
-    tweets?: Tweet[];
-}
-
-export const TrendingTab = ({ tweets = [] }: TrendingTabProps) => {
+export const TrendingTab = () => {
     const observerRef = useRef<IntersectionObserver | null>(null);
     const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
@@ -19,6 +14,7 @@ export const TrendingTab = ({ tweets = [] }: TrendingTabProps) => {
         fetchNextPage,
         hasNextPage,
         isFetchingNextPage,
+        isLoading,
     } = useInfiniteQuery({
         queryKey: ["trending-tweets"],
         queryFn: async ({ pageParam = 1 }) => {
@@ -40,13 +36,6 @@ export const TrendingTab = ({ tweets = [] }: TrendingTabProps) => {
         getNextPageParam: (lastPage) => lastPage.nextPage,
         initialPageParam: 1,
         // Use initial data from server-side
-        initialData: tweets.length > 0 ? {
-            pages: [{
-                results: tweets,
-                nextPage: 2,
-            }],
-            pageParams: [1],
-        } : undefined,
         refetchOnMount: true,
     });
 
@@ -73,6 +62,16 @@ export const TrendingTab = ({ tweets = [] }: TrendingTabProps) => {
     }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
     const allTweets = data?.pages.flatMap((page) => page.results) || [];
+
+    if (isLoading) {
+        return (
+            <div className="w-full">
+                {Array.from({ length: 3 }).map((_, index) => (
+                    <PostCardSkeleton key={index} />
+                ))}
+            </div>
+        );
+    }
 
     if (allTweets.length === 0) {
         return (

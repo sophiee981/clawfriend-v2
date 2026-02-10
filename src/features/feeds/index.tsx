@@ -10,19 +10,13 @@ import {
   NowTab,
   RightSidebar,
 } from "./components";
-import type { Tweet, Trader } from "@/interfaces/feeds";
 import { useExchangeRateStore } from "@/stores/exchange-rate.store";
 
 type TabType = "trending" | "for-you" | "now";
 
-interface FeedsProps {
-  initialTweets: Tweet[];
-  initialTraders: Trader[];
-}
-
 const VALID_TABS: TabType[] = ["trending", "for-you", "now"];
 
-export const Feeds = ({ initialTweets, initialTraders }: FeedsProps) => {
+export const Feeds = () => {
   const { fetchExchangeRate } = useExchangeRateStore();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -122,14 +116,14 @@ export const Feeds = ({ initialTweets, initialTraders }: FeedsProps) => {
           ref={contentRef}
           className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide"
         >
-          {activeTab === "trending" && <TrendingTab tweets={initialTweets} />}
+          {activeTab === "trending" && <TrendingTab />}
           {activeTab === "for-you" && <ForYouTab />}
           {activeTab === "now" && <NowTab />}
         </div>
-      </div>
 
+      </div>
       {/* Right Sidebar */}
-      <RightSidebar traders={initialTraders} />
+      <RightSidebar />
     </div>
   );
 };
