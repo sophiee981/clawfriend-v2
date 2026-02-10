@@ -1,9 +1,9 @@
-import { getTweets } from "@/services";
+import { getTweetById } from "@/services";
 import type { Tweet } from "@/interfaces/feeds";
 import { notFound } from "next/navigation";
 import { FeedDetail } from "@/features/feed-detail";
-import { mockPosts } from "@/features/feeds/data/mockPosts";
-import { mockReplies } from "@/features/feed-detail/mockReplies";
+import type { Metadata } from "next";
+import { cache } from "react";
 
 interface FeedDetailPageProps {
     params: Promise<{
@@ -11,52 +11,63 @@ interface FeedDetailPageProps {
     }>;
 }
 
+// Cache the tweet fetch to reuse between generateMetadata and page component
+const getCachedTweet = cache(async (id: string): Promise<Tweet | null> => {
+    try {
+        const tweetResponse = await getTweetById(id, true) as any;
+
+        if (tweetResponse?.data?.id) {
+            return tweetResponse.data as Tweet;
+        }
+        return null;
+    } catch (error) {
+        console.error("Error fetching tweet:", error);
+        return null;
+    }
+});
+
+export async function generateMetadata({ params }: FeedDetailPageProps): Promise<Metadata> {
+    const { id } = await params;
+    const tweet = await getCachedTweet(id);
+
+    if (tweet) {
+        // Get first image from medias if available
+        const firstImage = tweet.medias?.find((media) => media.type === "image")?.url;
+
+        return {
+            title: tweet.content || "Tweet",
+            description: tweet.content || "View this tweet",
+            openGraph: {
+                title: `${tweet.agent?.displayName} (@${tweet.agent?.username}) on ClawFriend` || "Tweet",
+                description: tweet.content || "View this tweet",
+                images: firstImage ? [firstImage] : [],
+                siteName: "ClawFriend",
+                url: `https://clawfriend.com/feeds/${id}`,
+            },
+            twitter: {
+                card: "summary_large_image",
+                title: `${tweet.agent?.displayName} (@${tweet.agent?.username}) on ClawFriend` || "Tweet",
+                description: tweet.content || "View this tweet",
+                images: firstImage ? [firstImage] : [],
+                site: "@ClawFriend",
+            },
+        };
+    }
+
+    return {
+        title: "Tweet",
+        description: "View this tweet",
+    };
+}
+
 export default async function FeedDetailPage({ params }: FeedDetailPageProps) {
     const { id } = await params;
 
-    let tweet: Tweet | null = null;
-    let replies: Tweet[] = [];
-    let tweets: Tweet[] = [];
-
-    try {
-        // Fetch all tweets from API
-        const response = await getTweets(
-            {
-                page: 1,
-                limit: 100,
-                onlyRootTweets: false,
-            },
-            true
-        ) as any;
-
-        // Check if API call was successful
-        if (response?.data && Array.isArray(response.data)) {
-            tweets = response.data;
-        } else {
-            // Fallback to mock data if API fails
-            console.log("Using mock data as fallback");
-            tweets = mockPosts;
-        }
-    } catch (error) {
-        console.error("Error fetching tweets:", error);
-        // Fallback to mock data on error
-        tweets = mockPosts;
-    }
-
-    // Find the tweet by id
-    tweet = tweets.find((t) => t.id === id) || null;
+    // Reuse cached tweet from generateMetadata
+    const tweet = await getCachedTweet(id);
 
     if (!tweet) {
         notFound();
     }
-
-    // Get replies (tweets with parentTweetId matching this tweet's id)
-    replies = tweets.filter((t) => t.parentTweetId === id);
-
-    // If no replies from API, use mock replies for demo
-    if (replies.length === 0) {
-        replies = mockReplies;
-    }
-
-    return <FeedDetail tweet={tweet} replies={replies} />;
+    return <FeedDetail tweetId={id} initialTweet={tweet} />;
 }

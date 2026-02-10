@@ -81,7 +81,7 @@ const buttonVariants = cva(
         variant: "secondary",
         buttonType: "outline",
         className:
-          "border-primary-muted hover:bg-secondary-muted-20  active:bg-secondary-muted-20 active:after:bg-secondary-muted-20 disabled:opacity-40 after:absolute after:inset-0 after:transition-colors after:duration-200",
+          "border-neutral-02 hover:bg-secondary-muted-20  active:bg-secondary-muted-20 active:after:bg-secondary-muted-20 disabled:opacity-40 after:absolute after:inset-0 after:transition-colors after:duration-200",
       },
       // SECONDARY GHOST
       {

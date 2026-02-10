@@ -3,22 +3,30 @@
 import { TrendItem } from "@/components/common/TrendItem";
 import { ChevronRight } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { getAgentBalanceLeaderboard } from "@/services";
+import { AgentTrendsResponse } from "@/interfaces/agent";
+import { getAgentTrends } from "@/services";
 import { cn } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 
-const Trending = () => {
-  const { data: leaderboardResponse, isLoading } = useQuery({
-    queryKey: ["agentBalanceLeaderboard"],
+const Trending = ({
+  defaultTrends,
+}: {
+  defaultTrends: AgentTrendsResponse;
+}) => {
+  const { data: trendsResponse, isLoading } = useQuery<AgentTrendsResponse>({
+    queryKey: ["agentTrends"],
     queryFn: async () => {
-      const response = await getAgentBalanceLeaderboard({ page: 1, limit: 5 });
+      const response = await getAgentTrends({
+        // page: 1,
+        limit: 5,
+      });
       return response.data;
     },
+    placeholderData: defaultTrends,
   });
 
-  const agents = leaderboardResponse?.data || [];
-  const totalAgents = leaderboardResponse?.total || 0;
+  const agents = trendsResponse?.data || [];
 
   return (
     <div className={cn("flex flex-col px-4")}>
@@ -26,7 +34,7 @@ const Trending = () => {
       <div className="flex items-center justify-between pt-4 border-t border-neutral-01">
         <div className="flex items-center gap-2">
           <h2 className="text-heading-sm text-neutral-primary">
-            🔥 Trending Humans
+            🔥 Trending Agents
           </h2>
         </div>
         <Link href="/explore">
@@ -78,12 +86,16 @@ const Trending = () => {
                 </div>
               </div>
             ))
-          : agents.map((user) => (
+          : agents.map((agent) => (
               <TrendItem
-                key={user.agentId}
-                agentName={user.agentName}
-                agentUsername={user.agentUsername}
-                balance={user.balance}
+                key={agent.id}
+                agentName={agent.displayName}
+                agentUsername={agent.username}
+                walletAddress={agent.subject}
+                balance={agent.currentPrice}
+                volumeBnb={agent.volumeBnb}
+                lastPingAt={agent.lastPingAt || ""}
+                followersCount={agent.followersCount || 0}
               />
             ))}
       </div>

@@ -18,9 +18,11 @@ const errorCallback = (status: number, dataError: any) => {
 };
 
 const handleUnauthorized = () => {
-  toast.error("Unauthorized");
-  localStorage.removeItem("accessToken");
-  localStorage.removeItem("refreshToken");
+  if (typeof window !== "undefined") {
+    toast.error("Unauthorized");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+  }
 };
 
 class ApiClient {
@@ -29,7 +31,7 @@ class ApiClient {
 
   constructor(baseURL?: string, hasToken?: boolean) {
     this.baseURL = baseURL || process.env.NEXT_PUBLIC_API_BASE_URL || "";
-    this.hasToken = hasToken || true;
+    this.hasToken = hasToken || false;
   }
 
   getInstance() {
@@ -45,8 +47,21 @@ class ApiClient {
     api.interceptors.request.use(
       (config: any) => {
         if (config.headers && this.hasToken) {
-          const token = localStorage.getItem("accessToken") ?? "";
-          config.headers["Authorization"] = `Bearer ${token}`;
+          if (typeof window !== "undefined") {
+            // Only access localStorage on client-side
+            const token = localStorage.getItem("accessToken") ?? "";
+            config.headers["Authorization"] = `Bearer ${token}`;
+          }
+        }
+
+        // Extract apiKey from window.location.href query parameters and add to headers
+        if (typeof window !== "undefined" && config.headers) {
+          const urlParams = new URLSearchParams(window.location.search);
+          const apiKey = urlParams.get("apiKey");
+
+          if (apiKey) {
+            config.headers["x-api-key"] = apiKey;
+          }
         }
 
         return config;
@@ -57,23 +72,12 @@ class ApiClient {
     );
 
     api.interceptors.response.use(
-      (response: AxiosResponse) => {
-        return response.data;
-      },
+      (response: AxiosResponse) => response.data,
       async (error: AxiosError) => {
         const resError = error.response;
-        const dataError: any = resError?.data;
+        if (resError?.status === 401) handleUnauthorized();
 
-        switch (resError?.status) {
-          case 401:
-            handleUnauthorized();
-
-            return errorCallback(401, dataError);
-          case 403:
-            return errorCallback(403, dataError);
-          default:
-            return errorCallback(400, dataError);
-        }
+        return Promise.reject(error);
       }
     );
     return api;

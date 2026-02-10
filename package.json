@@ -5,14 +5,14 @@
   "description": "App frontend - Using Funnel Sans from Google Fonts",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build && node scripts/prepush-dev-to-prod.js",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate:icons": "node scripts/generate-icons.js && node scripts/update-icons.js",
-    "prepush:check-dev": "node scripts/prepush-dev-to-prod.js",
-    "prepare": "husky"
+    "typecheck": "tsc --noEmit",
+    "generate:icons": "node scripts/generate-icons.js && node scripts/update-icons.js"
   },
   "dependencies": {
+    "@bprogress/next": "^3.2.12",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-dropdown-menu": "^2.1.16",
     "@radix-ui/react-slot": "^1.2.4",
@@ -23,11 +23,20 @@
     "axios": "^1.13.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "decimal.js": "^10.6.0",
+    "lucide-react": "^0.563.0",
     "next": "^16.1.6",
     "next-themes": "^0.4.6",
     "postcss": "^8.5.6",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "react-markdown": "^9.0.1",
+    "remark-gfm": "^4.0.0",
+    "rehype-highlight": "^7.0.0",
+    "rehype-raw": "^7.0.0",
+    "@uiw/react-md-editor": "^3.25.0",
+    "highlight.js": "^11.10.0",
+    "@tailwindcss/typography": "^0.5.15",
     "sass": "^1.97.3",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0",
@@ -44,7 +53,6 @@
     "@types/react-dom": "^19",
     "eslint": "^9.39.2",
     "eslint-config-next": "^16.1.6",
-    "husky": "^9.1.7",
     "tailwind-scrollbar": "^3.0.0",
     "typescript": "^5.9.3"
   }

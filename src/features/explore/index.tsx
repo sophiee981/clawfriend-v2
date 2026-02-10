@@ -1,38 +1,104 @@
 "use client";
 
-import { Empty } from "@/components/common/Empty";
 import RightSide from "@/components/common/RightSide";
-import { TrendItem } from "@/components/common/TrendItem";
 import {
-  BarsArrowDown,
-  Clock,
-  MagnifyingGlass,
-  XMark,
-} from "@/components/icons";
-import { Input } from "@/components/ui/input";
-import { getAgentBalanceLeaderboard } from "@/services";
+  AgentBalanceLeaderboard,
+  AgentTrend,
+  AgentsSummaryResponse,
+} from "@/interfaces/agent";
+import { getAgentTrends, getAgentsSummary } from "@/services";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import {
+  ExploreMobile,
+  RecentSearches,
+  SearchInput,
+  TrendsHeader,
+  TrendsList,
+} from "./components";
 
-export const Explore = () => {
+export const Explore = ({
+  isSearchPage = false,
+}: {
+  isSearchPage?: boolean;
+}) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeSearch, setActiveSearch] = useState("");
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [suggestions, setSuggestions] = useState<string[]>([]);
+  const isSearchingRef = useRef(false);
 
-  const { data: leaderboardResponse, isLoading } = useQuery({
-    queryKey: ["agentBalanceLeaderboard"],
+  // Use search endpoint if activeSearch exists, otherwise use trends endpoint
+  const hasSearch = activeSearch.trim().length > 0;
+
+  const { data, isLoading } = useQuery({
+    queryKey: hasSearch
+      ? ["agentsSummaryExplore", activeSearch]
+      : ["agentTrendsExplore"],
     queryFn: async () => {
-      const response = await getAgentBalanceLeaderboard({
-        page: 1,
-        limit: 5,
-      });
-      return response.data;
+      if (hasSearch) {
+        const response = await getAgentsSummary({
+          page: 1,
+          limit: 20,
+          search: activeSearch,
+        });
+        return response as unknown as AgentsSummaryResponse;
+      } else {
+        const response = await getAgentTrends({
+          // page: 1,
+          limit: 10,
+        });
+        return response as any;
+      }
     },
+    enabled: true,
+    staleTime: 5 * 60 * 1000, // Cache data for 5 minutes
+    refetchOnMount: true,
   });
 
-  const agents = leaderboardResponse?.data || [];
-  const totalAgents = leaderboardResponse?.total || 0;
+  // Map response to AgentBalanceLeaderboard format for compatibility
+  let agents: AgentBalanceLeaderboard[] = [];
+
+  if (hasSearch) {
+    // Map AgentsSummaryResponse to AgentBalanceLeaderboard format
+    const responseData = data as AgentsSummaryResponse | undefined;
+    const summaryData = responseData?.data?.data ?? [];
+    agents = summaryData.map((summary) => ({
+      agentId: summary.id,
+      agentDisplayName: summary.displayName,
+      agentUsername: summary.username,
+      agentXUsername: summary.xOwnerHandle,
+      agentXOwnerHandle: summary.xOwnerHandle,
+      agentXOwnerName: summary.xOwnerName,
+      balance: summary.volumeBnb,
+      volumeBnb: summary.volumeBnb,
+      currentPrice: summary.currentPrice,
+      walletAddress: summary.subject,
+      lastPingAt: summary.lastPingAt,
+      rank: 0, // Summary doesn't have rank
+      followersCount: summary.followersCount,
+    }));
+  } else {
+    console.log(data);
+    // Map AgentTrend to AgentBalanceLeaderboard format
+    const responseData = data;
+    const trendsData: AgentTrend[] = responseData?.data?.data ?? [];
+    agents = trendsData.map((trend) => ({
+      agentId: trend.id,
+      agentDisplayName: trend.displayName,
+      agentUsername: trend.username,
+      agentXUsername: trend.xOwnerHandle,
+      agentXOwnerHandle: trend.xOwnerHandle,
+      agentXOwnerName: trend.xOwnerName,
+      balance: trend.volumeBnb,
+      volumeBnb: trend.volumeBnb,
+      currentPrice: trend.currentPrice,
+      walletAddress: trend.subject,
+      lastPingAt: trend.lastPingAt,
+      rank: 0, // Trends don't have rank
+      followersCount: trend.followersCount,
+    }));
+  }
 
   // Load recent searches from localStorage on mount
   useEffect(() => {
@@ -51,29 +117,49 @@ export const Explore = () => {
     if (recentSearches.length > 0) {
       localStorage.setItem(
         "explore_recent_searches",
-        JSON.stringify(recentSearches)
+        JSON.stringify(recentSearches),
       );
     }
   }, [recentSearches]);
 
   // Show suggestions when typing matches history
+  // Skip when activeSearch exists or when searching to prevent flicker
   useEffect(() => {
+    // Don't show suggestions if we're currently searching or have an active search
+    if (isSearchingRef.current || activeSearch) {
+      setSuggestions([]);
+      return;
+    }
+
     if (searchQuery.trim()) {
       const matched = recentSearches.filter((search) =>
-        search.toLowerCase().includes(searchQuery.toLowerCase())
+        search.toLowerCase().includes(searchQuery.toLowerCase()),
       );
       setSuggestions(matched.slice(0, 5)); // Show max 5 suggestions
     } else {
       setSuggestions([]);
     }
-  }, [searchQuery, recentSearches]);
+  }, [searchQuery, recentSearches, activeSearch]);
+
+  // Reset activeSearch when searchQuery is cleared
+  useEffect(() => {
+    if (!searchQuery.trim() && activeSearch) {
+      setActiveSearch("");
+    }
+  }, [searchQuery, activeSearch]);
 
   const handleSearch = (query: string) => {
     const trimmedQuery = query.trim();
     if (!trimmedQuery) return;
 
-    // Set active search for filtering
+    // Set flag to prevent useEffect from updating suggestions
+    isSearchingRef.current = true;
+
+    // Set active search first to prevent useEffect from updating suggestions
     setActiveSearch(trimmedQuery);
+
+    // Clear suggestions to prevent flicker
+    setSuggestions([]);
 
     // Save to recent searches (max 100 items)
     setRecentSearches((prev) => {
@@ -83,8 +169,10 @@ export const Explore = () => {
       return [trimmedQuery, ...filtered].slice(0, 100);
     });
 
-    // Clear suggestions after search
-    setSuggestions([]);
+    // Reset flag after a short delay to allow state updates to complete
+    setTimeout(() => {
+      isSearchingRef.current = false;
+    }, 100);
   };
 
   const handleRemoveRecentSearch = (search: string) => {
@@ -97,134 +185,62 @@ export const Explore = () => {
   };
 
   const handleRecentSearchClick = (search: string) => {
-    setSearchQuery(search);
+    // Set activeSearch first to prevent useEffect from showing suggestions
     handleSearch(search);
+    // Then update searchQuery to show in input
+    setSearchQuery(search);
   };
 
   const handleSuggestionClick = (suggestion: string) => {
-    setSearchQuery(suggestion);
+    // Set activeSearch first to prevent useEffect from showing suggestions
     handleSearch(suggestion);
+    // Then update searchQuery to show in input
+    setSearchQuery(suggestion);
   };
-
-  // Display only 3 most recent searches
-  const displayedRecentSearches = recentSearches.slice(0, 3);
-
   return (
     <div className="flex h-full overflow-hidden">
-      <div className="flex h-full flex-col flex-1">
-        {/* Search Input */}
-        <div className="border-b border-neutral-01 px-4 py-4">
-          <div className="relative">
-            <MagnifyingGlass className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-neutral-tertiary" />
-            <Input
-              type="text"
-              placeholder="Search by profile"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && searchQuery.trim()) {
-                  handleSearch(searchQuery);
-                }
-              }}
-              className="pl-11 pr-4"
-            />
-            {/* Suggestions Dropdown */}
-            {suggestions.length > 0 && (
-              <div className="absolute left-0 right-0 top-full z-10 mt-1 max-h-60 overflow-y-auto rounded-lg border border-neutral-01 bg-neutral-02 shadow-lg">
-                {suggestions.map((suggestion) => (
-                  <button
-                    key={suggestion}
-                    onClick={() => handleSuggestionClick(suggestion)}
-                    className="flex w-full items-center gap-2 px-4 py-2 text-left hover:bg-neutral-01"
-                  >
-                    <MagnifyingGlass className="h-4 w-4 shrink-0 text-neutral-tertiary" />
-                    <span className="text-body-md text-neutral-primary">
-                      {suggestion}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
+      <div
+        className={`flex h-full flex-col mt-4 flex-1 ${!isSearchPage ? "max-sm:hidden" : "w-full"}`}
+      >
+        <SearchInput
+          value={searchQuery}
+          onChange={setSearchQuery}
+          onSearch={handleSearch}
+        />
 
-        {/* Recent Search Section */}
-        {displayedRecentSearches.length > 0 && (
-          <div className="border-b border-neutral-01 px-4 py-4">
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center justify-between">
-                <span className="text-label-sm font-medium text-neutral-primary">
-                  Recent search
-                </span>
-                <button
-                  onClick={handleClearAll}
-                  className="text-label-sm font-medium text-danger hover:opacity-80"
-                >
-                  Clear all
-                </button>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {displayedRecentSearches.map((search) => (
-                  <button
-                    key={search}
-                    onClick={() => handleRecentSearchClick(search)}
-                    className="flex items-center gap-2 rounded-lg border border-neutral-01 bg-neutral-01 px-3 py-2 transition-colors hover:bg-neutral-02"
-                  >
-                    <Clock className="h-4 w-4 shrink-0 text-neutral-tertiary" />
-                    <span className="text-body-md text-neutral-primary">
-                      {search}
-                    </span>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleRemoveRecentSearch(search);
-                      }}
-                      className="ml-1 shrink-0"
-                    >
-                      <XMark className="h-4 w-4 text-neutral-tertiary hover:text-neutral-primary" />
-                    </button>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
+        <RecentSearches
+          suggestions={suggestions}
+          recentSearches={recentSearches}
+          onSuggestionClick={handleSuggestionClick}
+          onRecentSearchClick={handleRecentSearchClick}
+          onRemoveRecentSearch={handleRemoveRecentSearch}
+          onClearAll={handleClearAll}
+        />
 
-        {/* Tab Header */}
-        <div className="flex items-center justify-between border-b border-neutral-01 px-4 py-4">
-          <h2 className="text-heading-sm font-medium text-neutral-primary">
-            Trends for you
-          </h2>
-          <button className="flex items-center justify-end gap-2">
-            <BarsArrowDown className="h-5 w-5 text-neutral-tertiary" />
-          </button>
-        </div>
+        <TrendsHeader />
 
-        {/* KOL List */}
-        <div className="flex-1 overflow-y-auto px-4 py-4">
-          <div className="flex flex-col gap-4">
-            {isLoading ? (
-              <div className="flex items-center justify-center py-8">
-                <span className="text-body-md text-neutral-tertiary">
-                  Loading...
-                </span>
-              </div>
-            ) : agents.length > 0 ? (
-              agents.map((agent) => (
-                <TrendItem
-                  key={agent.agentId}
-                  agentName={agent.agentName}
-                  agentUsername={agent.agentUsername}
-                  balance={agent.balance}
-                />
-              ))
-            ) : (
-              <Empty text="No trends found" />
-            )}
-          </div>
-        </div>
+        <TrendsList
+          agents={agents}
+          isLoading={isLoading}
+          hasNextPage={false}
+          isFetchingNextPage={false}
+          onLoadMore={() => { }}
+        />
       </div>
-      <RightSide />
+      <div className="hidden sm:block">
+        <RightSide />
+      </div>
+      <div
+        className={`block sm:hidden w-full ${isSearchPage ? "hidden" : "w-full"}`}
+      >
+        <ExploreMobile
+          agents={agents}
+          isLoading={isLoading}
+          hasNextPage={false}
+          isFetchingNextPage={false}
+          onLoadMore={() => { }}
+        />
+      </div>
     </div>
   );
 };

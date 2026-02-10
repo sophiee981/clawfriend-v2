@@ -58,13 +58,13 @@ const badgeVariants = cva(
         variant: "secondary",
         type: "tonal",
         className:
-          "bg-secondary-muted-20 text-neutral-secondary hover:bg-secondary-muted-20/150",
+          "bg-secondary-muted-20 text-neutral-secondary hover:bg-secondary-muted-10",
       },
       {
         variant: "secondary",
         type: "outline",
         className:
-          "text-neutral-secondary border-secondary-muted hover:bg-secondary-muted-10",
+          "text-neutral-secondary border border-neutral-02 hover:bg-secondary-muted-10",
       },
       // Success variants
       {
@@ -139,96 +139,81 @@ const badgeVariants = cva(
       {
         variant: "custom-yellow",
         type: "fill",
-        className:
-          "bg-custom-yellow text-neutral-onColor hover:bg-custom-yellow/80",
+        className: "bg-yellow text-neutral-onColor hover:bg-yellow/80",
       },
       {
         variant: "custom-yellow",
         type: "tonal",
-        className:
-          "bg-custom-yellow-muted text-custom-yellow hover:bg-custom-yellow-muted/150",
+        className: "bg-yellow-muted text-yellow hover:bg-yellow-muted/150",
       },
       {
         variant: "custom-yellow",
         type: "outline",
-        className:
-          "text-custom-yellow border-custom-yellow-muted hover:bg-custom-yellow-5",
+        className: "text-yellow border-yellow-muted hover:bg-yellow-5",
       },
       // Custom Lime variants
       {
         variant: "custom-lime",
         type: "fill",
-        className:
-          "bg-custom-lime text-neutral-onColor hover:bg-custom-lime/80",
+        className: "bg-lime text-neutral-onColor hover:bg-lime/80",
       },
       {
         variant: "custom-lime",
         type: "tonal",
-        className:
-          "bg-custom-lime-muted text-custom-lime hover:bg-custom-lime-muted/150",
+        className: "bg-lime-muted text-lime hover:bg-lime-muted/150",
       },
       {
         variant: "custom-lime",
         type: "outline",
-        className:
-          "text-custom-lime border-custom-lime-muted hover:bg-custom-lime-muted",
+        className: "text-lime border-lime-muted hover:bg-lime-muted",
       },
       // Custom Teal variants
       {
         variant: "custom-teal",
         type: "fill",
-        className:
-          "bg-custom-teal text-neutral-onColor hover:bg-custom-teal/80",
+        className: "bg-teal text-neutral-onColor hover:bg-teal/80",
       },
       {
         variant: "custom-teal",
         type: "tonal",
-        className:
-          "bg-custom-teal-muted text-custom-teal hover:bg-custom-teal-muted/150",
+        className: "bg-teal-muted text-teal hover:bg-teal-muted/150",
       },
       {
         variant: "custom-teal",
         type: "outline",
-        className:
-          "text-custom-teal border-custom-teal-muted hover:bg-custom-teal-muted",
+        className: "text-teal border-teal-muted hover:bg-teal-muted",
       },
       // Custom Indigo variants
       {
         variant: "custom-indigo",
         type: "fill",
-        className:
-          "bg-custom-indigo text-neutral-onColor hover:bg-custom-indigo/80",
+        className: "bg-indigo text-neutral-onColor hover:bg-indigo/80",
       },
       {
         variant: "custom-indigo",
         type: "tonal",
-        className:
-          "bg-custom-indigo-muted text-custom-indigo hover:bg-custom-indigo-muted/150",
+        className: "bg-indigo-muted text-indigo hover:bg-indigo-muted/150",
       },
       {
         variant: "custom-indigo",
         type: "outline",
-        className:
-          "text-custom-indigo border-custom-indigo-muted hover:bg-custom-indigo-5",
+        className: "text-indigo border-indigo-muted hover:bg-indigo-5",
       },
       // Custom Pink variants
       {
         variant: "custom-pink",
         type: "fill",
-        className:
-          "bg-custom-pink text-neutral-onColor hover:bg-custom-pink/80",
+        className: "bg-pink text-neutral-onColor hover:bg-pink/80",
       },
       {
         variant: "custom-pink",
         type: "tonal",
-        className:
-          "bg-custom-pink-muted text-custom-pink hover:bg-custom-pink-muted/150",
+        className: "bg-pink-muted text-pink hover:bg-pink-muted/150",
       },
       {
         variant: "custom-pink",
         type: "outline",
-        className:
-          "text-custom-pink border-custom-pink-muted hover:bg-custom-pink-muted-5",
+        className: "text-pink border-pink-muted hover:bg-pink-muted-5",
       },
     ],
     defaultVariants: {
@@ -236,11 +221,12 @@ const badgeVariants = cva(
       type: "fill",
       size: "md",
     },
-  }
+  },
 );
 
 export interface BadgeProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends
+    React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {}
 
 function Badge({ className, variant, type, size, ...props }: BadgeProps) {

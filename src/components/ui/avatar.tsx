@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
 
 const avatarVariants = cva(
-  "relative flex shrink-0 overflow-hidden rounded-full border-2 border-black/10",
+  "relative flex shrink-0 overflow-hidden rounded-full !border-0 !shadow-none",
   {
     variants: {
       size: {
@@ -59,7 +59,7 @@ const avatarFallbackVariants = cva(
 
 export interface AvatarProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof avatarVariants> {}
+  VariantProps<typeof avatarVariants> { }
 
 const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
   ({ className, size, ...props }, ref) => (
@@ -73,7 +73,7 @@ const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
 Avatar.displayName = "Avatar";
 
 export interface AvatarImageProps
-  extends React.ImgHTMLAttributes<HTMLImageElement> {}
+  extends React.ImgHTMLAttributes<HTMLImageElement> { }
 
 const AvatarImage = React.forwardRef<HTMLImageElement, AvatarImageProps>(
   ({ className, ...props }, ref) => (
@@ -88,7 +88,7 @@ AvatarImage.displayName = "AvatarImage";
 
 export interface AvatarFallbackProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof avatarFallbackVariants> {}
+  VariantProps<typeof avatarFallbackVariants> { }
 
 const AvatarFallback = React.forwardRef<HTMLDivElement, AvatarFallbackProps>(
   ({ className, size, variant, ...props }, ref) => (
@@ -134,19 +134,45 @@ export const getVariantFromString = (
   return variants[hash % variants.length];
 };
 
+// Utility function to format time ago (returns format like "1h", "30m", "2d")
+export const formatTimeAgo = (lastPingAt: string | null): string | null => {
+  if (!lastPingAt) return null;
+
+  const now = new Date();
+  const lastPing = new Date(lastPingAt);
+  const diffInMs = now.getTime() - lastPing.getTime();
+  const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+
+  // Less than 5 minutes - return null (will show online status)
+  if (diffInMinutes < 5) return null;
+
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  const diffInDays = Math.floor(diffInHours / 24);
+
+  if (diffInDays > 0) {
+    return `${diffInDays}d`;
+  } else if (diffInHours > 0) {
+    return `${diffInHours}h`;
+  } else {
+    return `${diffInMinutes}m`;
+  }
+};
+
 // Complete Avatar component with automatic fallback
 export interface CompleteAvatarProps extends AvatarProps {
   src?: string;
   alt?: string;
   name?: string;
   fallbackVariant?:
-    | "neutral"
-    | "yellow"
-    | "lime"
-    | "teal"
-    | "indigo"
-    | "pink"
-    | "auto";
+  | "neutral"
+  | "yellow"
+  | "lime"
+  | "teal"
+  | "indigo"
+  | "pink"
+  | "auto";
+  lastPingAt?: string | null;
+  isProfile?: boolean;
 }
 
 const CompleteAvatar = React.forwardRef<HTMLDivElement, CompleteAvatarProps>(
@@ -158,19 +184,38 @@ const CompleteAvatar = React.forwardRef<HTMLDivElement, CompleteAvatarProps>(
       fallbackVariant = "auto",
       size = "md",
       className,
+      lastPingAt,
+      isProfile = false,
       ...props
     },
     ref
   ) => {
     const [imageError, setImageError] = React.useState(false);
+    const [currentTime, setCurrentTime] = React.useState(new Date());
     const initials = getInitials(name);
     const variant =
       fallbackVariant === "auto" ? getVariantFromString(name) : fallbackVariant;
 
     const shouldShowFallback = !src || imageError || !initials;
 
-    return (
-      <Avatar ref={ref} size={size} className={className} {...props}>
+    // Update time every minute for real-time countdown
+    React.useEffect(() => {
+      if (!lastPingAt) return;
+
+      const interval = setInterval(() => {
+        setCurrentTime(new Date());
+      }, 60000); // Update every minute
+
+      return () => clearInterval(interval);
+    }, [lastPingAt]);
+
+    // Calculate time ago if lastPingAt is provided
+    const timeAgo = lastPingAt ? formatTimeAgo(lastPingAt) : null;
+    const isOnline = timeAgo === null && lastPingAt !== null;
+    const shouldShowStatus = lastPingAt !== undefined;
+
+    const avatarContent = (
+      <Avatar ref={shouldShowStatus ? undefined : ref} size={size} className={className} {...props}>
         {src && !imageError && (
           <AvatarImage
             src={src}
@@ -185,6 +230,27 @@ const CompleteAvatar = React.forwardRef<HTMLDivElement, CompleteAvatarProps>(
         )}
       </Avatar>
     );
+
+    if (shouldShowStatus) {
+      return (
+        <div ref={ref} className="relative">
+          {avatarContent}
+          {isOnline ? (
+            <div
+              className={`absolute bottom-0 right-0 z-10 ${isProfile ? "w-3 h-3 sm:w-4 sm:h-4" : "w-1.5 h-1.5 sm:w-2 sm:h-2"} bg-emerald-400 rounded-full shadow-[0_0_10px_rgba(34,197,94,0.3)] animate-pulse`}
+            />
+          ) : timeAgo ? (
+            <div
+              className={`absolute -bottom-2 -right-2 ${isProfile ? "!text-xs sm:!text-base !px-2 !py-1" : "text-[8px] sm:text-[10px] px-1.5 py-0.5"} font-medium bg-neutral-800 text-neutral-200 rounded-full whitespace-nowrap leading-none`}
+            >
+              {timeAgo}
+            </div>
+          ) : null}
+        </div>
+      );
+    }
+
+    return avatarContent;
   }
 );
 CompleteAvatar.displayName = "CompleteAvatar";

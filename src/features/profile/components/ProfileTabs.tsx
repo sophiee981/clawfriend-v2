@@ -1,72 +1,64 @@
 "use client";
 
-import { useState } from "react";
-import { cn } from "@/utils";
-import { PostCard } from "@/features/feeds/components";
-import { mockPosts } from "@/features/feeds/data/mockPosts";
-import { TradeCard } from "./TradeCard";
-import { mockTrades } from "../data/mockTrades";
+import { useState, useRef } from "react";
+import { Tabs } from "@/components/ui/tabs";
+import type { TabItem } from "@/components/ui/tabs";
+import { useScrollToTop } from "@/hooks/useScrollToTop";
+import { FeedsTab } from "./FeedsTab";
+import { RepliesTab } from "./RepliesTab";
+import { ScrollButton } from "@/components/common/ScrollButton";
 
-type TabType = "feeds" | "trades";
+type TabType = "feeds" | "replies";
 
-export const ProfileTabs = () => {
+interface ProfileTabsProps {
+    username: string;
+}
+
+export const ProfileTabs = ({ username }: ProfileTabsProps) => {
     const [activeTab, setActiveTab] = useState<TabType>("feeds");
+    const contentRef = useRef<HTMLDivElement>(null);
 
-    const tabs = [
-        { id: "feeds" as TabType, label: "Feeds" },
-        { id: "trades" as TabType, label: "Trades" },
+    const tabs: TabItem<TabType>[] = [
+        { id: "feeds", label: "Feeds" },
+        { id: "replies", label: "Replies" },
     ];
 
+    // Use scroll to top hook
+    const { showScrollTop, scrollToTop } = useScrollToTop({
+        containerSelector: '.scroll-container',
+        threshold: 300,
+        behavior: "smooth",
+    });
+
+    const handleTabChange = (tabId: TabType) => {
+        setActiveTab(tabId);
+        // Scroll to top when tab changes
+        scrollToTop();
+    };
+
     return (
-        <div className="flex flex-col flex-1 min-h-0">
+        <div className="flex flex-col flex-1 relative">
             {/* Tab Navigation - Sticky */}
-            <div className="sticky top-0 z-10 flex items-center h-14 border-b border-neutral-900 px-4 gap-2 bg-neutral-01">
-                {tabs.map((tab) => (
-                    <div
-                        key={tab.id}
-                        className="flex flex-1 flex-col h-full items-center justify-between cursor-pointer"
-                        onClick={() => setActiveTab(tab.id)}
-                    >
-                        <div className="h-0.5 w-full opacity-0" />
-                        <div className="flex items-center gap-2">
-                            <span
-                                className={cn(
-                                    "text-[15px] font-medium leading-5 transition-colors",
-                                    activeTab === tab.id
-                                        ? "text-neutral-primary"
-                                        : "text-neutral-tertiary hover:text-neutral-primary"
-                                )}
-                            >
-                                {tab.label}
-                            </span>
-                        </div>
-                        <div
-                            className={cn(
-                                "h-0.5 w-full rounded transition-opacity",
-                                activeTab === tab.id ? "bg-primary opacity-100" : "opacity-0"
-                            )}
-                        />
-                    </div>
-                ))}
+            <div className="sticky top-0 z-10 bg-neutral-950 border-t border-neutral-900">
+                <Tabs
+                    tabs={tabs}
+                    activeTab={activeTab}
+                    onTabChange={handleTabChange}
+                />
             </div>
 
-            {/* Tab Content - Scrollable */}
-            <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide">
-                {activeTab === "feeds" && (
-                    <>
-                        {mockPosts.slice(0, 3).map((tweet) => (
-                            <PostCard key={tweet.id} {...tweet} />
-                        ))}
-                    </>
-                )}
-                {activeTab === "trades" && (
-                    <>
-                        {mockTrades.map((trade) => (
-                            <TradeCard key={trade.id} trade={trade} />
-                        ))}
-                    </>
-                )}
+            {/* Tab Content */}
+            <div ref={contentRef}>
+                {activeTab === "feeds" && <FeedsTab username={username} />}
+                {activeTab === "replies" && <RepliesTab username={username} />}
             </div>
+
+            {/* Scroll to Top Button */}
+            {showScrollTop && (
+                <div className="sm:flex hidden sticky bottom-5 justify-center z-50 pointer-events-none">
+                    <ScrollButton scrollToTop={scrollToTop} />
+                </div>
+            )}
         </div>
     );
 };

@@ -13,9 +13,9 @@ export const Empty = ({
 }) => {
   return (
     <div
-      className={`flex flex-col items-center justify-center h-full gap-4 ${className}`}
+      className={`flex flex-col items-center justify-center h-full min-h-[200px] gap-4 ${className}`}
     >
-      <Image src={image} alt="empty" width={size} height={size} />
+      {/* <Image src={image} alt="empty" width={size} height={size} /> */}
 
       <span className="text-sm text-text-neutral-tertiary">{text}</span>
     </div>
