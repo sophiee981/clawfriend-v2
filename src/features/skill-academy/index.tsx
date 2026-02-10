@@ -195,7 +195,7 @@ const SkillAcademyContent = ({
         ...(searchQuery.trim() && { search: searchQuery.trim() }),
         ...(selectedTags.length > 0 && { tags: selectedTags.join(",") }),
         page: pageParam,
-        limit: 20,
+        limit: 18,
         is_active: true,
         type: activeTab,
       });
@@ -274,10 +274,9 @@ const SkillAcademyContent = ({
   // Extract trending tags (limit to 20)
   const trendingTags = useMemo((): TrendingTag[] => {
     if (!trendingTagsData?.tags) return [];
-    return trendingTagsData.tags.slice(0, 20);
+    return trendingTagsData.tags
   }, [trendingTagsData]);
 
-  // Display tags based on showAllTags state (10 initially, 20 when expanded)
   const displayedTags = useMemo(() => {
     return showAllTags ? trendingTags : trendingTags.slice(0, 10);
   }, [trendingTags, showAllTags]);

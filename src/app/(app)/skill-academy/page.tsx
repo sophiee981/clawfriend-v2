@@ -34,7 +34,7 @@ export default async function SkillAcademyPage({
           ...(search.trim() && { search: search.trim() }),
           ...(tags.length > 0 && { tags: tags.join(",") }),
           page: 1,
-          limit: 20,
+          limit: 18,
           is_active: true,
           type: tab,
         },
@@ -60,7 +60,7 @@ export default async function SkillAcademyPage({
   return (
     <SkillAcademy
       initialSkillsData={
-        initialSkillsData || { data: [], total: 0, page: 1, limit: 20 }
+        initialSkillsData || { data: [], total: 0, page: 1, limit: 18 }
       }
       initialTrendingTagsData={initialTrendingTagsData || { tags: [] }}
     />
