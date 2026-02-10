@@ -16,7 +16,7 @@ export const JustTGEDItem = ({ activity }: JustTGEDItemProps) => {
   const displayName = activity.displayName || "Unknown";
   const username = activity.username || "";
   const convertBnbToUsd = useExchangeRateStore(
-    (state) => state.convertBnbToUsd,
+    (state) => state.convertBnbToUsd
   );
 
   const volumeUsd = convertBnbToUsd(activity.volumeBnb);
@@ -46,7 +46,7 @@ export const JustTGEDItem = ({ activity }: JustTGEDItemProps) => {
           </Link>
           <div className="flex shrink-0 items-center gap-1">
             <p className="text-body-xs text-primary">
-              {Number(formatSmartNumber(activity.currentPrice))}
+              {formatSmartNumber(activity.currentPrice)}
             </p>
             <div className="flex h-3 w-3 items-center justify-center rounded-full bg-neutral-primary">
               <ChainPair className="h-[12px] w-[12px]" />

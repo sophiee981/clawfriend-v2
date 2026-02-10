@@ -43,7 +43,10 @@ function trimTailingZero(s: string): string {
   const [, sign = "", int = "", dec = ""] = match;
   let cleanedDecimalPart = dec;
   while (cleanedDecimalPart.endsWith("0")) {
-    cleanedDecimalPart = cleanedDecimalPart.slice(0, cleanedDecimalPart.length - 1);
+    cleanedDecimalPart = cleanedDecimalPart.slice(
+      0,
+      cleanedDecimalPart.length - 1
+    );
   }
   return cleanedDecimalPart
     ? `${sign}${int}.${cleanedDecimalPart}`
@@ -187,7 +190,12 @@ export const formatSmartNumber = (
 
     if (zeroCount >= threshold) {
       const significantDigits = decimalPart.substring(zeroCount);
-      const formattedSignificantDigits = significantDigits.substring(0, 4);
+      let formattedSignificantDigits = significantDigits.substring(0, 4);
+      // Remove trailing zeros
+      formattedSignificantDigits = formattedSignificantDigits.replace(
+        /0+$/,
+        ""
+      );
       const subs = ["₀", "₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉"];
       const subStr = zeroCount
         .toString()
@@ -195,8 +203,12 @@ export const formatSmartNumber = (
       return `0.0${subStr}${formattedSignificantDigits}`;
     } else {
       const significantDigits = decimalPart.substring(zeroCount);
-      const formattedSignificantDigits = significantDigits.substring(0, 4);
-
+      let formattedSignificantDigits = significantDigits.substring(0, 4);
+      // Remove trailing zeros
+      formattedSignificantDigits = formattedSignificantDigits.replace(
+        /0+$/,
+        ""
+      );
       if (zeroCount > 0) {
         return `0.${"0".repeat(zeroCount)}${formattedSignificantDigits}`;
       } else {
@@ -251,7 +263,7 @@ export const formatNumberShort = (
     return smNumber(Number(number), 3);
 
   if (isShowFormatNumber && Number(number) < 0.1)
-    return formatSmartNumber(number.toString());
+    return formatSmartNumber(number.toString(), 2, 5);
 
   if (number === 0) return "0";
 

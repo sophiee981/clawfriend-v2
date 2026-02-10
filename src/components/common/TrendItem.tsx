@@ -27,7 +27,7 @@ export const TrendItem = ({
   followersCount,
 }: TrendItemProps) => {
   const convertBnbToUsd = useExchangeRateStore(
-    (state) => state.convertBnbToUsd,
+    (state) => state.convertBnbToUsd
   );
 
   const volumeUsd = convertBnbToUsd(volumeBnb);
