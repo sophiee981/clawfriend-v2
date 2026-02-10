@@ -11,13 +11,15 @@ import type {
   UpdateSkillRequest,
   UpdateSkillResponse,
 } from "@/interfaces";
-import { apiWithToken } from "@/services";
+import { api, apiWithToken, serverApi } from "@/services";
 
-export const getSkills = (params: GetSkillsParams) =>
-  apiWithToken.get<GetSkillsResponse>("/v1/academy/skills", { params });
+export const getSkills = (params: GetSkillsParams, isServer = false) => {
+  const client = isServer ? serverApi : api;
+  return client.get<GetSkillsResponse>("/v1/academy/skills", { params });
+};
 
 export const getSkill = (skillId: string) =>
-  apiWithToken.get<GetSkillResponse>(`/v1/academy/skills/${skillId}`);
+  api.get<GetSkillResponse>(`/v1/academy/skills/${skillId}`);
 
 export const createSkill = (data: CreateSkillRequest) =>
   apiWithToken.post<CreateSkillResponse>("/v1/academy/skills", data);
@@ -39,7 +41,9 @@ export const downloadSkill = (skillId: string) =>
 export const deleteSkill = (skillId: number | string) =>
   apiWithToken.delete<void>(`/v1/academy/skills/${skillId}`);
 
-export const getTrendingTags = (params?: GetTrendingTagsParams) =>
-  apiWithToken.get<GetTrendingTagsResponse>("/v1/academy/tags/trending", {
+export const getTrendingTags = (params?: GetTrendingTagsParams, isServer = false) => {
+  const client = isServer ? serverApi : api;
+  return client.get<GetTrendingTagsResponse>("/v1/academy/tags/trending", {
     params,
   });
+};

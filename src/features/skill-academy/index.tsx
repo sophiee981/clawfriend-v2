@@ -1,6 +1,6 @@
 "use client";
 
-import type { Skill, TrendingTag } from "@/interfaces";
+import type { GetSkillsResponse, GetTrendingTagsResponse, Skill, TrendingTag } from "@/interfaces";
 import { getSkills } from "@/services";
 import { deleteSkill, getTrendingTags } from "@/services/academy.service";
 import { cn } from "@/utils";
@@ -17,6 +17,7 @@ import { SkillCard } from "./components/SkillCard";
 import { SkillCardSkeleton } from "./components/SkillCardSkeleton";
 import { AcademyItem, AcademyItemType } from "./type";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import { X } from "lucide-react";
 
 // Map Skill/Prompt from API to AcademyItem format
@@ -53,7 +54,13 @@ const mapSkillToAcademyItem = (
 };
 
 // Component that reads search params from URL
-const SkillAcademyContent = () => {
+const SkillAcademyContent = ({
+  initialSkillsData,
+  initialTrendingTagsData,
+}: {
+  initialSkillsData: GetSkillsResponse | null;
+  initialTrendingTagsData: GetTrendingTagsResponse | null;
+}) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -105,7 +112,7 @@ const SkillAcademyContent = () => {
   // Ensure URL always has tab param, redirect if missing
   useEffect(() => {
     const tabFromUrl = searchParams.get("tab");
-    
+
     // If no tab param in URL, redirect to default tab
     if (!tabFromUrl) {
       const params = new URLSearchParams(searchParams.toString());
@@ -121,7 +128,7 @@ const SkillAcademyContent = () => {
     if (newTab !== activeTab) {
       setActiveTab(newTab);
     }
-    
+
     // Reset flag after a short delay
     setTimeout(() => {
       isSyncingFromUrl.current = false;
@@ -132,21 +139,21 @@ const SkillAcademyContent = () => {
   // Sync search and tags from URL (only on mount or when URL changes externally)
   useEffect(() => {
     isSyncingFromUrl.current = true;
-    
+
     const search = searchParams.get("search") || "";
     const tagsParam = searchParams.get("tags");
     const newTags = tagsParam ? tagsParam.split(",").filter(Boolean) : [];
-    
+
     // Only update state if values are different to avoid loops
     if (search !== searchInput) {
       setSearchInput(search);
       setSearchQuery(search);
     }
-    
+
     if (JSON.stringify(newTags) !== JSON.stringify(selectedTags)) {
       setSelectedTags(newTags);
     }
-    
+
     // Reset flag after a short delay
     setTimeout(() => {
       isSyncingFromUrl.current = false;
@@ -167,7 +174,7 @@ const SkillAcademyContent = () => {
   } = useInfiniteQuery({
     queryKey: [activeTab, activeTab, searchQuery || null, selectedTags.length > 0 ? selectedTags.join(',') : null],
     queryFn: async ({ pageParam = 1 }) => {
-      return await getSkills({
+      const response = await getSkills({
         ...(searchQuery.trim() && { search: searchQuery.trim() }),
         ...(selectedTags.length > 0 && { tags: selectedTags.join(',') }),
         page: pageParam,
@@ -175,9 +182,10 @@ const SkillAcademyContent = () => {
         is_active: true,
         type: activeTab,
       });
+      return response.data;
     },
     getNextPageParam: (lastPage) => {
-      const pageData = (lastPage as any)?.data;
+      const pageData = lastPage as any;
       if (!pageData) return undefined;
       const total = pageData.total;
       const page = pageData.page;
@@ -189,14 +197,20 @@ const SkillAcademyContent = () => {
       return hasMore ? page + 1 : undefined;
     },
     initialPageParam: 1,
+    initialData: initialSkillsData
+      ? {
+        pages: [initialSkillsData],
+        pageParams: [1],
+      }
+      : undefined,
   });
 
   // Map response data to AcademyItem format and flatten pages
   const items = useMemo(() => {
     if (!data?.pages) return [];
     return data.pages.flatMap((page) =>
-      page?.data?.data && Array.isArray(page.data.data)
-        ? page.data.data.map((item) => mapSkillToAcademyItem(item, activeTab))
+      page?.data && Array.isArray(page.data)
+        ? page.data.map((item) => mapSkillToAcademyItem(item, activeTab))
         : []
     );
   }, [data, activeTab]);
@@ -227,11 +241,12 @@ const SkillAcademyContent = () => {
   }, [hasNextPage, isFetchingNextPage, isLoading, fetchNextPage]);
 
   // Fetch trending tags from API
-  const { data: trendingTagsData } = useQuery({
+  const { data: trendingTagsData, isLoading: isLoadingTags } = useQuery({
     queryKey: ["trending-tags"],
     queryFn: async () => {
       return await getTrendingTags({ limit: 20 });
     },
+    placeholderData: initialTrendingTagsData as any,
   });
 
   // Extract trending tags (limit to 20)
@@ -280,7 +295,7 @@ const SkillAcademyContent = () => {
     if (isSyncingFromUrl.current) {
       return;
     }
-    
+
     // Update URL when searchQuery changes (debounced)
     const params = new URLSearchParams();
     params.set("tab", activeTab);
@@ -300,7 +315,7 @@ const SkillAcademyContent = () => {
       const newTags = prev.includes(tag)
         ? prev.filter((t) => t !== tag)
         : [...prev, tag];
-      
+
       // Update URL
       const params = new URLSearchParams(searchParams.toString());
       params.set("tab", activeTab);
@@ -316,7 +331,7 @@ const SkillAcademyContent = () => {
       }
       const newUrl = `${window.location.pathname}?${params.toString()}`;
       router.push(newUrl, { scroll: false });
-      
+
       return newTags;
     });
   };
@@ -478,12 +493,12 @@ const SkillAcademyContent = () => {
       </div>
 
       {/* Tag Filter Section */}
-      {allTags.length > 0 && (
+      {(isLoadingTags || allTags.length > 0) && (
         <div className="w-full px-4 md:px-6 py-3 border-b border-neutral-01">
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between">
               <span className="text-body-sm text-neutral-secondary">Filter by tags</span>
-              {selectedTags.length > 0 && (
+              {selectedTags.length > 0 && !isLoadingTags && (
                 <button
                   onClick={handleClearTags}
                   className="text-body-xs text-[#fe5631] hover:text-[#ff6d47] transition-colors flex items-center gap-1"
@@ -494,46 +509,63 @@ const SkillAcademyContent = () => {
               )}
             </div>
             <div className="flex flex-wrap gap-2 items-center overflow-x-auto pb-1 scrollbar-hide items-center">
-              {displayedTags.map((tag) => {
-                const isSelected = selectedTags.includes(tag.name);
-                return (
-                  <button
-                    key={tag.id}
-                    onClick={() => handleTagToggle(tag.name)}
-                    className={cn(
-                      "transition-all duration-200",
-                      isSelected
-                        ? ""
-                        : ""
-                    )}
-                  >
-                    <Badge
-                      variant={isSelected ? "primary" : "secondary"}
-                      type={isSelected ? "tonal" : "tonal"}
-                      className={cn(
-                        "cursor-pointer text-xs font-normal transition-all duration-200",
-                        isSelected
-                          ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631] border-none hover:bg-[rgba(254,86,49,0.3)]"
-                          : "text-neutral-tertiary bg-neutral-02 hover:bg-neutral-03 border-none"
-                      )}
+              {isLoadingTags ? (
+                // Skeleton loading for tags
+                Array.from({ length: 10 }).map((_, index) => {
+                  const widths = [60, 70, 80, 65, 75, 85, 70, 80, 65, 75];
+                  return (
+                    <Skeleton
+                      key={`tag-skeleton-${index}`}
+                      customWidth={`${widths[index % widths.length]}px`}
+                      customHeight="24px"
+                      className="rounded-full"
+                    />
+                  );
+                })
+              ) : (
+                <>
+                  {displayedTags.map((tag) => {
+                    const isSelected = selectedTags.includes(tag.name);
+                    return (
+                      <button
+                        key={tag.id}
+                        onClick={() => handleTagToggle(tag.name)}
+                        className={cn(
+                          "transition-all duration-200",
+                          isSelected
+                            ? ""
+                            : ""
+                        )}
+                      >
+                        <Badge
+                          variant={isSelected ? "primary" : "secondary"}
+                          type={isSelected ? "tonal" : "tonal"}
+                          className={cn(
+                            "cursor-pointer text-xs font-normal transition-all duration-200",
+                            isSelected
+                              ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631] border-none hover:bg-[rgba(254,86,49,0.3)]"
+                              : "text-neutral-tertiary bg-neutral-02 hover:bg-neutral-03 border-none"
+                          )}
+                        >
+                          #{tag.name}
+                          {tag.usage_count > 0 && (
+                            <span className="ml-1.5 text-[10px] opacity-70">
+                              ({tag.usage_count})
+                            </span>
+                          )}
+                        </Badge>
+                      </button>
+                    );
+                  })}
+                  {trendingTags.length > 10 && (
+                    <button
+                      onClick={() => setShowAllTags(!showAllTags)}
+                      className="text-body-xs text-[#fe5631] hover:text-[#ff6d47] transition-colors whitespace-nowrap shrink-0"
                     >
-                      #{tag.name}
-                      {tag.usage_count > 0 && (
-                        <span className="ml-1.5 text-[10px] opacity-70">
-                          ({tag.usage_count})
-                        </span>
-                      )}
-                    </Badge>
-                  </button>
-                );
-              })}
-              {trendingTags.length > 10 && (
-                <button
-                  onClick={() => setShowAllTags(!showAllTags)}
-                  className="text-body-xs text-[#fe5631] hover:text-[#ff6d47] transition-colors whitespace-nowrap shrink-0"
-                >
-                  {showAllTags ? "Show less" : `Show more (${trendingTags.length - 10})`}
-                </button>
+                      {showAllTags ? "Show less" : `Show more (${trendingTags.length - 10})`}
+                    </button>
+                  )}
+                </>
               )}
             </div>
           </div>
@@ -624,6 +656,17 @@ const SkillAcademyContent = () => {
 };
 
 // Main export component - wrapper that handles search params
-export const SkillAcademy = () => {
-  return <SkillAcademyContent />;
+export const SkillAcademy = ({
+  initialSkillsData,
+  initialTrendingTagsData,
+}: {
+  initialSkillsData?: GetSkillsResponse | null;
+  initialTrendingTagsData?: GetTrendingTagsResponse | null;
+}) => {
+  return (
+    <SkillAcademyContent
+      initialSkillsData={initialSkillsData || null}
+      initialTrendingTagsData={initialTrendingTagsData || null}
+    />
+  );
 };
