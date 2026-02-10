@@ -3,7 +3,6 @@
 import { ChainPair } from "@/components/icons";
 import { CompleteAvatar } from "@/components/ui/avatar";
 import type { SubjectHolder } from "@/interfaces/agent";
-import { useExchangeRateStore } from "@/stores/exchange-rate.store";
 import { getAvatarUrl } from "@/utils";
 import { formatNumberShort, formatSmartNumber } from "@/utils/number";
 import Link from "next/link";
@@ -15,14 +14,8 @@ interface HolderItemProps {
 export const HolderItem = ({ holder }: HolderItemProps) => {
     const displayName = holder.displayName || holder.username || "Unknown";
     const balance = formatNumberShort(holder.balance);
-    const convertBnbToUsd = useExchangeRateStore(
-        (state) => state.convertBnbToUsd,
-    );
-
-    const volumeUsd = convertBnbToUsd(holder.subjectShare.volumeBnb);
-    const formattedVolume = `$${formatSmartNumber(volumeUsd)}`;
-    const valueUsd = convertBnbToUsd(Number(holder.subjectShare.currentPrice) * Number(holder.balance));
-    const formattedValueUsd = `$${formatSmartNumber(valueUsd)}`;
+    const valueUsd = Number(holder.subjectShare.currentPrice) * Number(holder.balance);
+    const formattedValueUsd = formatNumberShort(valueUsd);
 
     return (
         <div className="flex w-full gap-3 border-b border-neutral-900 p-4 transition-colors hover:bg-neutral-02">
@@ -71,9 +64,16 @@ export const HolderItem = ({ holder }: HolderItemProps) => {
                         </div>
 
                     </div>
-                    <div className="flex items-center gap-2">
-                        <span className="text-body-sm text-neutral-tertiary">Value: <span className="text-neutral-primary">{formattedValueUsd}</span></span>
-                        <span className="text-body-sm text-neutral-tertiary">Vol: <span className="text-neutral-primary">{formattedVolume}</span></span>
+                    <div className="flex items-center gap-1">
+                        <div className="text-body-md text-neutral-tertiary">Value: </div>
+                        <div className="flex items-center gap-1 flex-shrink-0 text-body-md">
+                            <span className="text-neutral-primary text-right">
+                                {formattedValueUsd}
+                            </span>
+                            <div className="flex items-center">
+                                <ChainPair className="w-3 h-3" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
