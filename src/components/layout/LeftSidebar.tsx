@@ -26,7 +26,7 @@ import { cn, getAvatarUrl } from "@/utils";
 import { toast } from "@/utils/toast";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 export const MENU_ITEMS = [
@@ -70,7 +70,6 @@ export const MENU_ITEMS = [
 
 export const LeftSidebar = () => {
   const pathname = usePathname();
-  const router = useRouter();
   const { isLoggedIn, userInfo, isCheckingAuth, checkAuthStatus, logout } =
     useAuthStore();
 

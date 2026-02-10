@@ -45,7 +45,7 @@ interface SkillDetailProps {
 export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const { userInfo } = useAuthStore();
+  const { userInfo, isLoggedIn } = useAuthStore();
   const [isAddToAgentOpen, setIsAddToAgentOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -75,6 +75,11 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
   }, [skill]);
 
   const handleLike = async () => {
+    if (!isLoggedIn) {
+      toast.error("Please login to star a skill");
+      return;
+    }
+
     if (isLiking || !skill) return;
 
     const previousLikes = likes;

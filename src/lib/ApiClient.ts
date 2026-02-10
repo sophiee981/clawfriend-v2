@@ -1,3 +1,4 @@
+import { useAuthStore } from "@/stores/auth.store";
 import { toast } from "@/utils/toast";
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 
@@ -8,20 +9,10 @@ export interface ApiResponse {
   error?: string;
 }
 
-const errorMessage = "An error occurred during execution";
-
-const errorCallback = (status: number, dataError: any) => {
-  const message =
-    dataError?.message || dataError?.error || dataError?.payload?.message;
-
-  return { status, error: message || errorMessage };
-};
-
 const handleUnauthorized = () => {
   if (typeof window !== "undefined") {
     toast.error("Unauthorized");
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
+    useAuthStore.getState().logout();
   }
 };
 

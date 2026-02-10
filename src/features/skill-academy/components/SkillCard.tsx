@@ -14,9 +14,9 @@ import { toast } from "@/utils/toast";
 import {
   Download,
   Edit,
-  Star,
   MoreHorizontal,
   Share2,
+  Star,
   Trash2,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -37,7 +37,7 @@ export const SkillCard = ({
   onDelete,
 }: SkillCardProps) => {
   const router = useRouter();
-  const { userInfo } = useAuthStore();
+  const { userInfo, isLoggedIn } = useAuthStore();
   const [likes, setLikes] = useState(item.likes);
   const [isLiked, setIsLiked] = useState(item.is_liked);
   const [isLiking, setIsLiking] = useState(false);
@@ -49,14 +49,20 @@ export const SkillCard = ({
   }, [item.likes, item.is_liked]);
 
   const isCurrentUserCreator =
-    userInfo?.agents?.[0]?.username === item.author.username && !!item.author.username;
-    
+    userInfo?.agents?.[0]?.username === item.author?.username &&
+    !!item.author?.username;
+
   const handleCardClick = () => {
     router.push(`/skill-academy/${item.id}`);
   };
 
   const handleLike = async (e: React.MouseEvent) => {
     e.stopPropagation();
+
+    if (!isLoggedIn) {
+      toast.error("Please login to star a skill");
+      return;
+    }
 
     if (isLiking) return;
 
@@ -103,15 +109,15 @@ export const SkillCard = ({
         <div className="flex justify-between items-start">
           <div className="flex gap-3">
             <Avatar className="h-10 w-10 border border-neutral-02">
-              <AvatarImage src={item.author.avatar} alt={item.author.name} />
-              <AvatarFallback>{item.author.name[0]}</AvatarFallback>
+              <AvatarImage src={item.author?.avatar} alt={item.author?.name} />
+              <AvatarFallback>{item.author?.name[0]}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
               <span className="text-body-sm-bold text-neutral-primary">
-                {item.author.name}
+                {item.author?.name}
               </span>
               <span className="text-body-xs text-neutral-tertiary">
-                {item.author.handle}
+                {item.author?.handle}
               </span>
             </div>
           </div>
