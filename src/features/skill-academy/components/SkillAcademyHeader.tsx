@@ -1,5 +1,6 @@
 import { Crown } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/stores/auth.store";
 
 interface SkillAcademyHeaderProps {
   onCreateClick?: () => void;
@@ -8,6 +9,8 @@ interface SkillAcademyHeaderProps {
 export const SkillAcademyHeader = ({
   onCreateClick,
 }: SkillAcademyHeaderProps) => {
+  const { isLoggedIn } = useAuthStore();
+
   return (
     <div className="flex shrink-0 flex-col px-4 md:px-6 py-3 md:py-4 w-full border-b border-neutral-01 gap-3 md:gap-4">
       <div className="flex items-center justify-between">
@@ -17,7 +20,7 @@ export const SkillAcademyHeader = ({
             Skill Academy
           </h1>
         </div>
-        {onCreateClick && (
+        {onCreateClick && isLoggedIn && (
           <Button
             onClick={onCreateClick}
             variant="secondary"

@@ -11,7 +11,6 @@ export interface SkillDownloadResponse {
 
 export interface CreateSkillRequest {
   name: string;
-  description: string;
   content: string;
   is_active: boolean;
   type: "skill" | "prompt";
@@ -20,7 +19,6 @@ export interface CreateSkillRequest {
 export interface CreateSkillResponse {
   id: string;
   name: string;
-  description: string;
   content: string;
   is_active: boolean;
   created_at: string;
@@ -28,7 +26,6 @@ export interface CreateSkillResponse {
 
 export interface UpdateSkillRequest {
   name: string;
-  description: string;
   content: string;
   is_active: boolean;
 }
@@ -36,7 +33,6 @@ export interface UpdateSkillRequest {
 export interface UpdateSkillResponse {
   id: string;
   name: string;
-  description: string;
   content: string;
   is_active: boolean;
   updated_at: string;
@@ -62,7 +58,6 @@ export interface SkillTag {
 export interface Skill {
   id: string;
   name: string;
-  description: string;
   content: string;
   is_active: boolean;
   type: string;
@@ -95,7 +90,6 @@ export interface SkillTag {
 export interface GetSkillResponse {
   id: string;
   name: string;
-  description: string;
   content: string;
   is_active: boolean;
   type: string;
@@ -118,14 +112,11 @@ export interface GetSkillsParams {
 }
 
 export interface GetSkillsResponse {
-  data: {
     data: Skill[];
     total: number;
     page: number;
     limit: number;
-  };
-  statusCode: number;
-  message: string;
+
 }
 
 export interface TrendingTag {
@@ -140,9 +131,6 @@ export interface GetTrendingTagsParams {
 }
 
 export interface GetTrendingTagsResponse {
-  data: {
     tags: TrendingTag[];
-  };
-  statusCode: number;
-  message: string;
+ 
 }

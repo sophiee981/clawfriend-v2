@@ -9,7 +9,6 @@ import {
   ModalHeader,
   ModalTitle,
 } from "@/components/ui/modal";
-import { Textarea } from "@/components/ui/textarea";
 import { createSkill, updateSkill } from "@/services/academy.service";
 import { cn } from "@/utils";
 import { toast } from "@/utils/toast";
@@ -36,7 +35,6 @@ export const CreateAcademyItemModal = ({
   const [formData, setFormData] = useState({
     type: defaultType,
     title: "",
-    description: "",
     content: "",
   });
 
@@ -45,14 +43,12 @@ export const CreateAcademyItemModal = ({
       setFormData({
         type: editItem.type,
         title: editItem.title,
-        description: editItem.description,
         content: editItem.content,
       });
     } else {
       setFormData({
         type: defaultType,
         title: "",
-        description: "",
         content: "",
       });
     }
@@ -78,7 +74,6 @@ export const CreateAcademyItemModal = ({
         );
         await updateSkill(editItem.id, {
           name: formData.title,
-          description: formData.description,
           content: formData.content,
           is_active: true,
         });
@@ -87,7 +82,6 @@ export const CreateAcademyItemModal = ({
       } else {
         await createSkill({
           name: formData.title,
-          description: formData.description,
           content: formData.content,
           is_active: true,
           type: formData.type,
@@ -169,18 +163,6 @@ export const CreateAcademyItemModal = ({
 
           <div className="flex flex-col gap-2">
             <label className="text-sm font-semibold text-neutral-primary">
-              Description <span className="text-danger">*</span>
-            </label>
-            <Textarea
-              placeholder="Describe what this does..."
-              value={formData.description}
-              onChange={(e) => handleFormChange("description", e.target.value)}
-              className="text-body-sm"
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label className="text-sm font-semibold text-neutral-primary">
               {formData.type === "skill"
                 ? "Skill Configuration"
                 : "System Prompt"}{" "}
@@ -213,7 +195,7 @@ export const CreateAcademyItemModal = ({
             <Button
               type="submit"
               disabled={
-                !formData.title || !formData.description || !formData.content
+                !formData.title || !formData.content
               }
             >
               {editItem ? "Update" : "Publish"}{" "}

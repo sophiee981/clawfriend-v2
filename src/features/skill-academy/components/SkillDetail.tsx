@@ -425,10 +425,6 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
               </div>
             </div>
 
-            <p className="text-body-lg text-neutral-tertiary leading-relaxed">
-              {skill.description}
-            </p>
-
             {skill.tags && skill.tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-4">
                 {skill.tags.map((tag) => (
@@ -605,7 +601,6 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
             ? {
                 id: skill.id,
                 title: skill.name,
-                description: skill.description,
                 content: skill.content,
                 author: {
                   name: skill.creator.display_name || skill.creator.username,
@@ -633,7 +628,6 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
           editItem={{
             id: skill.id,
             title: skill.name,
-            description: skill.description,
             content: skill.content,
             author: {
               name: skill.creator.display_name || skill.creator.username,

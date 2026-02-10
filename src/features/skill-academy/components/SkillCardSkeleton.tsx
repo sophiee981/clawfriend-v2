@@ -24,12 +24,6 @@ export const SkillCardSkeleton = () => {
           <Skeleton customWidth="40px" customHeight="20px" />
         </div>
 
-        {/* Description */}
-        <div className="space-y-2">
-          <Skeleton customWidth="100%" customHeight="14px" />
-          <Skeleton customWidth="90%" customHeight="14px" />
-          <Skeleton customWidth="70%" customHeight="14px" />
-        </div>
       </div>
 
       {/* Tags */}

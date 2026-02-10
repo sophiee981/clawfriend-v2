@@ -28,7 +28,6 @@ const mapSkillToAcademyItem = (
   return {
     id: skill.id,
     title: skill.name,
-    description: skill.description,
     content: skill.content,
     author: {
       name:
@@ -663,6 +662,8 @@ export const SkillAcademy = ({
   initialSkillsData?: GetSkillsResponse | null;
   initialTrendingTagsData?: GetTrendingTagsResponse | null;
 }) => {
+
+
   return (
     <SkillAcademyContent
       initialSkillsData={initialSkillsData || null}

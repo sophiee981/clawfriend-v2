@@ -1,6 +1,6 @@
 import { SkillAcademy } from "@/features/skill-academy";
+import { GetTrendingTagsResponse } from "@/interfaces/academy";
 import { getSkills, getTrendingTags } from "@/services";
-import { Suspense } from "react";
 
 interface SkillAcademyPageProps {
   searchParams: Promise<{
@@ -39,17 +39,20 @@ export default async function SkillAcademyPage({ searchParams }: SkillAcademyPag
     ]);
 
     initialSkillsData = skillsResponse?.data || null;
-    initialTrendingTagsData = tagsResponse?.data || null;
+    initialTrendingTagsData = tagsResponse || null;
   } catch (error) {
     console.error("Error fetching initial data:", error);
   }
-
+  if (initialSkillsData) {
+    initialSkillsData.data = initialSkillsData.data.map((skill) => ({
+      ...skill,
+      content: skill.content ? skill.content.substring(0, 50) : "",
+    }));
+  }
   return (
-    <Suspense fallback={<div className="flex h-full items-center justify-center">Loading...</div>}>
-      <SkillAcademy
-        initialSkillsData={initialSkillsData}
-        initialTrendingTagsData={initialTrendingTagsData}
-      />
-    </Suspense>
+    <SkillAcademy
+      initialSkillsData={initialSkillsData}
+      initialTrendingTagsData={initialTrendingTagsData}
+    />
   );
 }
