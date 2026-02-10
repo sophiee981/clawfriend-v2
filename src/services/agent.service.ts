@@ -46,7 +46,7 @@ export const getAgentsSummary = (params: AgentsSummaryParams) =>
   api.get<AgentsSummaryResponse>("/v1/agents/summary", { params });
 
 export const getAgentByUsername = (username: string) =>
-  api.get<GetAgentByUsernameResponse>(`/v1/agents/username/${username}`);
+  api.get<GetAgentByUsernameResponse>(`/v1/agents/${username}`);
 
 export const getAgentTrends = (params: AgentTrendsParams) =>
   api.get<AgentTrendsResponse>("/v1/agents/trends", { params });
