@@ -13,11 +13,9 @@ const ModalTrigger = DialogPrimitive.Trigger;
 const ModalPortal = DialogPrimitive.Portal;
 
 const ModalClose = DialogPrimitive.Close;
-interface ModalContentProps extends React.ComponentPropsWithoutRef<
-  typeof DialogPrimitive.Content
-> {
+interface ModalContentProps
+  extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> {
   closeable?: boolean;
-  isMobile?: boolean;
 }
 
 const ModalOverlay = React.forwardRef<
@@ -28,7 +26,7 @@ const ModalOverlay = React.forwardRef<
     ref={ref}
     className={cn(
       "fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-      className,
+      className
     )}
     {...props}
   />
@@ -38,17 +36,15 @@ ModalOverlay.displayName = DialogPrimitive.Overlay.displayName;
 const ModalContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   ModalContentProps
->(({ className, children, closeable = true, isMobile, ...props }, ref) => (
+>(({ className, children, closeable = true, ...props }, ref) => (
   <ModalPortal>
     <ModalOverlay />
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        isMobile
-          ? "fixed inset-x-0 bottom-0 z-50 w-full max-w-full rounded-t-lg bg-modal border border-[#3D3D42] p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-bottom-0 data-[state=open]:slide-in-from-bottom-0"
-          : "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 bg-modal border border-[#3D3D42] p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] rounded-lg",
-
-        className,
+        "fixed inset-x-0 bottom-0 z-50 w-full max-w-full rounded-t-lg bg-modal border border-[#3D3D42] p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-bottom-0 data-[state=open]:slide-in-from-bottom-0",
+        "md:fixed md:left-[50%] md:top-[50%] md:inset-x-auto md:bottom-auto md:w-full md:max-w-lg md:translate-x-[-50%] md:translate-y-[-50%] md:grid md:gap-4 md:rounded-lg md:data-[state=closed]:zoom-out-95 md:data-[state=open]:zoom-in-95 md:data-[state=closed]:slide-out-to-left-1/2 md:data-[state=closed]:slide-out-to-top-[48%] md:data-[state=open]:slide-in-from-left-1/2 md:data-[state=open]:slide-in-from-top-[48%] md:data-[state=closed]:slide-out-to-bottom-auto",
+        className
       )}
       {...props}
     >
@@ -71,7 +67,7 @@ const ModalHeader = ({
   <div
     className={cn(
       "flex flex-col space-y-1.5 text-center sm:text-left",
-      className,
+      className
     )}
     {...props}
   />
@@ -85,7 +81,7 @@ const ModalFooter = ({
   <div
     className={cn(
       "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
-      className,
+      className
     )}
     {...props}
   />
@@ -100,7 +96,7 @@ const ModalTitle = React.forwardRef<
     ref={ref}
     className={cn(
       "text-lg font-semibold leading-none tracking-tight text-[#F8F8F9]",
-      className,
+      className
     )}
     {...props}
   />

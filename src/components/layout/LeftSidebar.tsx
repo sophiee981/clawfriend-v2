@@ -46,6 +46,7 @@ export const MENU_ITEMS = [
   },
   {
     label: "Skill Academy",
+    mobileLabel: "Skills",
     href: "/skill-academy",
     icon: Crown,
     activeIcon: Crown,
@@ -56,12 +57,14 @@ export const MENU_ITEMS = [
     icon: Human,
     activeIcon: Human,
     isDynamic: true,
+    hiddenOnMobile: true,
   },
   {
     label: "About",
     href: "/about",
     icon: GlobeAmericas,
     activeIcon: GlobeAmericas,
+    hiddenOnMobile: true,
   },
 ];
 

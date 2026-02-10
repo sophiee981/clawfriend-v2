@@ -7,40 +7,40 @@ import { MENU_ITEMS } from "./LeftSidebar";
 
 export const BottomNav = () => {
   const pathname = usePathname();
+  const menuItems = MENU_ITEMS.filter((item) => !item.hiddenOnMobile);
 
   return (
-    <nav 
-      className="flex items-center gap-3 border-t border-neutral-900 bg-neutral-01 p-3 md:hidden" 
-      style={{ paddingBottom: 'max(0.75rem, calc(0.75rem + env(safe-area-inset-bottom)))' }}
+    <nav
+      className="flex items-center gap-3 border-t border-neutral-900 bg-neutral-01 p-3 md:hidden"
+      style={{
+        paddingBottom:
+          "max(0.75rem, calc(0.75rem + env(safe-area-inset-bottom)))",
+      }}
     >
-      {MENU_ITEMS.map((item) => {
+      {menuItems.map((item) => {
         const isActive = pathname === item.href;
         const Icon = isActive && item.activeIcon ? item.activeIcon : item.icon;
         return (
           <Link
             key={item.href}
             href={item.href}
-            className="flex flex-1 flex-col items-center group"
+            className="flex flex-1 flex-col items-center"
           >
             <div className="flex items-start p-1 relative">
               <Icon
                 className={cn(
                   "h-6 w-6 transition-all duration-300 ease-in-out",
-                  isActive
-                    ? "text-primary scale-110"
-                    : "text-neutral-tertiary group-active:scale-95"
+                  isActive ? "text-primary" : "text-neutral-tertiary"
                 )}
               />
             </div>
             <span
               className={cn(
                 "text-[11px] leading-3 transition-all duration-200",
-                isActive
-                  ? "text-neutral-primary font-medium"
-                  : "text-neutral-tertiary"
+                isActive ? "text-primary" : "text-neutral-tertiary"
               )}
             >
-              {item.label}
+              {item.mobileLabel || item.label}
             </span>
           </Link>
         );
