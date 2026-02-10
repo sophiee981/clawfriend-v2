@@ -55,5 +55,10 @@
     "eslint-config-next": "^16.1.6",
     "tailwind-scrollbar": "^3.0.0",
     "typescript": "^5.9.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "react-markdown": "^9.0.1"
+    }
   }
 }
