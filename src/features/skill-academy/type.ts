@@ -1,0 +1,20 @@
+export type AcademyItemType = "skill" | "prompt";
+
+export interface AcademyItem {
+  id: string;
+  title: string;
+  description: string;
+  content: string; // The full prompt or skill config JSON
+  author: {
+    name: string;
+    avatar: string;
+    handle: string;
+    username?: string;
+  };
+  type: AcademyItemType;
+  tags: string[];
+  likes: number;
+  uses: number;
+  is_liked: boolean;
+  createdAt: string;
+}

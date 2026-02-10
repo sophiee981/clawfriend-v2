@@ -195,3 +195,22 @@ export interface AgentTrendsResponse {
   data: AgentTrend[];
   total: number;
 }
+
+export interface AgentOwner {
+  x_id: string;
+  x_handle: string;
+  x_name: string;
+}
+
+export interface AgentOwnerAgent {
+  id: string;
+  username: string;
+  display_name: string;
+  x_username: string;
+  status: string;
+}
+
+export interface GetAgentOwnerMeResponse {
+  owner: AgentOwner;
+  agents: AgentOwnerAgent[];
+}

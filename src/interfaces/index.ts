@@ -11,6 +11,8 @@ export interface IResponse<T> {
   status?: number;
 }
 
+export * from "./academy";
 export * from "./agent";
-export * from "./trade";
+export * from "./auth";
 export * from "./stats";
+export * from "./trade";

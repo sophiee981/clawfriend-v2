@@ -72,23 +72,12 @@ class ApiClient {
     );
 
     api.interceptors.response.use(
-      (response: AxiosResponse) => {
-        return response.data;
-      },
+      (response: AxiosResponse) => response.data,
       async (error: AxiosError) => {
         const resError = error.response;
-        const dataError: any = resError?.data;
+        if (resError?.status === 401) handleUnauthorized();
 
-        switch (resError?.status) {
-          case 401:
-            handleUnauthorized();
-
-            return errorCallback(401, dataError);
-          case 403:
-            return errorCallback(403, dataError);
-          default:
-            return errorCallback(400, dataError);
-        }
+        return Promise.reject(error);
       }
     );
     return api;

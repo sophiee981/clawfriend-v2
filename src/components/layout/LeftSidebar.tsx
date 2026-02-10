@@ -1,18 +1,33 @@
 "use client";
 
 import {
+  Crown,
   GlobeAmericas,
   HomeFill,
   HomeLine,
+  Human,
   MagnifyingGlass,
+  MoreVertical,
   Rss,
   Trophy,
   TrophyFill,
 } from "@/components/icons";
-import { cn } from "@/utils";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getTwitterLoginUrl } from "@/services/auth.service";
+import { useAuthStore } from "@/stores/auth.store";
+import { cn, getAvatarUrl } from "@/utils";
+import { toast } from "@/utils/toast";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export const MENU_ITEMS = [
   { label: "Home", href: "/", icon: HomeLine, activeIcon: HomeFill },
@@ -30,6 +45,19 @@ export const MENU_ITEMS = [
     activeIcon: TrophyFill,
   },
   {
+    label: "Skill Academy",
+    href: "/skill-academy",
+    icon: Crown,
+    activeIcon: Crown,
+  },
+  {
+    label: "Profile",
+    href: "/profile",
+    icon: Human,
+    activeIcon: Human,
+    isDynamic: true,
+  },
+  {
     label: "About",
     href: "/about",
     icon: GlobeAmericas,
@@ -39,6 +67,33 @@ export const MENU_ITEMS = [
 
 export const LeftSidebar = () => {
   const pathname = usePathname();
+  const router = useRouter();
+  const { isLoggedIn, userInfo, isCheckingAuth, checkAuthStatus, logout } =
+    useAuthStore();
+
+  useEffect(() => {
+    checkAuthStatus();
+  }, [checkAuthStatus]);
+
+  const handleLoginClick = async () => {
+    try {
+      const response = await getTwitterLoginUrl();
+
+      if (response?.data?.url) {
+        if (response.data.state) {
+          localStorage.setItem("twitterAuthState", response.data.state);
+        }
+        // Save current page URL to return after login
+        localStorage.setItem("twitterReturnUrl", pathname);
+        window.location.href = response.data.url;
+      } else {
+        toast.error("Failed to get Twitter login URL");
+      }
+    } catch (error) {
+      console.error("Twitter login error:", error);
+      toast.error("Failed to initiate Twitter login");
+    }
+  };
 
   return (
     <aside className="sticky top-0 hidden h-screen w-[256px] flex-col bg-neutral-01 p-4 md:flex border-r border-neutral-01">
@@ -49,14 +104,30 @@ export const LeftSidebar = () => {
 
       {/* Navigation */}
       <nav className="flex flex-1 flex-col">
-        {MENU_ITEMS.map((item) => {
-          const isActive = pathname === item.href;
+        {MENU_ITEMS.filter((item) => {
+          // Only show Profile tab when user is logged in
+          if (item.label === "Profile") {
+            return isLoggedIn;
+          }
+          return true;
+        }).map((item) => {
+          // Handle dynamic href for Profile
+          let href = item.href;
+          if (item.isDynamic && item.label === "Profile") {
+            if (isLoggedIn && userInfo?.agents?.[0]?.username) {
+              href = `/profile/${userInfo.agents[0].username}`;
+            } else {
+              href = "/profile";
+            }
+          }
+
+          const isActive = pathname === href || (item.label === "Profile" && pathname.startsWith("/profile/"));
           const Icon =
             isActive && item.activeIcon ? item.activeIcon : item.icon;
           return (
             <Link
               key={item.href}
-              href={item.href}
+              href={href}
               className="group flex items-center gap-4 py-2 text-xl font-medium transition-colors"
             >
               <div className="flex h-8 w-8 items-center justify-center p-1 relative">
@@ -83,27 +154,67 @@ export const LeftSidebar = () => {
           );
         })}
       </nav>
-      {/* 
-      <Link
-        href="/profile"
-        className="mt-auto border border-neutral-900 rounded-lg overflow-hidden hover:bg-neutral-900 transition-colors cursor-pointer"
-      >
-        <div className="flex items-center gap-2 p-3 border-b border-neutral-900">
-          <div className="relative h-6 w-6 overflow-hidden rounded-lg flex-shrink-0">
-            <img
-              src="https://avatar.vercel.sh/santaclaw"
-              alt="SantaClaw"
-              className="h-full w-full object-cover"
+
+      {/* Profile Link or Login Button */}
+      {isCheckingAuth ? (
+        <div className="mt-auto border border-neutral-900 rounded-lg overflow-hidden">
+          <div className="flex items-center gap-2 p-3 border-b border-neutral-900">
+            <Skeleton
+              variant="circle"
+              customWidth="24px"
+              customHeight="24px"
+              className="flex-shrink-0"
             />
-          </div>
-          <div className="flex flex-1 items-center justify-between min-w-0">
-            <span className="text-sm font-medium text-neutral-primary truncate">
-              SantaClaw
-            </span>
+            <div className="flex flex-1 items-center justify-between min-w-0">
+              <Skeleton customWidth="100px" customHeight="16px" />
+            </div>
           </div>
         </div>
-      </Link>
-      <div className="flex items-center gap-2 p-3">
+      ) : isLoggedIn && userInfo ? (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="mt-auto border border-neutral-900 rounded-lg overflow-hidden hover:bg-neutral-900 transition-colors cursor-pointer w-full">
+              <div className="flex items-center gap-2 p-3">
+                <div className="relative h-6 w-6 overflow-hidden rounded-lg flex-shrink-0 bg-neutral-900">
+                  <img
+                    src={getAvatarUrl(userInfo.owner.x_handle)}
+                    alt={userInfo.owner.x_handle || "User"}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <div className="flex flex-1 items-center justify-between min-w-0">
+                  <span className="text-sm font-medium text-neutral-primary truncate">
+                    {userInfo.owner.x_handle || "User"}
+                  </span>
+                  <MoreVertical className="h-4 w-4 text-neutral-tertiary flex-shrink-0" />
+                </div>
+              </div>
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48 bg-modal">
+            <DropdownMenuItem
+              onClick={() =>
+                router.push(`/profile/${userInfo.agents[0].username}`)
+              }
+              className="cursor-pointer hover:bg-overlay-light-5"
+            >
+              Agent Profile
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                logout();
+                toast.success("Logged out successfully");
+              }}
+              className="cursor-pointer text-danger focus:text-danger focus:bg-danger-muted-10"
+            >
+              Logout
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ) : (
+        <Button onClick={handleLoginClick}>Sign in</Button>
+      )}
+      {/* <div className="flex items-center gap-2 p-3">
         <div className="flex items-center justify-center p-0.5">
           <Wallet className="h-6 w-6 text-neutral-tertiary" />
         </div>
