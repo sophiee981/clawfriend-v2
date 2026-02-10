@@ -1,5 +1,7 @@
 "use client";
 import type { GetAgentsResponse } from "@/interfaces/agent";
+import { useScrollToTop } from "@/hooks/useScrollToTop";
+import { ScrollButton } from "@/components/common/ScrollButton";
 import RightSide from "../../components/common/RightSide";
 import { Guideline } from "./components/Guideline";
 import LatestFeed from "./components/LatestFeed";
@@ -12,17 +14,33 @@ const Home = ({
 }: {
   defaultPrompt: string;
   defaultTrends: GetAgentsResponse;
-}) => (
-  <div className="flex justify-center flex-1 overflow-hidden h-full">
-    <div className="w-full max-h-screen overflow-y-auto flex flex-col flex-1 py-4 gap-4 scrollbar-hover-hide">
-      <Guideline defaultPrompt={defaultPrompt} />
-      <Trending defaultTrends={defaultTrends} />
-      <Stats />
-      <LatestFeed />
-    </div>
+}) => {
+  // Use scroll to top hook
+  const { showScrollTop, scrollToTop } = useScrollToTop({
+    containerSelector: '.scroll-container',
+    threshold: 300,
+    behavior: "smooth",
+  });
 
-    <RightSide className="hidden xl:flex" />
-  </div>
-);
+  return (
+    <div className="flex justify-center flex-1 overflow-hidden h-full relative">
+      <div className="w-full max-h-screen overflow-y-auto flex flex-col flex-1 py-4 gap-4 scrollbar-hover-hide scroll-container">
+        <Guideline defaultPrompt={defaultPrompt} />
+        <Trending defaultTrends={defaultTrends} />
+        <Stats />
+        <LatestFeed />
+      </div>
+
+      <RightSide className="hidden xl:flex" />
+
+      {/* Scroll to Top Button */}
+      {showScrollTop && (
+        <div className="sm:flex hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
+          <ScrollButton scrollToTop={scrollToTop} />
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default Home;

@@ -83,35 +83,35 @@ export const Leaderboard = () => {
   const agents: LeaderboardAgent[] =
     activeCategory === "traders"
       ? ((tradersResponse?.data?.data as Trader[] | undefined) ?? [])
-          .filter((trader: Trader) => trader.agent != null)
-          .map((trader: Trader, index: number) => ({
-            id: trader.id,
-            rank: index + 1,
-            name: trader.agent?.displayName ?? "",
-            username: trader.agent?.username ?? "",
-            shares: Number(formatSmartNumber(trader.volumeBnb)) || 0,
-            avatar: undefined,
-            isCurrentUser: false, // TODO: Add logic to identify current user
-          }))
+        .filter((trader: Trader) => trader.agent != null)
+        .map((trader: Trader, index: number) => ({
+          id: trader.id,
+          rank: index + 1,
+          name: trader.agent?.displayName ?? "",
+          username: trader.agent?.username ?? "",
+          shares: Number(formatSmartNumber(trader.volumeBnb)) || 0,
+          avatar: undefined,
+          isCurrentUser: false, // TODO: Add logic to identify current user
+        }))
       : activeCategory === "whales"
         ? ((whalesResponse?.data?.data as AgentPositionValueLeaderboard[] | undefined) ?? []).map((agent: AgentPositionValueLeaderboard) => ({
-            id: agent.agentId,
-            rank: agent.rank,
-            name: agent.agentDisplayName,
-            username: agent.agentUsername,
+          id: agent.agentId,
+          rank: agent.rank,
+          name: agent.agentDisplayName,
+          username: agent.agentUsername,
           shares: Number(formatSmartNumber(agent.positionValueBNB)) || 0,
-            avatar: undefined,
-            isCurrentUser: false, // TODO: Add logic to identify current user
-          }))
+          avatar: undefined,
+          isCurrentUser: false, // TODO: Add logic to identify current user
+        }))
         : (leaderboardResponse?.data ?? []).map((agent) => ({
-            id: agent.agentId,
-            rank: agent.rank,
-            name: agent.agentDisplayName,
-            username: agent.agentUsername,
+          id: agent.agentId,
+          rank: agent.rank,
+          name: agent.agentDisplayName,
+          username: agent.agentUsername,
           shares: Number(formatSmartNumber(agent.balance)) || 0,
-            avatar: undefined,
-            isCurrentUser: false, // TODO: Add logic to identify current user
-          }));
+          avatar: undefined,
+          isCurrentUser: false, // TODO: Add logic to identify current user
+        }));
 
   // Top 3 ordered as: 2nd, 1st, 3rd (with 1st in the middle)
   const topThree = [

@@ -337,7 +337,7 @@ const SkillAcademyContent = ({
 
   // Get view width for responsive tag display
   const viewWidth = useViewWidth();
-  
+
   // Calculate tag limit based on breakpoint
   const tagLimit = useMemo(() => {
     if (viewWidth < 640) {
