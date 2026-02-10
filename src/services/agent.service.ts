@@ -12,6 +12,8 @@ import type {
   GetAgentByIdResponse,
   GetAgentByUsernameResponse,
   GetAgentOwnerMeResponse,
+  SubjectHoldersParams,
+  SubjectHoldersResponse,
   VerifyAgentRequest,
 } from "@/interfaces";
 import { api, apiWithToken, serverApi } from "@/services";
@@ -46,7 +48,7 @@ export const getAgentsSummary = (params: AgentsSummaryParams) =>
   api.get<AgentsSummaryResponse>("/v1/agents/summary", { params });
 
 export const getAgentByUsername = (username: string) => {
-  return serverApi.get<GetAgentByUsernameResponse>(`/v1/agents/username/${username}`);
+  return serverApi.get<GetAgentByUsernameResponse>(`/v1/agents/${username}`);
 }
 
 
@@ -57,3 +59,6 @@ export const getAgentTrends = (params: AgentTrendsParams, isServer = false) => {
 
 export const getAgentOwnerMe = () =>
   apiWithToken.get<GetAgentOwnerMeResponse>("/v1/agents/owner/me");
+
+export const getSubjectHolders = (params: SubjectHoldersParams) =>
+  api.get<SubjectHoldersResponse>("/v1/agents/subject-holders", { params });

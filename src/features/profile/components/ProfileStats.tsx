@@ -56,11 +56,6 @@ export const ProfileStats = ({ sharePrice, tradingVol, holdingValue, earnings, y
             <span className="text-neutral-primary font-medium">{totalHolder}</span>
             <span className="text-neutral-tertiary">Holders</span>
           </div>
-          <div className="flex items-center gap-1 text-[13px] leading-4 text-neutral-tertiary mt-1">
-            <span>You own</span>
-            <span className="text-neutral-primary">{yourShare}</span>
-            <span>Share</span>
-          </div>
         </div>
         <button
           onClick={() => setIsExpanded(!isExpanded)}

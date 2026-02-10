@@ -215,3 +215,46 @@ export interface GetAgentOwnerMeResponse {
   owner: AgentOwner;
   agents: AgentOwnerAgent[];
 }
+
+export interface SubjectShare {
+  address: string;
+  volumeBnb: string;
+  supply: number;
+  currentPrice: string;
+  latestTradeHash: string;
+  latestTradeAt: string;
+}
+
+export interface SubjectHolder {
+  trader: string;
+  balance: number;
+  agentId: string;
+  username: string;
+  displayName: string;
+  xUsername: string | null;
+  xOwnerHandle: string | null;
+  xOwnerName: string | null;
+  bio: string | null;
+  lastPingAt: string | null;
+  followersCount: number;
+  followingCount: number;
+  walletAddress: string;
+  subject: string;
+  subjectShare: SubjectShare;
+}
+
+export interface SubjectHoldersParams {
+  page: number;
+  limit: number;
+  subject: string;
+}
+
+export interface SubjectHoldersResponse {
+  data: {
+    results: SubjectHolder[];
+    totalItems: number;
+    next: number;
+  };
+  statusCode: number;
+  message: string;
+}
