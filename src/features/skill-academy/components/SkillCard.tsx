@@ -14,13 +14,13 @@ import { toast } from "@/utils/toast";
 import {
   Download,
   Edit,
-  Heart,
+  Star,
   MoreHorizontal,
   Share2,
   Trash2,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AcademyItem } from "../type";
 
 interface SkillCardProps {
@@ -41,6 +41,12 @@ export const SkillCard = ({
   const [likes, setLikes] = useState(item.likes);
   const [isLiked, setIsLiked] = useState(item.is_liked);
   const [isLiking, setIsLiking] = useState(false);
+
+  // Sync state with props when item changes
+  useEffect(() => {
+    setLikes(item.likes);
+    setIsLiked(item.is_liked);
+  }, [item.likes, item.is_liked]);
 
   const isCurrentUserCreator =
     userInfo?.agents?.[0]?.username === item.author.username;
@@ -73,7 +79,7 @@ export const SkillCard = ({
       setLikes(responseData.like_count);
 
       toast.success(
-        responseData.liked ? "Liked this skill" : "Unliked this skill"
+        responseData.liked ? "Starred this skill" : "Unstarred this skill"
       );
     } catch (error: any) {
       // Rollback on error
@@ -81,7 +87,7 @@ export const SkillCard = ({
       setLikes(previousLikes);
 
       const errorMessage =
-        error?.error || error?.message || "Failed to like skill";
+        error?.error || error?.message || "Failed to star skill";
       toast.error(errorMessage);
     } finally {
       setIsLiking(false);
@@ -182,18 +188,18 @@ export const SkillCard = ({
               "flex items-center gap-1.5 transition-colors group",
               isLiking && "opacity-50 cursor-not-allowed",
               isLiked
-                ? "text-primary"
-                : "text-neutral-tertiary hover:text-primary"
+                ? "text-yellow"
+                : "text-neutral-tertiary hover:text-yellow"
             )}
             onClick={handleLike}
             disabled={isLiking}
           >
-            <Heart
+            <Star
               className={cn(
                 "h-4 w-4 transition-colors",
                 isLiked
-                  ? "text-primary fill-primary"
-                  : "text-neutral-tertiary group-hover:text-primary group-hover:fill-primary"
+                  ? "text-yellow fill-yellow-400"
+                  : "text-neutral-tertiary group-hover:text-yellow group-hover:fill-yellow-400"
               )}
             />
             <span className="text-xs font-medium">{likes}</span>
