@@ -8,7 +8,7 @@ import {
 } from "@/interfaces/agent";
 import { getAgentTrends, getAgentsSummary } from "@/services";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ExploreMobile,
   RecentSearches,
@@ -25,7 +25,6 @@ export const Explore = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [activeSearch, setActiveSearch] = useState("");
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
-  const [suggestions, setSuggestions] = useState<string[]>([]);
   const isSearchingRef = useRef(false);
 
   // Use search endpoint if activeSearch exists, otherwise use trends endpoint
@@ -56,48 +55,48 @@ export const Explore = ({
     refetchOnMount: true,
   });
 
-  // Map response to AgentBalanceLeaderboard format for compatibility
-  let agents: AgentBalanceLeaderboard[] = [];
-
-  if (hasSearch) {
-    // Map AgentsSummaryResponse to AgentBalanceLeaderboard format
-    const responseData = data as AgentsSummaryResponse | undefined;
-    const summaryData = responseData?.data?.data ?? [];
-    agents = summaryData.map((summary) => ({
-      agentId: summary.id,
-      agentDisplayName: summary.displayName,
-      agentUsername: summary.username,
-      agentXUsername: summary.xOwnerHandle,
-      agentXOwnerHandle: summary.xOwnerHandle,
-      agentXOwnerName: summary.xOwnerName,
-      balance: summary.volumeBnb,
-      volumeBnb: summary.volumeBnb,
-      currentPrice: summary.currentPrice,
-      walletAddress: summary.subject,
-      lastPingAt: summary.lastPingAt,
-      rank: 0, // Summary doesn't have rank
-      followersCount: summary.followersCount,
-    }));
-  } else {
-    // Map AgentTrend to AgentBalanceLeaderboard format
-    const responseData = data;
-    const trendsData: AgentTrend[] = responseData?.data?.data ?? [];
-    agents = trendsData.map((trend) => ({
-      agentId: trend.id,
-      agentDisplayName: trend.displayName,
-      agentUsername: trend.username,
-      agentXUsername: trend.xOwnerHandle,
-      agentXOwnerHandle: trend.xOwnerHandle,
-      agentXOwnerName: trend.xOwnerName,
-      balance: trend.volumeBnb,
-      volumeBnb: trend.volumeBnb,
-      currentPrice: trend.currentPrice,
-      walletAddress: trend.subject,
-      lastPingAt: trend.lastPingAt,
-      rank: 0, // Trends don't have rank
-      followersCount: trend.followersCount,
-    }));
-  }
+  // Map response to AgentBalanceLeaderboard format for compatibility - memoized for performance
+  const agents: AgentBalanceLeaderboard[] = useMemo(() => {
+    if (hasSearch) {
+      // Map AgentsSummaryResponse to AgentBalanceLeaderboard format
+      const responseData = data as AgentsSummaryResponse | undefined;
+      const summaryData = responseData?.data?.data ?? [];
+      return summaryData.map((summary) => ({
+        agentId: summary.id,
+        agentDisplayName: summary.displayName,
+        agentUsername: summary.username,
+        agentXUsername: summary.xOwnerHandle,
+        agentXOwnerHandle: summary.xOwnerHandle,
+        agentXOwnerName: summary.xOwnerName,
+        balance: summary.volumeBnb,
+        volumeBnb: summary.volumeBnb,
+        currentPrice: summary.currentPrice,
+        walletAddress: summary.subject,
+        lastPingAt: summary.lastPingAt,
+        rank: 0, // Summary doesn't have rank
+        followersCount: summary.followersCount,
+      }));
+    } else {
+      // Map AgentTrend to AgentBalanceLeaderboard format
+      const responseData = data;
+      const trendsData: AgentTrend[] = responseData?.data?.data ?? [];
+      return trendsData.map((trend) => ({
+        agentId: trend.id,
+        agentDisplayName: trend.displayName,
+        agentUsername: trend.username,
+        agentXUsername: trend.xOwnerHandle,
+        agentXOwnerHandle: trend.xOwnerHandle,
+        agentXOwnerName: trend.xOwnerName,
+        balance: trend.volumeBnb,
+        volumeBnb: trend.volumeBnb,
+        currentPrice: trend.currentPrice,
+        walletAddress: trend.subject,
+        lastPingAt: trend.lastPingAt,
+        rank: 0, // Trends don't have rank
+        followersCount: trend.followersCount,
+      }));
+    }
+  }, [data, hasSearch]);
 
   // Load recent searches from localStorage on mount
   useEffect(() => {
@@ -111,41 +110,45 @@ export const Explore = ({
     }
   }, []);
 
-  // Save recent searches to localStorage (max 100 items)
+  // Save recent searches to localStorage (max 100 items) - debounced to avoid excessive writes
   useEffect(() => {
-    if (recentSearches.length > 0) {
+    if (recentSearches.length === 0) return;
+    
+    const timer = setTimeout(() => {
       localStorage.setItem(
         "explore_recent_searches",
         JSON.stringify(recentSearches),
       );
-    }
+    }, 300);
+
+    return () => clearTimeout(timer);
   }, [recentSearches]);
 
-  // Show suggestions when typing matches history
-  // Skip when activeSearch exists or when searching to prevent flicker
+
+  // Debounce search: automatically call handleSearch after 500ms of no typing
   useEffect(() => {
-    // Don't show suggestions if we're currently searching or have an active search
-    if (isSearchingRef.current || activeSearch) {
-      setSuggestions([]);
+    const trimmedQuery = searchQuery.trim();
+
+    // If search query is cleared, reset activeSearch immediately
+    if (!trimmedQuery) {
+      setActiveSearch("");
       return;
     }
 
-    if (searchQuery.trim()) {
-      const matched = recentSearches.filter((search) =>
-        search.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
-      setSuggestions(matched.slice(0, 5)); // Show max 5 suggestions
-    } else {
-      setSuggestions([]);
-    }
-  }, [searchQuery, recentSearches, activeSearch]);
+    // Set up debounce timer
+    const debounceTimer = setTimeout(() => {
+      // Only trigger search if query has changed from current activeSearch
+      if (trimmedQuery !== activeSearch) {
+        handleSearch(trimmedQuery);
+      }
+    }, 500);
 
-  // Reset activeSearch when searchQuery is cleared
-  useEffect(() => {
-    if (!searchQuery.trim() && activeSearch) {
-      setActiveSearch("");
-    }
-  }, [searchQuery, activeSearch]);
+    // Cleanup timer on unmount or when searchQuery changes
+    return () => {
+      clearTimeout(debounceTimer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery]); // Only depend on searchQuery to avoid infinite loop
 
   const handleSearch = (query: string) => {
     const trimmedQuery = query.trim();
@@ -156,9 +159,6 @@ export const Explore = ({
 
     // Set active search first to prevent useEffect from updating suggestions
     setActiveSearch(trimmedQuery);
-
-    // Clear suggestions to prevent flicker
-    setSuggestions([]);
 
     // Save to recent searches (max 100 items)
     setRecentSearches((prev) => {
@@ -190,12 +190,6 @@ export const Explore = ({
     setSearchQuery(search);
   };
 
-  const handleSuggestionClick = (suggestion: string) => {
-    // Set activeSearch first to prevent useEffect from showing suggestions
-    handleSearch(suggestion);
-    // Then update searchQuery to show in input
-    setSearchQuery(suggestion);
-  };
   return (
     <div className="flex h-full overflow-hidden">
       <div
@@ -208,9 +202,7 @@ export const Explore = ({
         />
 
         <RecentSearches
-          suggestions={suggestions}
           recentSearches={recentSearches}
-          onSuggestionClick={handleSuggestionClick}
           onRecentSearchClick={handleRecentSearchClick}
           onRemoveRecentSearch={handleRemoveRecentSearch}
           onClearAll={handleClearAll}
