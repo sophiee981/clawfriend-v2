@@ -697,7 +697,7 @@ const SkillAcademyContent = ({
       <div className="flex flex-1 flex-col gap-4 md:gap-6 pt-4 md:pt-6 w-full px-4 md:px-6">
         {(isLoading || (isFetching && !isFetchingNextPage)) ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {Array.from({ length: 3 }).map((_, index) => (
+            {Array.from({ length: 6 }).map((_, index) => (
               <SkillCardSkeleton key={`skeleton-${index}`} />
             ))}
           </div>
@@ -722,8 +722,8 @@ const SkillAcademyContent = ({
             <div ref={loadMoreRef} className="h-4" />
             {/* Loading indicator for next page */}
             {isFetchingNextPage && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {Array.from({ length: 3 }).map((_, index) => (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 -mt-10">
+                {Array.from({ length: 6 }).map((_, index) => (
                   <SkillCardSkeleton key={`loading-${index}`} />
                 ))}
               </div>
