@@ -335,7 +335,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
   }
 
   return (
-    <div className="relative flex flex-col flex-1 w-full max-w-5xl mx-auto p-4 md:p-8 gap-8 pb-20 overflow-hidden">
+    <div className="relative flex flex-col flex-1 w-full max-w-5xl mx-auto p-4 md:p-8 gap-8 pb-20 overflow-hidden lg:h-screen">
       {/* Navigation Header */}
       <div className="flex items-center gap-3">
         <Button
@@ -355,9 +355,9 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
         </span>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+      <div className="flex flex-col lg:flex-row items-start overflow-auto lg:overflow-hidden flex-1 min-h-0">
         {/* Left Column: Info & Meta */}
-        <div className="lg:col-span-2 flex flex-col gap-6">
+        <div className="flex flex-col gap-6 overflow-visible lg:overflow-auto overflow-x-hidden lg:flex-1 min-h-0 lg:max-h-full lg:scrollbar-hover-hide pr-6">
           {/* Header Card */}
           <div className="flex flex-col gap-2">
             <div className="flex items-start justify-between gap-4">
@@ -450,7 +450,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                 <div className="p-1.5 bg-brand-primary/10 rounded-md">
                   <Code2 className="w-5 h-5 text-brand-primary" />
                 </div>
-                <h3 className="text-lg font-bold tracking-tight">Content</h3>
+                <h3 className="text-lg font-bold tracking-tight">Prompt</h3>
               </div>
               <Button
                 size="sm"
@@ -472,7 +472,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                 ) : (
                   <>
                     <Copy className="w-3.5 h-3.5" />
-                    Copy Config
+                    Copy Prompt
                   </>
                 )}
               </Button>
@@ -494,7 +494,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
         </div>
 
         {/* Right Column: Sidebar Actions */}
-        <div className="flex flex-col gap-6 lg:sticky lg:top-6">
+        <div className="flex flex-col gap-6 w-full lg:w-1/3 mt-6 lg:mt-0">
           {/* Creator Card */}
           {skill.creator && (
             <div className="group bg-neutral-01/80 border border-neutral-02 rounded-2xl p-5 flex flex-col gap-4 shadow-sm backdrop-blur-sm transition-all duration-300 hover:shadow-md hover:border-neutral-03 hover:-translate-y-1">
