@@ -12,8 +12,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { createSkill, updateSkill } from "@/services/academy.service";
 import { cn } from "@/utils";
 import { toast } from "@/utils/toast";
-import { useState, useEffect } from "react";
-import { AcademyItemType, AcademyItem } from "../data";
+import { useEffect, useState } from "react";
+import { AcademyItem, AcademyItemType } from "../type";
 
 interface CreateAcademyItemModalProps {
   open: boolean;
@@ -31,7 +31,7 @@ export const CreateAcademyItemModal = ({
   onSuccess,
 }: CreateAcademyItemModalProps) => {
   const isEditMode = !!editItem;
-  
+
   const [formData, setFormData] = useState({
     type: defaultType,
     title: "",
@@ -63,11 +63,18 @@ export const CreateAcademyItemModal = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const loadingToast = toast.loading(editItem ? "Updating skill..." : "Creating skill...");
+    const loadingToast = toast.loading(
+      editItem ? "Updating skill..." : "Creating skill..."
+    );
 
     try {
       if (editItem) {
-        console.log("Updating skill with ID:", editItem.id, "type:", typeof editItem.id);
+        console.log(
+          "Updating skill with ID:",
+          editItem.id,
+          "type:",
+          typeof editItem.id
+        );
         await updateSkill(editItem.id, {
           name: formData.title,
           description: formData.description,
@@ -91,8 +98,15 @@ export const CreateAcademyItemModal = ({
       onSuccess?.();
     } catch (error) {
       toast.dismiss(loadingToast);
-      toast.error(editItem ? "Failed to update skill. Please try again." : "Failed to create skill. Please try again.");
-      console.error(editItem ? "Failed to update skill:" : "Failed to create skill:", error);
+      toast.error(
+        editItem
+          ? "Failed to update skill. Please try again."
+          : "Failed to create skill. Please try again."
+      );
+      console.error(
+        editItem ? "Failed to update skill:" : "Failed to create skill:",
+        error
+      );
     }
   };
 
@@ -101,7 +115,8 @@ export const CreateAcademyItemModal = ({
       <ModalContent className="max-w-[600px] w-full  border-neutral-02">
         <ModalHeader>
           <ModalTitle className="text-xl font-bold text-neutral-primary">
-            {editItem ? "Edit" : "Create New"} {formData.type === "skill" ? "Skill" : "Prompt"}
+            {editItem ? "Edit" : "Create New"}{" "}
+            {formData.type === "skill" ? "Skill" : "Prompt"}
           </ModalTitle>
         </ModalHeader>
 
@@ -197,7 +212,8 @@ export const CreateAcademyItemModal = ({
                 !formData.title || !formData.description || !formData.content
               }
             >
-              {editItem ? "Update" : "Publish"} {formData.type === "skill" ? "Skill" : "Prompt"}
+              {editItem ? "Update" : "Publish"}{" "}
+              {formData.type === "skill" ? "Skill" : "Prompt"}
             </Button>
           </div>
         </form>

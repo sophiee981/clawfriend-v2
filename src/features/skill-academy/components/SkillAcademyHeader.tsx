@@ -20,8 +20,8 @@ export const SkillAcademyHeader = ({
         {onCreateClick && (
           <Button
             onClick={onCreateClick}
-            size="sm"
-            className="bg-brand-primary text-white hover:bg-brand-secondary gap-1.5 md:gap-2 text-sm md:text-base px-3 md:px-4"
+            variant="secondary"
+            buttonType="outline"
           >
             <span className="text-base md:text-lg leading-none">+</span>
             <span className="hidden sm:inline">Create</span>

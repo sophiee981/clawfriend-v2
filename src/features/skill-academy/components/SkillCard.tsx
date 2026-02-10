@@ -7,13 +7,20 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Download, Heart, MoreHorizontal, Share2, Edit, Trash2 } from "lucide-react";
+import { likeSkill } from "@/services";
+import { useAuthStore } from "@/stores/auth.store";
+import { toast } from "@/utils/toast";
+import {
+  Download,
+  Edit,
+  Heart,
+  MoreHorizontal,
+  Share2,
+  Trash2,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { likeSkill } from "@/services";
-import { toast } from "@/utils/toast";
-import { AcademyItem } from "../data";
-import { useAuthStore } from "@/stores/auth.store";
+import { AcademyItem } from "../type";
 
 interface SkillCardProps {
   item: AcademyItem;
@@ -22,14 +29,20 @@ interface SkillCardProps {
   onDelete?: (itemId: string) => void;
 }
 
-export const SkillCard = ({ item, onAddToAgent, onEdit, onDelete }: SkillCardProps) => {
+export const SkillCard = ({
+  item,
+  onAddToAgent,
+  onEdit,
+  onDelete,
+}: SkillCardProps) => {
   const router = useRouter();
   const { userInfo } = useAuthStore();
   const [likes, setLikes] = useState(item.likes);
   const [isLiked, setIsLiked] = useState(item.is_liked);
   const [isLiking, setIsLiking] = useState(false);
 
-  const isCurrentUserCreator = userInfo?.agents?.[0]?.username === item.author.username;
+  const isCurrentUserCreator =
+    userInfo?.agents?.[0]?.username === item.author.username;
 
   const handleCardClick = () => {
     router.push(`/skill-academy/${item.id}`);
@@ -50,7 +63,7 @@ export const SkillCard = ({ item, onAddToAgent, onEdit, onDelete }: SkillCardPro
 
     try {
       const skillId = item.id;
-      const response = await likeSkill(skillId) as any;
+      const response = (await likeSkill(skillId)) as any;
 
       // Update with actual response
       // Response might be wrapped in data property or be direct
@@ -66,7 +79,8 @@ export const SkillCard = ({ item, onAddToAgent, onEdit, onDelete }: SkillCardPro
       setIsLiked(previousIsLiked);
       setLikes(previousLikes);
 
-      const errorMessage = error?.error || error?.message || "Failed to like skill";
+      const errorMessage =
+        error?.error || error?.message || "Failed to like skill";
       toast.error(errorMessage);
     } finally {
       setIsLiking(false);
@@ -74,10 +88,11 @@ export const SkillCard = ({ item, onAddToAgent, onEdit, onDelete }: SkillCardPro
   };
 
   return (
-    <div
-      className="flex flex-col gap-4 p-4 rounded-xl border border-neutral-02 bg-bg-secondary hover:border-neutral-03 transition-colors cursor-pointer"
-    >
-      <div onClick={handleCardClick} className="cursor-pointer  flex flex-col gap-4">
+    <div className="flex flex-col gap-4 p-4 rounded-xl border border-neutral-02 bg-bg-secondary hover:border-neutral-03 transition-colors cursor-pointer">
+      <div
+        onClick={handleCardClick}
+        className="cursor-pointer  flex flex-col gap-4"
+      >
         <div className="flex justify-between items-start">
           <div className="flex gap-3">
             <Avatar className="h-10 w-10 border border-neutral-02">
@@ -158,16 +173,18 @@ export const SkillCard = ({ item, onAddToAgent, onEdit, onDelete }: SkillCardPro
       <div className="flex items-center justify-between pt-2 border-t border-neutral-02 mt-auto">
         <div className="flex gap-4">
           <button
-            className={`flex items-center gap-1.5 transition-colors group ${isLiked
+            className={`flex items-center gap-1.5 transition-colors group ${
+              isLiked
                 ? "text-brand-primary"
                 : "text-neutral-tertiary hover:text-brand-primary"
-              } ${isLiking ? "opacity-50 cursor-not-allowed" : ""}`}
+            } ${isLiking ? "opacity-50 cursor-not-allowed" : ""}`}
             onClick={handleLike}
             disabled={isLiking}
           >
             <Heart
-              className={`h-4 w-4 ${isLiked ? "fill-current" : "group-hover:fill-current"
-                }`}
+              className={`h-4 w-4 ${
+                isLiked ? "fill-current" : "group-hover:fill-current"
+              }`}
             />
             <span className="text-xs font-medium">{likes}</span>
           </button>

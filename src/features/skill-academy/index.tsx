@@ -1,41 +1,48 @@
 "use client";
 
-import { getSkills } from "@/services";
 import type { Skill } from "@/interfaces";
-import { useRouter } from "next/navigation";
-import { useEffect, useState, useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { getSkills } from "@/services";
+import { deleteSkill } from "@/services/academy.service";
 import { cn } from "@/utils";
+import { toast } from "@/utils/toast";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { SearchInput } from "../explore/components/SearchInput";
 import { AddToAgentModal } from "./components/AddToAgentModal";
 import { CreateAcademyItemModal } from "./components/CreateAcademyItemModal";
 import { DeleteConfirmModal } from "./components/DeleteConfirmModal";
 import { SkillAcademyHeader } from "./components/SkillAcademyHeader";
 import { SkillCard } from "./components/SkillCard";
 import { SkillCardSkeleton } from "./components/SkillCardSkeleton";
-import {
-  AcademyItem,
-  AcademyItemType,
-} from "./data";
-import { SearchInput } from "../explore/components/SearchInput";
-import { deleteSkill } from "@/services/academy.service";
-import { toast } from "@/utils/toast";
-import { useQueryClient } from "@tanstack/react-query";
+import { AcademyItem, AcademyItemType } from "./type";
 
 // Map Skill/Prompt from API to AcademyItem format
-const mapSkillToAcademyItem = (skill: Skill, type: AcademyItemType): AcademyItem => {
+const mapSkillToAcademyItem = (
+  skill: Skill,
+  type: AcademyItemType
+): AcademyItem => {
   return {
     id: skill.id,
     title: skill.name,
     description: skill.description,
     content: skill.content,
     author: {
-      name: skill.creator?.display_name || skill.creator?.owner_x_name || "Anonymous",
-      avatar: skill.creator?.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=Anonymous",
-      handle: skill.creator?.owner_x_handle || skill.creator?.x_username || "@anonymous",
+      name:
+        skill.creator?.display_name ||
+        skill.creator?.owner_x_name ||
+        "Anonymous",
+      avatar:
+        skill.creator?.avatar ||
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=Anonymous",
+      handle:
+        skill.creator?.owner_x_handle ||
+        skill.creator?.x_username ||
+        "@anonymous",
       username: skill.creator?.username,
     },
     type: (skill.type as AcademyItemType) || type,
-    tags: skill.tags?.map(tag => tag.name) || [],
+    tags: skill.tags?.map((tag) => tag.name) || [],
     likes: skill.like_count,
     uses: skill.download_count,
     is_liked: skill.is_liked,
@@ -114,11 +121,7 @@ const SkillAcademyContent = () => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: [
-      activeTab,
-      activeTab,
-      searchQuery || null,
-    ],
+    queryKey: [activeTab, activeTab, searchQuery || null],
     queryFn: async () => {
       return await getSkills({
         ...(searchQuery.trim() && { search: searchQuery.trim() }),
@@ -135,7 +138,9 @@ const SkillAcademyContent = () => {
 
   useEffect(() => {
     if (response?.data?.data && Array.isArray(response.data.data)) {
-      setItems(response.data.data.map((item) => mapSkillToAcademyItem(item, activeTab)));
+      setItems(
+        response.data.data.map((item) => mapSkillToAcademyItem(item, activeTab))
+      );
     } else {
       setItems([]);
     }
@@ -169,7 +174,9 @@ const SkillAcademyContent = () => {
     router.push(`/skill-academy?${params.toString()}`, { scroll: false });
   }, [searchQuery, activeTab, router]);
 
-  const errorMessage = error ? (error as any)?.error || `Failed to load ${activeTab}s` : null;
+  const errorMessage = error
+    ? (error as any)?.error || `Failed to load ${activeTab}s`
+    : null;
 
   const handleEdit = (item: AcademyItem) => {
     setEditItem(item);
@@ -184,7 +191,12 @@ const SkillAcademyContent = () => {
   const confirmDelete = async () => {
     // Capture the ID immediately to prevent it from being lost
     const itemIdToDelete = deleteItemId;
-    console.log("confirmDelete called with deleteItemId:", deleteItemId, "itemIdToDelete:", itemIdToDelete);
+    console.log(
+      "confirmDelete called with deleteItemId:",
+      deleteItemId,
+      "itemIdToDelete:",
+      itemIdToDelete
+    );
 
     if (!itemIdToDelete) {
       console.error("No item ID to delete");
@@ -194,7 +206,12 @@ const SkillAcademyContent = () => {
 
     const loadingToast = toast.loading("Deleting skill...");
     try {
-      console.log("Deleting skill with ID:", itemIdToDelete, "type:", typeof itemIdToDelete);
+      console.log(
+        "Deleting skill with ID:",
+        itemIdToDelete,
+        "type:",
+        typeof itemIdToDelete
+      );
       // Pass the ID directly (can be string or number)
       await deleteSkill(itemIdToDelete);
       toast.dismiss(loadingToast);
@@ -207,7 +224,8 @@ const SkillAcademyContent = () => {
     } catch (error: any) {
       toast.dismiss(loadingToast);
       console.error("Delete error:", error);
-      const errorMessage = error?.error || error?.message || "Failed to delete skill";
+      const errorMessage =
+        error?.error || error?.message || "Failed to delete skill";
       toast.error(errorMessage);
       // Don't close modal on error so user can try again
     }
@@ -225,9 +243,7 @@ const SkillAcademyContent = () => {
     // Optimistically update download count
     setItems((prevItems) =>
       prevItems.map((item) =>
-        item.id === itemId
-          ? { ...item, uses: item.uses + 1 }
-          : item
+        item.id === itemId ? { ...item, uses: item.uses + 1 } : item
       )
     );
   };
@@ -344,7 +360,11 @@ const SkillAcademyContent = () => {
           }
         }}
         onConfirm={confirmDelete}
-        itemName={deleteItemId ? currentItems.find(item => item.id === deleteItemId)?.title : undefined}
+        itemName={
+          deleteItemId
+            ? currentItems.find((item) => item.id === deleteItemId)?.title
+            : undefined
+        }
       />
     </div>
   );

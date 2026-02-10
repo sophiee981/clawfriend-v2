@@ -8,10 +8,10 @@ import {
   ModalHeader,
   ModalTitle,
 } from "@/components/ui/modal";
-import { useState } from "react";
-import { AcademyItem } from "../data";
-import { toast } from "@/utils/toast";
 import { downloadSkill } from "@/services/academy.service";
+import { toast } from "@/utils/toast";
+import { useState } from "react";
+import { AcademyItem } from "../type";
 
 interface AddToAgentModalProps {
   open: boolean;
@@ -53,10 +53,10 @@ export const AddToAgentModal = ({
   };
 
   const getPreviewContent = () => {
-    const lines = item.content.split('\n');
+    const lines = item.content.split("\n");
     const maxLines = 5;
     if (lines.length > maxLines) {
-      return lines.slice(0, maxLines).join('\n') + '\n...';
+      return lines.slice(0, maxLines).join("\n") + "\n...";
     }
     return item.content;
   };
@@ -64,7 +64,9 @@ export const AddToAgentModal = ({
   const steps = [
     {
       title: "Copy Content",
-      description: `Copy the ${item.type === "skill" ? "skill" : "Prompt"} content below`,
+      description: `Copy the ${
+        item.type === "skill" ? "skill" : "Prompt"
+      } content below`,
       action: (
         <div
           className="flex items-center gap-2 mt-2 w-full p-3 bg-neutral-02 rounded-lg border border-neutral-03 justify-between group cursor-pointer hover:border-neutral-primary transition-colors"
@@ -98,7 +100,8 @@ export const AddToAgentModal = ({
             Add {item.type === "skill" ? "Skill" : "Prompt"} to Agent
           </ModalTitle>
           <p className="text-sm text-neutral-tertiary">
-            Follow these steps to equip this {item.type === "skill" ? "Skill" : "Prompt"} on your agent.
+            Follow these steps to equip this{" "}
+            {item.type === "skill" ? "Skill" : "Prompt"} on your agent.
           </p>
         </ModalHeader>
 
