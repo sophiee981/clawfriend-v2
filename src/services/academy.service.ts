@@ -11,25 +11,32 @@ import type {
   UpdateSkillRequest,
   UpdateSkillResponse,
 } from "@/interfaces";
-import { apiWithToken } from "@/services";
+import { apiWithToken, serverApi } from "@/services";
 
 export const getSkills = (params: GetSkillsParams) =>
   apiWithToken.get<GetSkillsResponse>("/v1/academy/skills", { params });
 
-export const getSkill = (skillId: string) =>
-  apiWithToken.get<GetSkillResponse>(`/v1/academy/skills/${skillId}`);
+export const getSkill = (skillId: string, isServer?: boolean) => {
+  const api = isServer ? serverApi : apiWithToken;
+  return api.get<GetSkillResponse>(`/v1/academy/skills/${skillId}`);
+};
 
 export const createSkill = (data: CreateSkillRequest) =>
   apiWithToken.post<CreateSkillResponse>("/v1/academy/skills", data);
 
-export const updateSkill = (skillId: number | string, data: UpdateSkillRequest) =>
+export const updateSkill = (
+  skillId: number | string,
+  data: UpdateSkillRequest
+) =>
   apiWithToken.put<UpdateSkillResponse>(`/v1/academy/skills/${skillId}`, data);
 
 export const likeSkill = (skillId: number | string) =>
   apiWithToken.post<SkillLikeResponse>(`/v1/academy/skills/${skillId}/like`);
 
 export const unlikeSkill = (skillId: number | string) =>
-  apiWithToken.delete<SkillLikeResponse>(`/v1/academy/skills/${skillId}/unlike`);
+  apiWithToken.delete<SkillLikeResponse>(
+    `/v1/academy/skills/${skillId}/unlike`
+  );
 
 export const downloadSkill = (skillId: string) =>
   apiWithToken.post<SkillDownloadResponse>(
