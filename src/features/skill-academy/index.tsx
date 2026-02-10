@@ -18,7 +18,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { X } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { SearchInput } from "../explore/components/SearchInput";
 import { AddToAgentModal } from "./components/AddToAgentModal";
@@ -61,6 +61,14 @@ const mapSkillToAcademyItem = (
   };
 };
 
+// Helper function to get URL search params
+const getSearchParams = (): URLSearchParams => {
+  if (typeof window === "undefined") {
+    return new URLSearchParams();
+  }
+  return new URLSearchParams(window.location.search);
+};
+
 // Component that reads search params from URL
 const SkillAcademyContent = ({
   initialSkillsData,
@@ -70,22 +78,22 @@ const SkillAcademyContent = ({
   initialTrendingTagsData: GetTrendingTagsResponse;
 }) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  console.log({ initialSkillsData, initialTrendingTagsData });
 
   // Read initial tab and search from URL
   const getInitialTab = (): AcademyItemType => {
-    const tabFromUrl = searchParams.get("tab");
+    const params = getSearchParams();
+    const tabFromUrl = params.get("tab");
     return tabFromUrl === "skill" ? "skill" : "prompt";
   };
 
   const getInitialSearch = (): string => {
-    return searchParams.get("search") || "";
+    const params = getSearchParams();
+    return params.get("search") || "";
   };
 
   const getInitialSelectedTags = (): string[] => {
-    const tagsParam = searchParams.get("tags");
+    const params = getSearchParams();
+    const tagsParam = params.get("tags");
     return tagsParam ? tagsParam.split(",").filter(Boolean) : [];
   };
 
@@ -121,15 +129,61 @@ const SkillAcademyContent = ({
     return () => clearTimeout(timer);
   }, [searchInput]);
 
+  // Sync URL params with state (handle browser back/forward)
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = getSearchParams();
+      const tabFromUrl = params.get("tab");
+      const search = params.get("search") || "";
+      const tagsParam = params.get("tags");
+      const newTags = tagsParam ? tagsParam.split(",").filter(Boolean) : [];
+
+      isSyncingFromUrl.current = true;
+
+      // Sync tab
+      if (tabFromUrl) {
+        const newTab: AcademyItemType = tabFromUrl === "skill" ? "skill" : "prompt";
+        if (newTab !== activeTab) {
+          setActiveTab(newTab);
+        }
+      } else {
+        // If no tab param in URL, redirect to default tab
+        const newParams = new URLSearchParams(params.toString());
+        newParams.set("tab", "prompt");
+        const newUrl = `${window.location.pathname}?${newParams.toString()}`;
+        router.replace(newUrl, { scroll: false });
+      }
+
+      // Sync search
+      if (search !== searchInput) {
+        setSearchInput(search);
+        setSearchQuery(search);
+      }
+
+      // Sync tags
+      if (JSON.stringify(newTags) !== JSON.stringify(selectedTags)) {
+        setSelectedTags(newTags);
+      }
+
+      setTimeout(() => {
+        isSyncingFromUrl.current = false;
+      }, 100);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [activeTab, searchInput, selectedTags, router]);
+
   // Ensure URL always has tab param, redirect if missing
   useEffect(() => {
-    const tabFromUrl = searchParams.get("tab");
+    const params = getSearchParams();
+    const tabFromUrl = params.get("tab");
 
     // If no tab param in URL, redirect to default tab
     if (!tabFromUrl) {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set("tab", "prompt");
-      const newUrl = `${window.location.pathname}?${params.toString()}`;
+      const newParams = new URLSearchParams(params.toString());
+      newParams.set("tab", "prompt");
+      const newUrl = `${window.location.pathname}?${newParams.toString()}`;
       router.replace(newUrl, { scroll: false });
       return;
     }
@@ -146,15 +200,16 @@ const SkillAcademyContent = ({
       isSyncingFromUrl.current = false;
     }, 100);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
+  }, []);
 
-  // Sync search and tags from URL (only on mount or when URL changes externally)
+  // Sync search and tags from URL on mount
   useEffect(() => {
-    isSyncingFromUrl.current = true;
-
-    const search = searchParams.get("search") || "";
-    const tagsParam = searchParams.get("tags");
+    const params = getSearchParams();
+    const search = params.get("search") || "";
+    const tagsParam = params.get("tags");
     const newTags = tagsParam ? tagsParam.split(",").filter(Boolean) : [];
+
+    isSyncingFromUrl.current = true;
 
     // Only update state if values are different to avoid loops
     if (search !== searchInput) {
@@ -171,7 +226,7 @@ const SkillAcademyContent = ({
       isSyncingFromUrl.current = false;
     }, 100);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
+  }, []);
 
   // Fetch data from API using React Query with infinite scroll
   const loadMoreRef = useRef<HTMLDivElement>(null);
@@ -195,7 +250,7 @@ const SkillAcademyContent = ({
         ...(searchQuery.trim() && { search: searchQuery.trim() }),
         ...(selectedTags.length > 0 && { tags: selectedTags.join(",") }),
         page: pageParam,
-        limit: 20,
+        limit: 18,
         is_active: true,
         type: activeTab,
       });
@@ -274,10 +329,9 @@ const SkillAcademyContent = ({
   // Extract trending tags (limit to 20)
   const trendingTags = useMemo((): TrendingTag[] => {
     if (!trendingTagsData?.tags) return [];
-    return trendingTagsData.tags.slice(0, 20);
+    return trendingTagsData.tags
   }, [trendingTagsData]);
 
-  // Display tags based on showAllTags state (10 initially, 20 when expanded)
   const displayedTags = useMemo(() => {
     return showAllTags ? trendingTags : trendingTags.slice(0, 10);
   }, [trendingTags, showAllTags]);
@@ -293,7 +347,7 @@ const SkillAcademyContent = ({
   // Update URL when tab changes
   const handleTabChange = (id: AcademyItemType) => {
     setActiveTab(id);
-    const params = new URLSearchParams(searchParams.toString());
+    const params = getSearchParams();
     params.set("tab", id);
     if (searchQuery.trim()) {
       params.set("search", searchQuery.trim());
@@ -338,7 +392,7 @@ const SkillAcademyContent = ({
         : [...prev, tag];
 
       // Update URL
-      const params = new URLSearchParams(searchParams.toString());
+      const params = getSearchParams();
       params.set("tab", activeTab);
       if (searchQuery.trim()) {
         params.set("search", searchQuery.trim());
@@ -360,7 +414,7 @@ const SkillAcademyContent = ({
   // Handle clear all tags
   const handleClearTags = () => {
     setSelectedTags([]);
-    const params = new URLSearchParams(searchParams.toString());
+    const params = getSearchParams();
     params.set("tab", activeTab);
     if (searchQuery.trim()) {
       params.set("search", searchQuery.trim());

@@ -155,6 +155,11 @@ export const SkillCard = ({
               {item.title}
             </h3>
           </div>
+          {item.content && (
+            <p className="text-body-sm text-neutral-secondary line-clamp-3">
+              {item.content}
+            </p>
+          )}
         </div>
 
         <div className="flex flex-wrap gap-2">

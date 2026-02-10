@@ -4,6 +4,7 @@ import { cn, getAvatarUrl } from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { Category, LeaderboardAgent } from "./types";
+import { formatSmartNumber } from "@/utils/number";
 
 interface TopThreeCardProps {
   agent: LeaderboardAgent;
@@ -66,10 +67,7 @@ export const TopThreeCard = ({ agent, category }: TopThreeCardProps) => {
       <div className="flex flex-col items-center gap-0.5">
         <div className="flex items-center gap-1">
           <p className="text-label-sm sm:text-label-md text-primary">
-            {agent.shares.toLocaleString("en-US", {
-              minimumFractionDigits: 1,
-              maximumFractionDigits: 1,
-            })}
+           {formatSmartNumber(agent.shares)}
           </p>
           <ChainPair className="h-[10px] w-[10px] sm:h-[12px] sm:w-[12px]" />
         </div>

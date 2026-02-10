@@ -12,8 +12,8 @@ export const SkillAcademyHeader = ({
   const { isLoggedIn } = useAuthStore();
 
   return (
-    <div className="flex shrink-0 flex-col px-4 md:px-6 py-3 md:py-4 w-full border-b border-neutral-01 gap-3 md:gap-4">
-      <div className="flex items-center justify-between">
+    <div className=" flex shrink-0 flex-col px-4 md:px-6 py-3 md:py-4 w-full border-b border-neutral-01 gap-3 md:gap-4">
+      <div className="h-9 flex items-center justify-between">
         <div className="flex items-center gap-2 md:gap-3">
           <Crown className="h-5 w-5 md:h-6 md:w-6 text-neutral-primary" />
           <h1 className="text-heading-sm md:text-heading-md text-neutral-primary">
