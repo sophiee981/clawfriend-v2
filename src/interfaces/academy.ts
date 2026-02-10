@@ -114,6 +114,7 @@ export interface GetSkillsParams {
   search?: string;
   is_active?: boolean;
   type?: string;
+  tags?: string;
 }
 
 export interface GetSkillsResponse {
@@ -122,6 +123,25 @@ export interface GetSkillsResponse {
     total: number;
     page: number;
     limit: number;
+  };
+  statusCode: number;
+  message: string;
+}
+
+export interface TrendingTag {
+  id: string;
+  name: string;
+  category: string;
+  usage_count: number;
+}
+
+export interface GetTrendingTagsParams {
+  limit?: number;
+}
+
+export interface GetTrendingTagsResponse {
+  data: {
+    tags: TrendingTag[];
   };
   statusCode: number;
   message: string;
