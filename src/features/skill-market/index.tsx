@@ -86,6 +86,7 @@ const SkillAcademyContent = ({
   const getInitialTab = (): AcademyItemType => {
     const params = getSearchParams();
     const tabFromUrl = params.get("tab");
+    console.log('tabFromUrl', tabFromUrl);
     return tabFromUrl === "skill" ? "skill" : "prompt";
   };
 
@@ -209,7 +210,6 @@ const SkillAcademyContent = ({
     setTimeout(() => {
       isSyncingFromUrl.current = false;
     }, 100);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Sync search and tags from URL on mount
