@@ -7,7 +7,10 @@ interface OrderSideToggleProps {
   onChange: (side: OrderSide) => void;
 }
 
-export const OrderSideToggle = ({ orderSide, onChange }: OrderSideToggleProps) => {
+export const OrderSideToggle = ({
+  orderSide,
+  onChange,
+}: OrderSideToggleProps) => {
   return (
     <div className="flex gap-2.5">
       <button
@@ -16,9 +19,10 @@ export const OrderSideToggle = ({ orderSide, onChange }: OrderSideToggleProps) =
         className={`
           flex-1 h-9 flex items-center justify-center text-label-sm font-semibold
           rounded border-[4px] transition-all duration-200 ease-in-out
-          ${orderSide === "buy"
-            ? "bg-primary text-white border-primary shadow-sm"
-            : ""
+          ${
+            orderSide === "buy"
+              ? "bg-primary text-white border-primary shadow-sm"
+              : ""
           } 
         `}
       >
@@ -30,9 +34,10 @@ export const OrderSideToggle = ({ orderSide, onChange }: OrderSideToggleProps) =
         className={`
           flex-1 h-9 flex items-center justify-center text-label-sm font-semibold
           rounded border-[4px] transition-all duration-200 ease-in-out
-          ${orderSide === "sell"
-            ? "bg-primary text-white border-primary shadow-sm"
-            : ""
+          ${
+            orderSide === "sell"
+              ? "bg-primary text-white border-primary shadow-sm"
+              : ""
           }
         `}
       >

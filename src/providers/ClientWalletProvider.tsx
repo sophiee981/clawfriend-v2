@@ -42,9 +42,9 @@ export const ClientWalletProvider = ({
 
     const initializeConnectors = () => {
       const baseConnectors: IConnector[] = [
+        new RabbyEvmConnector(dappMetadata, supportedChains),
         new BinanceEvmConnector(dappMetadata, supportedChains),
         new MetamaskEvmConnector(dappMetadata, supportedChains),
-        new RabbyEvmConnector(dappMetadata, supportedChains),
         new CoinbaseEvmConnector(dappMetadata, supportedChains),
         new TrustWalletEvmConnector(dappMetadata, supportedChains),
       ];

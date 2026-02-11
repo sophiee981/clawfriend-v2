@@ -20,7 +20,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAuth } from "@/providers/AuthProvider";
 import { getTwitterLoginUrl } from "@/services/auth.service";
 import { useAuthStore } from "@/stores/auth.store";
 import { cn, getAvatarUrl } from "@/utils";
@@ -30,7 +29,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
-import WalletModal from "./WalletModal";
 
 export const MENU_ITEMS = [
   { label: "Home", href: "/", icon: HomeLine, activeIcon: HomeFill },
@@ -83,8 +81,6 @@ export const LeftSidebar = () => {
   const pathname = usePathname();
   const { isLoggedIn, userInfo, isCheckingAuth, checkAuthStatus, logout } =
     useAuthStore();
-
-  const { isConnected } = useAuth();
 
   useEffect(() => {
     checkAuthStatus();
@@ -202,14 +198,6 @@ export const LeftSidebar = () => {
           );
         })}
       </nav>
-
-      {!isConnected ? (
-        <WalletModal>
-          <Button>Connect Wallet</Button>
-        </WalletModal>
-      ) : (
-        <Button>Disconnect Wallet</Button>
-      )}
 
       {/* Profile Link or Login Button */}
       {isCheckingAuth ? (
