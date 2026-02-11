@@ -260,6 +260,15 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                   buttonType="ghost"
                   size="sm"
                   className="rounded-full w-10 h-10 p-0 text-neutral-tertiary hover:text-neutral-primary hover:bg-neutral-02"
+                  onClick={async () => {
+                    try {
+                      const detailUrl = `${window.location.origin}/skill-market/${skill.id}`;
+                      await navigator.clipboard.writeText(detailUrl);
+                      toast.success("Detail link copied!");
+                    } catch (error) {
+                      toast.error("Failed to copy link");
+                    }
+                  }}
                 >
                   <Share2 className="w-4 h-4" />
                 </Button>
