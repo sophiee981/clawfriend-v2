@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+
 interface VideoPlayerProps {
     url: string;
     className?: string;
@@ -18,9 +20,46 @@ const getYouTubeEmbedUrl = (url: string) => {
 };
 
 export const VideoPlayer = ({ url, className = "", poster }: VideoPlayerProps) => {
-    // Add #t=0.1 to URL to get first frame as thumbnail (if no poster provided)
-    const videoUrl = !poster && !url.includes('#t=') ? `${url}#t=0.1` : url;
-    
+    const [autoThumbnail, setAutoThumbnail] = useState<string | undefined>(poster);
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    useEffect(() => {
+        // Only generate thumbnail if no poster provided and not YouTube
+        if (!poster && !isYouTubeUrl(url)) {
+            const video = document.createElement('video');
+            video.crossOrigin = 'anonymous';
+            video.src = url;
+            video.currentTime = 0.5; // Get frame at 0.5 second
+
+            const handleLoadedData = () => {
+                try {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    const ctx = canvas.getContext('2d');
+                    
+                    if (ctx && video.videoWidth > 0) {
+                        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                        const thumbnail = canvas.toDataURL('image/jpeg', 0.8);
+                        setAutoThumbnail(thumbnail);
+                    }
+                } catch (error) {
+                    console.error('Failed to generate thumbnail:', error);
+                } finally {
+                    video.remove();
+                }
+            };
+
+            video.addEventListener('loadeddata', handleLoadedData);
+            video.load();
+
+            return () => {
+                video.removeEventListener('loadeddata', handleLoadedData);
+                video.remove();
+            };
+        }
+    }, [url, poster]);
+
     return (
         <div className={`rounded-lg overflow-hidden bg-black aspect-video ${className}`}>
             {isYouTubeUrl(url) ? (
@@ -32,11 +71,12 @@ export const VideoPlayer = ({ url, className = "", poster }: VideoPlayerProps) =
                 />
             ) : (
                 <video
-                    src={videoUrl}
+                    ref={videoRef}
+                    src={url}
                     controls
                     className="w-full h-full"
                     preload="metadata"
-                    poster={poster}
+                    poster={autoThumbnail}
                 >
                     Your browser does not support the video tag.
                 </video>
