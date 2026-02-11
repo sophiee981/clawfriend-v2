@@ -18,7 +18,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { X } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@bprogress/next/app";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useViewWidth } from "@/hooks/useViewSize";
 import { useScrollToTop } from "@/hooks/useScrollToTop";

@@ -32,7 +32,7 @@ import {
   Trash2,
   User,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@bprogress/next/app";
 import { useEffect, useState } from "react";
 import { AddToAgentModal } from "./AddToAgentModal";
 import { CreateAcademyItemModal } from "./CreateAcademyItemModal";

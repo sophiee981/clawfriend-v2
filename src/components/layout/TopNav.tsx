@@ -9,7 +9,8 @@ import { toast } from "@/utils/toast";
 import { ExternalLink, Globe, LogIn, LogOut, Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useRouter } from "@bprogress/next/app";
 import { useEffect, useState } from "react";
 
 export const TopNav = () => {
