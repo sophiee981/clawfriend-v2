@@ -12,7 +12,7 @@ const LatestFeed = () => {
   const router = useRouter();
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
-  const LIMIT = 10;
+  const LIMIT = 20;
 
   const {
     data,
