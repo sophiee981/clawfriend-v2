@@ -148,7 +148,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
     let textToCopy = "";
     if (skill.type === "skill") {
       const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "";
-      textToCopy = `${baseUrl}/skill-market/${skill.id}`;
+      textToCopy = `Learn skill from ${baseUrl}/skill-market/${skill.id}`;
     } else {
       textToCopy = skill.content;
     }
@@ -156,6 +156,14 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
     navigator.clipboard.writeText(textToCopy);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
+  };
+
+  const handleShareLink = () => {
+    if (!skill) return;
+
+    const currentUrl = window.location.href;
+    navigator.clipboard.writeText(currentUrl);
+    toast.success("Link copied to clipboard!");
   };
 
   const content = skill?.content || "";
@@ -268,6 +276,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                   buttonType="ghost"
                   size="sm"
                   className="rounded-full w-10 h-10 p-0 text-neutral-tertiary hover:text-neutral-primary hover:bg-neutral-02"
+                  onClick={handleShareLink}
                 >
                   <Share2 className="w-4 h-4" />
                 </Button>
