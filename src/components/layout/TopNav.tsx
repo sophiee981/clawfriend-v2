@@ -127,7 +127,7 @@ export const TopNav = () => {
                     className="flex items-center gap-3 px-4 py-3 border-b border-neutral-01 text-left text-sm font-medium text-neutral-primary transition-colors hover:bg-neutral-900 active:bg-neutral-800"
                   >
                     <ExternalLink className="h-4 w-4" />
-                    <span>Doc</span>
+                    <span>Docs</span>
                   </button>
                   <button
                     onClick={handleProfileClick}
@@ -147,7 +147,7 @@ export const TopNav = () => {
               </>
             ) : (
               /* Menu items for not logged in users - Sign in and About */
-              <div className="flex flex-col pt-[60px]">
+              <div className="flex flex-col pt-[60px] pb-10">
                 <button
                   onClick={handleLoginClick}
                   className="flex items-center gap-3 px-4 py-3 border-y border-neutral-01 text-left text-sm font-medium text-neutral-primary transition-colors hover:bg-neutral-900 active:bg-neutral-800"
@@ -167,7 +167,7 @@ export const TopNav = () => {
                   className="flex items-center gap-3 px-4 py-3 text-left text-sm font-medium text-neutral-primary transition-colors hover:bg-neutral-900 active:bg-neutral-800"
                 >
                   <ExternalLink className="h-4 w-4" />
-                  <span>Doc</span>
+                  <span>Docs</span>
                 </button>
               </div>
             )}

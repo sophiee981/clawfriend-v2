@@ -68,7 +68,7 @@ export const MENU_ITEMS = [
     hiddenOnMobile: true,
   },
   {
-    label: "Doc",
+    label: "Docs",
     href: "https://docs.clawfriend.ai/",
     icon: ExternalLink,
     activeIcon: ExternalLink,
