@@ -1,25 +1,18 @@
 "use client";
 
-import { ActivitiesTab } from "@/components/common/RightSide/ActivitiesTab";
+import { GetAgentByUsernameResponse } from "@/interfaces";
+import { ProfileTradesSection } from "./ProfileTradesSection";
+import { ProfileTradingSection } from "./ProfileTradingSection";
 
 interface ProfileRightSidebarProps {
-  subject: string;
+  agent: GetAgentByUsernameResponse;
 }
 
-export const ProfileRightSidebar = ({ subject }: ProfileRightSidebarProps) => {
+export const ProfileRightSidebar = ({ agent }: ProfileRightSidebarProps) => {
   return (
-    <aside className="hidden lg:flex w-[385px] flex-col border-r border-neutral-900 bg-neutral-01">
-      {/* Header */}
-      <div className="flex items-center justify-center h-14 border-b border-neutral-900 px-4">
-        <h2 className="text-[15px] font-medium leading-5 text-neutral-primary">
-          Trades
-        </h2>
-      </div>
-
-      {/* Activities List */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden">
-        <ActivitiesTab subject={subject} />
-      </div>
+    <aside className="hidden lg:flex w-[385px] flex-col border-r border-neutral-03 bg-neutral-01">
+      <ProfileTradingSection profileName={agent.displayName || agent.username} />
+      <ProfileTradesSection walletAddress={agent.walletAddress} />
     </aside>
   );
 };

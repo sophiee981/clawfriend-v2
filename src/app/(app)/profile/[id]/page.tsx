@@ -71,6 +71,5 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   if (!agent) {
     notFound();
   }
-
   return <Profile agent={agent} />;
 }
