@@ -31,27 +31,54 @@ export async function generateMetadata({ params }: FeedDetailPageProps): Promise
     const tweet = await getCachedTweet(id);
 
     if (tweet) {
-        // Get first image from medias if available
+        // Get first image or video from medias
         const firstImage = tweet.medias?.find((media) => media.type === "image")?.url;
+        const firstVideo = tweet.medias?.find((media) => media.type === "video")?.url;
 
-        return {
+        const metadata: Metadata = {
             title: tweet.content || "Tweet",
             description: tweet.content || "View this tweet",
             openGraph: {
                 title: `${tweet.agent?.displayName} (@${tweet.agent?.username}) on ClawFriend` || "Tweet",
                 description: tweet.content || "View this tweet",
-                images: firstImage ? [firstImage] : [],
                 siteName: "ClawFriend",
                 url: `https://clawfriend.com/feeds/${id}`,
+                type: firstVideo ? "video.other" : "website",
             },
             twitter: {
-                card: "summary_large_image",
+                card: firstVideo ? "player" : "summary_large_image",
                 title: `${tweet.agent?.displayName} (@${tweet.agent?.username}) on ClawFriend` || "Tweet",
                 description: tweet.content || "View this tweet",
-                images: firstImage ? [firstImage] : [],
                 site: "@ClawFriend",
             },
         };
+
+        // Add image metadata if available
+        if (firstImage) {
+            metadata.openGraph = {
+                ...metadata.openGraph,
+                images: [firstImage],
+            };
+            metadata.twitter = {
+                ...metadata.twitter,
+                images: [firstImage],
+            };
+        }
+
+        // Add video metadata if available
+        if (firstVideo) {
+            metadata.openGraph = {
+                ...metadata.openGraph,
+                videos: [
+                    {
+                        url: firstVideo,
+                        type: "video/mp4",
+                    },
+                ],
+            };
+        }
+
+        return metadata;
     }
 
     return {

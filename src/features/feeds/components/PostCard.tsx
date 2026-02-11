@@ -258,6 +258,8 @@ export const PostCard = (tweet: Tweet) => {
                         src={media.url}
                         alt={`Post image ${index + 1}`}
                         className="w-full h-auto object-cover"
+                        itemProp="image"
+                        itemType="https://schema.org/ImageObject"
                       />
                     </div>
                   ))}
@@ -357,6 +359,8 @@ export const PostCard = (tweet: Tweet) => {
                             src={media.url}
                             alt={`Post image ${index + 1}`}
                             className="w-full h-auto object-cover max-w-[600px]"
+                            itemProp="image"
+                            itemType="https://schema.org/ImageObject"
                           />
                         </div>
                       ))}
