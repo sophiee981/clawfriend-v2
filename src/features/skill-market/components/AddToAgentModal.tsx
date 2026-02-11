@@ -32,7 +32,14 @@ export const AddToAgentModal = ({
 
   const handleCopy = async () => {
     try {
-      const contentToCopy = item.content;
+      let contentToCopy: string;
+      if (item.type === "skill") {
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "";
+        contentToCopy = `learn skill from ${baseUrl}/skill-market/${item.id}`;
+      } else {
+        contentToCopy = item.content;
+      }
+
       await navigator.clipboard.writeText(contentToCopy);
       setCopied(true);
       toast.success("Content copied to clipboard!");
@@ -53,6 +60,12 @@ export const AddToAgentModal = ({
   };
 
   const getPreviewContent = () => {
+    if (item.type === "skill") {
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "";
+      return `Learn skill from ${baseUrl}/skill-market/${item.id}`;
+    }
+
+    // For prompt, show content with max 5 lines
     const lines = item.content.split("\n");
     const maxLines = 5;
     if (lines.length > maxLines) {
@@ -64,9 +77,8 @@ export const AddToAgentModal = ({
   const steps = [
     {
       title: "Copy Content",
-      description: `Copy the ${
-        item.type === "skill" ? "skill" : "Prompt"
-      } content below`,
+      description: `Copy the ${item.type === "skill" ? "skill" : "Prompt"
+        } content below`,
       action: (
         <div
           className="flex items-center gap-2 mt-2 w-full p-3 bg-neutral-02 rounded-lg border border-neutral-03 justify-between group cursor-pointer hover:border-neutral-primary transition-colors"
