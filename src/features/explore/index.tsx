@@ -201,6 +201,9 @@ export const Explore = ({
           hasNextPage={false}
           isFetchingNextPage={false}
           onLoadMore={() => { }}
+          searchQuery={searchQuery}
+          onSearchQueryChange={setSearchQuery}
+          onSearch={handleSearch}
         />
       </div>
     </div>

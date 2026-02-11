@@ -1,4 +1,4 @@
-import { SkillAcademy } from "@/features/skill-academy";
+import { SkillAcademy } from "@/features/skill-market";
 import {
   GetSkillsResponse,
   GetTrendingTagsResponse,

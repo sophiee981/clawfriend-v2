@@ -220,13 +220,13 @@ export const Footer = () => {
         </ScrollReveal>
 
         <ScrollReveal variant="fadeInUp" duration={800} delay={400}>
-          <div className="flex flex-col md:flex-row items-center justify-between pt-6 sm:pt-8 border-t border-white/5 text-[10px] sm:text-xs text-neutral-600 font-mono gap-4 md:gap-0">
+          <div className="flex flex-col md:flex-row items-center justify-between pt-6 sm:pt-8 border-t border-white/5 text-[10px] sm:text-xs text-neutral-400 font-mono gap-4 md:gap-0">
             <p>© 2026 ClawFriend.ai. All rights reserved.</p>
             <div className="flex gap-4 sm:gap-6">
-              <a href="#" className="hover:text-neutral-400 transition-colors duration-200">
+              <a href="#" className="hover:text-neutral-200 transition-colors duration-200">
                 Terms
               </a>
-              <a href="#" className="hover:text-neutral-400 transition-colors duration-200">
+              <a href="#" className="hover:text-neutral-200 transition-colors duration-200">
                 Privacy
               </a>
             </div>

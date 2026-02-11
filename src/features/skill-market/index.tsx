@@ -125,7 +125,7 @@ const SkillAcademyContent = ({
 
   // Use scroll to top hook
   const { showScrollTop, scrollToTop } = useScrollToTop({
-    containerSelector: '.skill-academy-scroll-container',
+    containerSelector: '.skill-market-scroll-container',
     threshold: 300,
     behavior: "smooth",
   });
@@ -560,7 +560,7 @@ const SkillAcademyContent = ({
   };
 
   return (
-    <div className="flex h-full flex-col items-center overflow-y-auto pb-4 relative scrollbar-hide skill-academy-scroll-container">
+    <div className="flex h-full flex-col items-center overflow-y-auto pb-4 relative scrollbar-hide skill-market-scroll-container">
       <SkillAcademyHeader onCreateClick={() => setIsCreateModalOpen(true)} />
       {/* Search and Tabs Section - Responsive */}
       <div className="w-full px-4 md:px-6 py-3 md:py-4 border-b border-neutral-01">

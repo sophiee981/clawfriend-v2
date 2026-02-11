@@ -48,7 +48,7 @@ export const MENU_ITEMS = [
   {
     label: "Skill Market",
     mobileLabel: "Skills",
-    href: "/skill-academy",
+    href: "/skill-market",
     icon: Crown,
     activeIcon: Crown,
   },

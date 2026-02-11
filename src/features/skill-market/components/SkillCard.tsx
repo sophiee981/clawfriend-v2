@@ -52,7 +52,7 @@ export const SkillCard = ({
     userInfo?.agents?.[0]?.username === item.author?.username && !!item.author?.username;
 
   const handleCardClick = () => {
-    router.push(`/skill-academy/${item.id}`);
+    router.push(`/skill-market/${item.id}`);
   };
 
   const handleLike = async (e: React.MouseEvent) => {
@@ -228,7 +228,7 @@ export const SkillCard = ({
             onClick={async (e) => {
               e.stopPropagation();
               try {
-                const detailUrl = `${window.location.origin}/skill-academy/${item.id}`;
+                const detailUrl = `${window.location.origin}/skill-market/${item.id}`;
                 await navigator.clipboard.writeText(detailUrl);
                 toast.success("Detail link copied!");
               } catch (error) {
