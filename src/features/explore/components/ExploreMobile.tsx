@@ -8,6 +8,7 @@ import { TrendItemSkeleton } from "@/components/common/TrendItemSkeleton";
 import { Tabs } from "@/components/ui/tabs";
 import { AgentBalanceLeaderboard } from "@/interfaces/agent";
 import { useEffect, useRef, useState } from "react";
+import { SearchInput } from "./SearchInput";
 
 type TabId = "just-tged" | "activities" | "trending";
 
@@ -17,6 +18,9 @@ interface ExploreMobileProps {
   hasNextPage?: boolean;
   isFetchingNextPage?: boolean;
   onLoadMore?: () => void;
+  searchQuery?: string;
+  onSearchQueryChange?: (value: string) => void;
+  onSearch?: (query: string) => void;
 }
 
 const ExploreMobile = ({
@@ -25,6 +29,9 @@ const ExploreMobile = ({
   hasNextPage,
   isFetchingNextPage,
   onLoadMore,
+  searchQuery = "",
+  onSearchQueryChange,
+  onSearch,
 }: ExploreMobileProps = {}) => {
   const [activeTab, setActiveTab] = useState<TabId>("just-tged");
   const loadMoreRef = useRef<HTMLDivElement>(null);
@@ -79,6 +86,17 @@ const ExploreMobile = ({
         className="px-4"
         maxWidth="w-full"
       />
+
+      {/* Search - below tabs, no back button, only in trending tab */}
+      {activeTab === "trending" && onSearchQueryChange && onSearch && (
+        <SearchInput
+          value={searchQuery}
+          onChange={onSearchQueryChange}
+          onSearch={onSearch}
+          hideBackButton
+          inputClassName="mt-4 mb-2 border-none"
+        />
+      )}
 
       <div className="flex w-full flex-col overflow-y-auto">
         {activeTab === "trending" ? (

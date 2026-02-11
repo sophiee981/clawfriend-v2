@@ -32,7 +32,7 @@ import {
   Trash2,
   User,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@bprogress/next/app";
 import { useEffect, useState } from "react";
 import { AddToAgentModal } from "./AddToAgentModal";
 import { CreateAcademyItemModal } from "./CreateAcademyItemModal";
@@ -127,7 +127,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
     try {
       await deleteSkill(skill.id);
       toast.success("Skill deleted successfully");
-      router.push("/skill-academy");
+      router.push("/skill-market");
     } catch (error) {
       console.error("Failed to delete skill:", error);
       toast.error("Failed to delete skill");
@@ -168,7 +168,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
           </p>
         </div>
         <Button
-          onClick={() => router.push("/skill-academy")}
+          onClick={() => router.push("/skill-market")}
           variant="secondary"
           buttonType="outline"
         >
@@ -183,7 +183,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
       {/* Navigation Header */}
       <div
         className="flex items-center gap-3 text-neutral-tertiary hover:text-neutral-secondary transition-colors cursor-pointer group"
-        onClick={() => router.push("/skill-academy")}
+        onClick={() => router.push("/skill-market")}
       >
         <Button
           variant="secondary"
@@ -193,7 +193,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
         >
           <ArrowLeft className="w-4 h-4" />
         </Button>
-        <span className="text-label-sm">Back to Academy</span>
+        <span className="text-label-sm">Back to Skill Market</span>
       </div>
 
       <div className="flex flex-col lg:flex-row items-start overflow-auto lg:overflow-hidden flex-1 min-h-0 scrollbar-hide">
@@ -260,6 +260,15 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                   buttonType="ghost"
                   size="sm"
                   className="rounded-full w-10 h-10 p-0 text-neutral-tertiary hover:text-neutral-primary hover:bg-neutral-02"
+                  onClick={async () => {
+                    try {
+                      const detailUrl = `${window.location.origin}/skill-market/${skill.id}`;
+                      await navigator.clipboard.writeText(detailUrl);
+                      toast.success("Detail link copied!");
+                    } catch (error) {
+                      toast.error("Failed to copy link");
+                    }
+                  }}
                 >
                   <Share2 className="w-4 h-4" />
                 </Button>
@@ -403,7 +412,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                 className={cn(
                   "w-full justify-center transition-all duration-300",
                   isLiked &&
-                    "text-yellow bg-yellow-muted hover:bg-yellow-muted/150",
+                  "text-yellow bg-yellow-muted hover:bg-yellow-muted/150",
                   isLiking && "opacity-50 cursor-not-allowed"
                 )}
                 onClick={handleLike}
@@ -440,27 +449,27 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
         item={
           skill
             ? {
-                id: skill.id,
-                title: skill.name,
-                content: skill.content,
-                author: skill.creator
-                  ? {
-                      name:
-                        skill.creator.display_name || skill.creator.username,
-                      avatar:
-                        skill.creator.avatar ||
-                        getAvatarUrl(skill.creator.username),
-                      handle: skill.creator.username,
-                      username: skill.creator.username,
-                    }
-                  : undefined,
-                type: skill.type as "skill" | "prompt",
-                tags: skill.tags.map((tag) => tag.name),
-                likes: skill.like_count,
-                uses: skill.download_count,
-                is_liked: skill.is_liked,
-                createdAt: skill.created_at,
-              }
+              id: skill.id,
+              title: skill.name,
+              content: skill.content,
+              author: skill.creator
+                ? {
+                  name:
+                    skill.creator.display_name || skill.creator.username,
+                  avatar:
+                    skill.creator.avatar ||
+                    getAvatarUrl(skill.creator.username),
+                  handle: skill.creator.username,
+                  username: skill.creator.username,
+                }
+                : undefined,
+              type: skill.type as "skill" | "prompt",
+              tags: skill.tags.map((tag) => tag.name),
+              likes: skill.like_count,
+              uses: skill.download_count,
+              is_liked: skill.is_liked,
+              createdAt: skill.created_at,
+            }
             : null
         }
       />
@@ -475,13 +484,13 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
             content: skill.content,
             author: skill.creator
               ? {
-                  name: skill.creator.display_name || skill.creator.username,
-                  avatar:
-                    skill.creator.avatar ||
-                    getAvatarUrl(skill.creator.username),
-                  handle: skill.creator.owner_x_handle || "",
-                  username: skill.creator.username,
-                }
+                name: skill.creator.display_name || skill.creator.username,
+                avatar:
+                  skill.creator.avatar ||
+                  getAvatarUrl(skill.creator.username),
+                handle: skill.creator.owner_x_handle || "",
+                username: skill.creator.username,
+              }
               : undefined,
             type: skill.type as "skill" | "prompt",
             tags: skill.tags.map((tag) => tag.name),

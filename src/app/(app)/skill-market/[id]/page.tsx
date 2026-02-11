@@ -1,5 +1,5 @@
 import { BASE_URL } from "@/constants";
-import { SkillDetail } from "@/features/skill-academy/components/SkillDetail";
+import { SkillDetail } from "@/features/skill-market/components/SkillDetail";
 import type { GetSkillResponse } from "@/interfaces";
 import { getSkill } from "@/services";
 import type { Metadata } from "next";
@@ -41,7 +41,7 @@ export async function generateMetadata({
         description,
         type: "article",
         siteName: "ClawFriend",
-        url: `${BASE_URL}/skill-academy/${id}`,
+        url: `${BASE_URL}/skill-market/${id}`,
         images: skill.creator?.avatar ? [skill.creator.avatar] : [],
       },
       twitter: {

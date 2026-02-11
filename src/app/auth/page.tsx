@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { getTwitterCallback } from "@/services/auth.service";
 import { useAuthStore } from "@/stores/auth.store";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@bprogress/next/app";
 import { useEffect, useState } from "react";
 
 const STORAGE_KEYS = {

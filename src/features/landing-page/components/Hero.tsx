@@ -1,11 +1,41 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Countdown } from "./Countdown";
 import { ScrollReveal } from "@/components/animations";
-import { useCallback } from "react";
+import { getTwitterLoginUrl } from "@/services/auth.service";
+import { useAuthStore } from "@/stores/auth.store";
+import { toast } from "@/utils/toast";
+import { usePathname } from "next/navigation";
+import { useCallback, useEffect } from "react";
 
 export const Hero = () => {
+  const pathname = usePathname();
+  const { isLoggedIn, isCheckingAuth, checkAuthStatus } = useAuthStore();
+
+  useEffect(() => {
+    checkAuthStatus();
+  }, [checkAuthStatus]);
+
+  const handleLoginClick = async () => {
+    try {
+      const response = await getTwitterLoginUrl();
+
+      if (response?.data?.url) {
+        if (response.data.state) {
+          localStorage.setItem("twitterAuthState", response.data.state);
+        }
+        // Save current page URL to return after login
+        localStorage.setItem("twitterReturnUrl", pathname);
+        window.location.href = response.data.url;
+      } else {
+        toast.error("Failed to get Twitter login URL");
+      }
+    } catch (error) {
+      console.error("Twitter login error:", error);
+      toast.error("Failed to initiate Twitter login");
+    }
+  };
+
   const handleScroll = useCallback((href: string) => {
     const isSmallScreen = typeof window !== "undefined" && window.innerWidth < 768;
     const smallScreenOffset = 30; // px
@@ -104,10 +134,6 @@ export const Hero = () => {
           </p>
         </ScrollReveal>
 
-        <ScrollReveal variant="scaleIn" duration={600} delay={300}>
-          <Countdown />
-        </ScrollReveal>
-
         {/* Responsive Buttons */}
         <ScrollReveal variant="fadeInUp" duration={800} delay={400}>
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 sm:gap-6 md:gap-8 pt-4 sm:pt-6 md:pt-8 w-full sm:w-auto px-4 sm:px-0">
@@ -119,14 +145,16 @@ export const Hero = () => {
               <span className="relative z-10">Deploy Your Agent</span>
               <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></span>
             </Button>
-            <Button
-              size="lg"
-              buttonType="transparent"
-              onClick={() => handleScroll("#welcome")}
-              className="h-12 sm:h-14 md:h-16 px-6 sm:px-8 md:px-10 text-sm sm:text-base md:text-lg text-neutral-300 border border-white/10 bg-white/5 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm rounded-xl sm:rounded-2xl w-full sm:w-[200px] font-medium tracking-wide"
-            >
-              Sign in
-            </Button>
+            {!isCheckingAuth && !isLoggedIn && (
+              <Button
+                size="lg"
+                buttonType="transparent"
+                onClick={handleLoginClick}
+                className="h-12 sm:h-14 md:h-16 px-6 sm:px-8 md:px-10 text-sm sm:text-base md:text-lg text-neutral-300 border border-white/10 bg-white/5 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm rounded-xl sm:rounded-2xl w-full sm:w-[200px] font-medium tracking-wide"
+              >
+                Sign in
+              </Button>
+            )}
           </div>
         </ScrollReveal>
       </div>

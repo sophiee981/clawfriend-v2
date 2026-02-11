@@ -18,9 +18,11 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { X } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@bprogress/next/app";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useViewWidth } from "@/hooks/useViewSize";
+import { useScrollToTop } from "@/hooks/useScrollToTop";
+import { ScrollButton } from "@/components/common/ScrollButton";
 import { SearchInput } from "../explore/components/SearchInput";
 import { AddToAgentModal } from "./components/AddToAgentModal";
 import { CreateAcademyItemModal } from "./components/CreateAcademyItemModal";
@@ -120,6 +122,13 @@ const SkillAcademyContent = ({
 
   // Ref to track if we're syncing from URL to avoid infinite loops
   const isSyncingFromUrl = useRef(false);
+
+  // Use scroll to top hook
+  const { showScrollTop, scrollToTop } = useScrollToTop({
+    containerSelector: '.skill-market-scroll-container',
+    threshold: 300,
+    behavior: "smooth",
+  });
 
   // Debounce search input
   useEffect(() => {
@@ -317,7 +326,7 @@ const SkillAcademyContent = ({
     return () => {
       observer.disconnect();
     };
-  }, [hasNextPage, isFetchingNextPage, isLoading, fetchNextPage]);
+  }, [hasNextPage, isFetchingNextPage, isLoading, isFetching, fetchNextPage]);
 
   // Fetch trending tags from API
   const { data: trendingTagsData, isLoading: isLoadingTags } = useQuery({
@@ -337,7 +346,7 @@ const SkillAcademyContent = ({
 
   // Get view width for responsive tag display
   const viewWidth = useViewWidth();
-  
+
   // Calculate tag limit based on breakpoint
   const tagLimit = useMemo(() => {
     if (viewWidth < 640) {
@@ -551,7 +560,7 @@ const SkillAcademyContent = ({
   };
 
   return (
-    <div className="flex h-full flex-col items-center overflow-y-auto pb-4 relative scrollbar-hide">
+    <div className="flex h-full flex-col items-center overflow-y-auto pb-4 relative scrollbar-hide skill-market-scroll-container">
       <SkillAcademyHeader onCreateClick={() => setIsCreateModalOpen(true)} />
       {/* Search and Tabs Section - Responsive */}
       <div className="w-full px-4 md:px-6 py-3 md:py-4 border-b border-neutral-01">
@@ -686,9 +695,9 @@ const SkillAcademyContent = ({
 
       {/* Content Grid - Responsive padding */}
       <div className="flex flex-1 flex-col gap-4 md:gap-6 pt-4 md:pt-6 w-full px-4 md:px-6">
-        {isLoading || isFetching ? (
+        {(isLoading || (isFetching && !isFetchingNextPage)) ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {Array.from({ length: 3 }).map((_, index) => (
+            {Array.from({ length: 6 }).map((_, index) => (
               <SkillCardSkeleton key={`skeleton-${index}`} />
             ))}
           </div>
@@ -713,8 +722,8 @@ const SkillAcademyContent = ({
             <div ref={loadMoreRef} className="h-4" />
             {/* Loading indicator for next page */}
             {isFetchingNextPage && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {Array.from({ length: 3 }).map((_, index) => (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 -mt-10">
+                {Array.from({ length: 6 }).map((_, index) => (
                   <SkillCardSkeleton key={`loading-${index}`} />
                 ))}
               </div>
@@ -763,6 +772,16 @@ const SkillAcademyContent = ({
             : undefined
         }
       />
+
+
+      {/* Scroll to Top Button */}
+      {showScrollTop && (
+        <div className="sm:flex hidden fixed  bottom-20 md:bottom-5 left-0 right-0 z-50 pointer-events-none pl-0 md:pl-[calc(256px)]">
+          <div className="w-full flex justify-center">
+            <ScrollButton scrollToTop={scrollToTop} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
