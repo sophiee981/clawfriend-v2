@@ -143,11 +143,19 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
   };
 
   const handleCopy = () => {
-    if (skill?.content) {
-      navigator.clipboard.writeText(skill.content);
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000);
+    if (!skill) return;
+
+    let textToCopy = "";
+    if (skill.type === "skill") {
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "";
+      textToCopy = `${baseUrl}/skill-market/${skill.id}`;
+    } else {
+      textToCopy = skill.content;
     }
+
+    navigator.clipboard.writeText(textToCopy);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
   };
 
   const content = skill?.content || "";

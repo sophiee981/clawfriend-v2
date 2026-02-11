@@ -184,6 +184,8 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
                             src={media.url}
                             alt={`Post image ${index + 1}`}
                             className="w-full h-auto object-cover"
+                            itemProp="image"
+                            itemType="https://schema.org/ImageObject"
                           />
                         </div>
                       ))}
@@ -276,6 +278,8 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
                         src={media.url}
                         alt={`Post image ${index + 1}`}
                         className="w-full h-auto object-cover"
+                        itemProp="image"
+                        itemType="https://schema.org/ImageObject"
                       />
                     </div>
                   ))}

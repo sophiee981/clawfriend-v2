@@ -93,6 +93,8 @@ export const ImageViewer = ({ images, initialIndex = 0, onClose }: ImageViewerPr
                     src={images[currentIndex].url}
                     alt={`Image ${currentIndex + 1}`}
                     className="max-w-full max-h-full object-contain"
+                    itemProp="image"
+                    itemType="https://schema.org/ImageObject"
                 />
             </div>
 

@@ -82,30 +82,11 @@ const SkillAcademyContent = ({
 }) => {
   const router = useRouter();
 
-  // Read initial tab and search from URL
-  const getInitialTab = (): AcademyItemType => {
-    const params = getSearchParams();
-    const tabFromUrl = params.get("tab");
-    return tabFromUrl === "skill" ? "skill" : "prompt";
-  };
-
-  const getInitialSearch = (): string => {
-    const params = getSearchParams();
-    return params.get("search") || "";
-  };
-
-  const getInitialSelectedTags = (): string[] => {
-    const params = getSearchParams();
-    const tagsParam = params.get("tags");
-    return tagsParam ? tagsParam.split(",").filter(Boolean) : [];
-  };
-
-  const [activeTab, setActiveTab] = useState<AcademyItemType>(getInitialTab);
-  const [searchInput, setSearchInput] = useState<string>(getInitialSearch);
-  const [searchQuery, setSearchQuery] = useState<string>(getInitialSearch);
-  const [selectedTags, setSelectedTags] = useState<string[]>(
-    getInitialSelectedTags
-  );
+  // Initialize with default values first, will be synced from URL in useEffect
+  const [activeTab, setActiveTab] = useState<AcademyItemType>("skill");
+  const [searchInput, setSearchInput] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [showAllTags, setShowAllTags] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const queryClient = useQueryClient();
@@ -122,6 +103,7 @@ const SkillAcademyContent = ({
 
   // Ref to track if we're syncing from URL to avoid infinite loops
   const isSyncingFromUrl = useRef(false);
+  const isInitialized = useRef(false);
 
   // Use scroll to top hook
   const { showScrollTop, scrollToTop } = useScrollToTop({
@@ -139,6 +121,42 @@ const SkillAcademyContent = ({
     return () => clearTimeout(timer);
   }, [searchInput]);
 
+  // Initialize state from URL on mount (only once)
+  useEffect(() => {
+    if (isInitialized.current) return;
+
+    const params = getSearchParams();
+    const tabFromUrl = params.get("tab");
+    const search = params.get("search") || "";
+    const tagsParam = params.get("tags");
+    const tags = tagsParam ? tagsParam.split(",").filter(Boolean) : [];
+
+    isSyncingFromUrl.current = true;
+
+    // If no tab param in URL, redirect to default tab
+    if (!tabFromUrl) {
+      const newParams = new URLSearchParams(params.toString());
+      newParams.set("tab", "skill");
+      const newUrl = `${window.location.pathname}?${newParams.toString()}`;
+      router.replace(newUrl, { scroll: false });
+      setActiveTab("skill");
+    } else {
+      // Sync tab from URL
+      const newTab: AcademyItemType = tabFromUrl === "skill" ? "skill" : "prompt";
+      setActiveTab(newTab);
+    }
+
+    // Sync search and tags
+    setSearchInput(search);
+    setSearchQuery(search);
+    setSelectedTags(tags);
+
+    isInitialized.current = true;
+    setTimeout(() => {
+      isSyncingFromUrl.current = false;
+    }, 100);
+  }, [router]);
+
   // Sync URL params with state (handle browser back/forward)
   useEffect(() => {
     const handlePopState = () => {
@@ -153,27 +171,22 @@ const SkillAcademyContent = ({
       // Sync tab
       if (tabFromUrl) {
         const newTab: AcademyItemType = tabFromUrl === "skill" ? "skill" : "prompt";
-        if (newTab !== activeTab) {
-          setActiveTab(newTab);
-        }
+        setActiveTab(newTab);
       } else {
         // If no tab param in URL, redirect to default tab
         const newParams = new URLSearchParams(params.toString());
-        newParams.set("tab", "prompt");
+        newParams.set("tab", "skill");
         const newUrl = `${window.location.pathname}?${newParams.toString()}`;
         router.replace(newUrl, { scroll: false });
+        setActiveTab("skill");
       }
 
       // Sync search
-      if (search !== searchInput) {
-        setSearchInput(search);
-        setSearchQuery(search);
-      }
+      setSearchInput(search);
+      setSearchQuery(search);
 
       // Sync tags
-      if (JSON.stringify(newTags) !== JSON.stringify(selectedTags)) {
-        setSelectedTags(newTags);
-      }
+      setSelectedTags(newTags);
 
       setTimeout(() => {
         isSyncingFromUrl.current = false;
@@ -182,61 +195,7 @@ const SkillAcademyContent = ({
 
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
-  }, [activeTab, searchInput, selectedTags, router]);
-
-  // Ensure URL always has tab param, redirect if missing
-  useEffect(() => {
-    const params = getSearchParams();
-    const tabFromUrl = params.get("tab");
-
-    // If no tab param in URL, redirect to default tab
-    if (!tabFromUrl) {
-      const newParams = new URLSearchParams(params.toString());
-      newParams.set("tab", "prompt");
-      const newUrl = `${window.location.pathname}?${newParams.toString()}`;
-      router.replace(newUrl, { scroll: false });
-      return;
-    }
-
-    // Sync tab from URL
-    isSyncingFromUrl.current = true;
-    const newTab: AcademyItemType = tabFromUrl === "skill" ? "skill" : "prompt";
-    if (newTab !== activeTab) {
-      setActiveTab(newTab);
-    }
-
-    // Reset flag after a short delay
-    setTimeout(() => {
-      isSyncingFromUrl.current = false;
-    }, 100);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Sync search and tags from URL on mount
-  useEffect(() => {
-    const params = getSearchParams();
-    const search = params.get("search") || "";
-    const tagsParam = params.get("tags");
-    const newTags = tagsParam ? tagsParam.split(",").filter(Boolean) : [];
-
-    isSyncingFromUrl.current = true;
-
-    // Only update state if values are different to avoid loops
-    if (search !== searchInput) {
-      setSearchInput(search);
-      setSearchQuery(search);
-    }
-
-    if (JSON.stringify(newTags) !== JSON.stringify(selectedTags)) {
-      setSelectedTags(newTags);
-    }
-
-    // Reset flag after a short delay
-    setTimeout(() => {
-      isSyncingFromUrl.current = false;
-    }, 100);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [router]);
 
   // Fetch data from API using React Query with infinite scroll
   const loadMoreRef = useRef<HTMLDivElement>(null);
@@ -375,8 +334,10 @@ const SkillAcademyContent = ({
 
   // Update URL when tab changes
   const handleTabChange = (id: AcademyItemType) => {
+    if (id === activeTab) return; // Don't do anything if clicking the same tab
+
     setActiveTab(id);
-    const params = getSearchParams();
+    const params = new URLSearchParams();
     params.set("tab", id);
     if (searchQuery.trim()) {
       params.set("search", searchQuery.trim());
@@ -395,8 +356,8 @@ const SkillAcademyContent = ({
 
   // Handle search (debounced) - update URL when searchQuery changes
   useEffect(() => {
-    // Don't update URL if we're currently syncing from URL
-    if (isSyncingFromUrl.current) {
+    // Don't update URL if we're currently syncing from URL or not initialized yet
+    if (isSyncingFromUrl.current || !isInitialized.current) {
       return;
     }
 
@@ -585,17 +546,6 @@ const SkillAcademyContent = ({
           <div className="md:w-auto md:min-w-[200px] shrink-0 bg-[#1b1b1b] rounded-[8px]">
             <div className="rounded-[8px] flex gap-[2px] ">
               <button
-                onClick={() => handleTabChange("prompt")}
-                className={cn(
-                  "flex-1 px-4 py-2 text-sm font-medium rounded-[8px] transition-colors",
-                  activeTab === "prompt"
-                    ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
-                    : "bg-[#1b1b1b] text-[#717171]"
-                )}
-              >
-                Prompts
-              </button>
-              <button
                 onClick={() => handleTabChange("skill")}
                 className={cn(
                   "flex-1 px-4 py-2 text-sm font-medium rounded-[8px] transition-colors",
@@ -606,6 +556,18 @@ const SkillAcademyContent = ({
               >
                 Skills
               </button>
+              <button
+                onClick={() => handleTabChange("prompt")}
+                className={cn(
+                  "flex-1 px-4 py-2 text-sm font-medium rounded-[8px] transition-colors",
+                  activeTab === "prompt"
+                    ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
+                    : "bg-[#1b1b1b] text-[#717171]"
+                )}
+              >
+                Prompts
+              </button>
+
             </div>
           </div>
         </div>

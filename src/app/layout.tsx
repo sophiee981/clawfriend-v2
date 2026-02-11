@@ -86,6 +86,19 @@ export default function RootLayout({
         />
         <meta property="twitter:image" content={`${BASE_URL}/thumbnail.png`} />
         <meta name="version" content={process.env.buildId || "unknown"} />
+        
+        {/* Google tag (gtag.js) */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-NYKVGYH99Z"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-NYKVGYH99Z');
+            `,
+          }}
+        />
       </head>
       <body
         className={`${outfit.variable} ${spaceMono.variable} ${outfit.className} ${jetBrainsMono.variable}`}

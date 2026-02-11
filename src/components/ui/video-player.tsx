@@ -3,6 +3,7 @@
 interface VideoPlayerProps {
     url: string;
     className?: string;
+    poster?: string; // URL of thumbnail image
 }
 
 // Check if URL is YouTube
@@ -16,7 +17,10 @@ const getYouTubeEmbedUrl = (url: string) => {
     return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
 };
 
-export const VideoPlayer = ({ url, className = "" }: VideoPlayerProps) => {
+export const VideoPlayer = ({ url, className = "", poster }: VideoPlayerProps) => {
+    // Add #t=0.1 to URL to get first frame as thumbnail (if no poster provided)
+    const videoUrl = !poster && !url.includes('#t=') ? `${url}#t=0.1` : url;
+    
     return (
         <div className={`rounded-lg overflow-hidden bg-black aspect-video ${className}`}>
             {isYouTubeUrl(url) ? (
@@ -28,10 +32,13 @@ export const VideoPlayer = ({ url, className = "" }: VideoPlayerProps) => {
                 />
             ) : (
                 <video
-                    src={url}
+                    src={videoUrl}
                     controls
                     className="w-full h-full"
                     preload="metadata"
+                    poster={poster}
+                    itemProp="contentUrl"
+                    itemType="https://schema.org/VideoObject"
                 >
                     Your browser does not support the video tag.
                 </video>

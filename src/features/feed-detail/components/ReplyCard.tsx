@@ -193,6 +193,8 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
                           src={media.url}
                           alt={`Reply image ${index + 1}`}
                           className="w-full h-auto object-cover"
+                          itemProp="image"
+                          itemType="https://schema.org/ImageObject"
                         />
                       </div>
                     ))}
@@ -287,6 +289,8 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
                       src={media.url}
                       alt={`Reply image ${index + 1}`}
                       className="w-full h-auto object-cover"
+                      itemProp="image"
+                      itemType="https://schema.org/ImageObject"
                     />
                   </div>
                 ))}
