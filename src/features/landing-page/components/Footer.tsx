@@ -2,10 +2,41 @@
 
 import { ScrollReveal } from "@/components/animations";
 import { Button } from "@/components/ui/button";
+import { getTwitterLoginUrl } from "@/services/auth.service";
+import { useAuthStore } from "@/stores/auth.store";
+import { toast } from "@/utils/toast";
 import Image from "next/image";
-import { useCallback } from "react";
+import { usePathname } from "next/navigation";
+import { useCallback, useEffect } from "react";
 
 export const Footer = () => {
+  const pathname = usePathname();
+  const { isLoggedIn, isCheckingAuth, checkAuthStatus } = useAuthStore();
+
+  useEffect(() => {
+    checkAuthStatus();
+  }, [checkAuthStatus]);
+
+  const handleLoginClick = async () => {
+    try {
+      const response = await getTwitterLoginUrl();
+
+      if (response?.data?.url) {
+        if (response.data.state) {
+          localStorage.setItem("twitterAuthState", response.data.state);
+        }
+        // Save current page URL to return after login
+        localStorage.setItem("twitterReturnUrl", pathname);
+        window.location.href = response.data.url;
+      } else {
+        toast.error("Failed to get Twitter login URL");
+      }
+    } catch (error) {
+      console.error("Twitter login error:", error);
+      toast.error("Failed to initiate Twitter login");
+    }
+  };
+
   const handleScroll = useCallback((href: string) => {
     const isSmallScreen =
       typeof window !== "undefined" && window.innerWidth < 768;
@@ -97,14 +128,16 @@ export const Footer = () => {
                 <span className="relative z-10">Deploy Your Agent</span>
                 <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></span>
               </Button>
-              <Button
-                size="lg"
-                buttonType="transparent"
-                onClick={() => handleScroll("#welcome")}
-                className="h-12 sm:h-14 md:h-16 px-6 sm:px-8 md:px-10 text-sm sm:text-base md:text-lg text-neutral-300 border border-white/10 bg-white/5 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm rounded-xl sm:rounded-2xl w-full sm:w-[200px] font-medium tracking-wide"
-              >
-                Sign in
-              </Button>
+              {!isCheckingAuth && !isLoggedIn && (
+                <Button
+                  size="lg"
+                  buttonType="transparent"
+                  onClick={handleLoginClick}
+                  className="h-12 sm:h-14 md:h-16 px-6 sm:px-8 md:px-10 text-sm sm:text-base md:text-lg text-neutral-300 border border-white/10 bg-white/5 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm rounded-xl sm:rounded-2xl w-full sm:w-[200px] font-medium tracking-wide"
+                >
+                  Sign in
+                </Button>
+              )}
             </div>
           </div>
         </ScrollReveal>
@@ -134,7 +167,9 @@ export const Footer = () => {
               <ul className="space-y-3 sm:space-y-4 text-xs sm:text-sm text-neutral-500">
                 <li>
                   <a
-                    href="#"
+                    href="https://docs.clawfriend.ai/"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="hover:text-[#fe5631] transition-colors duration-200"
                   >
                     Documentation
@@ -185,13 +220,13 @@ export const Footer = () => {
         </ScrollReveal>
 
         <ScrollReveal variant="fadeInUp" duration={800} delay={400}>
-          <div className="flex flex-col md:flex-row items-center justify-between pt-6 sm:pt-8 border-t border-white/5 text-[10px] sm:text-xs text-neutral-600 font-mono gap-4 md:gap-0">
+          <div className="flex flex-col md:flex-row items-center justify-between pt-6 sm:pt-8 border-t border-white/5 text-[10px] sm:text-xs text-neutral-400 font-mono gap-4 md:gap-0">
             <p>© 2026 ClawFriend.ai. All rights reserved.</p>
             <div className="flex gap-4 sm:gap-6">
-              <a href="#" className="hover:text-neutral-400 transition-colors duration-200">
+              <a href="#" className="hover:text-neutral-200 transition-colors duration-200">
                 Terms
               </a>
-              <a href="#" className="hover:text-neutral-400 transition-colors duration-200">
+              <a href="#" className="hover:text-neutral-200 transition-colors duration-200">
                 Privacy
               </a>
             </div>

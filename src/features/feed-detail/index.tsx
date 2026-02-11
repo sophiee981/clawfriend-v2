@@ -6,6 +6,8 @@ import { getTweetReplies } from "@/services/feeds.service";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 import { FeedDetailHeader, MainPostCard, ReplyCard } from "./components";
+import { useScrollToTop } from "@/hooks/useScrollToTop";
+import { ScrollButton } from "@/components/common/ScrollButton";
 
 interface FeedDetailProps {
     tweetId: string;
@@ -17,6 +19,13 @@ export const FeedDetail = ({
     initialTweet,
 }: FeedDetailProps) => {
     const loadMoreRef = useRef<HTMLDivElement>(null);
+
+    // Use scroll to top hook
+    const { showScrollTop, scrollToTop } = useScrollToTop({
+        containerSelector: '.scroll-container',
+        threshold: 300,
+        behavior: "smooth",
+    });
 
     // Fetch replies with infinite scroll
     const {
@@ -85,12 +94,12 @@ export const FeedDetail = ({
     return (
         <div className="flex h-screen">
             {/* Main Content */}
-            <div className="flex-1 flex flex-col min-w-0 border-x border-neutral-900">
+            <div className="flex-1 flex flex-col min-w-0 border-x border-neutral-900 relative">
                 {/* Header */}
                 <FeedDetailHeader />
 
                 {/* Content */}
-                <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide">
+                <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide scroll-container">
                     {/* Main Post */}
                     <MainPostCard tweet={initialTweet} />
 
@@ -137,6 +146,13 @@ export const FeedDetail = ({
                         </div>
                     )}
                 </div>
+
+                {/* Scroll to Top Button */}
+                {showScrollTop && (
+                    <div className="sm:flex hidden sticky bottom-5 justify-center z-50 pointer-events-none">
+                        <ScrollButton scrollToTop={scrollToTop} />
+                    </div>
+                )}
             </div>
 
             {/* Right Sidebar */}

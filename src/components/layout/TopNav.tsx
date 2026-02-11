@@ -6,10 +6,11 @@ import { getTwitterLoginUrl } from "@/services/auth.service";
 import { useAuthStore } from "@/stores/auth.store";
 import { getAvatarUrl } from "@/utils";
 import { toast } from "@/utils/toast";
-import { Globe, LogIn, LogOut, Menu } from "lucide-react";
+import { ExternalLink, Globe, LogIn, LogOut, Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useRouter } from "@bprogress/next/app";
 import { useEffect, useState } from "react";
 
 export const TopNav = () => {
@@ -63,8 +64,13 @@ export const TopNav = () => {
     setIsOpen(false);
   };
 
+  const handleDocClick = () => {
+    window.open("https://docs.clawfriend.ai/", "_blank", "noopener,noreferrer");
+    setIsOpen(false);
+  };
+
   return (
-    <nav className="sticky top-0 z-40 flex items-center justify-between border-b border-neutral-900 bg-neutral-01 px-4 py-2 md:hidden">
+    <nav className="sticky top-0 z-40 flex items-center justify-between border-b border-neutral-900 bg-neutral-01 px-4 py-2 md:hidden ">
       {/* Logo/Icon on the left */}
       <Link href="/" className="flex items-center">
         <Image
@@ -118,6 +124,13 @@ export const TopNav = () => {
                     <span>About</span>
                   </button>
                   <button
+                    onClick={handleDocClick}
+                    className="flex items-center gap-3 px-4 py-3 border-b border-neutral-01 text-left text-sm font-medium text-neutral-primary transition-colors hover:bg-neutral-900 active:bg-neutral-800"
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                    <span>Docs</span>
+                  </button>
+                  <button
                     onClick={handleProfileClick}
                     className="flex items-center gap-3 px-4 py-3 border-b border-neutral-01 text-left text-sm font-medium text-neutral-primary transition-colors hover:bg-neutral-900 active:bg-neutral-800"
                   >
@@ -135,7 +148,7 @@ export const TopNav = () => {
               </>
             ) : (
               /* Menu items for not logged in users - Sign in and About */
-              <div className="flex flex-col pt-[60px]">
+              <div className="flex flex-col pt-[60px] pb-10">
                 <button
                   onClick={handleLoginClick}
                   className="flex items-center gap-3 px-4 py-3 border-y border-neutral-01 text-left text-sm font-medium text-neutral-primary transition-colors hover:bg-neutral-900 active:bg-neutral-800"
@@ -145,10 +158,17 @@ export const TopNav = () => {
                 </button>
                 <button
                   onClick={handleAboutClick}
-                  className="flex items-center gap-3 px-4 py-3 text-left text-sm font-medium text-neutral-primary transition-colors hover:bg-neutral-900 active:bg-neutral-800"
+                  className="flex items-center gap-3 px-4 py-3 border-b border-neutral-01 text-left text-sm font-medium text-neutral-primary transition-colors hover:bg-neutral-900 active:bg-neutral-800"
                 >
                   <Globe className="h-4 w-4" />
                   <span>About</span>
+                </button>
+                <button
+                  onClick={handleDocClick}
+                  className="flex items-center gap-3 px-4 py-3 text-left text-sm font-medium text-neutral-primary transition-colors hover:bg-neutral-900 active:bg-neutral-800"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                  <span>Docs</span>
                 </button>
               </div>
             )}
