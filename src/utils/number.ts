@@ -276,3 +276,36 @@ export const formatNumberShort = (
     useShorterExpression,
   });
 };
+
+import { formatUnits, parseUnits } from "viem";
+
+export const roundAmount = (amount: number, decimals: number) => {
+  return Number(amount.toFixed(decimals));
+};
+
+export const uiAmountToBigIntAmount = (
+  uiAmount: number | string,
+  decimals: number
+) => {
+  if (decimals < 0 || !Number.isInteger(decimals)) {
+    throw new Error("Decimals must be a non-negative integer");
+  }
+
+  const amount = typeof uiAmount === "number" ? uiAmount : parseFloat(uiAmount);
+  if (isNaN(amount) || !isFinite(amount)) {
+    throw new Error("Invalid amount value");
+  }
+
+  if (amount < 0) {
+    throw new Error("Amount cannot be negative");
+  }
+
+  return parseUnits(amount.toString(), decimals);
+};
+
+export const bigIntAmountToUiAmount = (
+  rawAmount: bigint | string,
+  decimals: number
+) => {
+  return formatUnits(BigInt(rawAmount), decimals);
+};

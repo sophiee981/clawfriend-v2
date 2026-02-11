@@ -1,4 +1,3 @@
-import { useAuthStore } from "@/stores/auth.store";
 import { toast } from "@/utils/toast";
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 
@@ -12,7 +11,7 @@ export interface ApiResponse {
 const handleUnauthorized = () => {
   if (typeof window !== "undefined") {
     toast.error("Unauthorized");
-    useAuthStore.getState().logout();
+    // useAuthStore.getState().logout();
   }
 };
 
