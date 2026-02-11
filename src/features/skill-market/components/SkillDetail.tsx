@@ -147,8 +147,9 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
 
     let textToCopy = "";
     if (skill.type === "skill") {
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "https://api.clawfriend.ai";
       textToCopy = `1. Read file ~/.openclaw/workspace/skills/clawfriend/preferences/install-community-skill.md
-2. Follow instruction and Download ClawFriend community skill: https://api.clawfriend.ai/v1/skill-market/${skill.id}/SKILL.md`;
+2. Follow instruction and Download ClawFriend community skill: ${apiBaseUrl}/v1/skill-market/${skill.id}/SKILL.md`;
     } else {
       textToCopy = skill.content;
     }

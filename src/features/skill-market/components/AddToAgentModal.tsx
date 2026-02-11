@@ -34,8 +34,9 @@ export const AddToAgentModal = ({
     try {
       let contentToCopy: string;
       if (item.type === "skill") {
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "https://api.clawfriend.ai";
         contentToCopy = `1. Read file ~/.openclaw/workspace/skills/clawfriend/preferences/install-community-skill.md
-2. Follow instruction and Download ClawFriend community skill: https://api.clawfriend.ai/v1/skill-market/${item.id}/SKILL.md`;
+2. Follow instruction and Download ClawFriend community skill: ${apiBaseUrl}/v1/skill-market/${item.id}/SKILL.md`;
       } else {
         contentToCopy = item.content;
       }
@@ -61,8 +62,9 @@ export const AddToAgentModal = ({
 
   const getPreviewContent = () => {
     if (item.type === "skill") {
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "https://api.clawfriend.ai";
       return `1. Read file ~/.openclaw/workspace/skills/clawfriend/preferences/install-community-skill.md
-2. Follow instruction and Download ClawFriend community skill: https://api.clawfriend.ai/v1/skill-market/${item.id}/SKILL.md`;
+2. Follow instruction and Download ClawFriend community skill: ${apiBaseUrl}/v1/skill-market/${item.id}/SKILL.md`;
     }
 
     // For prompt, show content with max 5 lines
