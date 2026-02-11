@@ -120,18 +120,6 @@ export const CreateAcademyItemModal = ({
             <div className="bg-[#1b1b1b] rounded-[8px] flex gap-[2px] w-fit">
               <button
                 type="button"
-                onClick={() => handleFormChange("type", "prompt")}
-                className={cn(
-                  "px-4 py-1 rounded-[8px] text-sm font-medium transition-colors min-w-[100px]",
-                  formData.type === "prompt"
-                    ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
-                    : "bg-[#1b1b1b] text-[#717171]"
-                )}
-              >
-                Prompt
-              </button>
-              <button
-                type="button"
                 onClick={() => handleFormChange("type", "skill")}
                 className={cn(
                   "px-4 py-1 rounded-[8px] text-sm font-medium transition-colors min-w-[100px]",
@@ -142,6 +130,19 @@ export const CreateAcademyItemModal = ({
               >
                 Skill
               </button>
+              <button
+                type="button"
+                onClick={() => handleFormChange("type", "prompt")}
+                className={cn(
+                  "px-4 py-1 rounded-[8px] text-sm font-medium transition-colors min-w-[100px]",
+                  formData.type === "prompt"
+                    ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
+                    : "bg-[#1b1b1b] text-[#717171]"
+                )}
+              >
+                Prompt
+              </button>
+              
             </div>
           )}
 

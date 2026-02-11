@@ -29,16 +29,6 @@ export const Feeds = () => {
   const { fetchExchangeRate } = useExchangeRateStore();
   const router = useRouter();
 
-  // Get tab from URL or default to "trending"
-  const getInitialTab = (): TabType => {
-    const params = getSearchParams();
-    const tabFromUrl = params.get("tab");
-    if (tabFromUrl && VALID_TABS.includes(tabFromUrl as TabType)) {
-      return tabFromUrl as TabType;
-    }
-    return "trending";
-  };
-
   // Use scroll to top hook
   const { showScrollTop, scrollToTop } = useScrollToTop({
     containerSelector: '.scroll-container',
@@ -46,8 +36,13 @@ export const Feeds = () => {
     behavior: "smooth",
   });
 
-  const [activeTab, setActiveTab] = useState<TabType>(getInitialTab);
+  // Initialize with default values first, will be synced from URL in useEffect
+  const [activeTab, setActiveTab] = useState<TabType>("trending");
   const contentRef = useRef<HTMLDivElement>(null);
+
+  // Refs to track initialization and URL syncing
+  const isSyncingFromUrl = useRef(false);
+  const isInitialized = useRef(false);
 
   const tabs = [
     { id: "trending" as TabType, label: "Trending" },
@@ -57,10 +52,12 @@ export const Feeds = () => {
 
   const handleTabChange = (tabId: string) => {
     const newTab = tabId as TabType;
+    if (newTab === activeTab) return; // Don't do anything if clicking the same tab
+
     setActiveTab(newTab);
 
     // Update URL with new tab - always include tab param
-    const params = getSearchParams();
+    const params = new URLSearchParams();
     params.set("tab", newTab);
 
     const newUrl = `${window.location.pathname}?${params.toString()}`;
@@ -72,36 +69,14 @@ export const Feeds = () => {
     }
   };
 
-  // Sync URL params with state (handle browser back/forward)
+  // Initialize state from URL on mount (only once)
   useEffect(() => {
-    const handlePopState = () => {
-      const params = getSearchParams();
-      const tabFromUrl = params.get("tab");
+    if (isInitialized.current) return;
 
-      if (tabFromUrl) {
-        const newTab: TabType = VALID_TABS.includes(tabFromUrl as TabType)
-          ? (tabFromUrl as TabType)
-          : "trending";
-        if (newTab !== activeTab) {
-          setActiveTab(newTab);
-        }
-      } else {
-        // If no tab param in URL, redirect to default tab
-        const newParams = new URLSearchParams(params.toString());
-        newParams.set("tab", "trending");
-        const newUrl = `${window.location.pathname}?${newParams.toString()}`;
-        router.replace(newUrl, { scroll: false });
-      }
-    };
-
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
-  }, [activeTab, router]);
-
-  // Ensure URL always has tab param, redirect if missing
-  useEffect(() => {
     const params = getSearchParams();
     const tabFromUrl = params.get("tab");
+
+    isSyncingFromUrl.current = true;
 
     // If no tab param in URL, redirect to default tab
     if (!tabFromUrl) {
@@ -109,19 +84,51 @@ export const Feeds = () => {
       newParams.set("tab", "trending");
       const newUrl = `${window.location.pathname}?${newParams.toString()}`;
       router.replace(newUrl, { scroll: false });
-      return;
-    }
-
-    // Validate and sync tab from URL
-    const newTab: TabType = VALID_TABS.includes(tabFromUrl as TabType)
-      ? (tabFromUrl as TabType)
-      : "trending";
-
-    if (newTab !== activeTab) {
+      setActiveTab("trending");
+    } else {
+      // Validate and sync tab from URL
+      const newTab: TabType = VALID_TABS.includes(tabFromUrl as TabType)
+        ? (tabFromUrl as TabType)
+        : "trending";
       setActiveTab(newTab);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+    isInitialized.current = true;
+    setTimeout(() => {
+      isSyncingFromUrl.current = false;
+    }, 100);
+  }, [router]);
+
+  // Sync URL params with state (handle browser back/forward)
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = getSearchParams();
+      const tabFromUrl = params.get("tab");
+
+      isSyncingFromUrl.current = true;
+
+      if (tabFromUrl) {
+        const newTab: TabType = VALID_TABS.includes(tabFromUrl as TabType)
+          ? (tabFromUrl as TabType)
+          : "trending";
+        setActiveTab(newTab);
+      } else {
+        // If no tab param in URL, redirect to default tab
+        const newParams = new URLSearchParams(params.toString());
+        newParams.set("tab", "trending");
+        const newUrl = `${window.location.pathname}?${newParams.toString()}`;
+        router.replace(newUrl, { scroll: false });
+        setActiveTab("trending");
+      }
+
+      setTimeout(() => {
+        isSyncingFromUrl.current = false;
+      }, 100);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [router]);
 
   useEffect(() => {
     fetchExchangeRate();
