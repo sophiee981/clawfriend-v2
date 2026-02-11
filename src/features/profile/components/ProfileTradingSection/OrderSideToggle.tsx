@@ -18,11 +18,10 @@ export const OrderSideToggle = ({
         onClick={() => onChange("buy")}
         className={`
           flex-1 h-9 flex items-center justify-center text-label-sm font-semibold
-          rounded border-[4px] transition-all duration-200 ease-in-out
-          ${
-            orderSide === "buy"
-              ? "bg-primary text-white border-primary shadow-sm"
-              : ""
+          rounded  transition-all duration-200 ease-in-out
+          ${orderSide === "buy"
+            ? "bg-primary text-white"
+            : "bg-neutral-03 text-neutral-primary"
           } 
         `}
       >
@@ -33,11 +32,10 @@ export const OrderSideToggle = ({
         onClick={() => onChange("sell")}
         className={`
           flex-1 h-9 flex items-center justify-center text-label-sm font-semibold
-          rounded border-[4px] transition-all duration-200 ease-in-out
-          ${
-            orderSide === "sell"
-              ? "bg-primary text-white border-primary shadow-sm"
-              : ""
+          rounded  transition-all duration-200 ease-in-out
+          ${orderSide === "sell"
+            ? "bg-primary text-white"
+            : "bg-neutral-03 text-neutral-primary"
           }
         `}
       >

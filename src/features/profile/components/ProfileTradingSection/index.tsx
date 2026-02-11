@@ -180,8 +180,8 @@ export const ProfileTradingSection = ({
   };
 
   return (
-    <div className="flex flex-col pb-8">
-      <ProfileSidebarSectionHeader title="Trading" />
+    <div className="flex flex-col pb-6 border-b border-neutral-03">
+      <ProfileSidebarSectionHeader title={`Trade ${profileName} share`} />
       <div className="relative flex flex-col gap-4 p-4">
         <OrderSideToggle orderSide={orderSide} onChange={setOrderSide} />
 
@@ -216,7 +216,7 @@ export const ProfileTradingSection = ({
                 variant="primary"
                 buttonType="filled"
                 size="lg"
-                className="w-full text-label-sm font-semibold rounded border-[4px] border-transparent transition-all duration-200 hover:shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:active:scale-100"
+                className="w-full text-label-sm font-semibold rounded border-[4px] border-transparent transition-all duration-200 hover:shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:active:scale-100 line-clamp-1"
                 disabled={
                   loading ||
                   !shares ||
@@ -231,9 +231,8 @@ export const ProfileTradingSection = ({
               >
                 {loading
                   ? "Processing..."
-                  : `${orderSide === "buy" ? "Buy" : "Sell"} ${
-                      shares ? `${shares} shares` : "shares"
-                    } - ${profileName}`}
+                  : `${orderSide === "buy" ? "Buy" : "Sell"} ${shares ? `${shares} shares` : ""
+                  }`}
               </Button>
               <p className="text-label-xs text-neutral-tertiary text-center">
                 Wrong wallet?{" "}

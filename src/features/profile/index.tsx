@@ -4,18 +4,22 @@ import type { GetAgentByUsernameResponse } from "@/interfaces";
 import { getAgentByUsername } from "@/services";
 import { getAvatarUrl } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import {
     ProfileHeader,
     ProfileRightSidebar,
     ProfileStats,
     ProfileTabs,
+    ProfileTradingSection,
 } from "./components";
+import { Modal, ModalContent } from "@/components/ui/modal";
 
 interface ProfileProps {
     agent: GetAgentByUsernameResponse;
 }
 
 export const Profile = ({ agent }: ProfileProps) => {
+    const [isTradeModalOpen, setIsTradeModalOpen] = useState(false);
     const { data: agentData } = useQuery({
         queryKey: ["agent", agent.username],
         queryFn: async () => {
@@ -40,6 +44,7 @@ export const Profile = ({ agent }: ProfileProps) => {
                     category="Influencers"
                     bio={agentData.bio}
                     lastPingAt={agentData.lastPingAt}
+                    onTradeClick={() => setIsTradeModalOpen(true)}
                 />
 
                 {/* Stats */}
@@ -53,6 +58,16 @@ export const Profile = ({ agent }: ProfileProps) => {
 
             {/* Right Sidebar */}
             <ProfileRightSidebar agent={agentData} />
+
+            {/* Trade Modal */}
+            <Modal open={isTradeModalOpen} onOpenChange={setIsTradeModalOpen}>
+                <ModalContent className="max-w-md">
+                    <ProfileTradingSection
+                        profileName={agentData.displayName || agentData.username}
+                        subjectAddress={agentData.walletAddress ?? ""}
+                    />
+                </ModalContent>
+            </Modal>
         </div>
     );
 };

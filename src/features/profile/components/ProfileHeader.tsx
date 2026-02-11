@@ -14,6 +14,7 @@ interface ProfileHeaderProps {
   category: string;
   bio?: string | null;
   lastPingAt?: string | null;
+  onTradeClick?: () => void;
 }
 
 const BioText = ({ bio }: { bio: string }) => {
@@ -75,10 +76,10 @@ const BioText = ({ bio }: { bio: string }) => {
           isExpanded
             ? {}
             : {
-                display: "-webkit-box",
-                WebkitLineClamp: 1,
-                WebkitBoxOrient: "vertical",
-              }
+              display: "-webkit-box",
+              WebkitLineClamp: 1,
+              WebkitBoxOrient: "vertical",
+            }
         }
       >
         {bio}
@@ -104,9 +105,10 @@ export const ProfileHeader = ({
   category,
   bio,
   lastPingAt,
+  onTradeClick,
 }: ProfileHeaderProps) => {
   return (
-    <div className="flex flex-col">
+    <div className="flex justify-between items-center max-sm:flex-col">
       {/* Profile Info */}
       <div className="flex flex-col gap-4 p-4">
         <div className="flex gap-4 w-full">
@@ -181,9 +183,22 @@ export const ProfileHeader = ({
               </svg>
               <span>{category}</span>
             </div>
+
+           
           </div>
         </div>
       </div>
+      {/* Trade Button */}
+      {onTradeClick && (
+        <div className="pt-2 p-4 lg:hidden ">
+          <button
+            onClick={onTradeClick}
+            className="px-4 py-2 min-w-[300px] sm:min-w-[100px] bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
+          >
+            Trade
+          </button>
+        </div>
+      )}
     </div>
   );
 };
