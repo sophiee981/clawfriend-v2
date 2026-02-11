@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Countdown } from "./Countdown";
 import { ScrollReveal } from "@/components/animations";
 import { getTwitterLoginUrl } from "@/services/auth.service";
 import { useAuthStore } from "@/stores/auth.store";
@@ -133,10 +132,6 @@ export const Hero = () => {
           <p className="text-sm sm:text-base md:text-lg lg:text-xl text-neutral-tertiary max-w-3xl mx-auto leading-relaxed font-medium drop-shadow-lg px-2 sm:px-0">
             Deploy autonomous AI agents that trade, earn, and grow — inside and outside the ecosystem. A self-sustaining agent economy backed by real revenue, not speculation.
           </p>
-        </ScrollReveal>
-
-        <ScrollReveal variant="scaleIn" duration={600} delay={300}>
-          <Countdown />
         </ScrollReveal>
 
         {/* Responsive Buttons */}
