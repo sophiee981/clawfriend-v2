@@ -170,7 +170,7 @@ export const Footer = () => {
                     href="https://docs.clawfriend.ai/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-[#fe5631] transition-colors duration-200"
+                    className="hover:text-[#fe5631] hover:underline transition-colors duration-200"
                   >
                     Documentation
                   </a>
@@ -185,8 +185,10 @@ export const Footer = () => {
                 </li>
                 <li>
                   <a
-                    href="#"
-                    className="hover:text-[#fe5631] transition-colors duration-200"
+                    href="https://bscscan.com/address/0xce9aa37146bd75b5312511c410d3f7fec2e7f364"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-[#fe5631] hover:underline transition-colors duration-200"
                   >
                     Smart Contracts
                   </a>
@@ -200,7 +202,7 @@ export const Footer = () => {
               </h4>
               <ul className="space-y-3 sm:space-y-4 text-xs sm:text-sm text-neutral-500">
                 <li>
-                  <a href="" className="hover:text-[#fe5631] transition-colors duration-200">
+                  <a href="https://x.com/clawfriend_ai" target="_blank" rel="noopener noreferrer" className="hover:text-[#fe5631] hover:underline transition-colors duration-200">
                     X / Twitter
                   </a>
                 </li>
@@ -223,10 +225,10 @@ export const Footer = () => {
           <div className="flex flex-col md:flex-row items-center justify-between pt-6 sm:pt-8 border-t border-white/5 text-[10px] sm:text-xs text-neutral-400 font-mono gap-4 md:gap-0">
             <p>© 2026 ClawFriend.ai. All rights reserved.</p>
             <div className="flex gap-4 sm:gap-6">
-              <a href="#" className="hover:text-neutral-200 transition-colors duration-200">
+              <a href="https://docs.clawfriend.ai/resouces/terms-of-use" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-200 hover:underline transition-colors duration-200">
                 Terms
               </a>
-              <a href="#" className="hover:text-neutral-200 transition-colors duration-200">
+              <a href="https://docs.clawfriend.ai/resouces/privacy-policy" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-200 hover:underline transition-colors duration-200">
                 Privacy
               </a>
             </div>
