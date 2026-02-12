@@ -7,6 +7,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { likeSkill } from "@/services";
 import { useAuthStore } from "@/stores/auth.store";
 import { cn } from "@/utils";
@@ -120,48 +126,83 @@ export const SkillCard = ({
               </span>
             </div>
           </div>
-          {!!isCurrentUserCreator && !!item.author && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  className="text-neutral-tertiary hover:text-neutral-primary transition-colors flex items-center justify-center h-10 w-10"
-                  onClick={(e) => e.stopPropagation()}
+          <div className="flex items-center gap-2">
+            {(item.visibility) && (
+              <TooltipProvider>
+                <div className="flex items-center gap-2 text-xs text-neutral-tertiary">
+                  {item.visibility && (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Badge
+                          variant="secondary"
+                          type="outline"
+                          className={cn(
+                            "px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wide border bg-neutral-01 cursor-pointer",
+                            item.visibility === "private"
+                              ? "text-yellow bg-[rgba(250,204,21,0.08)] border-transparent"
+                              : "text-success bg-[rgba(34,197,94,0.08)] border-transparent"
+                          )}
+                        >
+                          {item.visibility === "private" ? "Private" : "Publish"}
+                        </Badge>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p className="text-xs font-bold text-neutral-primary">
+                          {item.visibility === "private"
+                            ? "Only those who purchase shares can use this"
+                            : "Anyone can use this"}
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  )}
+                </div>
+              </TooltipProvider>
+            )}
+            {!!isCurrentUserCreator && !!item.author && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    className="text-neutral-tertiary hover:text-neutral-primary transition-colors flex items-center justify-center h-10 w-10"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <MoreHorizontal className="h-5 w-5" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="end"
+                  className="w-48 bg-neutral-02 border border-neutral-02"
                 >
-                  <MoreHorizontal className="h-5 w-5" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align="end"
-                className="w-48 bg-neutral-02 border border-neutral-02"
-              >
-                <DropdownMenuItem
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onEdit?.(item);
-                  }}
-                  className="flex items-center gap-2 cursor-pointer hover:bg-overlay-light-5 rounded-md"
-                >
-                  <Edit className="h-4 w-4" />
-                  <span>Edit</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    console.log("Delete clicked for item.id:", item.id);
-                    onDelete?.(item.id);
-                  }}
-                  className="flex items-center gap-2 cursor-pointer text-danger hover:bg-danger-muted-10 rounded-md"
-                >
-                  <Trash2 className="h-4 w-4" />
-                  <span>Delete</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
+                  <DropdownMenuItem
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEdit?.(item);
+                    }}
+                    className="flex items-center gap-2 cursor-pointer hover:bg-overlay-light-5 rounded-md"
+                  >
+                    <Edit className="h-4 w-4" />
+                    <span>Edit</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      console.log("Delete clicked for item.id:", item.id);
+                      onDelete?.(item.id);
+                    }}
+                    className="flex items-center gap-2 cursor-pointer text-danger hover:bg-danger-muted-10 rounded-md"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    <span>Delete</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+          </div>
+
         </div>
 
         <div className="flex flex-col gap-2">
-          <div className="flex justify-between items-center">
+          <div className="flex gap-4 items-center">
+
             <h3 className="text-heading-xs text-neutral-primary font-bold line-clamp-1">
               {item.title}
             </h3>
@@ -171,6 +212,7 @@ export const SkillCard = ({
               {item.content}
             </p>
           )}
+
         </div>
 
         <div className="flex flex-wrap gap-2">

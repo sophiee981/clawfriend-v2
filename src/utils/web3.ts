@@ -1,6 +1,5 @@
 import { chains } from "@/configs/wallet.config";
-import type { IChainConfig } from "@phoenix-wallet/core";
-import type { PublicClient } from "viem";
+import type { Chain, PublicClient } from "viem";
 import { createPublicClient, formatEther, http } from "viem";
 
 export async function getBalanceForChain(
@@ -15,20 +14,15 @@ export async function getBalanceForChain(
 
 export function createPublicClientForChain(
   chainId: string | number,
-  chains: IChainConfig[]
+  chainList: Chain[]
 ): PublicClient | null {
-  const chainConfig = chains.find(
+  const chainConfig = chainList.find(
     (c) => c.id.toString() === chainId.toString()
   );
   if (!chainConfig) return null;
   return createPublicClient({
-    chain: {
-      id: chainConfig.chainId,
-      name: chainConfig.name,
-      nativeCurrency: chainConfig.nativeCurrency,
-      rpcUrls: { default: { http: [chainConfig.privateRpcUrl] } },
-    },
-    transport: http(chainConfig.privateRpcUrl),
+    chain: chainConfig,
+    transport: http(chainConfig.rpcUrls.default.http[0]),
   });
 }
 

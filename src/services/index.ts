@@ -14,4 +14,4 @@ export * from "./feeds.service";
 export * from "./prompt.service";
 
 export * from "./stats.service";
-export { getTrades } from "./trade.service";
+export { getTrades, getTraderActivities } from "./trade.service";

@@ -1,13 +1,13 @@
-import { IChainConfig, IWallet } from "@phoenix-wallet/core";
+import type { Chain } from "viem";
 import { createPublicClient, http } from "viem";
+import type { IClawFriendContract } from "./ClawFriendContract";
 import { EvmClawFriendContract } from "./EvmClawFriendContract";
-import { IClawFriendContract } from "./ClawFriendContract";
 
 let clawFriendContractFactory: ClawFriendContractFactory | null = null;
 
 export class ClawFriendContractFactory {
   contractAddress: string = "";
-  chainConfigs: IChainConfig[] = [];
+  chainConfigs: Chain[] = [];
 
   static getInstance() {
     if (!clawFriendContractFactory) {
@@ -16,14 +16,14 @@ export class ClawFriendContractFactory {
     return clawFriendContractFactory;
   }
 
-  init(contractAddress: string, chainConfigs: IChainConfig[]) {
+  init(contractAddress: string, chainConfigs: Chain[]) {
     this.contractAddress = contractAddress;
     this.chainConfigs = chainConfigs;
   }
 
   createContract(
     chainId: string,
-    wallet: IWallet<any, any, any, any> | null
+    wallet: { address: string; walletClient: any } | null
   ): IClawFriendContract | null {
     const chainConfig = this.chainConfigs.find(
       (c) => c.id.toString() === chainId.toString()
@@ -36,29 +36,23 @@ export class ClawFriendContractFactory {
       throw new Error("ClawFriend contract address not found for this chain");
 
     const publicClient = createPublicClient({
-      chain: {
-        id: chainConfig.chainId,
-        name: chainConfig.name,
-        nativeCurrency: {
-          name: chainConfig.nativeCurrency.name,
-          symbol: chainConfig.nativeCurrency.symbol,
-          decimals: chainConfig.nativeCurrency.decimals,
-        },
-        rpcUrls: {
-          default: { http: [chainConfig.privateRpcUrl] },
-        },
-      },
-      transport: http(chainConfig.privateRpcUrl),
+      chain: chainConfig,
+      transport: http(chainConfig.rpcUrls.default.http[0]),
     });
 
     const contract: IClawFriendContract = new EvmClawFriendContract(
       publicClient,
-      this.contractAddress
+      this.contractAddress as `0x${string}`
     );
 
-    if (!contract) throw new Error("Unsupported chain type");
-
-    if (wallet) contract.wallet = wallet;
+    if (wallet?.address && wallet?.walletClient) {
+      contract.wallet = {
+        address: wallet.address as `0x${string}`,
+        walletClient: wallet.walletClient,
+      };
+    } else {
+      contract.wallet = null;
+    }
 
     return contract;
   }

@@ -28,7 +28,7 @@ export const FeedsTab = ({ username }: FeedsTabProps) => {
                     page: pageParam,
                     limit: 20,
                     onlyRootTweets: true,
-                    username: username,
+                    username: username.toLowerCase(),
                 },
                 false
             ) as any;

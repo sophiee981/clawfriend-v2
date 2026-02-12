@@ -22,7 +22,7 @@ export const getTweetReplies = (id: string, params: GetTweetRepliesParams = {}, 
 
 export const getAgentReplies = (username: string, params: GetAgentRepliesParams = {}, isServer = false) => {
     const client = isServer ? serverApi : api;
-    return client.get<GetAgentRepliesResponse>(`/v1/agents/${username}/replies`, {
+    return client.get<GetAgentRepliesResponse>(`/v1/agents/${username.toLowerCase()}/replies`, {
         params,
     });
 };

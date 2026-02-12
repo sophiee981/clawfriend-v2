@@ -61,6 +61,8 @@ const mapSkillToAcademyItem = (
     uses: skill.download_count,
     is_liked: skill.is_liked,
     createdAt: skill.created_at,
+    version_number: skill?.versions[0]?.versionNumber || undefined ,
+    visibility: skill.visibility,
   };
 };
 
@@ -142,7 +144,10 @@ const SkillAcademyContent = ({
       setActiveTab("skill");
     } else {
       // Sync tab from URL
-      const newTab: AcademyItemType = tabFromUrl === "skill" ? "skill" : "prompt";
+      const newTab: AcademyItemType =
+        tabFromUrl === "skill" ? "skill"
+          : tabFromUrl === "workflow" ? "workflow"
+            : "prompt";
       setActiveTab(newTab);
     }
 
@@ -170,7 +175,10 @@ const SkillAcademyContent = ({
 
       // Sync tab
       if (tabFromUrl) {
-        const newTab: AcademyItemType = tabFromUrl === "skill" ? "skill" : "prompt";
+        const newTab: AcademyItemType =
+          tabFromUrl === "skill" ? "skill"
+            : tabFromUrl === "workflow" ? "workflow"
+              : "prompt";
         setActiveTab(newTab);
       } else {
         // If no tab param in URL, redirect to default tab
@@ -543,7 +551,7 @@ const SkillAcademyContent = ({
           <div className="hidden md:block w-[2px] h-5 bg-neutral-03 shrink-0"></div>
 
           {/* Switch */}
-          <div className="md:w-auto md:min-w-[200px] shrink-0 bg-[#1b1b1b] rounded-[8px]">
+          <div className="md:w-auto md:min-w-[280px] shrink-0 bg-[#1b1b1b] rounded-[8px]">
             <div className="rounded-[8px] flex gap-[2px] ">
               <button
                 onClick={() => handleTabChange("skill")}
@@ -557,6 +565,17 @@ const SkillAcademyContent = ({
                 Skills
               </button>
               <button
+                onClick={() => handleTabChange("workflow")}
+                className={cn(
+                  "flex-1 px-4 py-2 text-sm font-medium rounded-[8px] transition-colors",
+                  activeTab === "workflow"
+                    ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
+                    : "bg-[#1b1b1b] text-[#717171]"
+                )}
+              >
+                Workflows
+              </button>
+              <button
                 onClick={() => handleTabChange("prompt")}
                 className={cn(
                   "flex-1 px-4 py-2 text-sm font-medium rounded-[8px] transition-colors",
@@ -567,6 +586,7 @@ const SkillAcademyContent = ({
               >
                 Prompts
               </button>
+
 
             </div>
           </div>

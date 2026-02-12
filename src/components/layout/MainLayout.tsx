@@ -5,7 +5,7 @@ import { TopNav } from "./TopNav";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-[1280px] bg-neutral-01 text-neutral-primary">
+    <div className="mx-auto flex min-h-screen w-full max-w-[1440px] bg-neutral-01 text-neutral-primary">
       <ExchangeRateProvider />
       <LeftSidebar />
       <main

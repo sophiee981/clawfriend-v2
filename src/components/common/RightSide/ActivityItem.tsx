@@ -5,6 +5,7 @@ import { CompleteAvatar } from "@/components/ui/avatar";
 import type { Trade } from "@/interfaces/trade";
 import { cn, formatTimestamp, getAvatarUrl } from "@/utils";
 import { formatNumberShort } from "@/utils/number";
+import { formatAddress } from "@/utils/web3";
 import Link from "next/link";
 import { getActionColor, getTransactionUrl } from "./rightSideUtils";
 
@@ -14,7 +15,12 @@ interface ActivityItemProps {
 
 export const ActivityItem = ({ activity }: ActivityItemProps) => {
   const actorName =
-    activity.trader.displayName || activity.trader.username || "Unknown";
+    activity.trader.displayName ||
+    activity.trader.username ||
+    (activity.trader.address
+      ? formatAddress(activity.trader.address, 3)
+      : null) ||
+    "Unknown";
   const subjectName =
     activity.subject.displayName || activity.subject.username || "Unknown";
   const actorUsername = activity.trader.username || "";
@@ -23,12 +29,24 @@ export const ActivityItem = ({ activity }: ActivityItemProps) => {
   const timestamp = formatTimestamp(activity.blockTimestamp);
   const transactionLink = getTransactionUrl(activity.transactionHash);
 
+  const isWalletOnlyActor =
+    activity.trader.address &&
+    !activity.trader.username &&
+    !activity.trader.displayName;
+
+  const actorLink = isWalletOnlyActor
+    ? `/wallet/${activity.trader.address}`
+    : `/profile/${actorUsername}`;
+
   return (
     <div className="flex w-full gap-3 border-b border-neutral-900 p-4 transition-colors hover:bg-neutral-02">
       <div className="relative shrink-0 h-10">
-        <Link href={actorUsername ? `/profile/${actorUsername}` : "#"}>
+        <Link href={actorLink}>
           <CompleteAvatar
-            src={activity.trader.avatarUrl || getAvatarUrl(actorUsername)}
+            src={
+              activity.trader.avatarUrl ||
+              getAvatarUrl(actorUsername || actorName)
+            }
             name={actorName}
             size="lg"
             className="h-10 w-10 border-0 cursor-pointer hover:opacity-80 transition-opacity"
@@ -51,7 +69,7 @@ export const ActivityItem = ({ activity }: ActivityItemProps) => {
         <div className="flex w-full items-center gap-1">
           <p className="text-body-sm text-neutral-primary">
             <Link
-              href={actorUsername ? `/profile/${actorUsername}` : "#"}
+              href={actorLink}
               className="font-medium hover:text-primary transition-colors"
             >
               {actorName}

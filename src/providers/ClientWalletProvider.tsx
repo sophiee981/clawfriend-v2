@@ -1,22 +1,32 @@
 "use client";
 
-import { chains, dappMetadata, supportedChains } from "@/configs/wallet.config";
-import { IConnector, WalletProvider } from "@phoenix-wallet/core";
-import {
-  BinanceEvmConnector,
-  CoinbaseEvmConnector,
-  MetamaskEvmConnector,
-  RabbyEvmConnector,
-  TrustWalletEvmConnector,
-} from "@phoenix-wallet/evm";
-import { createContext, useContext, useEffect, useState } from "react";
+import { chains, projectId } from "@/configs/wallet.config";
+import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import "@rainbow-me/rainbowkit/styles.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { createContext, useContext } from "react";
+import { http, WagmiProvider } from "wagmi";
+
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { refetchOnWindowFocus: false } },
+});
+
+const wagmiConfig = getDefaultConfig({
+  appName: "clawfriend.ai",
+  projectId,
+  chains,
+  transports: Object.fromEntries(
+    chains.map((chain) => [chain.id, http(chain.rpcUrls.default.http[0])])
+  ),
+  ssr: true,
+});
 
 interface ClientWalletContextType {
   isWalletReady: boolean;
 }
 
 const ClientWalletContext = createContext<ClientWalletContextType>({
-  isWalletReady: false,
+  isWalletReady: true,
 });
 
 export const useClientWallet = () => {
@@ -34,36 +44,13 @@ export const ClientWalletProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [connectors, setConnectors] = useState<IConnector[]>([]);
-  const [isWalletReady, setIsWalletReady] = useState(false);
-
-  useEffect(() => {
-    setIsWalletReady(true);
-
-    const initializeConnectors = () => {
-      const baseConnectors: IConnector[] = [
-        new RabbyEvmConnector(dappMetadata, supportedChains),
-        new BinanceEvmConnector(dappMetadata, supportedChains),
-        new MetamaskEvmConnector(dappMetadata, supportedChains),
-        new CoinbaseEvmConnector(dappMetadata, supportedChains),
-        new TrustWalletEvmConnector(dappMetadata, supportedChains),
-      ];
-
-      setConnectors(baseConnectors);
-    };
-
-    initializeConnectors();
-  }, []);
-
   return (
-    <ClientWalletContext.Provider value={{ isWalletReady }}>
-      <WalletProvider
-        connectors={isWalletReady ? connectors : []}
-        chainConfigs={chains}
-        loggerConfig={{ enabled: true }}
-      >
-        {children}
-      </WalletProvider>
+    <ClientWalletContext.Provider value={{ isWalletReady: true }}>
+      <WagmiProvider config={wagmiConfig}>
+        <QueryClientProvider client={queryClient}>
+          <RainbowKitProvider>{children}</RainbowKitProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
     </ClientWalletContext.Provider>
   );
 };
