@@ -1,4 +1,4 @@
-import { IWallet } from "@phoenix-wallet/core";
+import type { WalletClient } from "viem";
 
 export interface ResponseTransaction {
   txHash: string;
@@ -12,8 +12,8 @@ export interface AmountOutput {
 }
 
 export interface BuySharesParams {
-  sharesSubject: string; // address of shares subject (agent)
-  amount: string | bigint; // uint256
+  sharesSubject: string;
+  amount: string | bigint;
 }
 
 export interface SellSharesParams {
@@ -27,20 +27,29 @@ export interface LaunchParams {
   signature: `0x${string}` | Uint8Array | string;
 }
 
+export interface WalletInfo {
+  address: `0x${string}`;
+  walletClient: WalletClient;
+}
+
 export interface IClawFriendContract {
-  set wallet(wallet: IWallet<any, any, any, any> | undefined);
+  set wallet(wallet: WalletInfo | null);
 
   getAddress(): string;
 
-  // Read functions
   sharesSupply(sharesSubject: string): Promise<bigint>;
   sharesBalance(sharesSubject: string, owner: string): Promise<bigint>;
   getBuyPrice(sharesSubject: string, amount: string | bigint): Promise<bigint>;
-  getBuyPriceAfterFee(sharesSubject: string, amount: string | bigint): Promise<bigint>;
+  getBuyPriceAfterFee(
+    sharesSubject: string,
+    amount: string | bigint
+  ): Promise<bigint>;
   getSellPrice(sharesSubject: string, amount: string | bigint): Promise<bigint>;
-  getSellPriceAfterFee(sharesSubject: string, amount: string | bigint): Promise<bigint>;
+  getSellPriceAfterFee(
+    sharesSubject: string,
+    amount: string | bigint
+  ): Promise<bigint>;
 
-  // Write functions
   buyShares(params: BuySharesParams): Promise<ResponseTransaction>;
   sellShares(params: SellSharesParams): Promise<ResponseTransaction>;
   launch(params: LaunchParams): Promise<ResponseTransaction>;

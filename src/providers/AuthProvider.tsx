@@ -1,14 +1,7 @@
 "use client";
+
 import { chains } from "@/configs/wallet.config";
-import { useWallet } from "@/hooks/useWallet";
 import { toast } from "@/utils/toast";
-import {
-  IChainConfig,
-  IConnector,
-  IWallet,
-  useWalletConnectors,
-} from "@phoenix-wallet/core";
-import { EvmChain } from "@phoenix-wallet/evm";
 import {
   createContext,
   ReactNode,
@@ -17,146 +10,83 @@ import {
   useEffect,
   useMemo,
   useRef,
-  useState,
 } from "react";
-import { createPublicClient, http } from "viem";
+import {
+  useConnect,
+  useConnection,
+  useDisconnect,
+  useSwitchChain,
+  useWalletClient,
+} from "wagmi";
 
 interface AuthContextProps {
   isConnected: boolean;
   isConnecting: boolean;
   walletAddress: string;
-  wallet: IWallet<any, any, IConnector, any> | null;
+  wallet: {
+    address: string;
+    walletClient: ReturnType<typeof useWalletClient>["data"];
+  } | null;
   chainId: string | null;
-  connect: (walletType?: string) => Promise<void>;
   disconnect: () => Promise<void>;
   switchChain: (chainId: string) => Promise<void>;
-  getWallet: () => IWallet<any, any, IConnector, any> | null;
-  setConnectorId: (connectorId: string) => void;
-  lastUsedConnectorId: string;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
-const useConnectorStorage = () => {
-  const [connectorId, setConnectorId] = useState<string>("");
-
-  useEffect(() => {
-    const savedConnectorId = localStorage.getItem("connectorId") || "";
-
-    if (savedConnectorId) {
-      setConnectorId(savedConnectorId);
-    }
-  }, []);
-
-  return { connectorId, setConnectorId };
-};
-
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const { connectorId, setConnectorId } = useConnectorStorage();
-  const [lastUsedConnectorId, setLastUsedConnectorId] = useState<string>("");
-  const { connectors } = useWalletConnectors();
   const previousWalletAddress = useRef<string>("");
-  const {
-    connect,
-    getWallet,
-    isConnected,
-    switchChain: walletSwitchChain,
-    wallet,
-    disconnect,
-    address: walletAddress,
-    chainId,
-    isConnecting,
-  } = useWallet(connectorId, {});
+  const { address, isConnected, chain } = useConnection();
+  const { isPending: isConnecting } = useConnect();
+  const { mutateAsync: disconnectAsync } = useDisconnect();
+  const { mutateAsync: switchChainAsync } = useSwitchChain();
+  const { data: walletClient } = useWalletClient();
 
-  const switchChain = useCallback(
-    async (chainId: string): Promise<void> => {
-      await walletSwitchChain(chainId);
-    },
-    [walletSwitchChain]
-  );
+  const walletAddress = address ?? "";
+  const chainId = chain?.id?.toString() ?? null;
 
-  const disconnectWallet = useCallback(async () => {
+  const wallet = useMemo(() => {
+    if (!address || !walletClient) return null;
+    return { address, walletClient };
+  }, [address, walletClient]);
+
+  const disconnect = useCallback(async () => {
     try {
-      await disconnect();
+      await disconnectAsync?.();
     } catch (error) {
       console.error("Error disconnecting wallet:", error);
     }
-  }, [disconnect]);
+  }, [disconnectAsync]);
 
-  const handleAddChain = useCallback(
-    async (
-      addChainId: string,
-      connector: IConnector,
-      options?: { silent?: boolean }
-    ) => {
-      if (!connector || !addChainId) return;
-
-      try {
-        const chainToAdd = chains.find(
-          (chain: IChainConfig) => chain.chainId === Number(addChainId)
-        );
-        if (!chainToAdd) throw new Error("Selected chain not found");
-
-        const provider = createPublicClient({
-          transport: http(chainToAdd.publicRpcUrl),
-        });
-        const chainWithProvider = {
-          ...chainToAdd,
-          chainName: chainToAdd.name,
-          provider,
-        };
-        const evmChain = new EvmChain(
-          chainToAdd.name,
-          chainWithProvider as any
-        );
-
-        await connector.addChain(evmChain);
-
-        if (!options?.silent) {
-          toast.success(`Successfully added chain: ${chainToAdd.name}`, {});
-        }
-      } catch (error: any) {
-        throw error;
-      }
+  const switchChain = useCallback(
+    async (targetChainId: string): Promise<void> => {
+      await switchChainAsync?.({
+        chainId: Number(targetChainId),
+      });
     },
-    []
+    [switchChainAsync]
   );
 
   const signInWithWallet = useCallback(async () => {
     try {
-      const desiredChainIds = chains.map((chain) => chain.chainId.toString());
+      const desiredChainIds = chains.map((c) => c.id.toString());
 
       if (!desiredChainIds.includes(chainId || "")) {
         try {
           await switchChain(desiredChainIds[0]);
         } catch (err) {
-          try {
-            const _activeConnector = connectors.find(
-              (connector) => connector.id === connectorId
-            );
-            await handleAddChain(
-              desiredChainIds[0],
-              _activeConnector as IConnector,
-              { silent: true }
-            );
-            await switchChain(desiredChainIds[0]);
-          } catch (addErr) {
-            toast.error("Switch/add chain failed: " + addErr);
-            await disconnectWallet();
-            return;
-          }
+          toast.error("Switch/add chain failed: " + (err as Error)?.message);
+          await disconnect();
+          return;
         }
       }
-      if (!wallet) return;
-      localStorage.setItem("connectorId", connectorId);
-    } catch (error: any) {
+    } catch (error) {
       toast.error("wallet rugged 💀", {
         description: "try again or switch network, anon.",
       });
-      await disconnectWallet();
-    } finally {
+      await disconnect();
     }
-  }, [wallet, connectorId, chainId, switchChain, disconnectWallet]);
+  }, [chainId, switchChain, disconnect]);
 
   const hasWalletAddressChanged = useMemo(
     () =>
@@ -165,45 +95,37 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       walletAddress.toLowerCase() !==
         previousWalletAddress.current.toLowerCase() &&
       isConnected,
-    [walletAddress, previousWalletAddress, isConnected]
+    [walletAddress, isConnected]
   );
 
   useEffect(() => {
-    if (connectorId) {
-      setLastUsedConnectorId(connectorId);
+    if (walletAddress) {
+      previousWalletAddress.current = walletAddress;
     }
-  }, [connectorId, setLastUsedConnectorId]);
+  }, [walletAddress]);
 
-  // Handle wallet address change
   useEffect(() => {
     if (hasWalletAddressChanged) {
-      disconnectWallet();
+      disconnect();
       toast.error(
         "Wallet address changed! Please sign in again with your new wallet."
       );
-      return;
     }
-  }, [hasWalletAddressChanged, disconnectWallet]);
+  }, [hasWalletAddressChanged, disconnect]);
 
-  // Handle sign in with wallet when user is connected
   useEffect(() => {
     if (!isConnected || !walletAddress) return;
-
     signInWithWallet();
   }, [isConnected, walletAddress, signInWithWallet]);
 
   const contextValue: AuthContextProps = {
     chainId,
     isConnected,
-    isConnecting: isConnecting,
-    walletAddress: walletAddress || "",
+    isConnecting,
+    walletAddress,
     wallet,
-    connect,
-    disconnect: disconnectWallet,
+    disconnect,
     switchChain,
-    getWallet,
-    setConnectorId,
-    lastUsedConnectorId,
   };
 
   return (
