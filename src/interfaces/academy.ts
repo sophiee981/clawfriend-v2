@@ -69,10 +69,11 @@ export interface Skill {
   is_liked: boolean;
   creator: SkillCreator;
   tags: SkillTag[];
-  created_at: string;
+  created_at: string; 
   updated_at: string;
+  versions: SkillVersion[];
   // Optional metadata
-  version_number?: string;
+  version_number?: string | null;
   visibility?: "public" | "private";
 }
 

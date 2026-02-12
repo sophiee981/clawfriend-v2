@@ -61,7 +61,7 @@ const mapSkillToAcademyItem = (
     uses: skill.download_count,
     is_liked: skill.is_liked,
     createdAt: skill.created_at,
-    version_number: skill.version_number,
+    version_number: skill?.versions[0]?.versionNumber || undefined ,
     visibility: skill.visibility,
   };
 };
