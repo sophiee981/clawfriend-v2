@@ -86,7 +86,7 @@ export const AddToAgentModal = ({
           className="flex items-center gap-2 mt-2 w-full p-3 bg-neutral-02 rounded-lg border border-neutral-03 justify-between group cursor-pointer hover:border-neutral-primary transition-colors"
           onClick={handleCopy}
         >
-          <code className="text-xs font-mono text-neutral-secondary max-w-[350px] whitespace-pre-wrap break-words">
+          <code className="text-xs font-mono text-neutral-secondary max-w-[220px] sm:max-w-[350px] whitespace-pre-wrap break-words">
             {getPreviewContent()}
           </code>
           <div className="text-neutral-tertiary group-hover:text-neutral-primary">
@@ -119,22 +119,22 @@ export const AddToAgentModal = ({
           </p>
         </ModalHeader>
 
-        <div className="flex flex-col gap-6 mt-2 relative">
+        <div className="flex flex-col gap-3 sm:gap-6 mt-2 relative">
           {/* Vertical line connecting steps */}
-          <div className="absolute left-[15px] top-4 bottom-4 w-[2px] bg-neutral-02 -z-10" />
+          <div className="absolute left-[11px] sm:left-[15px] top-4 bottom-4 w-[2px] bg-neutral-02 -z-10" />
 
           {steps.map((step, index) => (
-            <div key={index} className="flex gap-4">
+            <div key={index} className="flex gap-2 sm:gap-4">
               <div className="flex flex-col items-center">
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-neutral-02 border border-neutral-03 text-sm font-bold text-neutral-primary shrink-0 z-10">
+                <div className="flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-neutral-02 border border-neutral-03 text-xs sm:text-sm font-bold text-neutral-primary shrink-0 z-10">
                   {index + 1}
                 </div>
               </div>
               <div className="flex flex-col flex-1 pb-2">
-                <h4 className="text-sm font-semibold text-neutral-primary">
+                <h4 className="text-xs sm:text-sm font-semibold text-neutral-primary">
                   {step.title}
                 </h4>
-                <p className="text-sm text-neutral-tertiary">
+                <p className="text-xs sm:text-sm text-neutral-tertiary">
                   {step.description}
                 </p>
                 {step.action}

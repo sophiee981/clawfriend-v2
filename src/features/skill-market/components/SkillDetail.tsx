@@ -196,34 +196,34 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
   }
 
   return (
-    <div className="relative flex flex-col flex-1 w-full max-w-5xl mx-auto p-4 md:p-8 gap-8 pb-20 overflow-hidden lg:h-screen">
+    <div className="relative flex flex-col flex-1 w-full max-w-5xl mx-auto p-3 sm:p-4 md:p-8 gap-4 sm:gap-8 pb-20 overflow-hidden lg:h-screen">
       {/* Navigation Header */}
       <div
-        className="flex items-center gap-3 text-neutral-tertiary hover:text-neutral-secondary transition-colors cursor-pointer group"
+        className="flex items-center gap-2 sm:gap-3 text-neutral-tertiary hover:text-neutral-secondary transition-colors cursor-pointer group"
         onClick={() => router.push("/skill-market")}
       >
         <Button
           variant="secondary"
           buttonType="ghost"
           size="sm"
-          className="rounded-full w-8 h-8 p-0 text-neutral-secondary group-hover:text-neutral-primary group-hover:bg-neutral-02"
+          className="rounded-full w-7 h-7 sm:w-8 sm:h-8 p-0 text-neutral-secondary group-hover:text-neutral-primary group-hover:bg-neutral-02"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
         </Button>
-        <span className="text-label-sm">Back to Skill Market</span>
+        <span className="text-xs sm:text-label-sm">Back to Skill Market</span>
       </div>
 
-      <div className="flex flex-col lg:flex-row items-start overflow-auto lg:overflow-hidden flex-1 min-h-0 scrollbar-hide">
+      <div className="flex flex-col max-lg:flex-col-reverse lg:flex-row items-start overflow-auto lg:overflow-hidden flex-1 min-h-0 scrollbar-hide">
         {/* Left Column: Info & Meta */}
-        <div className="flex flex-col gap-6 overflow-visible lg:overflow-auto overflow-x-hidden lg:flex-1 min-h-0 lg:max-h-full scrollbar-hide lg:scrollbar-hover-hide pr-6">
+        <div className="flex flex-col gap-4 sm:gap-6 overflow-visible lg:overflow-auto overflow-x-hidden lg:flex-1 min-h-0 lg:max-h-full scrollbar-hide lg:scrollbar-hover-hide pr-0 lg:pr-6">
           {/* Header Card */}
           <div className="flex flex-col gap-2">
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex flex-col gap-3">
-                <div className="flex items-center gap-3">
+            <div className="flex items-start justify-between gap-2 sm:gap-4">
+              <div className="flex flex-col gap-2 sm:gap-3 flex-1 min-w-0">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                   <Badge
                     type="tonal"
-                    className="uppercase tracking-wider font-semibold text-[10px] px-2.5 rounded-md"
+                    className="uppercase tracking-wider font-semibold text-[9px] sm:text-[10px] px-2 sm:px-2.5 rounded-md"
                   >
                     {skill.type}
                   </Badge>
@@ -231,24 +231,24 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                     <Badge
                       variant="secondary"
                       type="outline"
-                      className="text-[10px] px-2.5"
+                      className="text-[9px] sm:text-[10px] px-2 sm:px-2.5"
                     >
                       Inactive
                     </Badge>
                   )}
                   {skill.created_at && (
-                    <span className="text-body-xs text-neutral-tertiary flex items-center gap-1.5">
-                      <Calendar className="w-3.5 h-3.5" />
+                    <span className="text-[10px] sm:text-body-xs text-neutral-tertiary flex items-center gap-1 sm:gap-1.5">
+                      <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                       {formatTimestamp(skill.created_at)}
                     </span>
                   )}
                 </div>
-                <h1 className="text-heading-lg md:text-display-xs font-bold text-neutral-primary tracking-tight leading-tight">
+                <h1 className="text-lg sm:text-heading-lg md:text-display-xs font-bold text-neutral-primary tracking-tight leading-tight">
                   {skill.name}
                 </h1>
               </div>
 
-              <div className="flex gap-2 shrink-0">
+              <div className="flex gap-1 sm:gap-2 shrink-0">
                 {/* Only show if we implement sharing properly, for now just a button */}
                 {isOwner && (
                   <>
@@ -256,19 +256,19 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                       variant="secondary"
                       buttonType="ghost"
                       size="sm"
-                      className="rounded-full w-10 h-10 p-0 text-neutral-tertiary hover:text-neutral-primary hover:bg-neutral-02 transition-all duration-300 hover:scale-105"
+                      className="rounded-full w-8 h-8 sm:w-10 sm:h-10 p-0 text-neutral-tertiary hover:text-neutral-primary hover:bg-neutral-02 transition-all duration-300 hover:scale-105"
                       onClick={() => setIsEditOpen(true)}
                     >
-                      <Pencil className="w-4 h-4" />
+                      <Pencil className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     </Button>
                     <Button
                       variant="secondary"
                       buttonType="ghost"
                       size="sm"
-                      className="rounded-full w-10 h-10 p-0 text-neutral-tertiary hover:text-danger hover:bg-danger-muted-10 transition-all duration-300 hover:scale-105"
+                      className="rounded-full w-8 h-8 sm:w-10 sm:h-10 p-0 text-neutral-tertiary hover:text-danger hover:bg-danger-muted-10 transition-all duration-300 hover:scale-105"
                       onClick={() => setIsDeleteOpen(true)}
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     </Button>
                   </>
                 )}
@@ -276,22 +276,22 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                   variant="secondary"
                   buttonType="ghost"
                   size="sm"
-                  className="rounded-full w-10 h-10 p-0 text-neutral-tertiary hover:text-neutral-primary hover:bg-neutral-02"
+                  className="rounded-full w-8 h-8 sm:w-10 sm:h-10 p-0 text-neutral-tertiary hover:text-neutral-primary hover:bg-neutral-02"
                   onClick={handleShareLink}
                 >
-                  <Share2 className="w-4 h-4" />
+                  <Share2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </Button>
               </div>
             </div>
 
             {skill.tags && skill.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-4">
+              <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-3 sm:mt-4">
                 {skill.tags.map((tag) => (
                   <Badge
                     key={tag.id}
                     variant="secondary"
                     type="tonal"
-                    className="px-3 py-1 text-xs"
+                    className="px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs"
                   >
                     #{tag.name}
                   </Badge>
@@ -303,20 +303,20 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
           <div className="h-px w-full bg-neutral-02" />
 
           {/* Config Preview */}
-          <div className="flex flex-col gap-4 pt-4">
-            <div className="flex items-center justify-between px-1">
-              <div className="flex items-center gap-2.5 text-neutral-primary">
-                <div className="p-1.5 bg-brand-primary/10 rounded-md">
-                  <Code2 className="w-5 h-5 text-brand-primary" />
+          <div className="flex flex-col gap-3 sm:gap-4 pt-3 sm:pt-4 ">
+            <div className="flex items-center justify-between px-1 gap-2">
+              <div className="flex items-center gap-2 sm:gap-2.5 text-neutral-primary">
+                <div className="p-1 sm:p-1.5 bg-brand-primary/10 rounded-md">
+                  <Code2 className="w-4 h-4 sm:w-5 sm:h-5 text-brand-primary" />
                 </div>
-                <h3 className="text-lg font-bold tracking-tight">Prompt</h3>
+                <h3 className="text-base sm:text-lg font-bold tracking-tight">Prompt</h3>
               </div>
               <Button
                 size="sm"
                 variant="secondary"
                 buttonType="outline"
                 className={cn(
-                  "gap-1.5 text-xs h-8 transition-all duration-200 shadow-sm",
+                  "gap-1 sm:gap-1.5 text-[10px] sm:text-xs h-7 sm:h-8 transition-all duration-200 shadow-sm shrink-0",
                   isCopied
                     ? "border-success text-success bg-success-muted-20"
                     : "border-neutral-03 bg-bg-primary hover:bg-neutral-01 hover:border-neutral-secondary"
@@ -325,43 +325,43 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
               >
                 {isCopied ? (
                   <>
-                    <Check className="w-3.5 h-3.5" />
-                    Copied
+                    <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                    <span className="hidden sm:inline">Copied</span>
                   </>
                 ) : (
                   <>
-                    <Copy className="w-3.5 h-3.5" />
-                    Copy Prompt
+                    <Copy className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                    <span className="hidden sm:inline">Copy Prompt</span>
                   </>
                 )}
               </Button>
             </div>
 
-            <div className="relative group rounded-xl border border-neutral-03 bg-neutral-03 overflow-hidden shadow-xl ring-1 ring-black/5 transition-all hover:shadow-2xl">
-              <div className="absolute top-0 w-full h-10 bg-neutral-03 border-b border-neutral-03 flex items-center justify-between px-4">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-[#ff5f56] shadow-inner" />
-                  <div className="w-3 h-3 rounded-full bg-[#ffbd2e] shadow-inner" />
-                  <div className="w-3 h-3 rounded-full bg-[#27c93f] shadow-inner" />
+            <div className="relative group rounded-lg sm:rounded-xl border border-neutral-03 bg-neutral-03 overflow-hidden shadow-xl ring-1 ring-black/5 transition-all hover:shadow-2xl">
+              <div className="absolute top-0 w-full h-8 sm:h-10 bg-neutral-03 border-b border-neutral-03 flex items-center justify-between px-3 sm:px-4">
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#ff5f56] shadow-inner" />
+                  <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#ffbd2e] shadow-inner" />
+                  <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#27c93f] shadow-inner" />
                 </div>
               </div>
-              <div className="p-6 pt-14 overflow-x-auto scrollbar-hide">
-                <MarkdownRenderer content={content} />
+              <div className="p-4 sm:p-6 pt-12 sm:pt-14">
+                <MarkdownRenderer content={content} className="!max-w-[calc(100vw-48px-48px)] md:!max-w-[calc(100vw-256px-64px-48px-12px)]" />
               </div>
             </div>
           </div>
         </div>
 
         {/* Right Column: Sidebar Actions */}
-        <div className="flex flex-col gap-6 w-full lg:w-1/3 mt-6 lg:mt-0">
+        <div className="flex flex-col gap-4 sm:gap-6 w-full lg:w-1/3 mt-4 sm:mt-6 lg:mt-0">
           {/* Creator Card */}
           {skill.creator && (
-            <div className="group bg-neutral-01/80 border border-neutral-02 rounded-2xl p-5 flex flex-col gap-4 shadow-sm backdrop-blur-sm transition-all duration-300 hover:shadow-md hover:border-neutral-03 hover:-translate-y-1">
-              <span className="text-xs font-bold text-neutral-tertiary uppercase tracking-wider flex items-center gap-2">
-                <User className="w-3.5 h-3.5" />
+            <div className="group bg-neutral-01/80 border border-neutral-02 rounded-xl sm:rounded-2xl p-4 sm:p-5 flex flex-col gap-3 sm:gap-4 shadow-sm backdrop-blur-sm transition-all duration-300 hover:shadow-md hover:border-neutral-03 hover:-translate-y-1">
+              <span className="text-[10px] sm:text-xs font-bold text-neutral-tertiary uppercase tracking-wider flex items-center gap-1.5 sm:gap-2">
+                <User className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 Created By
               </span>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3 sm:gap-4">
                 <CompleteAvatar
                   src={
                     skill.creator.avatar ||
@@ -369,14 +369,14 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                   }
                   name={skill.creator.owner_x_name || skill.creator.username}
                   size="lg"
-                  className="w-14 h-14 border-4 border-bg-primary shadow-sm"
+                  className="w-12 h-12 sm:w-14 sm:h-14 border-2 sm:border-4 border-bg-primary shadow-sm shrink-0"
                 />
-                <div className="flex flex-col min-w-0">
-                  <span className="text-body-lg font-bold text-neutral-primary truncate group-hover:text-brand-primary transition-colors">
+                <div className="flex flex-col min-w-0 flex-1">
+                  <span className="text-sm sm:text-body-lg font-bold text-neutral-primary truncate group-hover:text-brand-primary transition-colors">
                     {skill.creator.owner_x_name || skill.creator.username}
                   </span>
                   <div className="flex items-center gap-2">
-                    <span className="text-body-sm text-neutral-tertiary truncate">
+                    <span className="text-xs sm:text-body-sm text-neutral-tertiary truncate">
                       @{skill.creator.owner_x_handle}
                     </span>
                   </div>
@@ -386,40 +386,40 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
           )}
 
           {/* Actions & Stats Card */}
-          <div className="bg-neutral-01/80 border border-neutral-02 rounded-2xl p-6 flex flex-col gap-8 shadow-sm backdrop-blur-sm">
+          <div className="bg-neutral-01/80 border border-neutral-02 rounded-xl sm:rounded-2xl p-4 sm:p-6 flex flex-col gap-6 sm:gap-8 shadow-sm backdrop-blur-sm">
             <div className="text-center pb-2 border-b border-neutral-02/50">
-              <span className="text-xs font-bold text-neutral-tertiary uppercase tracking-wider">
+              <span className="text-[10px] sm:text-xs font-bold text-neutral-tertiary uppercase tracking-wider">
                 Community Stats
               </span>
             </div>
 
-            <div className="grid grid-cols-2 gap-6 relative">
+            <div className="grid grid-cols-2 gap-4 sm:gap-6 relative">
               <div className="absolute left-1/2 top-2 bottom-2 w-px bg-neutral-02 -translate-x-1/2" />
 
               <div className="flex flex-col items-center gap-1">
-                <span className="text-3xl font-black text-neutral-primary tracking-tight">
+                <span className="text-2xl sm:text-3xl font-black text-neutral-primary tracking-tight">
                   {likes}
                 </span>
-                <span className="text-xs font-medium text-neutral-secondary uppercase tracking-wider">
+                <span className="text-[10px] sm:text-xs font-medium text-neutral-secondary uppercase tracking-wider">
                   Stars
                 </span>
               </div>
               <div className="flex flex-col items-center gap-1">
-                <span className="text-3xl font-black text-neutral-primary tracking-tight">
+                <span className="text-2xl sm:text-3xl font-black text-neutral-primary tracking-tight">
                   {skill.download_count}
                 </span>
-                <span className="text-xs font-medium text-neutral-secondary uppercase tracking-wider">
+                <span className="text-[10px] sm:text-xs font-medium text-neutral-secondary uppercase tracking-wider">
                   Downloads
                 </span>
               </div>
             </div>
 
-            <div className="flex flex-col gap-3 mt-2">
+            <div className="flex flex-col gap-2 sm:gap-3 mt-2">
               <Button
                 variant={isLiked ? "primary" : "secondary"}
                 buttonType={isLiked ? "tonal" : "outline"}
                 className={cn(
-                  "w-full justify-center transition-all duration-300",
+                  "w-full justify-center transition-all duration-300 text-sm sm:text-base h-9 sm:h-10",
                   isLiked &&
                   "text-yellow bg-yellow-muted hover:bg-yellow-muted/150",
                   isLiking && "opacity-50 cursor-not-allowed"
@@ -429,7 +429,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
               >
                 <Star
                   className={cn(
-                    "w-4 h-4 mr-2 transition-transform duration-300",
+                    "w-3.5 h-3.5 sm:w-4 sm:h-4 mr-2 transition-transform duration-300",
                     isLiked
                       ? "text-yellow fill-yellow-400 scale-110"
                       : "text-neutral-tertiary scale-100",
@@ -441,10 +441,10 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
 
               <Button
                 variant="primary"
-                className="w-full justify-center shadow-lg shadow-primary-muted-10 hover:shadow-primary-muted-20 transition-all"
+                className="w-full justify-center shadow-lg shadow-primary-muted-10 hover:shadow-primary-muted-20 transition-all text-sm sm:text-base h-9 sm:h-10"
                 onClick={() => setIsAddToAgentOpen(true)}
               >
-                <Download className="w-5 h-5 mr-2" />
+                <Download className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                 Add to Agent
               </Button>
             </div>
