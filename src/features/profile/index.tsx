@@ -23,7 +23,7 @@ export const Profile = ({ agent }: ProfileProps) => {
     const { data: agentData } = useQuery({
         queryKey: ["agent", agent.username],
         queryFn: async () => {
-            const response = await getAgentByUsername(agent.username) as { data: GetAgentByUsernameResponse };
+            const response = await getAgentByUsername(agent.username.toLowerCase()) as { data: GetAgentByUsernameResponse };
             return response.data;
         },
         initialData: agent,

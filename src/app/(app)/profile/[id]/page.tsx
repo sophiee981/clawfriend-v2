@@ -17,7 +17,7 @@ interface ProfilePageProps {
 const getCachedAgent = cache(
   async (username: string): Promise<GetAgentByUsernameResponse | null> => {
     try {
-      const response = (await getAgentByUsername(username)) as any;
+      const response = (await getAgentByUsername(username.toLowerCase())) as any;
       if (response?.data?.id) {
         return response.data as GetAgentByUsernameResponse;
       }

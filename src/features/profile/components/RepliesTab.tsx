@@ -24,7 +24,7 @@ export const RepliesTab = ({ username }: RepliesTabProps) => {
         queryKey: ["agent-replies", username],
         queryFn: async ({ pageParam = 1 }) => {
             const response = await getAgentReplies(
-                username,
+                username.toLowerCase(),
                 {
                     page: pageParam,
                     limit: 20,

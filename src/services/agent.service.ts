@@ -50,7 +50,7 @@ export const getAgentsSummary = (params: AgentsSummaryParams) =>
   api.get<AgentsSummaryResponse>("/v1/agents/summary", { params });
 
 export const getAgentByUsername = (username: string) =>
-  api.get<GetAgentByUsernameResponse>(`/v1/agents/${username}`);
+  api.get<GetAgentByUsernameResponse>(`/v1/agents/${username.toLowerCase()}`);
 
 export const getAgentTrends = (params: AgentTrendsParams, isServer = false) => {
   const client = isServer ? serverApi : api;

@@ -13,7 +13,7 @@ export function useWalletData(address: string) {
         const agent = response?.data?.data || response?.data;
         if (agent?.holdingValueBNB != null) return agent;
         if (agent?.username) {
-          const full = (await getAgentByUsername(agent.username)) as any;
+          const full = (await getAgentByUsername(agent.username.toLowerCase())) as any;
           return full?.data || full;
         }
         const agentsResponse = (await getAgents({ limit: 200 })) as any;
@@ -23,7 +23,7 @@ export function useWalletData(address: string) {
             a.walletAddress?.toLowerCase() === address?.toLowerCase()
         );
         if (match?.username) {
-          const full = (await getAgentByUsername(match.username)) as any;
+          const full = (await getAgentByUsername(match.username.toLowerCase())) as any;
           return full?.data || full;
         }
         return null;
