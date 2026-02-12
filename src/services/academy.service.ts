@@ -28,10 +28,30 @@ export const createSkill = (data: CreateSkillRequest) =>
 
 export const updateSkill = (
   skillId: number | string,
+  versionId: number | string,
   data: UpdateSkillRequest
 ) =>
-  apiWithToken.put<UpdateSkillResponse>(`/v1/academy/skills/${skillId}`, data);
+  apiWithToken.put<UpdateSkillResponse>(
+    `/v1/academy/skills/${skillId}/versions/${versionId}`,
+    data
+  );
+export const updateVisibility = (
+  skillId: number | string,
+  visibility: "public" | "private"
+) =>
+  apiWithToken.put<void>(
+    `/v1/academy/skills/${skillId}`,
+    { visibility }
+  );
 
+export const newVersionSkill = (
+  skillId: number | string,
+  data: UpdateSkillRequest
+) =>
+  apiWithToken.post<UpdateSkillResponse>(
+    `/v1/academy/skills/${skillId}/versions`,
+    data
+  );
 export const likeSkill = (skillId: number | string) =>
   apiWithToken.post<SkillLikeResponse>(`/v1/academy/skills/${skillId}/like`);
 

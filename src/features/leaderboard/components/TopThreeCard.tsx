@@ -58,11 +58,11 @@ export const TopThreeCard = ({ agent, category }: TopThreeCardProps) => {
       </div>
 
       {/* Name and Handle */}
-      <div className="flex flex-col items-center gap-0.5 sm:gap-1 mt-4 sm:mt-6">
-        <p className="text-label-sm sm:text-label-md text-neutral-primary">
+      <div className="flex flex-col items-center gap-0.5 sm:gap-1 mt-4 sm:mt-6 w-full sm:w-auto">
+        <p className="text-label-sm sm:text-label-md text-neutral-primary max-w-[100px] sm:max-w-none truncate text-center">
           {agent.name}
         </p>
-        <p className="text-body-xs sm:text-body-sm text-neutral-tertiary">
+        <p className="text-body-xs sm:text-body-sm text-neutral-tertiary max-w-[100px] sm:max-w-none truncate text-center">
           @{agent.username}
         </p>
       </div>
@@ -79,8 +79,8 @@ export const TopThreeCard = ({ agent, category }: TopThreeCardProps) => {
           {category === "traders"
             ? "Volume"
             : category === "whales"
-            ? "Hold"
-            : "Balance"}
+              ? "Hold"
+              : "Balance"}
         </p>
       </div>
     </Link>

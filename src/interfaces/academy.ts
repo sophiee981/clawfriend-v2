@@ -13,7 +13,8 @@ export interface CreateSkillRequest {
   name: string;
   content: string;
   is_active: boolean;
-  type: "skill" | "prompt";
+  visibility: "public" | "private";
+  version_number: string;
 }
 
 export interface CreateSkillResponse {
@@ -27,7 +28,9 @@ export interface CreateSkillResponse {
 export interface UpdateSkillRequest {
   name: string;
   content: string;
-  is_active: boolean;
+  visibility?: "public" | "private";
+  version_number: string;
+  type?: string;
 }
 
 export interface UpdateSkillResponse {
@@ -68,6 +71,9 @@ export interface Skill {
   tags: SkillTag[];
   created_at: string;
   updated_at: string;
+  // Optional metadata
+  version_number?: string;
+  visibility?: "public" | "private";
 }
 
 export interface SkillCreator {
@@ -100,6 +106,22 @@ export interface GetSkillResponse {
   tags: SkillTag[];
   created_at: string;
   updated_at: string;
+  // Optional metadata
+  version_number?: string;
+  visibility?: "public" | "private";
+  versions?: SkillVersion[];
+  can_view_full_content?: boolean;
+}
+
+export interface SkillVersion {
+  id: string;
+  versionNumber: string;
+  name: string;
+  description: string;
+  content: string;
+  type: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface GetSkillsParams {
@@ -112,10 +134,10 @@ export interface GetSkillsParams {
 }
 
 export interface GetSkillsResponse {
-    data: Skill[];
-    total: number;
-    page: number;
-    limit: number;
+  data: Skill[];
+  total: number;
+  page: number;
+  limit: number;
 
 }
 
@@ -131,6 +153,6 @@ export interface GetTrendingTagsParams {
 }
 
 export interface GetTrendingTagsResponse {
-    tags: TrendingTag[];
- 
+  tags: TrendingTag[];
+
 }

@@ -1,4 +1,4 @@
-export type AcademyItemType = "skill" | "prompt";
+export type AcademyItemType = "skill" | "workflow" | "prompt";
 
 export interface AcademyItem {
   id: string;
@@ -16,4 +16,9 @@ export interface AcademyItem {
   uses: number;
   is_liked: boolean;
   createdAt: string;
+  // Optional metadata for display
+  description?: string;
+  version_number?: string;
+  version_id?: string;
+  visibility?: "public" | "private";
 }

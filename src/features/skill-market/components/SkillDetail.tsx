@@ -3,6 +3,19 @@
 import { CompleteAvatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { MarkdownRenderer } from "@/components/ui/markdown-renderer";
 import {
   Modal,
@@ -22,6 +35,7 @@ import {
   ArrowLeft,
   Calendar,
   Check,
+  ChevronDown,
   Code2,
   Copy,
   Download,
@@ -33,7 +47,7 @@ import {
   User,
 } from "lucide-react";
 import { useRouter } from "@bprogress/next/app";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AddToAgentModal } from "./AddToAgentModal";
 import { CreateAcademyItemModal } from "./CreateAcademyItemModal";
 
@@ -51,6 +65,8 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [selectedVersionId, setSelectedVersionId] = useState<string | null>(null);
+  const [displayContent, setDisplayContent] = useState<string>("");
 
   const { data: skill } = useQuery({
     queryKey: ["skill", itemId],
@@ -71,6 +87,20 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
     if (skill) {
       setLikes(skill.like_count);
       setIsLiked(skill.is_liked);
+
+      // Set first version as default if versions exist
+      if (skill.versions && skill.versions.length > 0) {
+        setSelectedVersionId((currentId) => {
+          // If no current selection or current selection is not valid, set to first version
+          if (!currentId || !skill.versions!.some(v => v.id === currentId)) {
+            return skill.versions![0].id;
+          }
+          return currentId;
+        });
+      } else {
+        // Reset if no versions
+        setSelectedVersionId(null);
+      }
     }
   }, [skill]);
 
@@ -146,10 +176,17 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
     if (!skill) return;
 
     let textToCopy = "";
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "https://api.clawfriend.ai";
+
+    // Get version number from selected version or fallback to skill version_number
+    const versionNumber = selectedVersion?.versionNumber || skill.version_number || "";
+    const versionParam = versionNumber ? `?v=${versionNumber}` : "";
+
     if (skill.type === "skill") {
-      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "https://api.clawfriend.ai";
       textToCopy = `1. Read file ~/.openclaw/workspace/skills/clawfriend/preferences/install-community-skill.md
-2. Follow instruction and Download ClawFriend community skill: ${apiBaseUrl}/v1/skill-market/${skill.id}/SKILL.md`;
+2. Follow instruction and Download ClawFriend community skill: ${apiBaseUrl}/v1/skill-market/${skill.id}/SKILL.md${versionParam}`;
+    } else if (skill.type === "workflow") {
+      textToCopy = `Learn workflow from ${apiBaseUrl}/v1/skill-market/${skill.id}/WORKFLOW.md${versionParam}`;
     } else {
       textToCopy = skill.content;
     }
@@ -167,7 +204,47 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
     toast.success("Link copied to clipboard!");
   };
 
-  const content = skill?.content || "";
+  // Get content from selected version or fallback to skill content
+  const content = useMemo(() => {
+    if (!skill) return "";
+
+    // If we have versions and a selected version ID, use that version's content
+    if (skill.versions && skill.versions.length > 0 && selectedVersionId) {
+      const selectedVersion = skill.versions.find(v => v.id === selectedVersionId);
+      if (selectedVersion && selectedVersion.content) {
+        return selectedVersion.content;
+      }
+    }
+
+    // Fallback to skill content
+    return skill.content || "";
+  }, [skill, selectedVersionId]);
+
+  // Update display content when content or selectedVersionId changes
+  useEffect(() => {
+    if (!skill) {
+      setDisplayContent("");
+      return;
+    }
+
+    // If we have versions and a selected version ID, use that version's content
+    if (skill.versions && skill.versions.length > 0 && selectedVersionId) {
+      const selectedVersion = skill.versions.find(v => v.id === selectedVersionId);
+      if (selectedVersion && selectedVersion.content) {
+        console.log("selectedVersion123333", selectedVersion);
+        setDisplayContent(selectedVersion.content);
+        return;
+      }
+    }
+  }, [skill, selectedVersionId]);
+
+  // Get selected version for display
+  const selectedVersion = useMemo(() => {
+    if (!skill?.versions || skill.versions.length === 0 || !selectedVersionId) {
+      return null;
+    }
+    return skill.versions.find(v => v.id === selectedVersionId) || null;
+  }, [skill, selectedVersionId]);
 
   // Not found state
   if (!skill) {
@@ -196,7 +273,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
   }
 
   return (
-    <div className="relative flex flex-col flex-1 w-full max-w-5xl mx-auto p-3 sm:p-4 md:p-8 gap-4 sm:gap-8 pb-20 overflow-hidden lg:h-screen">
+    <div className="relative flex flex-col gap-4 flex-1 w-full max-w-5xl mx-auto p-3 sm:p-4 md:p-8 gap-4 sm:gap-8 pb-20 overflow-hidden lg:h-screen">
       {/* Navigation Header */}
       <div
         className="flex items-center gap-2 sm:gap-3 text-neutral-tertiary hover:text-neutral-secondary transition-colors cursor-pointer group"
@@ -213,9 +290,9 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
         <span className="text-xs sm:text-label-sm">Back to Skill Market</span>
       </div>
 
-      <div className="flex flex-col max-lg:flex-col-reverse lg:flex-row items-start overflow-auto lg:overflow-hidden flex-1 min-h-0 scrollbar-hide">
+      <div className="flex flex-col  lg:flex-row items-start overflow-auto lg:overflow-hidden flex-1 min-h-0 scrollbar-hide">
         {/* Left Column: Info & Meta */}
-        <div className="flex flex-col gap-4 sm:gap-6 overflow-visible lg:overflow-auto overflow-x-hidden lg:flex-1 min-h-0 lg:max-h-full scrollbar-hide lg:scrollbar-hover-hide pr-0 lg:pr-6">
+        <div className="w-full flex flex-col gap-4 sm:gap-6 overflow-visible lg:overflow-auto overflow-x-hidden lg:flex-1 min-h-0 lg:max-h-full scrollbar-hide lg:scrollbar-hover-hide pr-0 lg:pr-6">
           {/* Header Card */}
           <div className="flex flex-col gap-2">
             <div className="flex items-start justify-between gap-2 sm:gap-4">
@@ -225,7 +302,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                     type="tonal"
                     className="uppercase tracking-wider font-semibold text-[9px] sm:text-[10px] px-2 sm:px-2.5 rounded-md"
                   >
-                    {skill.type}
+                    {selectedVersion?.type || skill.type}
                   </Badge>
                   {!skill.is_active && (
                     <Badge
@@ -236,15 +313,15 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                       Inactive
                     </Badge>
                   )}
-                  {skill.created_at && (
+                  {(selectedVersion?.created_at || skill.created_at) && (
                     <span className="text-[10px] sm:text-body-xs text-neutral-tertiary flex items-center gap-1 sm:gap-1.5">
                       <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                      {formatTimestamp(skill.created_at)}
+                      {formatTimestamp(selectedVersion?.created_at || skill.created_at)}
                     </span>
                   )}
                 </div>
                 <h1 className="text-lg sm:text-heading-lg md:text-display-xs font-bold text-neutral-primary tracking-tight leading-tight">
-                  {skill.name}
+                  {selectedVersion?.name || skill.name}
                 </h1>
               </div>
 
@@ -309,7 +386,49 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                 <div className="p-1 sm:p-1.5 bg-brand-primary/10 rounded-md">
                   <Code2 className="w-4 h-4 sm:w-5 sm:h-5 text-brand-primary" />
                 </div>
-                <h3 className="text-base sm:text-lg font-bold tracking-tight">Prompt</h3>
+                <div className="flex items-center gap-4">
+                  <h3 className="text-base sm:text-lg font-bold tracking-tight">
+                    {skill?.type === "workflow"
+                      ? "Workflow"
+                      : skill?.type === "skill"
+                        ? "Skill"
+                        : "Prompt"}
+                  </h3>
+                  {((selectedVersion?.versionNumber || skill.version_number) || skill.visibility) && (
+                    <div className="flex items-center gap-2 mt-0.5">
+
+                      {skill.visibility && (
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Badge
+                                variant="secondary"
+                                type="outline"
+                                className={cn(
+                                  "text-[10px] sm:text-xs px-2 py-0.5 rounded-full uppercase tracking-wide border bg-neutral-01 cursor-pointer",
+                                  skill.visibility === "private"
+                                    ? "text-yellow bg-[rgba(250,204,21,0.08)] border-transparent"
+                                    : "text-success bg-[rgba(34,197,94,0.08)] border-transparent"
+                                )}
+                              >
+                                {skill.visibility === "private"
+                                  ? "Private"
+                                  : "Publish"}
+                              </Badge>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="text-xs font-bold">
+                                {skill.visibility === "private"
+                                  ? "Only those who purchase shares can use this"
+                                  : "Anyone can use this"}
+                              </p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
               <Button
                 size="sm"
@@ -331,11 +450,73 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                 ) : (
                   <>
                     <Copy className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                    <span className="hidden sm:inline">Copy Prompt</span>
+                    <span className="hidden sm:inline">
+                      Copy{" "}
+                      {skill?.type === "workflow"
+                        ? "Workflow"
+                        : skill?.type === "skill"
+                          ? "Skill"
+                          : "Prompt"}
+                    </span>
                   </>
                 )}
               </Button>
             </div>
+
+            {/* Version Selector */}
+            {skill.versions && skill.versions.length > 0 && (
+              <div className="px-1 flex items-center gap-4">
+                <label className=" text-[10px] sm:text-xs font-semibold text-neutral-tertiary uppercase tracking-wider mb-2 block">
+                  Version
+                </label>
+                <DropdownMenu >
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="secondary"
+                      buttonType="outline"
+                      className="w-[160px] justify-between h-7 sm:h-8 text-sm font-normal hover:bg-neutral-01"
+                    >
+                      <span className="truncate">
+                        {skill.versions.find((v) => v.id === selectedVersionId)
+                          ? `${skill.versions.find((v) => v.id === selectedVersionId)?.versionNumber}`
+                          : "Select version"}
+                      </span>
+                      <ChevronDown className="w-4 h-4 ml-2 shrink-0 opacity-50" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    align="start"
+                    className="w-[var(--radix-dropdown-menu-trigger-width)] max-h-[300px] overflow-y-auto"
+                  >
+                    <DropdownMenuRadioGroup
+                      value={selectedVersionId || ""}
+                      onValueChange={(value) => {
+                        if (value) {
+                          setSelectedVersionId(value);
+                          console.log("selectedVersionId", value);
+                        }
+                      }}
+                    >
+                      {skill.versions.map((version) => (
+                        <DropdownMenuRadioItem
+                          key={version.id}
+                          value={version.id}
+                          className="cursor-pointer hover:!bg-neutral-03 focus:!bg-neutral-03 data-[highlighted]:!bg-neutral-03 transition-colors rounded-md"
+                          hideIndicator
+                        >
+                          <div className="flex flex-col gap-0.5 w-full">
+                            <span className="text-sm font-medium text-neutral-primary">
+                              {version.versionNumber}
+                            </span>
+
+                          </div>
+                        </DropdownMenuRadioItem>
+                      ))}
+                    </DropdownMenuRadioGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            )}
 
             <div className="relative group rounded-lg sm:rounded-xl border border-neutral-03 bg-neutral-03 overflow-hidden shadow-xl ring-1 ring-black/5 transition-all hover:shadow-2xl">
               <div className="absolute top-0 w-full h-8 sm:h-10 bg-neutral-03 border-b border-neutral-03 flex items-center justify-between px-3 sm:px-4">
@@ -346,7 +527,29 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                 </div>
               </div>
               <div className="p-4 sm:p-6 pt-12 sm:pt-14">
-                <MarkdownRenderer content={content} className="!max-w-[calc(100vw-48px-48px)] md:!max-w-[calc(100vw-256px-64px-48px-12px)]" />
+                <MarkdownRenderer
+                  key={selectedVersionId || skill?.id}
+                  content={displayContent}
+                  className="!max-w-[calc(100vw-48px-48px)] md:!max-w-[calc(100vw-256px-64px-48px-12px)]"
+                />
+                {skill?.can_view_full_content === false && (
+                  <div className="mt-4 p-3 sm:p-4 bg-[rgba(250,204,21,0.1)] border border-yellow rounded-lg">
+                    <p className="text-sm sm:text-base text-yellow text-center">
+                      Purchase shares from{" "}
+                      <button
+                        onClick={() => {
+                          if (skill?.creator?.username) {
+                            router.push(`/profile/${skill.creator.username}`);
+                          }
+                        }}
+                        className="font-semibold underline hover:no-underline"
+                      >
+                        {skill?.creator?.display_name || skill?.creator?.username || "the owner"}
+                      </button>{" "}
+                      to view the full content
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -472,12 +675,13 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                   username: skill.creator.username,
                 }
                 : undefined,
-              type: skill.type as "skill" | "prompt",
+              type: skill.type as "skill" | "workflow" | "prompt",
               tags: skill.tags.map((tag) => tag.name),
               likes: skill.like_count,
               uses: skill.download_count,
               is_liked: skill.is_liked,
               createdAt: skill.created_at,
+              version_number: selectedVersion?.versionNumber || skill.version_number,
             }
             : null
         }
@@ -490,7 +694,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
           editItem={{
             id: skill.id,
             title: skill.name,
-            content: skill.content,
+            content: selectedVersion?.content || (skill.versions && skill.versions.length > 0 ? skill.versions[0].content : skill.content),
             author: skill.creator
               ? {
                 name: skill.creator.display_name || skill.creator.username,
@@ -507,6 +711,9 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
             uses: skill.download_count,
             is_liked: skill.is_liked,
             createdAt: skill.created_at,
+            visibility: skill.visibility,
+            version_number: selectedVersion?.versionNumber || skill.version_number,
+            version_id: selectedVersionId || (skill.versions && skill.versions.length > 0 ? skill.versions[0].id : undefined),
           }}
           onSuccess={handleEditSuccess}
         />

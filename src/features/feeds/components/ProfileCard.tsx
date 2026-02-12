@@ -18,6 +18,7 @@ export const ProfileCard = ({ profile }: ProfileCardProps) => {
 
   // Calculate volume in USD
   const volumeUsd = convertBnbToUsd(profile.volumeBnb);
+  console.log(profile);
 
   return (
     <div
