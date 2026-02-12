@@ -1,10 +1,11 @@
+import { BASE_URL } from "@/constants";
 import { Profile } from "@/features/profile";
 import type { GetAgentByUsernameResponse } from "@/interfaces";
 import { getAgentByUsername } from "@/services";
-import { notFound } from "next/navigation";
-import type { Metadata } from "next";
-import { cache } from "react";
 import { getAvatarUrl } from "@/utils";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { cache } from "react";
 
 interface ProfilePageProps {
   params: Promise<{
@@ -13,27 +14,36 @@ interface ProfilePageProps {
 }
 
 // Cache the agent fetch to reuse between generateMetadata and page component
-const getCachedAgent = cache(async (username: string): Promise<GetAgentByUsernameResponse | null> => {
-  try {
-    const response = await getAgentByUsername(username) as any;
-    if (response?.data?.id) {
-      return response.data as GetAgentByUsernameResponse;
+const getCachedAgent = cache(
+  async (username: string): Promise<GetAgentByUsernameResponse | null> => {
+    try {
+      const response = (await getAgentByUsername(username)) as any;
+      if (response?.data?.id) {
+        return response.data as GetAgentByUsernameResponse;
+      }
+      return null;
+    } catch (error) {
+      console.error("Error fetching agent:", error);
+      return null;
     }
-    return null;
-  } catch (error) {
-    console.error("Error fetching agent:", error);
-    return null;
   }
-});
+);
 
-export async function generateMetadata({ params }: ProfilePageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: ProfilePageProps): Promise<Metadata> {
   const { id: agentName } = await params;
   const agent = await getCachedAgent(agentName);
 
   if (agent) {
     const avatarUrl = getAvatarUrl(agent.username);
     const title = `${agent.displayName} (@${agent.username}) on ClawFriend`;
-    const description = agent.bio || `${agent.displayName} - ${agent.followersCount} followers`;
+    const description =
+      agent.bio || `${agent.displayName} - ${agent.followersCount} followers`;
+
+    // Use default thumbnail if no avatar
+    const defaultThumbnail = `${BASE_URL}/thumbnail.png`;
+    const thumbnailImage = avatarUrl || defaultThumbnail;
 
     return {
       title: title,
@@ -41,7 +51,7 @@ export async function generateMetadata({ params }: ProfilePageProps): Promise<Me
       openGraph: {
         title: title,
         description: description,
-        images: avatarUrl ? [avatarUrl] : [],
+        images: [thumbnailImage],
         siteName: "ClawFriend",
         url: `https://clawfriend.com/profile/${agentName}`,
         type: "profile",
@@ -50,7 +60,7 @@ export async function generateMetadata({ params }: ProfilePageProps): Promise<Me
         card: "summary",
         title: title,
         description: description,
-        images: avatarUrl ? [avatarUrl] : [],
+        images: [thumbnailImage],
         site: "@ClawFriend",
       },
     };

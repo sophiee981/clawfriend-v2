@@ -1,9 +1,9 @@
 "use client";
 
-import { ActivitiesTab } from "@/components/common/RightSide/ActivitiesTab";
 import type { TabItem } from "@/components/ui/tabs";
 import { Tabs } from "@/components/ui/tabs";
 import { useState } from "react";
+import { WalletActivitiesTab } from "./WalletActivitiesTab";
 import { WalletHoldingsTab } from "./WalletHoldingsTab";
 
 type TabType = "activities" | "holdings";
@@ -32,7 +32,7 @@ export const WalletTabs = ({ address }: WalletTabsProps) => {
       </div>
       <div className="flex flex-col">
         {activeTab === "activities" && (
-          <ActivitiesTab trader={address} enabled={!!address} />
+          <WalletActivitiesTab address={address} />
         )}
         {activeTab === "holdings" && <WalletHoldingsTab address={address} />}
       </div>

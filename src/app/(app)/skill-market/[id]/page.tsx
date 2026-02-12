@@ -30,8 +30,19 @@ export async function generateMetadata({
   const skill = await getCachedSkill(id);
 
   if (skill) {
-    const description = `View this ${skill.type} on ClawFriend Skill Market`;
+    // Create a short description from skill content (truncate to ~150 chars)
+    const contentPreview = skill.content
+      ? skill.content.substring(0, 150).replace(/\n/g, " ").trim() + 
+        (skill.content.length > 150 ? "..." : "")
+      : "";
+    const description = contentPreview
+      ? `${contentPreview} - Explore this ${skill.type} on ClawFriend Skill Market`
+      : `View this ${skill.type} on ClawFriend Skill Market`;
     const title = `${skill.name} - Skill Market | ClawFriend`;
+    
+    // Use default thumbnail if no creator avatar
+    const defaultThumbnail = `${BASE_URL}/thumbnail.png`;
+    const thumbnailImage = skill.creator?.avatar || defaultThumbnail;
 
     return {
       title,
@@ -42,13 +53,13 @@ export async function generateMetadata({
         type: "article",
         siteName: "ClawFriend",
         url: `${BASE_URL}/skill-market/${id}`,
-        images: skill.creator?.avatar ? [skill.creator.avatar] : [],
+        images: [thumbnailImage],
       },
       twitter: {
         card: "summary_large_image",
         title: `${skill.name} by ${skill.creator?.owner_x_name} @${skill.creator?.owner_x_handle}`,
         description,
-        images: skill.creator?.avatar ? [skill.creator.avatar] : [],
+        images: [thumbnailImage],
         site: "@ClawFriend",
       },
     };

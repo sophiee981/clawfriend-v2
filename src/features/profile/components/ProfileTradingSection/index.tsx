@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button";
 import { chains } from "@/configs/wallet.config";
 import { ClawFriendContractFactory } from "@/lib/contracts/clawfriend";
 import { useAuth } from "@/providers/AuthProvider";
+import { formatNumberShort } from "@/utils/number";
 import { toast } from "@/utils/toast";
-import { getBalanceForChain } from "@/utils/web3";
-import { useQuery } from "@tanstack/react-query";
+import { formatAddress, getBalanceForChain } from "@/utils/web3";
+import { useRouter } from "@bprogress/next/app";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useMemo, useState } from "react";
 import { formatEther } from "viem";
 import { ProfileSidebarSectionHeader } from "../ProfileSidebarSectionHeader";
@@ -29,14 +31,21 @@ export const ProfileTradingSection = ({
   subjectAddress,
 }: ProfileTradingSectionProps) => {
   const { wallet, chainId, isConnected, disconnect } = useAuth();
+  const router = useRouter();
   const [orderSide, setOrderSide] = useState<OrderSide>("buy");
   const [shares, setShares] = useState("");
   const [loading, setLoading] = useState(false);
   const [transferData, setTransferData] = useState<TransferFormData | null>(
     null
   );
+  const queryClient = useQueryClient();
 
   const effectiveChainId = chainId ?? chains[0]?.id ?? "56";
+
+  const explorerUrl = useMemo(() => {
+    return chains[0]?.blockExplorers?.default?.url;
+  }, [chains[0]]);
+
   const factory = useMemo(() => ClawFriendContractFactory.getInstance(), []);
 
   const { data: bnbBalance, refetch: refetchBnbBalance } = useQuery({
@@ -117,11 +126,19 @@ export const ProfileTradingSection = ({
     refetchSharesBalance();
     refetchBuyPrice();
     refetchSellPrice();
+
+    // Invalidate activities queries 5 times with 3s intervals
+    for (let i = 0; i < 5; i++) {
+      setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ["trades", "activities"] });
+      }, i * 3000);
+    }
   }, [
     refetchBnbBalance,
     refetchSharesBalance,
     refetchBuyPrice,
     refetchSellPrice,
+    queryClient,
   ]);
 
   const priceData = orderSide === "buy" ? buyPriceData : sellPriceData;
@@ -145,9 +162,24 @@ export const ProfileTradingSection = ({
         sharesSubject: subjectAddress,
         amount: shares,
       });
-      toast.success(`Tx sent: ${tx.txHash}`);
       await tx.wait();
-      toast.success("Tx confirmed");
+      toast.success("Buy shares successful", {
+        description: (
+          <>
+            <Button
+              variant="success"
+              buttonType="outline"
+              size="sm"
+              className="text-label-xs font-semibold h-7 mt-2"
+              onClick={() => {
+                window.open(`${explorerUrl}/tx/${tx.txHash}`, "_blank");
+              }}
+            >
+              View Transaction
+            </Button>
+          </>
+        ),
+      });
       setShares("");
       refetch();
     } catch (e: unknown) {
@@ -173,9 +205,24 @@ export const ProfileTradingSection = ({
         sharesSubject: subjectAddress,
         amount: shares,
       });
-      toast.success(`Tx sent: ${tx.txHash}`);
       await tx.wait();
-      toast.success("Tx confirmed");
+      toast.success("Sell shares successful", {
+        description: (
+          <>
+            <Button
+              variant="success"
+              buttonType="outline"
+              size="sm"
+              className="text-label-xs font-semibold h-7 mt-2"
+              onClick={() => {
+                window.open(`${explorerUrl}/tx/${tx.txHash}`, "_blank");
+              }}
+            >
+              View Transaction
+            </Button>
+          </>
+        ),
+      });
       setShares("");
       refetch();
     } catch (e: unknown) {
@@ -308,6 +355,39 @@ export const ProfileTradingSection = ({
             </>
           )}
         </div>
+
+        {/* Wallet Information Box */}
+        {isConnected && wallet?.address && (
+          <div className="flex flex-col gap-2 pt-2">
+            <div className="flex items-center justify-between p-3 bg-neutral-02 rounded-lg border border-neutral-03">
+              <div className="flex flex-col gap-1">
+                <span className="text-label-xs text-neutral-tertiary">
+                  Wallet
+                </span>
+                <span className="text-body-xs text-neutral-primary font-medium">
+                  {formatAddress(wallet.address, 6)} •{" "}
+                  {bnbBalance != null
+                    ? formatNumberShort(parseFloat(bnbBalance))
+                    : "0"}{" "}
+                  BNB
+                </span>
+              </div>
+              <Button
+                variant="primary"
+                buttonType="outline"
+                size="sm"
+                className="text-label-xs font-semibold"
+                onClick={() => {
+                  router.push(`/wallet/${wallet.address}`, {
+                    showProgress: true,
+                  });
+                }}
+              >
+                Detail
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

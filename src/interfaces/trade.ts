@@ -68,3 +68,17 @@ export interface TradersResponse {
   statusCode: number;
   message: string;
 }
+
+export interface TraderActivitiesParams {
+  page: number;
+  limit: number;
+}
+
+export interface TraderActivitiesResponse {
+  results: Trade[];
+  currentPage: number;
+  pageSize: number;
+  totalItems: number;
+  next: string | null;
+  previous: string | null;
+}
