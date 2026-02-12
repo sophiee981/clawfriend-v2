@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/tooltip";
 import { formatNumberShort } from "@/utils/number";
 
-type OrderSide = "buy" | "sell";
+type OrderSide = "buy" | "sell" | "transfer";
 
 interface ProfileSharesInputProps {
   orderSide: OrderSide;
@@ -65,7 +65,6 @@ export const ProfileSharesInput = ({
     <div className="flex flex-col gap-4">
       {/* Balance row */}
       <div className="flex items-center justify-end px-1">
-
         <div className="flex items-center gap-1.5">
           <span className="text-body-xs text-neutral-tertiary">
             {balanceLabel}:
@@ -87,8 +86,9 @@ export const ProfileSharesInput = ({
 
       {/* Shares input */}
       <div
-        className={`flex items-stretch rounded-lg overflow-hidden transition-all duration-200 focus-within:shadow-sm ${validationError ? "bg-danger-muted-10" : "bg-neutral-02"
-          }`}
+        className={`flex items-stretch rounded-lg overflow-hidden transition-all duration-200 focus-within:shadow-sm ${
+          validationError ? "bg-danger-muted-10" : "bg-neutral-02"
+        }`}
       >
         <Input
           type="text"
@@ -127,11 +127,15 @@ export const ProfileSharesInput = ({
                 </span>
               </TooltipTrigger>
               <TooltipContent>
-                <p className="text-body-sm">The price per share for this order</p>
+                <p className="text-body-sm">
+                  The price per share for this order
+                </p>
               </TooltipContent>
             </Tooltip>
             {sharesValue <= 0 ? (
-              <span className="text-label-xs font-medium text-neutral-primary">-</span>
+              <span className="text-label-xs font-medium text-neutral-primary">
+                -
+              </span>
             ) : sharesValue > 0 && price == null ? (
               <Skeleton customWidth="60px" customHeight="16px" />
             ) : (
@@ -149,11 +153,15 @@ export const ProfileSharesInput = ({
                 </span>
               </TooltipTrigger>
               <TooltipContent>
-                <p className="text-body-sm">The trading fee for this transaction</p>
+                <p className="text-body-sm">
+                  The trading fee for this transaction
+                </p>
               </TooltipContent>
             </Tooltip>
             {sharesValue <= 0 ? (
-              <span className="text-label-xs font-medium text-neutral-primary">-</span>
+              <span className="text-label-xs font-medium text-neutral-primary">
+                -
+              </span>
             ) : sharesValue > 0 && (price == null || priceAfterFee == null) ? (
               <Skeleton customWidth="50px" customHeight="16px" />
             ) : (
@@ -185,7 +193,9 @@ export const ProfileSharesInput = ({
               </TooltipContent>
             </Tooltip>
             {sharesValue <= 0 ? (
-              <span className="text-label-md font-semibold text-neutral-primary">-</span>
+              <span className="text-label-md font-semibold text-neutral-primary">
+                -
+              </span>
             ) : sharesValue > 0 && priceAfterFee == null ? (
               <Skeleton customWidth="70px" customHeight="18px" />
             ) : (
