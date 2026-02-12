@@ -182,8 +182,13 @@ export const ProfileTradingSection = ({
       });
       setShares("");
       refetch();
-    } catch (e: unknown) {
-      toast.error((e as Error)?.message ?? "Buy failed");
+    } catch (e: any) {
+      if (e.message.includes("rejected")) {
+        toast.error("User rejected the transaction!");
+        return;
+      }
+
+      toast.error(e?.message ?? "Buy failed");
     } finally {
       setLoading(false);
     }
@@ -225,8 +230,13 @@ export const ProfileTradingSection = ({
       });
       setShares("");
       refetch();
-    } catch (e: unknown) {
-      toast.error((e as Error)?.message ?? "Sell failed");
+    } catch (e: any) {
+      if (e.message.includes("rejected")) {
+        toast.error("User rejected the transaction!");
+        return;
+      }
+
+      toast.error(e?.message ?? "Sell failed");
     } finally {
       setLoading(false);
     }
