@@ -1,14 +1,24 @@
 "use client";
 
-import { wagmiConfig } from "@/configs/wallet.config";
-import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { chains, projectId } from "@/configs/wallet.config";
+import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createContext, useContext } from "react";
-import { WagmiProvider } from "wagmi";
+import { http, WagmiProvider } from "wagmi";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false } },
+});
+
+const wagmiConfig = getDefaultConfig({
+  appName: "clawfriend.ai",
+  projectId,
+  chains,
+  transports: Object.fromEntries(
+    chains.map((chain) => [chain.id, http(chain.rpcUrls.default.http[0])])
+  ),
+  ssr: true,
 });
 
 interface ClientWalletContextType {
