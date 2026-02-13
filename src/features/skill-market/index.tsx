@@ -37,6 +37,11 @@ const mapSkillToAcademyItem = (
   skill: Skill,
   type: AcademyItemType
 ): AcademyItem => {
+  // Get tags from first version if available, otherwise fallback to skill tags
+  const tagsToUse = (skill.versions && skill.versions.length > 0 && skill.versions[0].tags && skill.versions[0].tags.length > 0)
+    ? skill.versions[0].tags.map((tag) => tag.name)
+    : (skill.tags?.map((tag) => tag.name) || []);
+
   return {
     id: skill.id,
     title: skill.name,
@@ -56,12 +61,12 @@ const mapSkillToAcademyItem = (
       username: skill.creator?.username,
     },
     type: (skill.type as AcademyItemType) || type,
-    tags: skill.tags?.map((tag) => tag.name) || [],
+    tags: tagsToUse,
     likes: skill.like_count,
     uses: skill.download_count,
     is_liked: skill.is_liked,
     createdAt: skill.created_at,
-    version_number: skill?.versions[0]?.versionNumber || undefined ,
+    version_number: skill?.versions[0]?.versionNumber || undefined,
     visibility: skill.visibility,
   };
 };

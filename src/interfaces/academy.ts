@@ -69,7 +69,7 @@ export interface Skill {
   is_liked: boolean;
   creator: SkillCreator;
   tags: SkillTag[];
-  created_at: string; 
+  created_at: string;
   updated_at: string;
   versions: SkillVersion[];
   // Optional metadata
@@ -123,6 +123,7 @@ export interface SkillVersion {
   type: string;
   created_at: string;
   updated_at: string;
+  tags?: SkillTag[];
 }
 
 export interface GetSkillsParams {

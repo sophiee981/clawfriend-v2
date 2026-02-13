@@ -361,20 +361,26 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
               </div>
             </div>
 
-            {skill.tags && skill.tags.length > 0 && (
-              <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-3 sm:mt-4">
-                {skill.tags.map((tag) => (
-                  <Badge
-                    key={tag.id}
-                    variant="secondary"
-                    type="tonal"
-                    className="px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs"
-                  >
-                    #{tag.name}
-                  </Badge>
-                ))}
-              </div>
-            )}
+            {(() => {
+              const tagsToShow = (selectedVersion?.tags && selectedVersion.tags.length > 0)
+                ? selectedVersion.tags
+                : (skill.tags && skill.tags.length > 0 ? skill.tags : []);
+
+              return tagsToShow.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-3 sm:mt-4">
+                  {tagsToShow.map((tag) => (
+                    <Badge
+                      key={tag.id}
+                      variant="secondary"
+                      type="tonal"
+                      className="px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs"
+                    >
+                      #{tag.name}
+                    </Badge>
+                  ))}
+                </div>
+              );
+            })()}
           </div>
 
           <div className="h-px w-full bg-neutral-02" />
