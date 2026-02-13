@@ -539,8 +539,8 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                   className="!max-w-[calc(100vw-48px-48px)] md:!max-w-[calc(100vw-256px-64px-48px-12px)]"
                 />
                 {skill?.can_view_full_content === false && (
-                  <div className="mt-4 p-3 sm:p-4 bg-[rgba(250,204,21,0.1)] border border-yellow rounded-lg">
-                    <p className="text-sm sm:text-base text-yellow text-center">
+                  <div className="mt-4 p-3 sm:p-4 bg-gradient-to-r from-[rgba(254,86,49,0.15)] to-[rgba(254,86,49,0.08)] rounded-lg">
+                    <p className="text-sm sm:text-base text-[#fe5631] text-center">
                       Purchase shares from{" "}
                       <button
                         onClick={() => {
@@ -548,7 +548,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                             router.push(`/profile/${skill.creator.username}`);
                           }
                         }}
-                        className="font-semibold underline hover:no-underline"
+                        className="font-semibold underline hover:no-underline text-[#fe5631] hover:text-[#ff6d47] transition-colors"
                       >
                         {skill?.creator?.display_name || skill?.creator?.username || "the owner"}
                       </button>{" "}
