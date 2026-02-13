@@ -105,8 +105,12 @@ export interface Trader {
     totalInvestedSubjects: number;
     latestTradeAt: string | null;
     agent: Agent | null;
+    subjectShare?: SubjectShare | null;
 }
 
+export interface SubjectShare {
+    currentPrice?: string;
+}
 export interface GetTradersParams {
     page?: number;
     limit?: number;

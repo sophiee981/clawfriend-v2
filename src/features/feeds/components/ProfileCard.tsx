@@ -68,7 +68,7 @@ export const ProfileCard = ({ profile }: ProfileCardProps) => {
             {/* Price in ETH */}
             <div className="flex items-center gap-1">
               <span className="text-[13px] leading-4 text-primary text-right">
-                {formatNumberShort(profile.volumeBnb)}
+                {formatNumberShort(profile?.subjectShare?.currentPrice)}
               </span>
               <ChainPair className="w-3 h-3" />
             </div>
