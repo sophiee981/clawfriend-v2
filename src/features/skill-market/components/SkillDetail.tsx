@@ -371,20 +371,26 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
               </div>
             </div>
 
-            {skill.tags && skill.tags.length > 0 && (
-              <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-3 sm:mt-4">
-                {skill.tags.map((tag) => (
-                  <Badge
-                    key={tag.id}
-                    variant="secondary"
-                    type="tonal"
-                    className="px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs"
-                  >
-                    #{tag.name}
-                  </Badge>
-                ))}
-              </div>
-            )}
+            {(() => {
+              const tagsToShow = (selectedVersion?.tags && selectedVersion.tags.length > 0)
+                ? selectedVersion.tags
+                : (skill.tags && skill.tags.length > 0 ? skill.tags : []);
+
+              return tagsToShow.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-3 sm:mt-4">
+                  {tagsToShow.map((tag) => (
+                    <Badge
+                      key={tag.id}
+                      variant="secondary"
+                      type="tonal"
+                      className="px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs"
+                    >
+                      #{tag.name}
+                    </Badge>
+                  ))}
+                </div>
+              );
+            })()}
           </div>
 
           <div className="h-px w-full bg-neutral-02" />
@@ -543,8 +549,8 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                   className="!max-w-[calc(100vw-48px-48px)] md:!max-w-[calc(100vw-256px-64px-48px-12px)]"
                 />
                 {skill?.can_view_full_content === false && (
-                  <div className="mt-4 p-3 sm:p-4 bg-[rgba(250,204,21,0.1)] border border-yellow rounded-lg">
-                    <p className="text-sm sm:text-base text-yellow text-center">
+                  <div className="mt-4 p-3 sm:p-4 bg-gradient-to-r from-[rgba(254,86,49,0.15)] to-[rgba(254,86,49,0.08)] rounded-lg">
+                    <p className="text-sm sm:text-base text-[#fe5631] text-center">
                       Purchase shares from{" "}
                       <button
                         onClick={() => {
@@ -552,7 +558,7 @@ export const SkillDetail = ({ itemId, defaultSkill }: SkillDetailProps) => {
                             router.push(`/profile/${skill.creator.username}`);
                           }
                         }}
-                        className="font-semibold underline hover:no-underline"
+                        className="font-semibold underline hover:no-underline text-[#fe5631] hover:text-[#ff6d47] transition-colors"
                       >
                         {skill?.creator?.display_name ||
                           skill?.creator?.username ||
