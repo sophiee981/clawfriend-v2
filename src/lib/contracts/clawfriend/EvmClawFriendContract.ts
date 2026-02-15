@@ -6,6 +6,7 @@ import type {
   LaunchParams,
   ResponseTransaction,
   SellSharesParams,
+  TransferSharesParams,
   WalletInfo,
 } from "./ClawFriendContract";
 
@@ -163,6 +164,32 @@ export class EvmClawFriendContract implements IClawFriendContract {
         params.sharesSubject as `0x${string}`,
         params.agentName,
         signature as `0x${string}`,
+      ],
+    });
+
+    const hash = await this.#wallet.walletClient.writeContract(request as any);
+
+    return {
+      txHash: hash as string,
+      wait: () => this.waitTransaction(hash as `0x${string}`),
+    };
+  }
+
+  async transferShares(params: TransferSharesParams): Promise<ResponseTransaction> {
+    if (!this.#wallet) throw new Error("Wallet not found");
+
+    const amt =
+      typeof params.amount === "string" ? BigInt(params.amount) : params.amount;
+
+    const { request } = await this.publicClient.simulateContract({
+      account: this.#wallet.address,
+      abi: this.abi,
+      address: this.address,
+      functionName: "transferShares",
+      args: [
+        params.sharesSubject as `0x${string}`,
+        params.to as `0x${string}`,
+        amt,
       ],
     });
 

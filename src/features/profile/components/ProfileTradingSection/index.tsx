@@ -36,7 +36,7 @@ export const ProfileTradingSection = ({
   const [shares, setShares] = useState("");
   const [loading, setLoading] = useState(false);
   const [transferData, setTransferData] = useState<TransferFormData | null>(
-    null
+    null,
   );
   const queryClient = useQueryClient();
 
@@ -67,7 +67,7 @@ export const ProfileTradingSection = ({
       if (!contract || !subjectAddress || !wallet?.address) return null;
       const balance = await contract.sharesBalance(
         subjectAddress,
-        wallet.address
+        wallet.address,
       );
       return balance.toString();
     },
@@ -258,15 +258,55 @@ export const ProfileTradingSection = ({
     }
     setLoading(true);
     try {
-      // TODO: Implement transferShares when contract supports it
-      toast.error("Transfer not yet supported by contract");
+      const contract = factory.createContract(chainId ?? "56", wallet);
+      if (!contract || !transferData.subjectAddress) {
+        toast.error("Contract not available");
+        return;
+      }
+      const tx = await contract.transferShares({
+        sharesSubject: transferData.subjectAddress,
+        to: transferData.recipientAddress,
+        amount: transferData.amount,
+      });
+      await tx.wait();
+      toast.success("Transfer shares successful", {
+        description: (
+          <>
+            <Button
+              variant="success"
+              buttonType="outline"
+              size="sm"
+              className="text-label-xs font-semibold h-7 mt-2"
+              onClick={() => {
+                window.open(`${explorerUrl}/tx/${tx.txHash}`, "_blank");
+              }}
+            >
+              View Transaction
+            </Button>
+          </>
+        ),
+      });
+      setTransferData(null);
       refetch();
-    } catch (e: unknown) {
-      toast.error((e as Error)?.message ?? "Transfer failed");
+    } catch (e: any) {
+      if (e.message.includes("rejected")) {
+        toast.error("User rejected the transaction!");
+        return;
+      }
+
+      toast.error(e?.message ?? "Transfer failed");
     } finally {
       setLoading(false);
     }
-  }, [transferData, isConnected, wallet, refetch]);
+  }, [
+    transferData,
+    isConnected,
+    wallet,
+    chainId,
+    factory,
+    explorerUrl,
+    refetch,
+  ]);
 
   const handleTrade = () => {
     if (orderSide === "buy") handleBuy();
@@ -285,6 +325,7 @@ export const ProfileTradingSection = ({
             subjectAddress={subjectAddress}
             profileName={profileName}
             sharesBalance={sharesBalanceNum}
+            transferData={transferData}
             onTransferDataChange={setTransferData}
           />
         ) : (
@@ -340,16 +381,16 @@ export const ProfileTradingSection = ({
                       orderSide === "buy"
                         ? "Buy"
                         : orderSide === "sell"
-                        ? "Sell"
-                        : "Transfer"
+                          ? "Sell"
+                          : "Transfer"
                     } ${
                       orderSide === "transfer"
                         ? transferData?.amount
                           ? `${transferData.amount} shares`
                           : ""
                         : shares
-                        ? `${shares} shares`
-                        : ""
+                          ? `${shares} shares`
+                          : ""
                     }`}
               </Button>
               <p className="text-label-xs text-neutral-tertiary text-center">

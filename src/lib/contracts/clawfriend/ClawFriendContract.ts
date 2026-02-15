@@ -27,6 +27,12 @@ export interface LaunchParams {
   signature: `0x${string}` | Uint8Array | string;
 }
 
+export interface TransferSharesParams {
+  sharesSubject: string;
+  to: string;
+  amount: string | bigint;
+}
+
 export interface WalletInfo {
   address: `0x${string}`;
   walletClient: WalletClient;
@@ -53,4 +59,5 @@ export interface IClawFriendContract {
   buyShares(params: BuySharesParams): Promise<ResponseTransaction>;
   sellShares(params: SellSharesParams): Promise<ResponseTransaction>;
   launch(params: LaunchParams): Promise<ResponseTransaction>;
+  transferShares(params: TransferSharesParams): Promise<ResponseTransaction>;
 }

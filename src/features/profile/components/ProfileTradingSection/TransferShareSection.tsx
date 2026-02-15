@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { AgentSelection } from "./AgentSelection";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -16,6 +15,7 @@ import { formatAddress } from "@/utils/web3";
 import { ClipboardPaste } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { isAddress } from "viem";
+import { AgentSelection } from "./AgentSelection";
 
 type RecipientMode = "address" | "agent";
 
@@ -31,6 +31,7 @@ interface TransferShareSectionProps {
   subjectAddress: string;
   profileName: string;
   sharesBalance: number;
+  transferData?: TransferFormData | null;
   onTransferDataChange?: (data: TransferFormData) => void;
 }
 
@@ -38,22 +39,23 @@ export const TransferShareSection = ({
   subjectAddress,
   profileName,
   sharesBalance,
+  transferData,
   onTransferDataChange,
 }: TransferShareSectionProps) => {
+  console.log("transferData", transferData);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [recipientMode, setRecipientMode] = useState<RecipientMode>("address");
 
   const [recipientAddress, setRecipientAddress] = useState("");
   const [selectedRecipientAgent, setSelectedRecipientAgent] =
     useState<AgentListItem | null>(null);
-  const [amount, setAmount] = useState("");
 
   const effectiveRecipientAddress =
     recipientMode === "agent" && selectedRecipientAgent
       ? selectedRecipientAgent.walletAddress
       : recipientAddress.trim();
 
-  const amountNum = parseInt(amount || "0", 10) || 0;
+  const amountNum = parseInt(transferData?.amount || "0", 10) || 0;
   const isValidAddress = effectiveRecipientAddress
     ? isAddress(effectiveRecipientAddress)
     : false;
@@ -69,32 +71,36 @@ export const TransferShareSection = ({
       const mode = overrides.recipientMode ?? recipientMode;
       const addr =
         mode === "agent"
-          ? (overrides.selectedRecipientAgent ?? selectedRecipientAgent)
-              ?.walletAddress ?? ""
+          ? ((overrides.selectedRecipientAgent ?? selectedRecipientAgent)
+              ?.walletAddress ?? "")
           : (overrides.recipientAddress ?? recipientAddress).trim();
-      const amt = overrides.amount ?? amount;
+      const amt = overrides.amount ?? transferData?.amount ?? "";
       const addrValid = addr ? isAddress(addr) : false;
       const amtNum = parseInt(amt || "0", 10) || 0;
       const amtValid = amtNum > 0 && amtNum <= sharesBalance;
       const valid = addrValid && amtValid && hasSubject;
 
-      onTransferDataChange?.({
+      const newFormData = {
         recipientAddress: addr,
         amount: amt,
         subjectAddress,
         subjectName: profileName,
         isValid: valid,
-      });
+      };
+
+      onTransferDataChange?.(newFormData);
     },
     [
       recipientMode,
       recipientAddress,
       selectedRecipientAgent,
-      amount,
+      transferData?.amount,
       sharesBalance,
       hasSubject,
       onTransferDataChange,
-    ]
+      subjectAddress,
+      profileName,
+    ],
   );
 
   const resizeTextarea = useCallback(() => {
@@ -125,14 +131,14 @@ export const TransferShareSection = ({
         ? "Invalid wallet address"
         : null
       : recipientMode === "agent" && !selectedRecipientAgent
-      ? "Select an agent"
-      : null;
+        ? "Select an agent"
+        : null;
   const amountError =
     isNaN(amountNum) || amountNum <= 0
       ? null
       : amountNum > sharesBalance
-      ? "Insufficient shares"
-      : null;
+        ? "Insufficient shares"
+        : null;
 
   return (
     <div className="flex flex-col gap-4">
@@ -245,11 +251,10 @@ export const TransferShareSection = ({
             pattern="[0-9]*"
             className="flex-1 min-w-0 bg-transparent border-0 rounded-none text-label-sm font-semibold py-2 px-3 h-11 placeholder:text-neutral-tertiary placeholder:font-normal focus-visible:ring-0 focus-visible:ring-offset-0 focus:border-0 transition-all duration-200"
             placeholder="0"
-            value={amount}
+            value={transferData?.amount ?? ""}
             onChange={(e) => {
               const v = e.target.value;
               if (/^\d*$/.test(v)) {
-                setAmount(v);
                 notifyTransferDataChange({ amount: v });
               }
             }}
@@ -332,7 +337,7 @@ export const TransferShareSection = ({
               {isValidAddress && effectiveRecipientAddress
                 ? `${effectiveRecipientAddress.slice(
                     0,
-                    6
+                    6,
                   )}...${effectiveRecipientAddress.slice(-4)}`
                 : "-"}
             </span>

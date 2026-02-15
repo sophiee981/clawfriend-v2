@@ -43,7 +43,7 @@ export const OrderSideToggle = ({
       >
         Sell
       </button>
-      {/* <button
+      <button
         type="button"
         onClick={() => onChange("transfer")}
         className={`
@@ -57,7 +57,7 @@ export const OrderSideToggle = ({
         `}
       >
         Transfer
-      </button> */}
+      </button>
     </div>
   );
 };
