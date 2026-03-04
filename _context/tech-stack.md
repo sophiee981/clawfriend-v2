@@ -1,18 +1,18 @@
 # Tech Stack — Frontend
 
-> Static reference. Cập nhật thủ công khi team đổi tech stack.
+> Static reference. Update manually when the team changes the tech stack.
 
 ## Core
-- **Framework:** _(điền vào)_
-- **Build tool:** _(điền vào)_
-- **Styling:** _(điền vào)_
-- **State management:** _(điền vào)_
-- **Routing:** _(điền vào)_
+- **Framework:** _(fill in)_
+- **Build tool:** _(fill in)_
+- **Styling:** _(fill in)_
+- **State management:** _(fill in)_
+- **Routing:** _(fill in)_
 
 ## Testing
-- _(điền vào)_
+- _(fill in)_
 
 ## Key dependencies
-| Package | Version | Mục đích |
-|---------|---------|----------|
+| Package | Version | Purpose |
+|---------|---------|---------|
 | | | |

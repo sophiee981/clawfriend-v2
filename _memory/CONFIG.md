@@ -1,28 +1,28 @@
 # Config — Frontend
 
-> Dynamic config. Claude cập nhật khi có thay đổi về môi trường hoặc conventions.
+> Dynamic config. Claude updates when there are changes to the environment or conventions.
 
 ## Environment Variables
-> Không lưu giá trị thật — chỉ tên và mục đích
+> Do not store actual values — only names and purposes
 
-| Variable | Mục đích |
-|----------|----------|
-| `VITE_API_URL` | Base URL của Backend API |
+| Variable | Purpose |
+|----------|---------|
+| `VITE_API_URL` | Base URL of the Backend API |
 
 ## Scripts
 ```bash
 npm run dev       # Dev server
 npm run build     # Production build
-npm run test      # Chạy test
+npm run test      # Run tests
 ```
 
 ## Conventions
 - Component: `PascalCase`
 - File: `kebab-case`
 - Branch: `feat/`, `fix/`, `chore/`
-- Commit: `[fe] type: mô tả`
+- Commit: `[fe] type: description`
 
 ## Changelog
-| Ngày | Thay đổi | Lý do |
-|------|----------|-------|
-| 2026-03-03 | Khởi tạo | Setup ban đầu |
+| Date | Change | Reason |
+|------|--------|--------|
+| 2026-03-03 | Initialization | Initial setup |

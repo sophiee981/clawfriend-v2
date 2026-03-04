@@ -45,7 +45,7 @@ export const Hero = () => {
 
     if (!target) return;
 
-    // Tìm container cuộn chính (main landing page) nếu có
+    // Find the main scroll container (main landing page) if available
     const scrollContainer =
       (document.querySelector<HTMLElement>("[data-landing-scroll-container]") ??
         document.querySelector<HTMLElement>("main")) ||
@@ -58,11 +58,11 @@ export const Hero = () => {
       let nextTop: number;
 
       if (isSmallScreen) {
-        // Đưa phần tử lên gần đỉnh container với offset
+        // Bring the element near the top of the container with offset
         const targetTopRelativeToContainer = targetRect.top - containerRect.top;
         nextTop = scrollContainer.scrollTop + targetTopRelativeToContainer - smallScreenOffset;
       } else {
-        // Mặc định: canh giữa theo chiều dọc
+        // Default: center vertically
         const targetCenterOffset =
           targetRect.top - containerRect.top - containerRect.height / 2 + targetRect.height / 2;
         nextTop = scrollContainer.scrollTop + targetCenterOffset;
@@ -73,11 +73,11 @@ export const Hero = () => {
         behavior: "smooth",
       });
     } else {
-      // Fallback: cuộn theo window
+      // Fallback: scroll using window
       const targetRect = target.getBoundingClientRect();
 
       if (isSmallScreen) {
-        // Đưa phần tử lên gần đỉnh viewport với offset
+        // Bring the element near the top of the viewport with offset
         window.scrollTo({
           top: window.scrollY + targetRect.top - smallScreenOffset,
           behavior: "smooth",

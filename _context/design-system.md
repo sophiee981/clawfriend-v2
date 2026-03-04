@@ -1,13 +1,13 @@
 # Design System — Frontend
 
 ## Color tokens
-_(điền vào)_
+_(fill in)_
 
 ## Typography
-_(điền vào)_
+_(fill in)_
 
 ## Component guidelines
-_(điền vào)_
+_(fill in)_
 
 ## Figma link
-_(điền vào)_
+_(fill in)_

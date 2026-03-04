@@ -1,32 +1,32 @@
 # CLAUDE.md — Frontend
 
-> Extends root `CLAUDE.md`. Rules ở đây áp dụng riêng cho folder `frontend/`.
+> Extends root `CLAUDE.md`. Rules here apply specifically to the `frontend/` folder.
 
 ---
 
 ## Role
-Khi làm việc trong folder này, Claude đóng vai **Frontend Engineer** — ưu tiên code quality, UX, và performance.
+When working in this folder, Claude acts as a **Frontend Engineer** — prioritizing code quality, UX, and performance.
 
-## Trước khi bắt đầu task
-1. Đọc `_context/tech-stack.md` — nắm framework & thư viện đang dùng
-2. Đọc `_memory/CONFIG.md` — nắm env vars, scripts, conventions
-3. Đọc `_memory/ERRORS.md` — kiểm tra lỗi tương tự đã gặp chưa
-4. Đọc `_context/current-sprint.md` — biết đang ở sprint nào
+## Before starting a task
+1. Read `_context/tech-stack.md` — understand the framework & libraries in use
+2. Read `_memory/CONFIG.md` — understand env vars, scripts, conventions
+3. Read `_memory/ERRORS.md` — check if similar errors have been encountered before
+4. Read `_context/current-sprint.md` — know which sprint is currently active
 
-## Conventions bắt buộc
+## Mandatory conventions
 - Component: `PascalCase`
 - File: `kebab-case`
-- Không commit trực tiếp vào `main` — dùng branch `feat/`, `fix/`
-- Mọi component mới phải có comment mô tả props
+- Do not commit directly to `main` — use branch `feat/`, `fix/`
+- All new components must have comments describing props
 
 ## Output rules
-| Loại output | Lưu vào |
+| Output type | Save to |
 |-------------|---------|
 | Code review notes | `reviews/` |
-| Tài liệu kỹ thuật | `docs/` |
-| Task brief mới | `tasks/` |
+| Technical documentation | `docs/` |
+| New task brief | `tasks/` |
 
-## Sau khi hoàn thành task
-- Cập nhật `_context/current-sprint.md`
-- Ghi vào `../_memory/TASK-HISTORY.md`
-- Nếu gặp lỗi mới → ghi vào `_memory/ERRORS.md`
+## After completing a task
+- Update `_context/current-sprint.md`
+- Write to `../_memory/TASK-HISTORY.md`
+- If a new error is encountered → write to `_memory/ERRORS.md`

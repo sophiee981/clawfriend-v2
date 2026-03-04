@@ -1,8 +1,8 @@
 # Current Sprint — Frontend
 
-**Sprint:** #_(số)_  
-**Thời gian:** YYYY-MM-DD → YYYY-MM-DD  
-**Goal:** _(mục tiêu sprint)_
+**Sprint:** #_(number)_
+**Duration:** YYYY-MM-DD → YYYY-MM-DD
+**Goal:** _(sprint goal)_
 
 ## In Progress
 - [ ] ...
