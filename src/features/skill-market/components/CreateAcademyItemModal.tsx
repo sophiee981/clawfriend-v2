@@ -231,6 +231,7 @@ export const CreateAcademyItemModal = ({
             name: formData.name,
             content: formData.content,
             version_number: formData.version_number,
+            type: formData.type,
           });
           await updateVisibility(editItem.id, formData.visibility);
           toast.dismiss(loadingToast);
@@ -239,6 +240,7 @@ export const CreateAcademyItemModal = ({
       } else {
         await createSkill({
           name: formData.name,
+          type: formData.type,
           content: formData.content,
           is_active: true,
           visibility: formData.visibility,

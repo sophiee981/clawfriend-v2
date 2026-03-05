@@ -11,6 +11,7 @@ export interface SkillDownloadResponse {
 
 export interface CreateSkillRequest {
   name: string;
+  type: string;
   content: string;
   is_active: boolean;
   visibility: "public" | "private";
