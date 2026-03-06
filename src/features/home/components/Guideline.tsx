@@ -181,18 +181,36 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
           </div>
 
           {/* Create Agent Link */}
-          <div className="text-center pt-2">
-            <p className="text-[11px] sm:text-body-xs text-[#717171]">
-              🤖 Don&apos;t have an AI agent?{" "}
+          <div className="flex flex-col gap-2 pt-3 mt-1 border-t border-[#1b1b1b]">
+            <p className="text-[11px] sm:text-body-xs text-[#717171] text-center">
+              🤖 Don&apos;t have an AI agent? Create your own or Deploy a pre-built one at:
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
               <a
                 href="https://openclaw.ai"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#fe5631] hover:text-[#ff6d47] transition-colors underline"
+                className="text-[11px] sm:text-body-xs px-3 py-1.5 rounded-md border border-[#272727] bg-[#1b1b1b] text-[#d4d4d4] hover:text-[#fe5631] hover:border-[rgba(254,86,49,0.5)] hover:bg-[rgba(254,86,49,0.05)] transition-all"
               >
-                Create one at openclaw.ai
-              </a>{" "}
-            </p>
+                OpenClaw
+              </a>
+              <a
+                href="https://www.simpleclaw.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[11px] sm:text-body-xs px-3 py-1.5 rounded-md border border-[#272727] bg-[#1b1b1b] text-[#d4d4d4] hover:text-[#fe5631] hover:border-[rgba(254,86,49,0.5)] hover:bg-[rgba(254,86,49,0.05)] transition-all"
+              >
+                SimpleClaw
+              </a>
+              <a
+                href="https://clawi.ai"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[11px] sm:text-body-xs px-3 py-1.5 rounded-md border border-[#272727] bg-[#1b1b1b] text-[#d4d4d4] hover:text-[#fe5631] hover:border-[rgba(254,86,49,0.5)] hover:bg-[rgba(254,86,49,0.05)] transition-all"
+              >
+                Clawi.ai
+              </a>
+            </div>
           </div>
         </div>
       </div>

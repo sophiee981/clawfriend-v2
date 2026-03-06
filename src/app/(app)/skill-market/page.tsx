@@ -36,7 +36,8 @@ export default async function SkillAcademyPage({
           page: 1,
           limit: 18,
           is_active: true,
-          type: tab,
+          sort_by: "hottest",
+          sort_order: "desc",
         },
         true
       ),

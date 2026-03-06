@@ -14,7 +14,8 @@ export interface CreateSkillRequest {
   type: string;
   content: string;
   is_active: boolean;
-  visibility: "public" | "private";
+  type: "skill";
+  visibility: "public";
   version_number: string;
 }
 
@@ -132,8 +133,9 @@ export interface GetSkillsParams {
   limit: number;
   search?: string;
   is_active?: boolean;
-  type?: string;
   tags?: string;
+  sort_by?: "hottest" | "created_at";
+  sort_order?: "asc" | "desc";
 }
 
 export interface GetSkillsResponse {
