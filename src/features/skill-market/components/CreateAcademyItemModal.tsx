@@ -9,20 +9,13 @@ import {
   ModalHeader,
   ModalTitle,
 } from "@/components/ui/modal";
-import { createSkill, updateSkill, updateVisibility, newVersionSkill } from "@/services/academy.service";
+import { createSkill, updateSkill, newVersionSkill } from "@/services/academy.service";
 import { getSkill } from "@/services";
 import { cn } from "@/utils";
 import { toast } from "@/utils/toast";
 import { useEffect, useState } from "react";
 import { AcademyItem, AcademyItemType } from "../type";
 import { useQuery } from "@tanstack/react-query";
-import { Info } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 interface CreateAcademyItemModalProps {
   open: boolean;
@@ -35,18 +28,15 @@ interface CreateAcademyItemModalProps {
 export const CreateAcademyItemModal = ({
   open,
   onOpenChange,
-  defaultType = "skill",
   editItem,
   onSuccess,
 }: CreateAcademyItemModalProps) => {
   const isEditMode = !!editItem;
 
   const [formData, setFormData] = useState({
-    type: defaultType,
     name: "",
     content: "",
     version_number: "",
-    visibility: "public" as "public" | "private",
   });
   const [versionError, setVersionError] = useState<string>("");
   const [resolvedVersionId, setResolvedVersionId] = useState<string | undefined>(undefined);
@@ -57,7 +47,6 @@ export const CreateAcademyItemModal = ({
   const [newVersionContent, setNewVersionContent] = useState<string>("");
   const [newVersionNumber, setNewVersionNumber] = useState<string>("");
 
-  // Fetch skill detail when editing to get versions list
   const { data: skillDetail } = useQuery({
     queryKey: ["skill", editItem?.id],
     queryFn: async () => {
@@ -68,19 +57,15 @@ export const CreateAcademyItemModal = ({
     enabled: !!editItem && open,
   });
 
-  // Resolve version_id from skill detail
   useEffect(() => {
     if (editItem?.version_id) {
       setResolvedVersionId(editItem.version_id);
-    } else if (skillDetail) {
-      if (skillDetail.versions && skillDetail.versions.length > 0) {
-        setResolvedVersionId(skillDetail.versions[0].id);
-      }
+    } else if (skillDetail?.versions?.length) {
+      setResolvedVersionId(skillDetail.versions[0].id);
     }
   }, [editItem?.version_id, skillDetail]);
 
   useEffect(() => {
-    // Only restore data when modal opens (not when switching between edit/new version modes)
     if (!open) {
       setHasUserModified(false);
       setNewVersionContent("");
@@ -89,39 +74,19 @@ export const CreateAcademyItemModal = ({
     }
 
     if (editItem && !hasUserModified) {
-      // Convert "publish" to "public" for backward compatibility
-      const visibilityValue = editItem.visibility as string | undefined;
-      const visibility = visibilityValue === "publish"
-        ? "public"
-        : (editItem.visibility ?? "public");
-
-      // Get content from version if skillDetail is available and has versions
       let content = editItem.content;
-      if (skillDetail && skillDetail.versions && skillDetail.versions.length > 0) {
-        const versionId = resolvedVersionId || editItem.version_id || skillDetail.versions[0].id;
-        const selectedVersion = skillDetail.versions.find(v => v.id === versionId);
-        if (selectedVersion && selectedVersion.content) {
-          content = selectedVersion.content;
-        }
-      }
-
-      // Get version_number from version if available
       let version_number = editItem.version_number || "";
-      if (skillDetail && skillDetail.versions && skillDetail.versions.length > 0) {
+
+      if (skillDetail?.versions?.length) {
         const versionId = resolvedVersionId || editItem.version_id || skillDetail.versions[0].id;
         const selectedVersion = skillDetail.versions.find(v => v.id === versionId);
-        if (selectedVersion && selectedVersion.versionNumber) {
-          version_number = selectedVersion.versionNumber;
+        if (selectedVersion) {
+          if (selectedVersion.content) content = selectedVersion.content;
+          if (selectedVersion.versionNumber) version_number = selectedVersion.versionNumber;
         }
       }
 
-      setFormData({
-        type: editItem.type,
-        name: editItem.title,
-        content: content,
-        version_number: version_number,
-        visibility: visibility as "public" | "private",
-      });
+      setFormData({ name: editItem.title, content, version_number });
       setOriginalContent(content);
       setOriginalVersionNumber(version_number);
       setVersionError("");
@@ -129,25 +94,18 @@ export const CreateAcademyItemModal = ({
       setNewVersionContent("");
       setNewVersionNumber("");
     } else if (!editItem) {
-      setFormData({
-        type: defaultType,
-        name: "",
-        content: "",
-        version_number: "",
-        visibility: "public",
-      });
+      setFormData({ name: "", content: "", version_number: "" });
       setVersionError("");
       setIsNewVersion(false);
       setHasUserModified(false);
       setNewVersionContent("");
       setNewVersionNumber("");
     }
-  }, [editItem, defaultType, open, skillDetail, resolvedVersionId, hasUserModified]);
+  }, [editItem, open, skillDetail, resolvedVersionId, hasUserModified]);
 
   const validateVersionNumber = (version: string): boolean => {
-    if (!version) return true; // Optional field, empty is valid
-    const versionPattern = /^\d+\.\d+\.\d+$/;
-    return versionPattern.test(version);
+    if (!version) return true;
+    return /^\d+\.\d+\.\d+$/.test(version);
   };
 
   const checkVersionExists = (version: string): boolean => {
@@ -158,171 +116,103 @@ export const CreateAcademyItemModal = ({
   };
 
   const handleFormChange = <K extends keyof typeof formData>(
-    type: K,
+    key: K,
     value: (typeof formData)[K]
   ) => {
-    setFormData((prev) => ({ ...prev, [type]: value }));
+    setFormData((prev) => ({ ...prev, [key]: value }));
 
-    // Validate version_number
-    if (type === "version_number") {
-      const versionValue = value as string;
-      if (!versionValue) {
+    if (key === "version_number") {
+      const v = value as string;
+      if (!v) {
         setVersionError("");
-      } else if (!validateVersionNumber(versionValue)) {
-        setVersionError("Version number must be in format 1.0.0 (e.g. 1.0.0, 2.3.4)");
-      } else if (isEditMode && isNewVersion && checkVersionExists(versionValue)) {
-        setVersionError("This version number already exists. Please use a different version number.");
+      } else if (!validateVersionNumber(v)) {
+        setVersionError("Version number must be in format 1.0.0");
+      } else if (isEditMode && isNewVersion && checkVersionExists(v)) {
+        setVersionError("This version number already exists.");
       } else {
         setVersionError("");
       }
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate version_number before submit
     if (formData.version_number) {
       if (!validateVersionNumber(formData.version_number)) {
-        setVersionError("Version number must be in format 1.2.1 (e.g. 1.0.0, 2.3.4)");
+        setVersionError("Version number must be in format 1.0.0");
         return;
       }
       if (isEditMode && isNewVersion && checkVersionExists(formData.version_number)) {
-        setVersionError("This version number already exists. Please use a different version number.");
+        setVersionError("This version number already exists.");
         return;
       }
     }
 
     const loadingToast = toast.loading(
       editItem
-        ? isNewVersion
-          ? `Creating new version of ${formData.type}...`
-          : `Updating ${formData.type}...`
-        : `Creating ${formData.type}...`
+        ? isNewVersion ? "Creating new version..." : "Updating skill..."
+        : "Creating skill..."
     );
 
     try {
       if (editItem) {
         if (isNewVersion) {
-          // Create new version
           await newVersionSkill(editItem.id, {
             name: formData.name,
             content: formData.content,
             version_number: formData.version_number,
-            type: formData.type,
           });
           toast.dismiss(loadingToast);
-          toast.success(`New version of ${formData.type === "skill" ? "Skill" : formData.type === "workflow" ? "Workflow" : "Prompt"} created successfully!`);
+          toast.success("New version created successfully!");
         } else {
-          // Update existing version
           const versionId = resolvedVersionId || editItem.version_id;
           if (!versionId) {
             toast.dismiss(loadingToast);
-            toast.error("Version ID is required for update. Please wait while we fetch the skill details...");
+            toast.error("Version ID is required. Please wait while we fetch skill details...");
             return;
           }
-          console.log(
-            "Updating skill with ID:",
-            editItem.id,
-            "version ID:",
-            versionId
-          );
           await updateSkill(editItem.id, versionId, {
             name: formData.name,
             content: formData.content,
             version_number: formData.version_number,
           });
-          await updateVisibility(editItem.id, formData.visibility);
           toast.dismiss(loadingToast);
-          toast.success(`${formData.type === "skill" ? "Skill" : formData.type === "workflow" ? "Workflow" : "Prompt"} updated successfully!`);
+          toast.success("Skill updated successfully!");
         }
       } else {
         await createSkill({
           name: formData.name,
           content: formData.content,
           is_active: true,
-          visibility: formData.visibility,
+          type: "skill",
+          visibility: "public",
           version_number: formData.version_number,
         });
         toast.dismiss(loadingToast);
-        toast.success(`${formData.type === "skill" ? "Skill" : formData.type === "workflow" ? "Workflow" : "Prompt"} created successfully!`);
+        toast.success("Skill created successfully!");
       }
       onOpenChange(false);
       onSuccess?.();
     } catch (error) {
       toast.dismiss(loadingToast);
-      const itemType = formData.type === "skill" ? "skill" : formData.type === "workflow" ? "workflow" : "prompt";
       toast.error(
-        editItem
-          ? `Failed to update ${itemType}. Please try again.`
-          : `Failed to create ${itemType}. Please try again.`
+        editItem ? "Failed to update skill. Please try again." : "Failed to create skill. Please try again."
       );
-      console.error(
-        editItem ? `Failed to update ${itemType}:` : `Failed to create ${itemType}:`,
-        error
-      );
+      console.error(error);
     }
   };
 
   return (
     <Modal open={open} onOpenChange={onOpenChange}>
-      <ModalContent className="max-w-[600px] w-full  border-neutral-02 max-h-[90vh] overflow-y-auto scrollbar-hide">
+      <ModalContent className="max-w-[600px] w-full border-neutral-02 max-h-[90vh] overflow-y-auto scrollbar-hide">
         <ModalHeader>
           <ModalTitle className="text-xl font-bold text-neutral-primary">
-            {editItem ? "Edit" : "Create New"}{" "}
-            {formData.type === "skill"
-              ? "Skill"
-              : formData.type === "workflow"
-                ? "Workflow"
-                : "Prompt"}
+            {editItem ? "Edit" : "Create New"} Skill
           </ModalTitle>
         </ModalHeader>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 mt-4">
-          {!isEditMode && (
-            <div className="bg-[#1b1b1b] rounded-[8px] flex gap-[2px] w-fit">
-              <button
-                type="button"
-                onClick={() => handleFormChange("type", "skill")}
-                className={cn(
-                  "px-4 py-1 rounded-[8px] text-sm font-medium transition-colors min-w-[100px]",
-                  formData.type === "skill"
-                    ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
-                    : "bg-[#1b1b1b] text-[#717171]"
-                )}
-              >
-                Skill
-              </button>
-              <button
-                type="button"
-                onClick={() => handleFormChange("type", "workflow")}
-                className={cn(
-                  "px-4 py-1 rounded-[8px] text-sm font-medium transition-colors min-w-[100px]",
-                  formData.type === "workflow"
-                    ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
-                    : "bg-[#1b1b1b] text-[#717171]"
-                )}
-              >
-                Workflow
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleFormChange("type", "prompt")}
-                className={cn(
-                  "px-4 py-1 rounded-[8px] text-sm font-medium transition-colors min-w-[100px]",
-                  formData.type === "prompt"
-                    ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
-                    : "bg-[#1b1b1b] text-[#717171]"
-                )}
-              >
-                Prompt
-              </button>
-
-
-            </div>
-          )}
-
           {isEditMode && (
             <div className="flex flex-col gap-2">
               <label className="text-sm font-semibold text-neutral-primary">
@@ -332,16 +222,12 @@ export const CreateAcademyItemModal = ({
                 <button
                   type="button"
                   onClick={() => {
-                    // Save current content and version before switching back to Edit Version
                     if (isNewVersion) {
-                      const currentContent = formData.content;
-                      const currentVersion = formData.version_number;
-                      setNewVersionContent(currentContent);
-                      setNewVersionNumber(currentVersion);
+                      setNewVersionContent(formData.content);
+                      setNewVersionNumber(formData.version_number);
                     }
                     setIsNewVersion(false);
                     setHasUserModified(true);
-                    // Restore original content and version when switching back to Edit Version
                     setFormData((prev) => ({
                       ...prev,
                       content: originalContent,
@@ -362,7 +248,6 @@ export const CreateAcademyItemModal = ({
                   onClick={() => {
                     setIsNewVersion(true);
                     setHasUserModified(true);
-                    // Restore saved new version content if exists, otherwise clear
                     setFormData((prev) => ({
                       ...prev,
                       content: newVersionContent || "",
@@ -387,12 +272,7 @@ export const CreateAcademyItemModal = ({
               Name <span className="text-danger">*</span>
             </label>
             <Input
-              placeholder={`e.g. ${formData.type === "skill"
-                ? "Arbitrage Bot"
-                : formData.type === "workflow"
-                  ? "Trading Workflow"
-                  : "Crypto Twitter Persona"
-                }`}
+              placeholder="e.g. Arbitrage Bot"
               value={formData.name}
               onChange={(e) => handleFormChange("name", e.target.value)}
               className="text-body-sm"
@@ -401,24 +281,13 @@ export const CreateAcademyItemModal = ({
 
           <div className="flex flex-col gap-2">
             <label className="text-sm font-semibold text-neutral-primary">
-              {formData.type === "skill"
-                ? "Skill"
-                : formData.type === "workflow"
-                  ? "Workflow"
-                  : "Prompt"}{" "}
-              <span className="text-danger">*</span>
+              Skill <span className="text-danger">*</span>
             </label>
             <div className="rounded-xl border border-neutral-02 bg-neutral-01 overflow-hidden">
               <MarkdownEditor
                 value={formData.content}
                 onChange={(value) => handleFormChange("content", value || "")}
-                placeholder={
-                  formData.type === "skill"
-                    ? "Enter skill logic/config..."
-                    : formData.type === "workflow"
-                      ? "Enter workflow configuration..."
-                      : "You are a helpful assistant..."
-                }
+                placeholder="Enter skill logic/config..."
                 height={300}
                 className="[&_.w-md-editor]:bg-transparent [&_.w-md-editor-text-textarea]:bg-transparent [&_.w-md-editor-text-textarea]:text-neutral-primary [&_.w-md-editor-text-textarea]:placeholder:text-neutral-tertiary"
               />
@@ -432,9 +301,7 @@ export const CreateAcademyItemModal = ({
             <Input
               placeholder="e.g. 1.2.1"
               value={formData.version_number}
-              onChange={(e) =>
-                handleFormChange("version_number", e.target.value)
-              }
+              onChange={(e) => handleFormChange("version_number", e.target.value)}
               className={cn(
                 "text-body-sm",
                 versionError && "border-danger focus:border-danger"
@@ -447,66 +314,6 @@ export const CreateAcademyItemModal = ({
               <p className="text-xs text-neutral-tertiary">Version number is required for new version</p>
             )}
           </div>
-
-          {!(isEditMode && isNewVersion) && (
-            <TooltipProvider>
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between gap-2">
-                  <label className="text-sm font-semibold text-neutral-primary">
-                    Visibility
-                  </label>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button
-                        type="button"
-                        className="inline-flex items-center justify-center rounded-full p-1 text-neutral-tertiary hover:text-neutral-primary hover:bg-neutral-02 transition-colors"
-                        aria-label="Visibility information"
-                      >
-                        <Info className="w-4 h-4" />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent side="left">
-                      <div className="flex flex-col gap-1 text-xs">
-                        <p className="font-bold">
-                          <span className="font-bold">Public</span>: Anyone can use this
-                        </p>
-                        <p className="font-bold">
-                          <span className="font-bold">Private</span>: Only those who purchase shares can use this
-                        </p>
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                </div>
-
-                <div className="bg-[#1b1b1b] rounded-[8px] flex gap-[2px] mt-1 w-fit">
-                  <button
-                    type="button"
-                    onClick={() => handleFormChange("visibility", "public")}
-                    className={cn(
-                      "px-4 py-1 rounded-[8px] text-sm font-medium transition-colors min-w-[100px]",
-                      formData.visibility === "public"
-                        ? "bg-[rgba(34,197,94,0.2)] text-success"
-                        : "bg-[#1b1b1b] text-[#717171]"
-                    )}
-                  >
-                    Public
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleFormChange("visibility", "private")}
-                    className={cn(
-                      "px-4 py-1 rounded-[8px] text-sm font-medium transition-colors min-w-[100px]",
-                      formData.visibility === "private"
-                        ? "bg-[rgba(250,204,21,0.2)] text-yellow"
-                        : "bg-[#1b1b1b] text-[#717171]"
-                    )}
-                  >
-                    Private
-                  </button>
-                </div>
-              </div>
-            </TooltipProvider>
-          )}
 
           <div className="flex justify-end gap-3 mt-4">
             <Button
@@ -526,16 +333,7 @@ export const CreateAcademyItemModal = ({
                 (isEditMode && isNewVersion && !formData.version_number)
               }
             >
-              {editItem
-                ? isNewVersion
-                  ? "Create New Version"
-                  : "Update"
-                : "Publish"}{" "}
-              {formData.type === "skill"
-                ? "Skill"
-                : formData.type === "workflow"
-                  ? "Workflow"
-                  : "Prompt"}
+              {editItem ? (isNewVersion ? "Create New Version" : "Update") : "Publish"} Skill
             </Button>
           </div>
         </form>

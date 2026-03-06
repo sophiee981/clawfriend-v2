@@ -7,12 +7,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { likeSkill } from "@/services";
 import { useAuthStore } from "@/stores/auth.store";
 import { cn } from "@/utils";
@@ -127,37 +121,6 @@ export const SkillCard = ({
             </div>
           </div>
           <div className="flex items-center gap-2">
-            {(item.visibility) && (
-              <TooltipProvider>
-                <div className="flex items-center gap-2 text-xs text-neutral-tertiary">
-                  {item.visibility && (
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Badge
-                          variant="secondary"
-                          type="outline"
-                          className={cn(
-                            "px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wide border bg-neutral-01 cursor-pointer",
-                            item.visibility === "private"
-                              ? "text-yellow bg-[rgba(250,204,21,0.08)] border-transparent"
-                              : "text-success bg-[rgba(34,197,94,0.08)] border-transparent"
-                          )}
-                        >
-                          {item.visibility === "private" ? "Private" : "Publish"}
-                        </Badge>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p className="text-xs font-bold text-neutral-primary">
-                          {item.visibility === "private"
-                            ? "Only those who purchase shares can use this"
-                            : "Anyone can use this"}
-                        </p>
-                      </TooltipContent>
-                    </Tooltip>
-                  )}
-                </div>
-              </TooltipProvider>
-            )}
             {!!isCurrentUserCreator && !!item.author && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
