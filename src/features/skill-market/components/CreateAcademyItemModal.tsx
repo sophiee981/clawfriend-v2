@@ -176,7 +176,7 @@ export const CreateAcademyItemModal = ({
             name: formData.name,
             content: formData.content,
             version_number: formData.version_number,
-            type: formData.type,
+            type: "skill",
           });
           toast.dismiss(loadingToast);
           toast.success("Skill updated successfully!");
@@ -184,7 +184,6 @@ export const CreateAcademyItemModal = ({
       } else {
         await createSkill({
           name: formData.name,
-          type: formData.type,
           content: formData.content,
           is_active: true,
           type: "skill",
