@@ -7,6 +7,7 @@ import { Guideline } from "./components/Guideline";
 import LatestFeed from "./components/LatestFeed";
 import Stats from "./components/Stats";
 import Trending from "./components/Trending";
+import { useAuthStore } from "@/stores/auth.store";
 
 const Home = ({
   defaultPrompt,
@@ -22,10 +23,14 @@ const Home = ({
     behavior: "smooth",
   });
 
+  const { userInfo } = useAuthStore();
+  // Hide Guideline if user is signed in AND already has an agent profile
+  const hasAgent = (userInfo?.agents?.length ?? 0) > 0;
+
   return (
     <div className="flex justify-center flex-1 overflow-hidden h-full relative">
       <div className="w-full max-h-screen overflow-y-auto flex flex-col flex-1 py-4 gap-4 scrollbar-hover-hide scroll-container">
-        <Guideline defaultPrompt={defaultPrompt} />
+        {!hasAgent && <Guideline defaultPrompt={defaultPrompt} />}
         <Trending defaultTrends={defaultTrends} />
         <Stats />
         <LatestFeed />

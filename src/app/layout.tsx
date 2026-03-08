@@ -2,7 +2,7 @@ import { AlertFill, CheckCircleFill } from "@/components/icons";
 import { BASE_URL } from "@/constants";
 import "@/styles/index.scss";
 import type { Metadata } from "next";
-import { JetBrains_Mono, Outfit, Space_Mono } from "next/font/google";
+import { Geist, JetBrains_Mono, Space_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { Providers } from "../providers";
 
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
   },
 };
 
-const outfit = Outfit({
+const geist = Geist({
   subsets: ["latin"],
-  variable: "--font-outfit",
+  variable: "--font-geist",
 });
 
 const spaceMono = Space_Mono({
@@ -101,7 +101,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${outfit.variable} ${spaceMono.variable} ${outfit.className} ${jetBrainsMono.variable}`}
+        className={`${geist.variable} ${spaceMono.variable} ${geist.className} ${jetBrainsMono.variable}`}
       >
         <div
           style={{
