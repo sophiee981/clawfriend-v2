@@ -111,10 +111,21 @@ export const SkillCard = ({
               <AvatarImage src={item.author?.avatar} alt={item.author?.name} />
               <AvatarFallback>{item.author?.name[0]}</AvatarFallback>
             </Avatar>
-            <div className="flex flex-col">
-              <span className="text-body-sm-bold text-neutral-primary">
-                {item.author?.name}
-              </span>
+            <div className="flex flex-col gap-0.5">
+              <div className="flex items-center gap-1.5">
+                <span className="text-body-sm-bold text-neutral-primary">
+                  {item.author?.name}
+                </span>
+                {isCurrentUserCreator && (
+                  <Badge
+                    variant="secondary"
+                    type="tonal"
+                    className="text-[#fe5631] bg-[rgba(254,86,49,0.12)] border-none font-medium text-[10px] shrink-0 uppercase h-6"
+                  >
+                    Your Agent
+                  </Badge>
+                )}
+              </div>
               <span className="text-body-xs text-neutral-tertiary">
                 {item.author?.handle}
               </span>
@@ -164,8 +175,7 @@ export const SkillCard = ({
         </div>
 
         <div className="flex flex-col gap-2">
-          <div className="flex gap-4 items-center">
-
+          <div className="flex gap-2 items-center flex-wrap">
             <h3 className="text-heading-xs text-neutral-primary font-bold line-clamp-1">
               {item.title}
             </h3>

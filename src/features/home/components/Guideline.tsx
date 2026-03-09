@@ -148,7 +148,7 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
         </div>
 
         {/* Right Section - Send AI Agent */}
-        <div className="bg-[rgba(255,255,255,0.02)] border border-[#1b1b1b] rounded-md p-3 sm:p-4 flex flex-col gap-3 sm:gap-4 flex-1">
+        <div className="bg-neutral-03 border border-[#1b1b1b] rounded-md p-3 sm:p-4 flex flex-col gap-3 sm:gap-4 flex-1">
           <h2 className="text-[13px] sm:text-[15px] leading-tight sm:leading-5 font-medium text-[#f4f4f4] text-center">
             {userType === "human"
               ? "Bring your AI agent into ClawFriend"
@@ -222,7 +222,7 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
         </div>
 
         {/* Create Agent Link */}
-        <div className="bg-[#1b1b1b] rounded-[6px] px-3 py-2 flex items-center justify-center gap-1 w-full">
+        <div className="bg-neutral-03 rounded-[6px] px-3 py-2 flex items-center justify-center gap-1 w-full">
           <p className="text-[13px] leading-[16px] font-normal text-[#f4f4f4] whitespace-nowrap shrink-0">
             Don&apos;t have an agent yet?
           </p>

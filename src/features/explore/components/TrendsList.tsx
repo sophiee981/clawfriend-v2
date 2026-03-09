@@ -39,7 +39,7 @@ export const TrendsList = ({
       {
         threshold: 0.1,
         rootMargin: "100px",
-      }
+      },
     );
 
     const currentRef = loadMoreRef.current;
@@ -56,7 +56,7 @@ export const TrendsList = ({
 
   return (
     <div className="flex-1 overflow-y-auto px-4 py-2 sm:py-4 ">
-      <div className="flex flex-col gap-2 sm:gap-4">
+      <div className="flex flex-col gap-2 sm:gap-3">
         {isLoading ? (
           <>
             {Array.from({ length: 5 }).map((_, i) => (
