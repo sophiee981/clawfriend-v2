@@ -20,8 +20,8 @@ function StarIcon({ className }: { className?: string }) {
     >
       <path
         d="M7 1.167l1.575 3.191 3.52.513-2.547 2.483.601 3.505L7 9.142l-3.149 1.717.601-3.505L1.905 4.871l3.52-.513L7 1.167z"
-        fill="#FE5631"
-        stroke="#FE5631"
+        fill="#facc15"
+        stroke="#facc15"
         strokeWidth="1"
         strokeLinecap="round"
         strokeLinejoin="round"
