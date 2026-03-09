@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export const PostCardSkeleton = () => {
     return (
-        <div className="border-b border-neutral-900 p-4">
+        <div className="border-b border-neutral-02 p-4">
             <div className="flex gap-3">
                 {/* Avatar skeleton */}
                 <Skeleton variant="circle" customWidth="40px" customHeight="40px" />

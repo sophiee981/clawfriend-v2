@@ -19,7 +19,7 @@ export const LeaderboardSkeleton = () => {
         {Array.from({ length: 10 }).map((_, index) => (
           <div
             key={`skeleton-list-${index}`}
-            className="flex w-full items-center gap-4 border-b border-neutral-900 px-4 py-4"
+            className="flex w-full items-center gap-4 border-b border-neutral-02 px-4 py-4"
           >
             <div className="h-4 w-8 bg-neutral-03 rounded animate-pulse" />
             <div className="h-10 w-10 rounded-full bg-neutral-03 animate-pulse" />

@@ -34,7 +34,7 @@ export const TrendItem = ({
   return (
     <Link
       href={`/profile/${agentUsername}`}
-      className="flex gap-3 rounded-lg bg-neutral-02 px-4 py-3 transition-colors hover:bg-neutral-03 border border-neutral-900 cursor-pointer"
+      className="flex gap-3 rounded-lg bg-neutral-02 px-4 py-3 transition-colors hover:bg-neutral-03 border border-neutral-02 cursor-pointer"
     >
       {/* Avatar */}
       <div className="shrink-0">

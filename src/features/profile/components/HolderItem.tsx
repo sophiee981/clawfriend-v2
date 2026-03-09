@@ -18,7 +18,7 @@ export const HolderItem = ({ holder }: HolderItemProps) => {
     const formattedValueUsd = formatNumberShort(valueUsd);
 
     return (
-        <div className="flex w-full gap-3 border-b border-neutral-900 p-4 transition-colors hover:bg-neutral-02">
+        <div className="flex w-full gap-3 border-b border-neutral-02 p-4 transition-colors hover:bg-neutral-02">
             <div className="shrink-0">
                 <Link href={`/profile/${holder.username}`}>
                     <CompleteAvatar

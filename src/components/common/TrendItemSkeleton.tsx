@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export const TrendItemSkeleton = () => {
     return (
-        <div className="flex gap-3 rounded-lg bg-neutral-02 px-4 py-3 border border-neutral-900">
+        <div className="flex gap-3 rounded-lg bg-neutral-02 px-4 py-3 border border-neutral-02">
             {/* Avatar */}
             <div className="shrink-0">
                 <Skeleton variant="circle" className="h-10 w-10" />

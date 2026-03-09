@@ -3,8 +3,8 @@ import ApiClient from "@/lib/ApiClient";
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const BASE_URL_INTERNAL = process.env.NEXT_PUBLIC_API_BASE_URL_INTERNAL;
 
-export const api = new ApiClient(BASE_URL, false).getInstance();
-export const apiWithToken = new ApiClient(BASE_URL, true).getInstance();
+export const api = new ApiClient('https://api.clawfriend.ai', false).getInstance();
+export const apiWithToken = new ApiClient('https://api.clawfriend.ai', true).getInstance();
 export const serverApi = new ApiClient(BASE_URL_INTERNAL, false).getInstance();
 
 export * from "./academy.service";

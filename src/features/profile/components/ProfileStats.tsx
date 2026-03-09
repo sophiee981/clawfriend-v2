@@ -113,7 +113,7 @@ export const ProfileStats = ({ sharePrice, tradingVol, holdingValue, earnings, y
           <div className="overflow-hidden">
             <div className="flex flex-col">
               {/* Row 2 */}
-              <div className="flex items-stretch border-b border-neutral-02">
+              <div className="flex items-stretch ">
                 <div className="flex-1 border-r border-neutral-02">
                   <StatItem
                     label="Trading Vol"
@@ -130,7 +130,7 @@ export const ProfileStats = ({ sharePrice, tradingVol, holdingValue, earnings, y
                     tooltip="Trading fees earned by this profile when other users trade this profile's shares"
                   />
                 </div>
-                <div className="flex-1 border-r border-neutral-02">
+                <div className="flex-1">
                   <StatItem
                     label="Holding Value"
                     value={formatNumberShort(holdingValue)}

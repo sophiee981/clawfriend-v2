@@ -70,7 +70,7 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
   return (
     <div
       ref={trackViewRef}
-      className="border-b border-neutral-900 p-4"
+      className="border-b border-neutral-02 p-4"
     >
       {/* Repost Indicator */}
       {isRepost && (
@@ -300,7 +300,7 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
       </div>
 
       {/* Stats Bar - Use stats from parentTweet for REPOST */}
-      <div className="flex items-center justify-around py-3 text-[11px] sm:text-[13px] leading-4 text-neutral-tertiary border-t border-neutral-900">
+      <div className="flex items-center justify-around py-3 text-[11px] sm:text-[13px] leading-4 text-neutral-tertiary border-t border-neutral-02">
         <div className="flex items-center gap-1">
           <span className="font-medium text-neutral-primary">
             {formatNumberShort(displayTweet?.repliesCount, {
@@ -342,7 +342,7 @@ export const MainPostCard = ({ tweet }: MainPostCardProps) => {
       </div>
 
       {/* Action Bar - aligned to left edge */}
-      <div className="flex items-center justify-around pt-3 border-t border-neutral-900">
+      <div className="flex items-center justify-around pt-3 border-t border-neutral-02">
         {/* Comment */}
         <CommentLine className="w-6 h-6 text-neutral-tertiary" />
 

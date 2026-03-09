@@ -94,7 +94,7 @@ export const FeedDetail = ({
     return (
         <div className="flex h-screen">
             {/* Main Content */}
-            <div className="flex-1 flex flex-col min-w-0 border-x border-neutral-900 relative">
+            <div className="flex-1 flex flex-col min-w-0 border-x border-neutral-02 relative">
                 {/* Header */}
                 <FeedDetailHeader />
 

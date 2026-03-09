@@ -23,7 +23,7 @@ const RightSide = ({ className }: RightSideProps) => {
   return (
     <div
       className={cn(
-        "flex h-full flex-col border-l border-neutral-01 w-[360px] pt-2 overflow-y-auto",
+        "flex h-full flex-col border border-neutral-02 w-[360px] pt-2 overflow-y-auto",
         className
       )}
     >

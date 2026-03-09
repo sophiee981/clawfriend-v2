@@ -23,7 +23,7 @@ export const JustTGEDItem = ({ activity }: JustTGEDItemProps) => {
   const formattedVolume = `$${formatNumberShort(volumeUsd)}`;
 
   return (
-    <div className="flex w-full gap-3 border-b border-neutral-900 p-4 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] transition-colors hover:bg-neutral-02">
+    <div className="flex w-full gap-3 border-b border-neutral-02 p-4 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] transition-colors hover:bg-neutral-02">
       <div className="shrink-0">
         <Link href={`/profile/${username}`}>
           <CompleteAvatar

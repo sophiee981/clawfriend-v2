@@ -10,7 +10,7 @@ export const ActivitySkeleton = ({ count = 1 }: ActivitySkeletonProps) => {
       {[...Array(count)].map((_, index) => (
         <div
           key={index}
-          className="flex w-full gap-3 border-b border-neutral-900 py-4"
+          className="flex w-full gap-3 border-b border-neutral-02 py-4"
         >
           <Skeleton variant="circle" customWidth="40px" customHeight="40px" />
           <div className="flex min-w-0 flex-1 flex-col gap-2">

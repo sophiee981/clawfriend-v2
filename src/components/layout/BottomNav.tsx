@@ -11,7 +11,7 @@ export const BottomNav = () => {
 
   return (
     <nav
-      className="flex items-center gap-3 border-t border-neutral-900 bg-neutral-01 p-3 md:hidden"
+      className="flex items-center gap-3 border-t border-neutral-02 bg-neutral-01 p-3 md:hidden"
       style={{
         paddingBottom:
           "max(0.75rem, calc(0.75rem + env(safe-area-inset-bottom)))",
