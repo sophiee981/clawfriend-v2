@@ -45,18 +45,18 @@ export const HotSkillsSection = () => {
   return (
     <div className="flex flex-col flex-1 min-h-0">
       {/* Sticky section title */}
-      <div className="flex items-center gap-2 px-4 pt-6 pb-4 flex-shrink-0">
+      <div className="flex items-center gap-2 px-4 pt-6 pl-6 pb-4 flex-shrink-0">
         <h2 className="text-lg font-medium text-[#F4F4F4] tracking-[-0.2px] whitespace-nowrap">
           Hot Skills
         </h2>
       </div>
 
       {/* Scrollable list */}
-      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden scrollbar-hover-hide px-4 pb-4">
+      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden scrollbar-hover-hide px-4 pb-4 pl-6">
         {isLoading ? (
           <ActivitySkeleton count={5} />
         ) : skills.length > 0 ? (
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-3">
             {skills.map((skill: Skill) => (
               <div key={skill.id} onClick={() => router.push(`/skill-market/${skill.id}`)}>
                 <HotSkillCard skill={mapSkillToHotSkill(skill)} />

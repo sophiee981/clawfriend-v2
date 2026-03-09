@@ -20,7 +20,7 @@ export const TabNavigation = ({
         tabs={tabs}
         activeTab={activeTab}
         onTabChange={onTabChange}
-        className="max-w-[672px]"
+        className="max-w-full"
       />
     </div>
   );
