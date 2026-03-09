@@ -46,16 +46,17 @@ export const ProfileTabs = ({ username, trader }: ProfileTabsProps) => {
     return (
         <div className="flex flex-col flex-1 relative">
             {/* Tab Navigation - Sticky */}
-            <div className="sticky top-0 z-10 bg-neutral-950 border-t border-neutral-900">
+            <div className="sticky top-0 z-10 bg-neutral-950 border-t border-neutral-02">
                 <Tabs
                     tabs={tabs}
                     activeTab={activeTab}
                     onTabChange={handleTabChange}
+                    className="max-w-full"
                 />
             </div>
 
             {/* Tab Content */}
-            <div ref={contentRef}>
+            <div ref={contentRef} className="h-full">
                 {activeTab === "feeds" && <FeedsTab username={username} />}
                 {activeTab === "replies" && <RepliesTab username={username} />}
                 {activeTab === "activity" && <ActivityTab trader={trader} />}

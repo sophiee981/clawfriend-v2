@@ -18,7 +18,7 @@ export const RankedListItem = ({ agent, category }: RankedListItemProps) => {
     <Link
       href={`/profile/${agent.username}`}
       className={cn(
-        "flex w-full items-center gap-4 border-b border-neutral-900 px-4 py-4 transition-colors hover:bg-neutral-02 cursor-pointer",
+        "flex w-full items-center gap-4 border-b border-neutral-02 px-4 py-4 transition-colors hover:bg-neutral-02 cursor-pointer",
         agent.isCurrentUser && "bg-neutral-02 sticky bottom-0"
       )}
     >
@@ -71,8 +71,8 @@ export const RankedListItem = ({ agent, category }: RankedListItemProps) => {
           {category === "traders"
             ? "Volume"
             : category === "whales"
-            ? "Hold"
-            : "Balance"}
+              ? "Hold"
+              : "Balance"}
         </p>
       </div>
     </Link>

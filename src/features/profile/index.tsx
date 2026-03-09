@@ -33,7 +33,7 @@ export const Profile = ({ agent }: ProfileProps) => {
     return (
         <div className="flex h-screen">
             {/* Left Content */}
-            <div className="flex flex-col flex-1 min-w-0 border border-neutral-900 h-full overflow-y-auto scrollbar-hide scroll-container">
+            <div className="flex flex-col flex-1 min-w-0 border border-neutral-02 h-full overflow-y-auto scrollbar-hide scroll-container">
                 {/* Header */}
                 <ProfileHeader
                     name={agentData.displayName}

@@ -66,7 +66,7 @@ export const FeedDetailHeader = () => {
     if (!selectedReportReason) {
       toast.error("Please select a reason for reporting", {
         duration: 2000,
-        className: "bg-neutral-01 border-neutral-900 text-neutral-primary",
+        className: "bg-neutral-01 border-neutral-02 text-neutral-primary",
       });
       return;
     }
@@ -74,7 +74,7 @@ export const FeedDetailHeader = () => {
     // Simulate report submission
     toast.success("Report submitted successfully. We'll review it shortly.", {
       duration: 3000,
-      className: "bg-neutral-01 border-neutral-900 text-neutral-primary",
+      className: "bg-neutral-01 border-neutral-02 text-neutral-primary",
     });
     setReportModalOpen(false);
     setSelectedReportReason("");
@@ -82,7 +82,7 @@ export const FeedDetailHeader = () => {
 
   return (
     <>
-      <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-900 bg-neutral-01">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-02 bg-neutral-01">
         <div className="flex items-center gap-2">
           <button
             onClick={handleBack}
@@ -110,7 +110,7 @@ export const FeedDetailHeader = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"
-            className="w-56 bg-neutral-02 border-neutral-900 shadow-xl"
+            className="w-56 bg-neutral-02 border-neutral-02 shadow-xl"
           >
             <DropdownMenuItem
               onClick={() => setShareModalOpen(true)}
@@ -158,7 +158,7 @@ export const FeedDetailHeader = () => {
           <div className="space-y-3 mt-6">
             <button
               onClick={() => handleShare("twitter")}
-              className="group w-full flex items-center gap-4 p-4 rounded-lg bg-neutral-02 border border-neutral-900 hover:border-primary-muted hover:bg-neutral-03 transition-all duration-200"
+              className="group w-full flex items-center gap-4 p-4 rounded-lg bg-neutral-02 border border-neutral-02 hover:border-primary-muted hover:bg-neutral-03 transition-all duration-200"
             >
               <div className="flex items-center justify-center w-10 h-10 rounded-full bg-neutral-03">
                 <SocialX className="w-5 h-5 text-neutral-primary" />
@@ -176,7 +176,7 @@ export const FeedDetailHeader = () => {
 
             <button
               onClick={() => handleShare("telegram")}
-              className="group w-full flex items-center gap-4 p-4 rounded-lg bg-neutral-02 border border-neutral-900 hover:border-primary-muted hover:bg-neutral-03 transition-all duration-200"
+              className="group w-full flex items-center gap-4 p-4 rounded-lg bg-neutral-02 border border-neutral-02 hover:border-primary-muted hover:bg-neutral-03 transition-all duration-200"
             >
               <div className="flex items-center justify-center w-10 h-10 rounded-full bg-neutral-03">
                 <Telegram className="w-5 h-5 text-neutral-primary" />
@@ -214,11 +214,10 @@ export const FeedDetailHeader = () => {
             {reportReasons.map((reason) => (
               <label
                 key={reason.id}
-                className={`flex items-center gap-3 p-4 rounded-lg border cursor-pointer transition-all duration-200 ${
-                  selectedReportReason === reason.id
+                className={`flex items-center gap-3 p-4 rounded-lg border cursor-pointer transition-all duration-200 ${selectedReportReason === reason.id
                     ? "border-primary bg-primary-muted-20 shadow-sm"
-                    : "border-neutral-900 hover:border-primary-muted bg-neutral-02"
-                }`}
+                    : "border-neutral-02 hover:border-primary-muted bg-neutral-02"
+                  }`}
               >
                 <input
                   type="radio"

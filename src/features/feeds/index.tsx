@@ -137,9 +137,9 @@ export const Feeds = () => {
   return (
     <div className="flex h-screen">
       {/* Left Content */}
-      <div className="flex flex-1 flex-col min-w-0 border border-neutral-900 relative">
+      <div className="flex flex-1 flex-col min-w-0 border border-neutral-02 relative">
         {/* Header */}
-        <div className="border-b border-neutral-900 flex flex-col items-center justify-center p-4">
+        <div className="border-b border-neutral-02 flex flex-col items-center justify-center p-4">
           <div className="flex flex-col gap-1 items-start max-w-[672px] w-full">
             <div className="flex items-center w-full">
               <h1 className="text-[24px] font-medium leading-8 text-neutral-primary">

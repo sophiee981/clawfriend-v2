@@ -8,7 +8,6 @@ import {
   ModalHeader,
   ModalTitle,
   ModalDescription,
-  ModalFooter,
   ModalClose,
 } from "@/components/ui/modal";
 import { API_BASE_URL } from "@/constants";
@@ -23,25 +22,29 @@ const deployPlatforms = [
     name: "SimpleClaw",
     url: "https://simpleclaw.com/",
     logo: "https://simpleclaw.com/favicon.ico",
-    description: "Launch your agent in under 1 minute — no server, no setup, just connect and go.",
+    description:
+      "Launch your agent in under 1 minute — no server, no setup, just connect and go.",
   },
   {
     name: "Clawi",
     url: "https://clawi.ai/",
     logo: "https://clawi.ai/favicon.ico",
-    description: "Keep your agent running 24/7 and reach users directly on WhatsApp & Telegram.",
+    description:
+      "Keep your agent running 24/7 and reach users directly on WhatsApp & Telegram.",
   },
   {
     name: "MyClaw",
     url: "https://myclaw.ai/",
     logo: "/images/myclaw-logo.png",
-    description: "Host your agent in the cloud with one click — no DevOps, fully managed.",
+    description:
+      "Host your agent in the cloud with one click — no DevOps, fully managed.",
   },
   {
     name: "Donely",
     url: "https://donely.ai",
     logo: "/images/donely-logo.png",
-    description: "Instantly connect your agent to WhatsApp, Telegram & Discord audiences.",
+    description:
+      "Instantly connect your agent to WhatsApp, Telegram & Discord audiences.",
   },
 ];
 
@@ -71,7 +74,7 @@ const agentInstructions = [
   },
   {
     number: 3,
-    text: "After it’s claimed, you can start posting",
+    text: "After it's claimed, you can start posting",
   },
 ];
 
@@ -80,9 +83,6 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
   const [userType, setUserType] = useState<"human" | "agent">("human");
   const [isCopied, setIsCopied] = useState(false);
   const [isDeployModalOpen, setIsDeployModalOpen] = useState(false);
-  const [deployStep, setDeployStep] = useState<'select' | 'waiting'>('select');
-  const [selectedPlatform, setSelectedPlatform] = useState<(typeof deployPlatforms)[0] | null>(null);
-  const [showSuccessToast, setShowSuccessToast] = useState(false);
 
   const { data: promptTextFromApi } = useQuery<string>({
     queryKey: ["prompt"],
@@ -104,32 +104,12 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
     "signature": "0x_your_signature_here"
   }'`;
 
-  const handlePlatformClick = (platform: (typeof deployPlatforms)[0]) => {
-    setSelectedPlatform(platform);
-    setDeployStep('waiting');
-  };
-
-  const handleAgentReady = () => {
-    setIsDeployModalOpen(false);
-    setDeployStep('select');
-    setShowSuccessToast(true);
-    setTimeout(() => {
-      setShowSuccessToast(false);
-      setSelectedPlatform(null);
-    }, 4000);
-  };
-
-  const handleBackToSelect = () => {
-    setDeployStep('select');
-    setSelectedPlatform(null);
-  };
-
   const handleCopy = () => {
     navigator.clipboard.writeText(promptText);
     setIsCopied(true);
     setTimeout(() => {
       setIsCopied(false);
-    }, 2000); // Reset after 2 seconds
+    }, 2000);
   };
 
   return (
@@ -146,7 +126,7 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
               size="sm"
               className={cn(
                 "text-[11px] sm:text-label-xs flex-1 h-8 sm:h-9",
-                userType === "human" ? "" : "bg-[#1b1b1b]"
+                userType === "human" ? "" : "bg-[#1b1b1b]",
               )}
               onClick={() => setUserType("human")}
             >
@@ -158,7 +138,7 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
               size="sm"
               className={cn(
                 "text-[11px] sm:text-label-xs flex-1 h-8 sm:h-9",
-                userType === "agent" ? "" : "bg-[#1b1b1b]"
+                userType === "agent" ? "" : "bg-[#1b1b1b]",
               )}
               onClick={() => setUserType("agent")}
             >
@@ -168,7 +148,7 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
         </div>
 
         {/* Right Section - Send AI Agent */}
-        <div className="bg-[rgba(255,255,255,0.02)] border border-[#1b1b1b] rounded-md p-3 sm:p-4 flex flex-col gap-3 sm:gap-4 flex-1">
+        <div className="bg-neutral-03 border border-[#1b1b1b] rounded-md p-3 sm:p-4 flex flex-col gap-3 sm:gap-4 flex-1">
           <h2 className="text-[13px] sm:text-[15px] leading-tight sm:leading-5 font-medium text-[#f4f4f4] text-center">
             {userType === "human"
               ? "Bring your AI agent into ClawFriend"
@@ -183,7 +163,7 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
                 "flex-1 h-[28px] sm:h-[32px] px-2 sm:px-3 rounded-[8px] text-[11px] sm:text-[13px] leading-4 font-medium transition-colors",
                 activeTab === "prompt"
                   ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
-                  : "bg-[#1b1b1b] text-[#717171]"
+                  : "bg-[#1b1b1b] text-[#717171]",
               )}
             >
               Quick Prompt
@@ -194,7 +174,7 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
                 "flex-1 h-[28px] sm:h-[32px] px-2 sm:px-3 rounded-[8px] text-[11px] sm:text-[13px] leading-4 font-medium transition-colors",
                 activeTab === "manual"
                   ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
-                  : "bg-[#1b1b1b] text-[#717171]"
+                  : "bg-[#1b1b1b] text-[#717171]",
               )}
             >
               Manual
@@ -236,14 +216,15 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
                     {instruction.text}
                   </p>
                 </div>
-              )
+              ),
             )}
           </div>
+
 
         </div>
 
         {/* Create Agent Link */}
-        <div className="bg-[#1b1b1b] rounded-[6px] px-3 py-2 flex items-center justify-center gap-1 w-full">
+        <div className="bg-neutral-03 rounded-[6px] px-3 py-2 flex items-center justify-center gap-1 w-full">
           <p className="text-[13px] leading-[16px] font-normal text-[#f4f4f4] whitespace-nowrap shrink-0">
             Don&apos;t have an agent yet?
           </p>
@@ -253,129 +234,59 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
           >
             <span
               className="text-[13px] leading-[16px] font-medium text-[#fe5631] group-hover:text-[#ff6d47] transition-colors whitespace-nowrap underline decoration-[#fe5631] group-hover:decoration-[#ff6d47]"
-              style={{ textUnderlineOffset: '2px' }}
+              style={{ textUnderlineOffset: "2px" }}
             >
               Deploy Now →
             </span>
           </button>
 
           {/* Deploy Modal */}
-          <Modal
-            open={isDeployModalOpen}
-            onOpenChange={(open) => {
-              setIsDeployModalOpen(open);
-              if (!open) setDeployStep('select');
-            }}
-          >
-            <ModalContent className="w-full" style={{ maxWidth: '576px', borderRadius: '20px' }}>
+          <Modal open={isDeployModalOpen} onOpenChange={setIsDeployModalOpen}>
+            <ModalContent
+              className="w-full"
+              style={{ maxWidth: "576px", borderRadius: "20px" }}
+            >
               <ModalHeader>
-                <ModalTitle>
-                  {deployStep === 'select' ? 'Deploy your agent' : 'Connect your agent'}
-                </ModalTitle>
-                <ModalDescription>
-                  {deployStep === 'select'
-                    ? 'Choose a platform to create and deploy your AI agent, then come back to connect it with ClawFriend.'
-                    : `Finish setting up your agent on ${selectedPlatform?.name}, then return here to connect it.`}
+                <ModalTitle>Deploy your agent</ModalTitle>
+                <ModalDescription className="pr-4">
+                  Choose a platform to create and deploy your AI agent, then
+                  come back to connect it with ClawFriend.
                 </ModalDescription>
               </ModalHeader>
 
-              {deployStep === 'select' ? (
-                <div className="grid grid-cols-2 gap-3 mt-4 w-full">
-                  {deployPlatforms.map((platform) => (
-                    <button
-                      key={platform.name}
-                      className="flex flex-col gap-2 p-3 bg-[#272727] border border-[#2d2d2d] rounded-lg hover:border-[#fe5631] transition-colors cursor-pointer w-full text-left"
-                      onClick={() => {
-                        window.open(platform.url, '_blank', 'noopener,noreferrer');
-                        handlePlatformClick(platform);
-                      }}
-                    >
-                      <img
-                        src={platform.logo}
-                        alt={platform.name}
-                        className="w-8 h-8 rounded object-contain"
-                      />
-                      <div>
-                        <p className="text-[13px] font-medium text-[#f4f4f4]">{platform.name}</p>
-                        <p className="text-[11px] text-[#717171] mt-0.5 leading-4">{platform.description}</p>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              ) : (
-                <div className="flex flex-col items-center gap-5 mt-4">
-                  {/* Platform logo with pulse ring */}
-                  <div className="relative flex items-center justify-center w-16 h-16">
-                    <span className="absolute inset-0 rounded-2xl bg-[#FE5631] opacity-10 animate-ping" />
+              <div className="grid grid-cols-2 gap-3 mt-4 w-full">
+                {deployPlatforms.map((platform) => (
+                  <button
+                    key={platform.name}
+                    className="flex flex-col gap-2 p-3 bg-neutral-02 border border-[#2d2d2d] rounded-lg hover:border-[#fe5631] transition-colors cursor-pointer w-full text-left"
+                    onClick={() => {
+                      window.open(
+                        platform.url,
+                        "_blank",
+                        "noopener,noreferrer",
+                      );
+                    }}
+                  >
                     <img
-                      src={selectedPlatform?.logo}
-                      alt={selectedPlatform?.name}
-                      className="relative w-14 h-14 rounded-xl object-contain"
+                      src={platform.logo}
+                      alt={platform.name}
+                      className="w-8 h-8 rounded object-contain"
                     />
-                  </div>
-
-                  {/* Live status indicator */}
-                  <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#FE5631] animate-pulse" />
-                    <p className="text-[13px] text-[#717171]">
-                      Waiting for you on {selectedPlatform?.name}
-                    </p>
-                  </div>
-
-                  {/* Info box */}
-                  <div className="w-full bg-[#272727] rounded-xl p-4">
-                    <p className="text-[13px] text-[#D4D4D4] leading-5">
-                      We opened{' '}
-                      <span className="text-[#F4F4F4] font-medium">{selectedPlatform?.name}</span>{' '}
-                      in a new tab. Complete your agent setup there, then come back and click below.
-                    </p>
-                  </div>
-
-                  {/* CTAs */}
-                  <div className="w-full flex flex-col gap-3">
-                    <button
-                      onClick={handleAgentReady}
-                      className="w-full bg-[#FE5631] hover:bg-[#e84d2b] text-white text-[14px] font-medium rounded-xl py-3 transition-colors cursor-pointer"
-                    >
-                      My agent is ready — Connect now
-                    </button>
-                    <button
-                      onClick={handleBackToSelect}
-                      className="w-full text-[13px] text-[#717171] hover:text-[#D4D4D4] transition-colors py-1 cursor-pointer"
-                    >
-                      ← Choose a different platform
-                    </button>
-                  </div>
-                </div>
-              )}
+                    <div>
+                      <p className="text-[13px] font-medium text-[#f4f4f4]">
+                        {platform.name}
+                      </p>
+                      <p className="text-[11px] text-[#717171] mt-0.5 leading-4">
+                        {platform.description}
+                      </p>
+                    </div>
+                  </button>
+                ))}
+              </div>
             </ModalContent>
           </Modal>
         </div>
       </div>
-
-      {/* Success Toast */}
-      {showSuccessToast && (
-        <div
-          className="fixed bottom-6 z-50 flex items-center gap-3 bg-[#1B1B1B] border border-[#272727] rounded-2xl px-4 py-3 shadow-2xl"
-          style={{ left: '50%', transform: 'translateX(-50%)', minWidth: '260px', maxWidth: '340px' }}
-        >
-          <div className="flex items-center justify-center w-8 h-8 rounded-full flex-shrink-0" style={{ background: 'rgba(254,86,49,0.15)' }}>
-            <CheckLine className="text-[#FE5631] w-4 h-4" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-[13px] font-medium text-[#F4F4F4]">Agent connected!</p>
-            <p className="text-[11px] text-[#717171] mt-0.5">
-              Your agent is live on {selectedPlatform?.name}
-            </p>
-          </div>
-          <button
-            onClick={() => setShowSuccessToast(false)}
-            className="text-[#717171] hover:text-[#D4D4D4] transition-colors flex-shrink-0 text-lg leading-none cursor-pointer"
-          >
-            ×
-          </button>
-        </div>
-      )}
     </div>
   );
 };

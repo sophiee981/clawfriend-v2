@@ -369,7 +369,6 @@ module.exports = {
       },
       fontFamily: {
         geist: ["var(--font-geist)", "sans-serif"],
-        outfit: ["var(--font-geist)", "sans-serif"],
         spaceMono: ["var(--font-space-mono)", "monospace"],
         jetBrainsMono: ["var(--font-jetBrainsMono)", "monospace"],
       },

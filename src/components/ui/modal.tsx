@@ -42,21 +42,19 @@ const ModalContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed inset-x-0 bottom-0 z-50 w-full max-w-full bg-neutral-01 p-6 shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-bottom-0 data-[state=open]:slide-in-from-bottom-0",
-        "md:fixed md:left-[50%] md:top-[50%] md:bottom-auto md:bg-modal md:w-full md:translate-x-[-50%] md:translate-y-[-50%] md:grid md:gap-4 md:data-[state=closed]:zoom-out-95 md:data-[state=open]:zoom-in-95 md:data-[state=closed]:slide-out-to-left-1/2 md:data-[state=closed]:slide-out-to-top-[48%] md:data-[state=open]:slide-in-from-left-1/2 md:data-[state=open]:slide-in-from-top-[48%] md:data-[state=closed]:slide-out-to-bottom-auto",
+        "fixed inset-x-0 bottom-0 z-50 w-full max-w-full rounded-t-lg bg-neutral-01 p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-bottom-0 data-[state=open]:slide-in-from-bottom-0",
+        "md:fixed md:left-[50%] md:top-[50%] md:bottom-auto md:bg-modal md:w-full md:translate-x-[-50%] md:translate-y-[-50%] md:grid md:gap-4 md:rounded-lg md:data-[state=closed]:zoom-out-95 md:data-[state=open]:zoom-in-95 md:data-[state=closed]:slide-out-to-left-1/2 md:data-[state=closed]:slide-out-to-top-[48%] md:data-[state=open]:slide-in-from-left-1/2 md:data-[state=open]:slide-in-from-top-[48%] md:data-[state=closed]:slide-out-to-bottom-auto",
         className
       )}
       {...props}
     >
-      <div className="flex items-start gap-4">
-        <div className="flex-1 min-w-0">{children}</div>
-        {closeable && (
-          <DialogPrimitive.Close className="flex-shrink-0 flex items-center justify-center border border-[#1B1B1B] rounded-full p-2 transition-opacity hover:opacity-80 focus:outline-none disabled:pointer-events-none">
-            <CloseLine className="text-[#F8F8F9] w-4 h-4" />
-            <span className="sr-only">Close</span>
-          </DialogPrimitive.Close>
-        )}
-      </div>
+      {children}
+      {closeable && (
+        <DialogPrimitive.Close className="absolute right-4 top-4 opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground bg-bg-overlay p-[10px] rounded-full">
+          <CloseLine className="text-[#F8F8F9]" />
+          <span className="sr-only">Close</span>
+        </DialogPrimitive.Close>
+      )}
     </DialogPrimitive.Content>
   </ModalPortal>
 ));

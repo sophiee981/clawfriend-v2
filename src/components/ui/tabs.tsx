@@ -115,7 +115,7 @@ function TabsComponent<T extends string | number = string>(
         }
       }}
       className={cn(
-        "relative flex shrink-0 border-b border-neutral-900 w-full overflow-x-auto scrollbar-hide",
+        "relative flex shrink-0 border-b border-neutral-02 w-full overflow-x-auto scrollbar-hide",
         maxWidth,
         className
       )}

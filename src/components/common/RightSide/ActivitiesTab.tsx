@@ -25,7 +25,9 @@ export const ActivitiesTab = ({ subject, trader, enabled = true }: ActivitiesTab
   return (
     <div className="flex w-full flex-col overflow-y-auto scrollbar-hover-hide">
       {isLoading ? (
-        <ActivitySkeleton count={5} />
+        <div className="px-4">
+          <ActivitySkeleton count={7} />
+        </div>
       ) : activities.length === 0 ? (
         <div className="flex items-center justify-center p-8 text-neutral-tertiary">
           No data available

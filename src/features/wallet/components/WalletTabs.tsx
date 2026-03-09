@@ -22,7 +22,7 @@ export const WalletTabs = ({ address }: WalletTabsProps) => {
 
   return (
     <div className="flex flex-col flex-1 relative">
-      <div className="sticky top-0 z-10 bg-neutral-950 border-t border-neutral-900">
+      <div className="sticky top-0 z-10 bg-neutral-950 border-t border-neutral-02">
         <Tabs
           tabs={tabs}
           activeTab={activeTab}

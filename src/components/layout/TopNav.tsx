@@ -70,7 +70,7 @@ export const TopNav = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-40 flex items-center justify-between border-b border-neutral-900 bg-neutral-01 px-4 py-2 md:hidden ">
+    <nav className="sticky top-0 z-40 flex items-center justify-between border-b border-neutral-02 bg-neutral-01 px-4 py-2 md:hidden ">
       {/* Logo/Icon on the left */}
       <Link href="/" className="flex items-center">
         <Image
@@ -94,7 +94,7 @@ export const TopNav = () => {
             {isLoggedIn && userInfo ? (
               <>
                 {/* User info header */}
-                <div className="flex items-center gap-3 border-b border-neutral-900 p-4">
+                <div className="flex items-center gap-3 border-b border-neutral-02 p-4">
                   <div className="relative h-12 w-12 overflow-hidden rounded-lg bg-neutral-900">
                     <img
                       src={getAvatarUrl(userInfo.owner.x_handle)}

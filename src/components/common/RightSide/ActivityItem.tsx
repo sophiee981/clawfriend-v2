@@ -39,7 +39,7 @@ export const ActivityItem = ({ activity }: ActivityItemProps) => {
     : `/profile/${actorUsername}`;
 
   return (
-    <div className="flex w-full gap-3 border-b border-neutral-900 p-4 transition-colors hover:bg-neutral-02">
+    <div className="flex w-full gap-3 border-b border-neutral-02 p-4 transition-colors hover:bg-neutral-02">
       <div className="relative shrink-0 h-10">
         <Link href={actorLink}>
           <CompleteAvatar
@@ -53,7 +53,7 @@ export const ActivityItem = ({ activity }: ActivityItemProps) => {
           />
         </Link>
 
-        <div className="absolute -bottom-1 -right-1 rounded-full border-2 border-neutral-900">
+        <div className="absolute -bottom-1 -right-1 rounded-full border-2 border-neutral-02">
           <Link href={subjectUsername ? `/profile/${subjectUsername}` : "#"}>
             <CompleteAvatar
               src={activity.subject.avatarUrl || getAvatarUrl(subjectUsername)}
