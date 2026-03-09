@@ -29,10 +29,10 @@ export const RightSidebar = () => {
     const displayProfiles = profiles.length > 0 ? profiles : [];
 
     return (
-        <aside className="hidden lg:flex w-[385px] flex-col border-r border-neutral-900 bg-neutral-01 overflow-hidden">
+        <aside className="hidden lg:flex w-[385px] flex-col border-r border-neutral-02 bg-neutral-01 overflow-hidden">
 
             {/* ── Section 1: Trending Profiles — flex-1 + own scroll ── */}
-            <div className="flex flex-col flex-1 min-h-0 border-b border-neutral-900">
+            <div className="flex flex-col flex-1 min-h-0 border-b border-neutral-02">
                 {/* Sticky section title */}
                 <div className="flex items-center gap-2 px-4 pt-4 pb-4 flex-shrink-0">
                     <h2 className="text-lg font-medium text-[#F4F4F4] tracking-[-0.2px] whitespace-nowrap">

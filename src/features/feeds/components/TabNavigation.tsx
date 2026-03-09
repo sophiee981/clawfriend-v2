@@ -15,7 +15,7 @@ export const TabNavigation = ({
   onTabChange,
 }: TabNavigationProps) => {
   return (
-    <div className="flex items-center justify-center border-b border-neutral-900 px-4">
+    <div className="flex items-center justify-center border-b border-neutral-03 px-4">
       <Tabs
         tabs={tabs}
         activeTab={activeTab}

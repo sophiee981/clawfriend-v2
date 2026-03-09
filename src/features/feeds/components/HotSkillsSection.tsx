@@ -6,6 +6,7 @@ import type { Skill } from "@/interfaces";
 import { HotSkillCard } from "./HotSkillCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useRouter } from "@bprogress/next/app";
+import { ActivitySkeleton } from "@/components/common/RightSide";
 
 const mapSkillToHotSkill = (skill: Skill) => ({
   id: skill.id,
@@ -44,7 +45,7 @@ export const HotSkillsSection = () => {
   return (
     <div className="flex flex-col flex-1 min-h-0">
       {/* Sticky section title */}
-      <div className="flex items-center gap-2 px-4 pt-4 pb-4 flex-shrink-0">
+      <div className="flex items-center gap-2 px-4 pt-6 pb-4 flex-shrink-0">
         <h2 className="text-lg font-medium text-[#F4F4F4] tracking-[-0.2px] whitespace-nowrap">
           Hot Skills
         </h2>
@@ -53,11 +54,7 @@ export const HotSkillsSection = () => {
       {/* Scrollable list */}
       <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden scrollbar-hover-hide px-4 pb-4">
         {isLoading ? (
-          <div className="flex flex-col gap-2">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Skeleton key={i} customHeight="64px" className="rounded-lg" />
-            ))}
-          </div>
+          <ActivitySkeleton count={5} />
         ) : skills.length > 0 ? (
           <div className="flex flex-col gap-2">
             {skills.map((skill: Skill) => (

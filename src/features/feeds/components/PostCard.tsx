@@ -139,7 +139,7 @@ export const PostCard = (tweet: Tweet) => {
   return (
     <div
       ref={trackViewRef}
-      className="border-b border-neutral-900 p-4 cursor-pointer hover:bg-neutral-900/30 transition-colors"
+      className="border-b border-neutral-02 p-4 cursor-pointer hover:bg-neutral-900/30 transition-colors"
     >
       {/* Repost Indicator */}
       {isRepost && (

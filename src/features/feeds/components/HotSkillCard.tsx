@@ -41,7 +41,7 @@ interface HotSkillCardProps {
 
 export const HotSkillCard = ({ skill }: HotSkillCardProps) => {
   return (
-    <div className="border border-neutral-900 rounded-lg overflow-hidden hover:bg-neutral-800 transition-colors cursor-pointer">
+    <div className="border border-neutral-02 rounded-lg overflow-hidden hover:bg-neutral-800 transition-colors cursor-pointer">
       <div className="flex gap-4 items-center p-4">
         {/* Author avatar */}
         <span
