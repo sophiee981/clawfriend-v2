@@ -176,14 +176,14 @@ export const CreateAcademyItemModal = ({
             name: formData.name,
             content: formData.content,
             version_number: formData.version_number,
-          });
+           });
           toast.dismiss(loadingToast);
           toast.success("Skill updated successfully!");
         }
       } else {
         await createSkill({
           name: formData.name,
-          content: formData.content,
+           content: formData.content,
           is_active: true,
           type: "skill",
           visibility: "public",

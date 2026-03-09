@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  ChainPair,
   Crown,
   GlobeAmericas,
   HomeFill,
@@ -20,11 +21,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
+import { chains } from "@/configs/wallet.config";
+import { useAuth } from "@/providers/AuthProvider";
 import { getTwitterLoginUrl } from "@/services/auth.service";
 import { useAuthStore } from "@/stores/auth.store";
 import { cn, getAvatarUrl } from "@/utils";
+import { formatNumberShort } from "@/utils/number";
 import { toast } from "@/utils/toast";
-import { ExternalLink } from "lucide-react";
+import { getBalanceForChain } from "@/utils/web3";
+import { useQuery } from "@tanstack/react-query";
+import { ExternalLink, Wallet } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -81,6 +87,16 @@ export const LeftSidebar = () => {
   const pathname = usePathname();
   const { isLoggedIn, userInfo, isCheckingAuth, checkAuthStatus, logout } =
     useAuthStore();
+  const { walletAddress } = useAuth();
+
+  // Fetch BNB balance when wallet is connected
+  const chainId = chains[0]?.id ?? 56;
+  const { data: bnbBalance } = useQuery({
+    queryKey: ["bnbBalance-sidebar", chainId, walletAddress],
+    queryFn: () => getBalanceForChain(chainId, walletAddress as `0x${string}`),
+    enabled: !!walletAddress,
+    refetchInterval: 30_000, // refresh every 30s
+  });
 
   useEffect(() => {
     checkAuthStatus();
@@ -217,9 +233,10 @@ export const LeftSidebar = () => {
       ) : isLoggedIn && userInfo ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="mt-auto border border-neutral-900 rounded-lg overflow-hidden hover:bg-neutral-900 transition-colors cursor-pointer w-full">
-              <div className="flex items-center gap-2 p-3">
-                <div className="relative h-6 w-6 overflow-hidden rounded-lg flex-shrink-0 bg-neutral-900">
+            <button className="mt-auto border border-neutral-900 rounded-lg overflow-hidden hover:bg-neutral-900 transition-colors cursor-pointer w-full text-left">
+              {/* Row 1: X avatar + @handle */}
+              <div className="flex items-center gap-2 p-3 border-b border-neutral-900">
+                <div className="relative h-6 w-6 overflow-hidden rounded-full flex-shrink-0 bg-neutral-900">
                   <img
                     src={getAvatarUrl(userInfo.owner.x_handle)}
                     alt={userInfo.owner.x_handle || "User"}
@@ -227,12 +244,31 @@ export const LeftSidebar = () => {
                   />
                 </div>
                 <div className="flex flex-1 items-center justify-between min-w-0">
-                  <span className="text-sm font-medium text-neutral-primary truncate">
-                    {userInfo.owner.x_handle || "User"}
+                  <span className="text-[15px] text-neutral-primary truncate">
+                    @{userInfo.owner.x_handle || "User"}
                   </span>
-                  <MoreVertical className="h-4 w-4 text-neutral-tertiary flex-shrink-0" />
+                  <MoreVertical className="h-5 w-5 text-neutral-tertiary flex-shrink-0" />
                 </div>
               </div>
+
+              {/* Row 2: BNB wallet balance (only when wallet is connected) */}
+              {walletAddress && (
+                <div className="flex items-center gap-2 p-3">
+                  <div className="flex items-center justify-center p-0.5 flex-shrink-0">
+                    <Wallet className="h-5 w-5 text-neutral-primary" />
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <span className="text-[15px] text-neutral-primary">
+                      {bnbBalance != null
+                        ? formatNumberShort(parseFloat(bnbBalance))
+                        : "—"}
+                    </span>
+                    <div className="flex items-center p-0.5">
+                      <ChainPair className="h-4 w-4" />
+                    </div>
+                  </div>
+                </div>
+              )}
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48 bg-modal">
@@ -250,19 +286,6 @@ export const LeftSidebar = () => {
       ) : (
         <Button onClick={handleLoginClick}>Sign in</Button>
       )}
-      {/* <div className="flex items-center gap-2 p-3">
-        <div className="flex items-center justify-center p-0.5">
-          <Wallet className="h-6 w-6 text-neutral-tertiary" />
-        </div>
-        <div className="flex items-center gap-1">
-          <span className="text-sm font-medium text-neutral-primary">
-            2,375.8
-          </span>
-          <div className="flex items-center p-0.5">
-            <ChainPair className="h-4 w-4" />
-          </div>
-        </div>
-      </div> */}
     </aside>
   );
 };
