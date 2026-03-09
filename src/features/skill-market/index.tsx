@@ -35,13 +35,15 @@ import { AcademyItem, AcademyItemType } from "./type";
 type SortFilter = "hottest" | "newest" | "trending";
 
 // Map Skill/Prompt from API to AcademyItem format
-const mapSkillToAcademyItem = (
-  skill: Skill,
-): AcademyItem => {
+const mapSkillToAcademyItem = (skill: Skill): AcademyItem => {
   // Get tags from first version if available, otherwise fallback to skill tags
-  const tagsToUse = (skill.versions && skill.versions.length > 0 && skill.versions[0].tags && skill.versions[0].tags.length > 0)
-    ? skill.versions[0].tags.map((tag) => tag.name)
-    : (skill.tags?.map((tag) => tag.name) || []);
+  const tagsToUse =
+    skill.versions &&
+    skill.versions.length > 0 &&
+    skill.versions[0].tags &&
+    skill.versions[0].tags.length > 0
+      ? skill.versions[0].tags.map((tag) => tag.name)
+      : skill.tags?.map((tag) => tag.name) || [];
 
   return {
     id: skill.id,
@@ -91,7 +93,7 @@ const SkillAcademyContent = ({
   const router = useRouter();
 
   // Initialize with default values first, will be synced from URL in useEffect
-  const [sortFilter, setSortFilter] = useState<SortFilter>("hottest");
+  const [sortFilter, setSortFilter] = useState<SortFilter>("trending");
   const [searchInput, setSearchInput] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -115,7 +117,7 @@ const SkillAcademyContent = ({
 
   // Use scroll to top hook
   const { showScrollTop, scrollToTop } = useScrollToTop({
-    containerSelector: '.skill-market-scroll-container',
+    containerSelector: ".skill-market-scroll-container",
     threshold: 300,
     behavior: "smooth",
   });
@@ -143,12 +145,18 @@ const SkillAcademyContent = ({
 
     if (!sortFromUrl) {
       const newParams = new URLSearchParams(params.toString());
-      newParams.set("sort", "hottest");
+      newParams.set("sort", "trending");
       const newUrl = `${window.location.pathname}?${newParams.toString()}`;
       router.replace(newUrl, { scroll: false });
-      setSortFilter("hottest");
+      setSortFilter("trending");
     } else {
-      setSortFilter(sortFromUrl === "newest" ? "newest" : sortFromUrl === "trending" ? "trending" : "hottest");
+      setSortFilter(
+        sortFromUrl === "newest"
+          ? "newest"
+          : sortFromUrl === "hottest"
+            ? "hottest"
+            : "trending",
+      );
     }
 
     setSearchInput(search);
@@ -172,7 +180,13 @@ const SkillAcademyContent = ({
 
       isSyncingFromUrl.current = true;
 
-      setSortFilter(sortFromUrl === "newest" ? "newest" : sortFromUrl === "trending" ? "trending" : "hottest");
+      setSortFilter(
+        sortFromUrl === "newest"
+          ? "newest"
+          : sortFromUrl === "trending"
+            ? "trending"
+            : "hottest",
+      );
       setSearchInput(search);
       setSearchQuery(search);
       setSelectedTags(newTags);
@@ -211,7 +225,12 @@ const SkillAcademyContent = ({
         page: pageParam,
         limit: 18,
         is_active: true,
-        sort_by: sortFilter === "newest" ? "created_at" : sortFilter === "trending" ? "trending" : "hottest",
+        sort_by:
+          sortFilter === "newest"
+            ? "created_at"
+            : sortFilter === "trending"
+              ? "trending"
+              : "hottest",
         sort_order: "desc",
       });
       return response.data;
@@ -235,9 +254,9 @@ const SkillAcademyContent = ({
     initialPageParam: 1,
     initialData: initialSkillsData?.data
       ? {
-        pages: [initialSkillsData],
-        pageParams: [1],
-      }
+          pages: [initialSkillsData],
+          pageParams: [1],
+        }
       : undefined,
   });
 
@@ -247,7 +266,7 @@ const SkillAcademyContent = ({
     return data.pages.flatMap((page) =>
       page?.data && Array.isArray(page.data)
         ? page.data.map((item) => mapSkillToAcademyItem(item))
-        : []
+        : [],
     );
   }, [data]);
 
@@ -267,7 +286,7 @@ const SkillAcademyContent = ({
           fetchNextPage();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     observer.observe(loadMoreRef.current);
@@ -290,7 +309,7 @@ const SkillAcademyContent = ({
   // Extract trending tags (limit to 20)
   const trendingTags = useMemo((): TrendingTag[] => {
     if (!trendingTagsData?.tags) return [];
-    return trendingTagsData.tags
+    return trendingTagsData.tags;
   }, [trendingTagsData]);
 
   // Get view width for responsive tag display
@@ -424,7 +443,7 @@ const SkillAcademyContent = ({
       "confirmDelete called with deleteItemId:",
       deleteItemId,
       "itemIdToDelete:",
-      itemIdToDelete
+      itemIdToDelete,
     );
 
     if (!itemIdToDelete) {
@@ -439,7 +458,7 @@ const SkillAcademyContent = ({
         "Deleting skill with ID:",
         itemIdToDelete,
         "type:",
-        typeof itemIdToDelete
+        typeof itemIdToDelete,
       );
       // Pass the ID directly (can be string or number)
       await deleteSkill(itemIdToDelete);
@@ -498,12 +517,12 @@ const SkillAcademyContent = ({
               data: page.data.data.map((skill: any) =>
                 skill.id === itemId
                   ? { ...skill, download_count: skill.download_count + 1 }
-                  : skill
+                  : skill,
               ),
             },
           })),
         };
-      }
+      },
     );
   };
 
@@ -538,7 +557,7 @@ const SkillAcademyContent = ({
                   "flex-1 px-4 py-2 text-sm font-medium rounded-[8px] transition-colors",
                   sortFilter === "trending"
                     ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
-                    : "bg-[#1b1b1b] text-[#717171]"
+                    : "bg-[#1b1b1b] text-[#717171]",
                 )}
               >
                 Trending
@@ -549,7 +568,7 @@ const SkillAcademyContent = ({
                   "flex-1 px-4 py-2 text-sm font-medium rounded-[8px] transition-colors",
                   sortFilter === "newest"
                     ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
-                    : "bg-[#1b1b1b] text-[#717171]"
+                    : "bg-[#1b1b1b] text-[#717171]",
                 )}
               >
                 New
@@ -560,7 +579,7 @@ const SkillAcademyContent = ({
                   "flex-1 px-4 py-2 text-sm font-medium rounded-[8px] transition-colors",
                   sortFilter === "hottest"
                     ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
-                    : "bg-[#1b1b1b] text-[#717171]"
+                    : "bg-[#1b1b1b] text-[#717171]",
                 )}
               >
                 Rate
@@ -612,7 +631,7 @@ const SkillAcademyContent = ({
                         onClick={() => handleTagToggle(tag.name)}
                         className={cn(
                           "transition-all duration-200",
-                          isSelected ? "" : ""
+                          isSelected ? "" : "",
                         )}
                       >
                         <Badge
@@ -622,7 +641,7 @@ const SkillAcademyContent = ({
                             "cursor-pointer text-xs font-normal transition-all duration-200",
                             isSelected
                               ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631] border-none hover:bg-[rgba(254,86,49,0.3)]"
-                              : "text-neutral-tertiary bg-neutral-02 hover:bg-neutral-03 border-none"
+                              : "text-neutral-tertiary bg-neutral-02 hover:bg-neutral-03 border-none",
                           )}
                         >
                           #{tag.name}
@@ -654,7 +673,7 @@ const SkillAcademyContent = ({
 
       {/* Content Grid - Responsive padding */}
       <div className="flex flex-1 flex-col gap-4 md:gap-6 pt-4 md:pt-6 w-full px-4 md:px-6">
-        {(isLoading || (isFetching && !isFetchingNextPage)) ? (
+        {isLoading || (isFetching && !isFetchingNextPage) ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {Array.from({ length: 6 }).map((_, index) => (
               <SkillCardSkeleton key={`skeleton-${index}`} />
@@ -731,7 +750,6 @@ const SkillAcademyContent = ({
             : undefined
         }
       />
-
 
       {/* Scroll to Top Button */}
       {showScrollTop && (
