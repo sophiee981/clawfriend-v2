@@ -32,10 +32,11 @@ import { SkillCard } from "./components/SkillCard";
 import { SkillCardSkeleton } from "./components/SkillCardSkeleton";
 import { AcademyItem, AcademyItemType } from "./type";
 
+type SortFilter = "hottest" | "newest";
+
 // Map Skill/Prompt from API to AcademyItem format
 const mapSkillToAcademyItem = (
   skill: Skill,
-  type: AcademyItemType
 ): AcademyItem => {
   // Get tags from first version if available, otherwise fallback to skill tags
   const tagsToUse = (skill.versions && skill.versions.length > 0 && skill.versions[0].tags && skill.versions[0].tags.length > 0)
@@ -60,7 +61,7 @@ const mapSkillToAcademyItem = (
         "@anonymous",
       username: skill.creator?.username,
     },
-    type: (skill.type as AcademyItemType) || type,
+    type: (skill.type as AcademyItemType) || "skill",
     tags: tagsToUse,
     likes: skill.like_count,
     uses: skill.download_count,
@@ -90,7 +91,7 @@ const SkillAcademyContent = ({
   const router = useRouter();
 
   // Initialize with default values first, will be synced from URL in useEffect
-  const [activeTab, setActiveTab] = useState<AcademyItemType>("skill");
+  const [sortFilter, setSortFilter] = useState<SortFilter>("hottest");
   const [searchInput, setSearchInput] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -133,30 +134,23 @@ const SkillAcademyContent = ({
     if (isInitialized.current) return;
 
     const params = getSearchParams();
-    const tabFromUrl = params.get("tab");
+    const sortFromUrl = params.get("sort");
     const search = params.get("search") || "";
     const tagsParam = params.get("tags");
     const tags = tagsParam ? tagsParam.split(",").filter(Boolean) : [];
 
     isSyncingFromUrl.current = true;
 
-    // If no tab param in URL, redirect to default tab
-    if (!tabFromUrl) {
+    if (!sortFromUrl) {
       const newParams = new URLSearchParams(params.toString());
-      newParams.set("tab", "skill");
+      newParams.set("sort", "hottest");
       const newUrl = `${window.location.pathname}?${newParams.toString()}`;
       router.replace(newUrl, { scroll: false });
-      setActiveTab("skill");
+      setSortFilter("hottest");
     } else {
-      // Sync tab from URL
-      const newTab: AcademyItemType =
-        tabFromUrl === "skill" ? "skill"
-          : tabFromUrl === "workflow" ? "workflow"
-            : "prompt";
-      setActiveTab(newTab);
+      setSortFilter(sortFromUrl === "newest" ? "newest" : "hottest");
     }
 
-    // Sync search and tags
     setSearchInput(search);
     setSearchQuery(search);
     setSelectedTags(tags);
@@ -171,34 +165,16 @@ const SkillAcademyContent = ({
   useEffect(() => {
     const handlePopState = () => {
       const params = getSearchParams();
-      const tabFromUrl = params.get("tab");
+      const sortFromUrl = params.get("sort");
       const search = params.get("search") || "";
       const tagsParam = params.get("tags");
       const newTags = tagsParam ? tagsParam.split(",").filter(Boolean) : [];
 
       isSyncingFromUrl.current = true;
 
-      // Sync tab
-      if (tabFromUrl) {
-        const newTab: AcademyItemType =
-          tabFromUrl === "skill" ? "skill"
-            : tabFromUrl === "workflow" ? "workflow"
-              : "prompt";
-        setActiveTab(newTab);
-      } else {
-        // If no tab param in URL, redirect to default tab
-        const newParams = new URLSearchParams(params.toString());
-        newParams.set("tab", "skill");
-        const newUrl = `${window.location.pathname}?${newParams.toString()}`;
-        router.replace(newUrl, { scroll: false });
-        setActiveTab("skill");
-      }
-
-      // Sync search
+      setSortFilter(sortFromUrl === "newest" ? "newest" : "hottest");
       setSearchInput(search);
       setSearchQuery(search);
-
-      // Sync tags
       setSelectedTags(newTags);
 
       setTimeout(() => {
@@ -223,8 +199,8 @@ const SkillAcademyContent = ({
     isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey: [
-      activeTab,
-      activeTab,
+      "skills",
+      sortFilter,
       searchQuery || null,
       selectedTags.length > 0 ? selectedTags.join(",") : null,
     ],
@@ -235,7 +211,8 @@ const SkillAcademyContent = ({
         page: pageParam,
         limit: 18,
         is_active: true,
-        type: activeTab,
+        sort_by: sortFilter === "newest" ? "created_at" : "hottest",
+        sort_order: "desc",
       });
       return response.data;
     },
@@ -269,10 +246,10 @@ const SkillAcademyContent = ({
     if (!data?.pages) return [];
     return data.pages.flatMap((page) =>
       page?.data && Array.isArray(page.data)
-        ? page.data.map((item) => mapSkillToAcademyItem(item, activeTab))
+        ? page.data.map((item) => mapSkillToAcademyItem(item))
         : []
     );
-  }, [data, activeTab]);
+  }, [data]);
 
   // Intersection Observer for infinite scroll
   useEffect(() => {
@@ -345,13 +322,13 @@ const SkillAcademyContent = ({
   // Items are already filtered by API based on selectedTags
   const currentItems = items;
 
-  // Update URL when tab changes
-  const handleTabChange = (id: AcademyItemType) => {
-    if (id === activeTab) return; // Don't do anything if clicking the same tab
+  // Update URL when sort filter changes
+  const handleSortChange = (sort: SortFilter) => {
+    if (sort === sortFilter) return;
 
-    setActiveTab(id);
+    setSortFilter(sort);
     const params = new URLSearchParams();
-    params.set("tab", id);
+    params.set("sort", sort);
     if (searchQuery.trim()) {
       params.set("search", searchQuery.trim());
     }
@@ -369,14 +346,12 @@ const SkillAcademyContent = ({
 
   // Handle search (debounced) - update URL when searchQuery changes
   useEffect(() => {
-    // Don't update URL if we're currently syncing from URL or not initialized yet
     if (isSyncingFromUrl.current || !isInitialized.current) {
       return;
     }
 
-    // Update URL when searchQuery changes (debounced)
     const params = new URLSearchParams();
-    params.set("tab", activeTab);
+    params.set("sort", sortFilter);
     if (searchQuery.trim()) {
       params.set("search", searchQuery.trim());
     }
@@ -385,7 +360,7 @@ const SkillAcademyContent = ({
     }
     const newUrl = `${window.location.pathname}?${params.toString()}`;
     router.push(newUrl, { scroll: false });
-  }, [searchQuery, activeTab, router, selectedTags]);
+  }, [searchQuery, sortFilter, router, selectedTags]);
 
   // Handle tag filter toggle
   const handleTagToggle = (tag: string) => {
@@ -394,9 +369,8 @@ const SkillAcademyContent = ({
         ? prev.filter((t) => t !== tag)
         : [...prev, tag];
 
-      // Update URL
       const params = getSearchParams();
-      params.set("tab", activeTab);
+      params.set("sort", sortFilter);
       if (searchQuery.trim()) {
         params.set("search", searchQuery.trim());
       } else {
@@ -418,7 +392,7 @@ const SkillAcademyContent = ({
   const handleClearTags = () => {
     setSelectedTags([]);
     const params = getSearchParams();
-    params.set("tab", activeTab);
+    params.set("sort", sortFilter);
     if (searchQuery.trim()) {
       params.set("search", searchQuery.trim());
     } else {
@@ -430,7 +404,7 @@ const SkillAcademyContent = ({
   };
 
   const errorMessage = error
-    ? (error as any)?.error || `Failed to load ${activeTab}s`
+    ? (error as any)?.error || "Failed to load skills"
     : null;
 
   const handleEdit = (item: AcademyItem) => {
@@ -475,8 +449,8 @@ const SkillAcademyContent = ({
       // Refetch data
       queryClient.invalidateQueries({
         queryKey: [
-          activeTab,
-          activeTab,
+          "skills",
+          sortFilter,
           searchQuery || null,
           selectedTags.length > 0 ? selectedTags.join(",") : null,
         ],
@@ -495,8 +469,8 @@ const SkillAcademyContent = ({
     // Refetch data after create/update
     queryClient.invalidateQueries({
       queryKey: [
-        activeTab,
-        activeTab,
+        "skills",
+        sortFilter,
         searchQuery || null,
         selectedTags.length > 0 ? selectedTags.join(",") : null,
       ],
@@ -508,8 +482,8 @@ const SkillAcademyContent = ({
     // Optimistically update download count in query cache
     queryClient.setQueryData(
       [
-        activeTab,
-        activeTab,
+        "skills",
+        sortFilter,
         searchQuery || null,
         selectedTags.length > 0 ? selectedTags.join(",") : null,
       ],
@@ -555,44 +529,31 @@ const SkillAcademyContent = ({
           {/* Divider - Hidden on mobile */}
           <div className="hidden md:block w-[2px] h-5 bg-neutral-03 shrink-0"></div>
 
-          {/* Switch */}
-          <div className="md:w-auto md:min-w-[280px] shrink-0 bg-[#1b1b1b] rounded-[8px]">
-            <div className="rounded-[8px] flex gap-[2px] ">
+          {/* Sort Filter */}
+          <div className="md:w-auto shrink-0 bg-[#1b1b1b] rounded-[8px]">
+            <div className="rounded-[8px] flex gap-[2px]">
               <button
-                onClick={() => handleTabChange("skill")}
+                onClick={() => handleSortChange("hottest")}
                 className={cn(
                   "flex-1 px-4 py-2 text-sm font-medium rounded-[8px] transition-colors",
-                  activeTab === "skill"
+                  sortFilter === "hottest"
                     ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
                     : "bg-[#1b1b1b] text-[#717171]"
                 )}
               >
-                Skills
+                Hottest
               </button>
               <button
-                onClick={() => handleTabChange("workflow")}
+                onClick={() => handleSortChange("newest")}
                 className={cn(
                   "flex-1 px-4 py-2 text-sm font-medium rounded-[8px] transition-colors",
-                  activeTab === "workflow"
+                  sortFilter === "newest"
                     ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
                     : "bg-[#1b1b1b] text-[#717171]"
                 )}
               >
-                Workflows
+                Newest
               </button>
-              <button
-                onClick={() => handleTabChange("prompt")}
-                className={cn(
-                  "flex-1 px-4 py-2 text-sm font-medium rounded-[8px] transition-colors",
-                  activeTab === "prompt"
-                    ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
-                    : "bg-[#1b1b1b] text-[#717171]"
-                )}
-              >
-                Prompts
-              </button>
-
-
             </div>
           </div>
         </div>
@@ -719,7 +680,7 @@ const SkillAcademyContent = ({
         ) : (
           <div className="text-center py-12">
             <p className="text-body-md text-neutral-tertiary">
-              No {activeTab}s found. Be the first to create one!
+              No skills found. Be the first to create one!
             </p>
           </div>
         )}
@@ -733,7 +694,7 @@ const SkillAcademyContent = ({
             setEditItem(null);
           }
         }}
-        defaultType={activeTab}
+        defaultType="skill"
         editItem={editItem}
         onSuccess={handleModalSuccess}
       />
