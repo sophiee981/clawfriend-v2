@@ -541,7 +541,7 @@ const SkillAcademyContent = ({
                     : "bg-[#1b1b1b] text-[#717171]"
                 )}
               >
-                Hottest
+                Rate
               </button>
               <button
                 onClick={() => handleSortChange("newest")}
@@ -552,7 +552,7 @@ const SkillAcademyContent = ({
                     : "bg-[#1b1b1b] text-[#717171]"
                 )}
               >
-                Newest
+                New
               </button>
             </div>
           </div>
