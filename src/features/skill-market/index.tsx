@@ -32,7 +32,7 @@ import { SkillCard } from "./components/SkillCard";
 import { SkillCardSkeleton } from "./components/SkillCardSkeleton";
 import { AcademyItem, AcademyItemType } from "./type";
 
-type SortFilter = "hottest" | "newest";
+type SortFilter = "hottest" | "newest" | "trending";
 
 // Map Skill/Prompt from API to AcademyItem format
 const mapSkillToAcademyItem = (
@@ -148,7 +148,7 @@ const SkillAcademyContent = ({
       router.replace(newUrl, { scroll: false });
       setSortFilter("hottest");
     } else {
-      setSortFilter(sortFromUrl === "newest" ? "newest" : "hottest");
+      setSortFilter(sortFromUrl === "newest" ? "newest" : sortFromUrl === "trending" ? "trending" : "hottest");
     }
 
     setSearchInput(search);
@@ -172,7 +172,7 @@ const SkillAcademyContent = ({
 
       isSyncingFromUrl.current = true;
 
-      setSortFilter(sortFromUrl === "newest" ? "newest" : "hottest");
+      setSortFilter(sortFromUrl === "newest" ? "newest" : sortFromUrl === "trending" ? "trending" : "hottest");
       setSearchInput(search);
       setSearchQuery(search);
       setSelectedTags(newTags);
@@ -211,7 +211,7 @@ const SkillAcademyContent = ({
         page: pageParam,
         limit: 18,
         is_active: true,
-        sort_by: sortFilter === "newest" ? "created_at" : "hottest",
+        sort_by: sortFilter === "newest" ? "created_at" : sortFilter === "trending" ? "trending" : "hottest",
         sort_order: "desc",
       });
       return response.data;
@@ -533,15 +533,15 @@ const SkillAcademyContent = ({
           <div className="md:w-auto shrink-0 bg-[#1b1b1b] rounded-[8px]">
             <div className="rounded-[8px] flex gap-[2px]">
               <button
-                onClick={() => handleSortChange("hottest")}
+                onClick={() => handleSortChange("trending")}
                 className={cn(
                   "flex-1 px-4 py-2 text-sm font-medium rounded-[8px] transition-colors",
-                  sortFilter === "hottest"
+                  sortFilter === "trending"
                     ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
                     : "bg-[#1b1b1b] text-[#717171]"
                 )}
               >
-                Rate
+                Trending
               </button>
               <button
                 onClick={() => handleSortChange("newest")}
@@ -553,6 +553,17 @@ const SkillAcademyContent = ({
                 )}
               >
                 New
+              </button>
+              <button
+                onClick={() => handleSortChange("hottest")}
+                className={cn(
+                  "flex-1 px-4 py-2 text-sm font-medium rounded-[8px] transition-colors",
+                  sortFilter === "hottest"
+                    ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
+                    : "bg-[#1b1b1b] text-[#717171]"
+                )}
+              >
+                Rate
               </button>
             </div>
           </div>

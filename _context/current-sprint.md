@@ -5,7 +5,7 @@
 **Goal:** UX polish — Feed persona, Skill Market refactor, Home onboarding improvements
 
 ## In Progress
-- [ ] ...
+- [ ] **Skill Market** — Add Trending sort filter (`sort_by: trending`, sorts by download count DESC) — FE + BE
 
 ## Done
 - [x] **Home** — Toggle Guideline block visibility based on user state

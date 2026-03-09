@@ -133,7 +133,7 @@ export interface GetSkillsParams {
   search?: string;
   is_active?: boolean;
   tags?: string;
-  sort_by?: "hottest" | "created_at";
+  sort_by?: "hottest" | "created_at" | "trending";
   sort_order?: "asc" | "desc";
 }
 
