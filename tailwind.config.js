@@ -216,162 +216,39 @@ module.exports = {
         pink: "var(--text-pink)",
       },
 
-      fontSize: {
-        sm: "13px",
-        "display-lg": [
-          "48px",
-          {
-            lineHeight: "56px",
-            fontWeight: "500",
-            letterSpacing: "0px",
-          },
-        ],
-        "display-md": [
-          "36px",
-          {
-            lineHeight: "44px",
-            fontWeight: "500",
-            letterSpacing: "0px",
-          },
-        ],
-        "heading-lg": [
-          "28px",
-          {
-            lineHeight: "36px",
-            fontWeight: "500",
-            letterSpacing: "0px",
-          },
-        ],
-        "heading-md": [
-          "24px",
-          {
-            lineHeight: "32px",
-            fontWeight: "500",
-            letterSpacing: "0px",
-          },
-        ],
-        "heading-sm": [
-          "20px",
-          {
-            lineHeight: "28px",
-            fontWeight: "500",
-            letterSpacing: "0px",
-          },
-        ],
-
-        "label-lg": [
-          "18px",
-          {
-            lineHeight: "28px",
-            fontWeight: "500",
-            letterSpacing: "0px",
-          },
-        ],
-        "label-md": [
-          "16px",
-          {
-            lineHeight: "24px",
-            fontWeight: "500",
-            letterSpacing: "0px",
-          },
-        ],
-        "label-sm": [
-          "14px",
-          {
-            lineHeight: "20px",
-            fontWeight: "500",
-            letterSpacing: "0px",
-          },
-        ],
-        "label-xs": [
-          "13px",
-          {
-            lineHeight: "16px",
-            fontWeight: "500",
-            letterSpacing: "0px",
-          },
-        ],
-        "label-2xs": [
-          "12px",
-          {
-            lineHeight: "12px",
-            fontWeight: "500",
-            letterSpacing: "0px",
-            textTransform: "uppercase",
-          },
-        ],
-        "label-3xs": [
-          "11px",
-          {
-            lineHeight: "12px",
-            fontWeight: "500",
-            letterSpacing: "0px",
-          },
-        ],
-        "label-3xs-uc": [
-          "10px",
-          {
-            lineHeight: "12px",
-            fontWeight: "500",
-            letterSpacing: "0px",
-            textTransform: "uppercase",
-          },
-        ],
-
-        "body-lg": [
-          "18px",
-          {
-            lineHeight: "28px",
-            fontWeight: "400",
-            letterSpacing: "0px",
-          },
-        ],
-        "body-md": [
-          "16px",
-          {
-            lineHeight: "24px",
-            fontWeight: "400",
-            letterSpacing: "0px",
-          },
-        ],
-        "body-sm": [
-          "14px",
-          {
-            lineHeight: "20px",
-            fontWeight: "400",
-            letterSpacing: "0px",
-          },
-        ],
-        "body-xs": [
-          "13px",
-          {
-            lineHeight: "16px",
-            fontWeight: "400",
-            letterSpacing: "0px",
-          },
-        ],
-        "body-2xs": [
-          "12px",
-          {
-            lineHeight: "12px",
-            fontWeight: "400",
-            letterSpacing: "0px",
-          },
-        ],
-        "body-3xs": [
-          "11px",
-          {
-            lineHeight: "12px",
-            fontWeight: "400",
-            letterSpacing: "0px",
-          },
-        ],
-      },
       fontFamily: {
         geist: ["var(--font-geist)", "sans-serif"],
         spaceMono: ["var(--font-space-mono)", "monospace"],
         jetBrainsMono: ["var(--font-jetBrainsMono)", "monospace"],
+        sans: ["var(--font-family-sans)", "sans-serif"],
+        mono: ["var(--font-family-mono)", "monospace"],
       },
+
+      // ── BORDER RADIUS — mapped to --radius-* tokens ──
+      borderRadius: {
+        none: "var(--radius-none)",
+        xs: "var(--radius-xs)",
+        sm: "var(--radius-sm)",
+        DEFAULT: "var(--radius-md)",
+        md: "var(--radius-md)",
+        lg: "var(--radius-lg)",
+        xl: "var(--radius-xl)",
+        "2xl": "var(--radius-2xl)",
+        "3xl": "var(--radius-3xl)",
+        full: "var(--radius-full)",
+      },
+
+      // ── BORDER WIDTH — mapped to --border-* tokens ──
+      borderWidth: {
+        0: "var(--border-0)",
+        DEFAULT: "var(--border-1)",
+        1: "var(--border-1)",
+        2: "var(--border-2)",
+        4: "var(--border-4)",
+      },
+
+      // ── FONT SIZE — PredictionWin typography scale ──
+      // font-feature-settings applied globally via globals.scss
       fontSize: {
         "display-lg": [
           "48px",
@@ -414,8 +291,9 @@ module.exports = {
           },
         ],
 
+        // ↓ Updated to match PredictionWin: 16px → 18px
         "label-lg": [
-          "16px",
+          "18px",
           {
             lineHeight: "28px",
             fontWeight: "500",
@@ -430,8 +308,9 @@ module.exports = {
             letterSpacing: "0px",
           },
         ],
+        // ↓ Updated to match PredictionWin: 13px → 14px
         "label-sm": [
-          "13px",
+          "14px",
           {
             lineHeight: "20px",
             fontWeight: "500",
@@ -456,8 +335,9 @@ module.exports = {
           },
         ],
 
+        // ↓ Updated to match PredictionWin: 16px → 18px
         "body-lg": [
-          "16px",
+          "18px",
           {
             lineHeight: "28px",
             fontWeight: "400",
@@ -472,8 +352,9 @@ module.exports = {
             letterSpacing: "0px",
           },
         ],
+        // ↓ Updated to match PredictionWin: 13px → 14px
         "body-sm": [
-          "13px",
+          "14px",
           {
             lineHeight: "20px",
             fontWeight: "400",

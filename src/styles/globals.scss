@@ -13,6 +13,8 @@
 
   html {
     font-family: var(--font-geist, sans-serif);
+    /* PredictionWin: lining numerals + proportional figures */
+    font-feature-settings: 'lnum' 1, 'pnum' 1;
   }
 
   body {

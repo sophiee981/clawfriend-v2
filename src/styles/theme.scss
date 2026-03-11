@@ -1,4 +1,127 @@
+// ═══════════════════════════════════════════════════════════
+// CLAWFRIEND DESIGN SYSTEM — PRIMITIVE TOKENS
+// Framework: PredictionWin / Figma token structure
+// ═══════════════════════════════════════════════════════════
+
 :root {
+  // ──────────────────────────────────────────
+  // SPACING SCALE
+  // Usage: padding, margin, width, height
+  // Ref: --spacing-{n} where n = px value
+  // ──────────────────────────────────────────
+  --spacing-0: 0px;
+  --spacing-1: 1px;
+  --spacing-2: 2px;
+  --spacing-4: 4px;
+  --spacing-6: 6px;
+  --spacing-8: 8px;
+  --spacing-10: 10px;
+  --spacing-12: 12px;
+  --spacing-14: 14px;
+  --spacing-16: 16px;
+  --spacing-20: 20px;
+  --spacing-24: 24px;
+  --spacing-28: 28px;
+  --spacing-32: 32px;
+  --spacing-36: 36px;
+  --spacing-40: 40px;
+  --spacing-48: 48px;
+  --spacing-56: 56px;
+  --spacing-64: 64px;
+  --spacing-80: 80px;
+  --spacing-96: 96px;
+  --spacing-128: 128px;
+
+  // ──────────────────────────────────────────
+  // GAP SCALE
+  // Usage: gap, column-gap, row-gap
+  // ──────────────────────────────────────────
+  --gap-0: 0px;
+  --gap-2: 2px;
+  --gap-4: 4px;
+  --gap-6: 6px;
+  --gap-8: 8px;
+  --gap-10: 10px;
+  --gap-12: 12px;
+  --gap-16: 16px;
+  --gap-20: 20px;
+  --gap-24: 24px;
+  --gap-32: 32px;
+  --gap-40: 40px;
+  --gap-48: 48px;
+
+  // ──────────────────────────────────────────
+  // BORDER WIDTH
+  // Usage: border-width
+  // ──────────────────────────────────────────
+  --border-0: 0px;
+  --border-1: 1px;
+  --border-2: 2px;
+  --border-4: 4px;
+
+  // ──────────────────────────────────────────
+  // BORDER RADIUS
+  // Usage: border-radius (rounded-*)
+  // ──────────────────────────────────────────
+  --radius-none: 0px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 20px;
+  --radius-full: 9999px;
+
+  // ──────────────────────────────────────────
+  // FONT FAMILY
+  // Usage: font-family (font-sans, font-mono)
+  // ──────────────────────────────────────────
+  --font-family-sans: "Geist", "Geist Fallback", sans-serif;
+  --font-family-mono: "Space Mono", monospace;
+
+  // ──────────────────────────────────────────
+  // TYPOGRAPHY SCALE
+  // Source: PredictionWin Figma design system
+  // Usage: Referenced by tailwind.config.js fontSize
+  // ──────────────────────────────────────────
+
+  /* Font sizes */
+  --font-size-display-lg: 48px;
+  --font-size-display-md: 36px;
+  --font-size-heading-lg: 28px;
+  --font-size-heading-md: 24px;
+  --font-size-heading-sm: 20px;
+  --font-size-label-lg: 18px;
+  --font-size-label-md: 14px;
+  --font-size-label-sm: 14px;
+  --font-size-label-xs: 12px;
+  --font-size-label-2xs: 10px;
+  --font-size-body-lg: 18px;
+  --font-size-body-md: 14px;
+  --font-size-body-sm: 14px;
+  --font-size-body-xs: 12px;
+
+  /* Line heights */
+  --line-height-display-lg: 56px;
+  --line-height-display-md: 44px;
+  --line-height-heading-lg: 36px;
+  --line-height-heading-md: 32px;
+  --line-height-heading-sm: 28px;
+  --line-height-label-lg: 28px;
+  --line-height-label-md: 24px;
+  --line-height-label-sm: 20px;
+  --line-height-label-xs: 16px;
+  --line-height-label-2xs: 12px;
+  --line-height-body-lg: 28px;
+  --line-height-body-md: 24px;
+  --line-height-body-sm: 20px;
+  --line-height-body-xs: 16px;
+
+  // ──────────────────────────────────────────
+  // COLOR PALETTE — SEMANTIC SCALE
+  // ──────────────────────────────────────────
+
   /* Semantic Colors */
   /* Primary */
   --color-primary: #fe5631;
@@ -69,6 +192,10 @@
   --semantic-info-500\:10: #288fff1a;
   --semantic-info-500\:20: #288fff33;
 
+  // ──────────────────────────────────────────
+  // COLOR PALETTE — NEUTRAL SCALE
+  // ──────────────────────────────────────────
+
   /* Neutral colors */
   --neutral-0: #ffffff;
   --neutral-50: #fafafa;
@@ -91,6 +218,10 @@
   --neutral-500\:10: #7171711a;
   --neutral-500\:16: #71717129;
   --neutral-500\:20: #71717133;
+
+  // ──────────────────────────────────────────
+  // COLOR PALETTE — SOCIAL BRAND
+  // ──────────────────────────────────────────
 
   /* Social Colors */
   /* Brand */
@@ -125,6 +256,10 @@
   --social-overlay-twitch: #9146ff;
   --social-overlay-medium: #12100e;
 
+  // ──────────────────────────────────────────
+  // COLOR PALETTE — OVERLAY
+  // ──────────────────────────────────────────
+
   /* Overlay Colors */
   /* Light */
   --overlay-light-100: #ffffff;
@@ -153,6 +288,10 @@
   --overlay-dark-10: #0000001a;
   --overlay-dark-5: #0000000d;
   --overlay-dark-3: #00000008;
+
+  // ──────────────────────────────────────────
+  // COLOR PALETTE — CUSTOM ACCENT
+  // ──────────────────────────────────────────
 
   /* Custom Colors */
   /* Lime */
@@ -213,6 +352,10 @@
   --custom-cyan-600: #0891b2;
   --custom-cyan-500\:10: #06b6d41a;
 
+  // ──────────────────────────────────────────
+  // BACKWARD COMPATIBILITY ALIASES
+  // ──────────────────────────────────────────
+
   /* Basic colors for backward compatibility */
   --blue: #288fff;
   --cyan: #22d3ee;
@@ -221,6 +364,10 @@
   --red: #ff3d33;
 }
 
+// ═══════════════════════════════════════════════════════════
+// SEMANTIC TOKENS — DARK THEME
+// Applied via [data-theme="dark"] on <html>
+// ═══════════════════════════════════════════════════════════
 [data-theme="dark"] {
   --color-primary: #c2ff33;
   /* Background colors - dark mode */
@@ -344,6 +491,10 @@
   --text-pink: var(--custom-pink-500);
 }
 
+// ═══════════════════════════════════════════════════════════
+// SEMANTIC TOKENS — LIGHT THEME
+// Applied via [data-theme="light"] on <html>
+// ═══════════════════════════════════════════════════════════
 [data-theme="light"] {
   /* Background colors */
   --bg-neutral-01: var(--neutral-50);
