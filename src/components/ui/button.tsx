@@ -5,7 +5,7 @@ import * as React from "react";
 import { cn } from "@/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 disabled:cursor-not-allowed transition-all duration-200 relative overflow-hidden",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 disabled:cursor-not-allowed transition-all duration-200 relative overflow-hidden",
   {
     variants: {
       variant: {
@@ -16,7 +16,7 @@ const buttonVariants = cva(
       },
       buttonType: {
         // Filled type: bg-[variant-name], text-primary
-        filled: "",
+        filled: "border-2 border-[#1a1a1a]",
         // Tonal type: bg-[variant-name]-muted-20 text-[variant-name]
         tonal: "",
         // Outline type: border-[variant-name]-muted text-[variant-name]
@@ -27,10 +27,10 @@ const buttonVariants = cva(
         transparent: "bg-transparent",
       },
       size: {
-        sm: "h-7 px-3 text-sm rounded-lg", // 28px
-        md: "h-[36px] px-4 text-sm rounded-lg", // 36px
-        lg: "h-[44px] px-6 text-base", // 44px
-        xl: "h-[52px] px-8 text-lg", // 52px
+        sm: "h-7 px-3 text-sm rounded-sm", // 28px
+        md: "h-[36px] px-4 text-sm rounded-sm", // 36px
+        lg: "h-[44px] px-6 text-base rounded", // 44px
+        xl: "h-[52px] px-8 text-lg rounded", // 52px
       },
     },
     compoundVariants: [

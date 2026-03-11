@@ -2,7 +2,7 @@ import { AlertFill, CheckCircleFill } from "@/components/icons";
 import { BASE_URL } from "@/constants";
 import "@/styles/index.scss";
 import type { Metadata } from "next";
-import { Geist, JetBrains_Mono, Space_Mono } from "next/font/google";
+import { Geist, JetBrains_Mono, Space_Mono, Work_Sans } from "next/font/google";
 import { Toaster } from "sonner";
 import { Providers } from "../providers";
 
@@ -27,6 +27,12 @@ export const metadata: Metadata = {
   },
 };
 
+const workSans = Work_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-work-sans",
+});
+
 const geist = Geist({
   subsets: ["latin"],
   variable: "--font-geist",
@@ -50,7 +56,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="dark">
+    <html lang="en" data-theme="light">
       <head>
         <link rel="icon" href="/images/logo-symbol.png" sizes="any" />
         <meta name="robots" content="index, follow" />
@@ -101,7 +107,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geist.variable} ${spaceMono.variable} ${geist.className} ${jetBrainsMono.variable}`}
+        className={`${workSans.variable} ${geist.variable} ${spaceMono.variable} ${jetBrainsMono.variable} ${workSans.className}`}
       >
         <div
           style={{
@@ -144,22 +150,21 @@ export default function RootLayout({
           className="pointer-events-auto"
           toastOptions={{
             style: {
-              borderRadius: "8px",
-              backgroundColor: "#1B1B1B",
-              border: "none",
-              color: "#FAFAFA",
-              backdropFilter: "blur(2px)",
+              borderRadius: "4px",
+              backgroundColor: "#f4f4f0",
+              border: "2px solid #1a1a1a",
+              color: "#1a1a1a",
               padding: "12px",
               fontSize: "14px",
               fontWeight: "500",
-              boxShadow: "0px 0px 8px 0px rgba(0, 0, 0, 0.10)",
+              boxShadow: "none",
               alignItems: "start",
               gap: "8px",
             },
             descriptionClassName: "!text-neutral-secondary text-body-xs",
             classNames: {
               cancelButton:
-                "bg-transparent hover:!bg-neutral-03 !text-neutral-tertiary !hover:text-neutral-tertiary p-1 rounded-md text-xl font-bold transition-colors min-w-0 w-auto h-auto flex items-center justify-center",
+                "bg-transparent hover:!bg-neutral-03 !text-neutral-tertiary !hover:text-neutral-tertiary p-1 rounded-sm text-xl font-bold transition-colors min-w-0 w-auto h-auto flex items-center justify-center",
             },
           }}
           icons={{

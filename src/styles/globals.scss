@@ -12,8 +12,8 @@
   }
 
   html {
-    font-family: var(--font-geist, sans-serif);
-    /* PredictionWin: lining numerals + proportional figures */
+    font-family: var(--font-work-sans, var(--font-geist, sans-serif));
+    /* Neubrutalism + PredictionWin: lining numerals + proportional figures */
     font-feature-settings: 'lnum' 1, 'pnum' 1;
   }
 
@@ -32,6 +32,18 @@
 }
 
 @layer utilities {
+  /* ── NEUBRUTALISM: override .border* to 2px ──
+   * Must be in @layer utilities to win over Tailwind's default 1px border.
+   * border-0, border-2, border-4 use our explicit token vars → not affected.
+   */
+  .border   { border-width: 2px; }
+  .border-t { border-top-width: 2px; }
+  .border-b { border-bottom-width: 2px; }
+  .border-l { border-left-width: 2px; }
+  .border-r { border-right-width: 2px; }
+  .border-x { border-left-width: 2px; border-right-width: 2px; }
+  .border-y { border-top-width: 2px; border-bottom-width: 2px; }
+
   /* Remove number input arrows for Chrome, Safari, Edge */
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
@@ -99,37 +111,19 @@
   background: transparent;
 }
 
-[data-theme="dark"] ::-webkit-scrollbar-track {
-  background: transparent;
-}
-
 ::-webkit-scrollbar-thumb {
-  background: var(--neutral-300);
-  border-radius: 10px;
-}
-
-[data-theme="dark"] ::-webkit-scrollbar-thumb {
-  background: #272727;
-  border-radius: 10px;
+  background: #c0bdb5;
+  border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--neutral-400);
-}
-
-[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
-  background: #525252;
+  background: #9e9b93;
 }
 
 * {
   scrollbar-width: thin;
   /* Firefox */
-  scrollbar-color: var(--neutral-300) transparent;
-  /* Firefox */
-}
-
-[data-theme="dark"] * {
-  scrollbar-color: #272727 transparent;
+  scrollbar-color: #c0bdb5 transparent;
   /* Firefox */
 }
 
@@ -158,27 +152,15 @@
 }
 
 .scrollbar-hover-hide:hover {
-  scrollbar-color: var(--neutral-300) transparent;
-}
-
-[data-theme="dark"] .scrollbar-hover-hide:hover {
-  scrollbar-color: #272727 transparent;
+  scrollbar-color: #c0bdb5 transparent;
 }
 
 .scrollbar-hover-hide:hover::-webkit-scrollbar-thumb {
-  background: var(--neutral-300) !important;
-}
-
-[data-theme="dark"] .scrollbar-hover-hide:hover::-webkit-scrollbar-thumb {
-  background: #272727 !important;
+  background: #c0bdb5 !important;
 }
 
 .scrollbar-hover-hide:hover::-webkit-scrollbar-thumb:hover {
-  background: var(--neutral-400) !important;
-}
-
-[data-theme="dark"] .scrollbar-hover-hide:hover::-webkit-scrollbar-thumb:hover {
-  background: #525252 !important;
+  background: #9e9b93 !important;
 }
 
 /* Toast Progress Bar Styles */

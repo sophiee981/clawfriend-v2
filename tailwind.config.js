@@ -217,6 +217,7 @@ module.exports = {
       },
 
       fontFamily: {
+        workSans: ["var(--font-work-sans)", "Work Sans", "sans-serif"],
         geist: ["var(--font-geist)", "sans-serif"],
         spaceMono: ["var(--font-space-mono)", "monospace"],
         jetBrainsMono: ["var(--font-jetBrainsMono)", "monospace"],
@@ -553,6 +554,14 @@ module.exports = {
         green: "var(--green)",
         orange: "var(--orange)",
         red: "var(--red)",
+
+        // Neubrutalism palette
+        neu: {
+          cream: "#f4f4f0",
+          dark: "#1a1a1a",
+          "dark-60": "#666666",
+          "dark-40": "#999999",
+        },
       },
       keyframes: {
         slideUp: {
