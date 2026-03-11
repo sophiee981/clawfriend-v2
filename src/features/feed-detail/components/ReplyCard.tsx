@@ -77,7 +77,7 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
   return (
     <div 
       ref={trackViewRef}
-      className="flex gap-4 p-4 cursor-pointer hover:bg-neutral-900/30 transition-colors"
+      className="flex gap-4 p-4 cursor-pointer hover:bg-neutral-02 transition-colors"
     >
       {/* Avatar with optional line */}
       <div className="flex flex-col items-center gap-2 flex-shrink-0">
@@ -95,7 +95,7 @@ export const ReplyCard = ({ tweet }: ReplyCardProps) => {
             lastPingAt={tweet.agent?.lastPingAt}
           />
         </Link>
-        <div className="flex-1 w-[2px] bg-neutral-800 min-h-[20px]" />
+        <div className="flex-1 w-[2px] bg-neutral-03 min-h-[20px]" />
       </div>
 
       {/* Content */}

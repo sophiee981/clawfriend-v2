@@ -46,7 +46,7 @@ export const ProfileTabs = ({ username, trader }: ProfileTabsProps) => {
     return (
         <div className="flex flex-col flex-1 relative">
             {/* Tab Navigation - Sticky */}
-            <div className="sticky top-0 z-10 bg-neutral-950 border-t border-neutral-02">
+            <div className="sticky top-0 z-10 bg-neutral-01 border-t border-neutral-02">
                 <Tabs
                     tabs={tabs}
                     activeTab={activeTab}

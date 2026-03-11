@@ -85,7 +85,7 @@ export const TopNav = () => {
       {/* Menu button on the right */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
-          <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-neutral-900 transition-opacity hover:opacity-80">
+          <button className="flex h-8 w-8 items-center justify-center rounded-lg bg-neutral-02 border transition-opacity hover:opacity-80">
             <Menu className="h-5 w-5 text-neutral-primary" />
           </button>
         </DialogTrigger>
@@ -95,7 +95,7 @@ export const TopNav = () => {
               <>
                 {/* User info header */}
                 <div className="flex items-center gap-3 border-b border-neutral-02 p-4">
-                  <div className="relative h-12 w-12 overflow-hidden rounded-lg bg-neutral-900">
+                  <div className="relative h-12 w-12 overflow-hidden rounded-lg bg-neutral-02">
                     <img
                       src={getAvatarUrl(userInfo.owner.x_handle)}
                       alt={userInfo.owner.x_name || "User"}
@@ -118,21 +118,21 @@ export const TopNav = () => {
                 <div className="flex flex-col">
                   <button
                     onClick={handleAboutClick}
-                    className="flex items-center gap-3 px-4 py-3 border-b border-neutral-01 text-left text-sm font-medium text-neutral-primary transition-colors hover:bg-neutral-900 active:bg-neutral-800"
+                    className="flex items-center gap-3 px-4 py-3 border-b border-neutral-01 text-left text-sm font-medium text-neutral-primary transition-colors hover:bg-neutral-02 active:bg-neutral-03"
                   >
                     <Globe className="h-4 w-4" />
                     <span>About</span>
                   </button>
                   <button
                     onClick={handleDocClick}
-                    className="flex items-center gap-3 px-4 py-3 border-b border-neutral-01 text-left text-sm font-medium text-neutral-primary transition-colors hover:bg-neutral-900 active:bg-neutral-800"
+                    className="flex items-center gap-3 px-4 py-3 border-b border-neutral-01 text-left text-sm font-medium text-neutral-primary transition-colors hover:bg-neutral-02 active:bg-neutral-03"
                   >
                     <ExternalLink className="h-4 w-4" />
                     <span>Docs</span>
                   </button>
                   <button
                     onClick={handleProfileClick}
-                    className="flex items-center gap-3 px-4 py-3 border-b border-neutral-01 text-left text-sm font-medium text-neutral-primary transition-colors hover:bg-neutral-900 active:bg-neutral-800"
+                    className="flex items-center gap-3 px-4 py-3 border-b border-neutral-01 text-left text-sm font-medium text-neutral-primary transition-colors hover:bg-neutral-02 active:bg-neutral-03"
                   >
                     <Human className="h-4 w-4" />
                     <span>Profile</span>
@@ -151,21 +151,21 @@ export const TopNav = () => {
               <div className="flex flex-col pt-[60px] pb-10">
                 <button
                   onClick={handleLoginClick}
-                  className="flex items-center gap-3 px-4 py-3 border-y border-neutral-01 text-left text-sm font-medium text-neutral-primary transition-colors hover:bg-neutral-900 active:bg-neutral-800"
+                  className="flex items-center gap-3 px-4 py-3 border-y border-neutral-01 text-left text-sm font-medium text-neutral-primary transition-colors hover:bg-neutral-02 active:bg-neutral-03"
                 >
                   <LogIn className="h-4 w-4" />
                   <span>Sign in</span>
                 </button>
                 <button
                   onClick={handleAboutClick}
-                  className="flex items-center gap-3 px-4 py-3 border-b border-neutral-01 text-left text-sm font-medium text-neutral-primary transition-colors hover:bg-neutral-900 active:bg-neutral-800"
+                  className="flex items-center gap-3 px-4 py-3 border-b border-neutral-01 text-left text-sm font-medium text-neutral-primary transition-colors hover:bg-neutral-02 active:bg-neutral-03"
                 >
                   <Globe className="h-4 w-4" />
                   <span>About</span>
                 </button>
                 <button
                   onClick={handleDocClick}
-                  className="flex items-center gap-3 px-4 py-3 text-left text-sm font-medium text-neutral-primary transition-colors hover:bg-neutral-900 active:bg-neutral-800"
+                  className="flex items-center gap-3 px-4 py-3 text-left text-sm font-medium text-neutral-primary transition-colors hover:bg-neutral-02 active:bg-neutral-03"
                 >
                   <ExternalLink className="h-4 w-4" />
                   <span>Docs</span>

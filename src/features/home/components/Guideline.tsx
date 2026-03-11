@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckLine, Copy } from "@/components/icons";
+import { CheckLine, Copy, LogoDark } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
   Modal,
@@ -14,7 +14,6 @@ import { API_BASE_URL } from "@/constants";
 import { getPrompt } from "@/services";
 import { cn } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
 import { useState } from "react";
 
 const deployPlatforms = [
@@ -117,7 +116,7 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
       <div className="bg-neutral-02 rounded-lg p-3 sm:p-4 flex flex-col gap-3 sm:gap-4 h-fit">
         {/* Left Section - Standard Sign In */}
         <div className="flex flex-col gap-4 sm:gap-6 items-center justify-between w-full">
-          <Image src="/images/logo.png" alt="Logo" width={180} height={41} />
+          <LogoDark style={{ width: 180, height: 41 }} />
 
           <div className="flex gap-2 sm:w-[50%] w-full">
             <Button
@@ -126,7 +125,7 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
               size="sm"
               className={cn(
                 "text-[11px] sm:text-label-xs flex-1 h-8 sm:h-9",
-                userType === "human" ? "" : "bg-[#1b1b1b]",
+                userType === "human" ? "" : "bg-neutral-02",
               )}
               onClick={() => setUserType("human")}
             >
@@ -138,7 +137,7 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
               size="sm"
               className={cn(
                 "text-[11px] sm:text-label-xs flex-1 h-8 sm:h-9",
-                userType === "agent" ? "" : "bg-[#1b1b1b]",
+                userType === "agent" ? "" : "bg-neutral-02",
               )}
               onClick={() => setUserType("agent")}
             >
@@ -148,22 +147,22 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
         </div>
 
         {/* Right Section - Send AI Agent */}
-        <div className="bg-neutral-03 border border-[#1b1b1b] rounded-md p-3 sm:p-4 flex flex-col gap-3 sm:gap-4 flex-1">
-          <h2 className="text-[13px] sm:text-[15px] leading-tight sm:leading-5 font-medium text-[#f4f4f4] text-center">
+        <div className="bg-neutral-02 border rounded-md p-3 sm:p-4 flex flex-col gap-3 sm:gap-4 flex-1">
+          <h2 className="text-[13px] sm:text-[15px] leading-tight sm:leading-5 font-medium text-neutral-primary text-center">
             {userType === "human"
               ? "Bring your AI agent into ClawFriend"
               : "Connect your agent to ClawFriend"}
           </h2>
 
           {/* Tab Buttons */}
-          <div className="border border-[#1b1b1b] rounded-[8px] flex gap-[2px]">
+          <div className="border rounded-[8px] flex gap-[2px]">
             <button
               onClick={() => setActiveTab("prompt")}
               className={cn(
                 "flex-1 h-[28px] sm:h-[32px] px-2 sm:px-3 rounded-[8px] text-[11px] sm:text-[13px] leading-4 font-medium transition-colors",
                 activeTab === "prompt"
                   ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
-                  : "bg-[#1b1b1b] text-[#717171]",
+                  : "bg-neutral-02 text-[#717171]",
               )}
             >
               Quick Prompt
@@ -174,7 +173,7 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
                 "flex-1 h-[28px] sm:h-[32px] px-2 sm:px-3 rounded-[8px] text-[11px] sm:text-[13px] leading-4 font-medium transition-colors",
                 activeTab === "manual"
                   ? "bg-[rgba(254,86,49,0.2)] text-[#fe5631]"
-                  : "bg-[#1b1b1b] text-[#717171]",
+                  : "bg-neutral-02 text-[#717171]",
               )}
             >
               Manual
@@ -182,8 +181,8 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
           </div>
 
           {/* Prompt Text Field */}
-          <div className="bg-[#1b1b1b] rounded-md px-2 sm:px-3 py-2 flex gap-2 sm:gap-2.5 min-h-[56px] sm:min-h-[64px]">
-            <p className="flex-1 text-[11px] sm:text-body-sm text-[#d4d4d4] font-spaceMono whitespace-pre-wrap break-all leading-tight sm:leading-normal">
+          <div className="bg-neutral-02 rounded-md px-2 sm:px-3 py-2 flex gap-2 sm:gap-2.5 min-h-[56px] sm:min-h-[64px]">
+            <p className="flex-1 text-[11px] sm:text-body-sm text-neutral-secondary font-spaceMono whitespace-pre-wrap break-all leading-tight sm:leading-normal">
               {promptText}
             </p>
             <button
@@ -194,7 +193,7 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
               {isCopied ? (
                 <CheckLine className="text-[#22c55e] transition-colors w-4 h-4 sm:w-5 sm:h-5" />
               ) : (
-                <Copy className="text-[#717171] hover:text-[#f4f4f4] transition-colors w-4 h-4 sm:w-5 sm:h-5" />
+                <Copy className="text-neutral-tertiary hover:text-neutral-primary transition-colors w-4 h-4 sm:w-5 sm:h-5" />
               )}
             </button>
           </div>
@@ -207,12 +206,12 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
                   key={instruction.number}
                   className="flex items-start gap-2"
                 >
-                  <div className="w-4 h-4 bg-[#272727] rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                    <span className="text-[10px] sm:text-[11px] leading-3 text-[#d4d4d4]">
+                  <div className="w-4 h-4 bg-neutral-04 border rounded-full flex items-center justify-center shrink-0 mt-0.5">
+                    <span className="text-[10px] sm:text-[11px] leading-3 text-neutral-primary">
                       {instruction.number}
                     </span>
                   </div>
-                  <p className="flex-1 text-[11px] sm:text-body-xs text-[#717171] leading-tight sm:leading-5">
+                  <p className="flex-1 text-[11px] sm:text-body-xs text-neutral-tertiary leading-tight sm:leading-5">
                     {instruction.text}
                   </p>
                 </div>
@@ -224,8 +223,8 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
         </div>
 
         {/* Create Agent Link */}
-        <div className="bg-neutral-03 rounded-[6px] px-3 py-2 flex items-center justify-center gap-1 w-full">
-          <p className="text-[13px] leading-[16px] font-normal text-[#f4f4f4] whitespace-nowrap shrink-0">
+        <div className="bg-neutral-02 border rounded-[6px] px-3 py-2 flex items-center justify-center gap-1 w-full">
+          <p className="text-[13px] leading-[16px] font-normal text-neutral-primary whitespace-nowrap shrink-0">
             Don&apos;t have an agent yet?
           </p>
           <button
@@ -258,7 +257,7 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
                 {deployPlatforms.map((platform) => (
                   <button
                     key={platform.name}
-                    className="flex flex-col gap-2 p-3 bg-neutral-02 border border-[#2d2d2d] rounded-lg hover:border-[#fe5631] transition-colors cursor-pointer w-full text-left"
+                    className="flex flex-col gap-2 p-3 bg-neutral-02 border rounded-lg hover:border-primary transition-colors cursor-pointer w-full text-left"
                     onClick={() => {
                       window.open(
                         platform.url,
@@ -273,10 +272,10 @@ export const Guideline = ({ defaultPrompt }: { defaultPrompt: string }) => {
                       className="w-8 h-8 rounded object-contain"
                     />
                     <div>
-                      <p className="text-[13px] font-medium text-[#f4f4f4]">
+                      <p className="text-[13px] font-medium text-neutral-primary">
                         {platform.name}
                       </p>
-                      <p className="text-[11px] text-[#717171] mt-0.5 leading-4">
+                      <p className="text-[11px] text-neutral-tertiary mt-0.5 leading-4">
                         {platform.description}
                       </p>
                     </div>

@@ -233,10 +233,10 @@ export const LeftSidebar = () => {
       ) : isLoggedIn && userInfo ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="mt-auto border border-neutral-02 rounded-lg overflow-hidden hover:bg-neutral-900 transition-colors cursor-pointer w-full text-left">
+            <button className="mt-auto border border-neutral-02 rounded-lg overflow-hidden hover:bg-neutral-02 transition-colors cursor-pointer w-full text-left">
               {/* Row 1: X avatar + @handle */}
               <div className="flex items-center gap-2 p-3 border-b border-neutral-02">
-                <div className="relative h-6 w-6 overflow-hidden rounded-full flex-shrink-0 bg-neutral-900">
+                <div className="relative h-6 w-6 overflow-hidden rounded-full flex-shrink-0 bg-neutral-03">
                   <img
                     src={getAvatarUrl(userInfo.owner.x_handle)}
                     alt={userInfo.owner.x_handle || "User"}

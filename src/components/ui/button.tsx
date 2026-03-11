@@ -39,7 +39,7 @@ const buttonVariants = cva(
         variant: "primary",
         buttonType: "filled",
         className:
-          "bg-primary shadow hover:after:bg-overlay-light-10 active:after:bg-overlay-dark-40 disabled:opacity-40 after:absolute after:inset-0 after:transition-colors after:duration-200",
+          "bg-primary text-white hover:border-b-[3px] active:after:bg-overlay-dark-40 disabled:opacity-40 after:absolute after:inset-0 after:transition-colors after:duration-200",
       },
       // PRIMARY TONAL
       {

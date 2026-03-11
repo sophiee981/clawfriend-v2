@@ -29,6 +29,8 @@ export { default as LeaderboardFill } from "./leaderboard_fill.svg";
 export { default as LeaderboardLine } from "./leaderboard_line.svg";
 export { default as LeftLine } from "./left_line.svg";
 export { default as Loading } from "./loading.svg";
+export { default as LogoDark } from "./logo_dark.svg";
+export { default as LogoHome } from "./logo_home.svg";
 export { default as MagnifyingGlass } from "./magnifying-glass.svg";
 export { default as MoreVertical } from "./more_vertical.svg";
 export { default as RepostLine } from "./repost_line.svg";
